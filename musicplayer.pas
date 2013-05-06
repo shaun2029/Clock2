@@ -68,7 +68,7 @@ const
   {$ifdef CPUARM}
   BUFFER_TIME = 18; // in seconds
   {$else}
-  BUFFER_TIME = 1;
+  BUFFER_TIME = 3;
   {$endif}
 
   // Buffer size in KB. Based on 44100 samples per sec * 2 bytes
@@ -138,6 +138,9 @@ end;
 
 procedure TMusicPlayer.StartPlayProcess(out Process: TProcess);
 begin
+  if (FEqualizer <> '') and not FileExists(FEqualizer) then
+    EqualizerDefault(FEqualizer);
+
   Process := TProcess.Create(nil);
   Process.Options := Process.Options + [poUsePipes];
 
@@ -268,9 +271,6 @@ end;
 
 procedure TMusicPlayer.Play(Filename: string);
 begin
-  if (FEqualizer <> '') and not FileExists(FEqualizer) then
-    EqualizerDefault(FEqualizer);
-
   PlaySong(Filename);
 end;
 
