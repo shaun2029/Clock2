@@ -1,5 +1,9 @@
-Clock
+Clock2
 =====
+Copyright Shaun Simpson 2011
+
+Version 2 is designed for a 800x480 touchscreen device such as the O2 Joggler.
+
 
 Weather clock application.
 
