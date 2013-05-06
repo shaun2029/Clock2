@@ -29,6 +29,8 @@ type
     FState: TMusicPlayerState;
     FBufferTime: integer;
     FPlayLength: TDateTime;
+    FID3v1: TID3v1Tag;
+    FID3v2: TID3v2Tag;
 
     procedure DestroyPlayProcess;
     procedure EqualizerDefault(Filename: string);
@@ -75,9 +77,6 @@ const
 implementation
 
 procedure TMusicPlayer.PlaySong(Song: string);
-var
-  ID3v1: TID3v1Tag;
-  ID3v2: TID3v2Tag;
 begin
   // Ensure that song is not playing
   StopSong;
@@ -85,26 +84,23 @@ begin
   FSongTitle := '';
   FSongArtist := '';
 
-  ID3v1 := TID3v1Tag.Create;
-  ID3v2 := TID3v2Tag.Create;
-
   try
-    if ID3v2.LoadFromFile(Song) = ID3V2LIBRARY_SUCCESS then
+    if FID3v1.LoadFromFile(Song) = ID3V1LIBRARY_SUCCESS then
     begin
       //* Get Title
-      FSongTitle := ID3v2.GetUnicodeText('TIT2');
+      FSongTitle := FID3v1.Title;
 
       //* Get Artist
-      FSongArtist := ID3v2.GetUnicodeText('TPE1');
+      FSongArtist := FID3v1.Artist;
     end
-    else if ID3v1.LoadFromFile(Song) = ID3V1LIBRARY_SUCCESS then
+    else if FID3v2.LoadFromFile(Song) = ID3V2LIBRARY_SUCCESS then
     begin
       //* Get Title
-      FSongTitle := ID3v1.Title;
+      FSongTitle := FID3v2.GetUnicodeText('TIT2');
 
       //* Get Artist
-      FSongArtist := ID3v1.Artist;
-    end;
+      FSongArtist := FID3v2.GetUnicodeText('TPE1');
+    end
   except
     on E: Exception do
     begin
@@ -113,9 +109,6 @@ begin
       DebugLn(Self.ClassName + #9#9 + E.Message);
     end;
   end;
-
-  ID3v1.Free;
-  ID3v2.Free;
 
   try
     if FileExists(Song) then
@@ -258,10 +251,16 @@ begin
   FEqualizer := '';
   FVolume := 50;
   SetVolume(FVolume);
+
+  FID3v1 := TID3v1Tag.Create;
+  FID3v2 := TID3v2Tag.Create;
 end;
 
 destructor TMusicPlayer.Destroy;
 begin
+  FID3V1.Free;
+  FID3v2.Free;
+
   DestroyPlayProcess;
 
   inherited Destroy;
