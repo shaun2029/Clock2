@@ -992,7 +992,7 @@ end;
 
 procedure TfrmClockMain.FormShow(Sender: TObject);
 begin
-  if not FileExists('/usr/bin/mpg123') then
+  if not FileExists('/usr/bin/mpg123') and not FileExists('/usr/bin/mpg321') then
     ShowMessage('Alarm Not Working' + LineEnding
     + 'The package mpg123 was not found on this system.' + LineEnding
     + 'Please install mpg123 to enable the alarm by running the command:' + LineEnding

@@ -1,12 +1,12 @@
 object frmClockSettings: TfrmClockSettings
   Left = 511
-  Height = 240
+  Height = 238
   Top = 198
-  Width = 320
+  Width = 432
   BorderStyle = bsSingle
   Caption = 'Settings'
-  ClientHeight = 240
-  ClientWidth = 320
+  ClientHeight = 238
+  ClientWidth = 432
   KeyPreview = True
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
@@ -18,20 +18,20 @@ object frmClockSettings: TfrmClockSettings
     Left = 8
     Height = 216
     Top = 8
-    Width = 304
-    ActivePage = TabSheet2
+    Width = 416
+    ActivePage = TabSheet5
     ParentFont = False
-    TabIndex = 0
+    TabIndex = 3
     TabOrder = 0
     Options = [nboKeyboardTabSwitch]
     object TabSheet2: TTabSheet
       Caption = 'Timer'
       ClientHeight = 185
-      ClientWidth = 300
+      ClientWidth = 412
       object stxtTimer: TStaticText
-        Left = 14
+        Left = 78
         Height = 71
-        Top = 12
+        Top = 11
         Width = 88
         Alignment = taCenter
         Caption = '10'
@@ -40,9 +40,9 @@ object frmClockSettings: TfrmClockSettings
         TabOrder = 0
       end
       object udTimer: TUpDown
-        Left = 102
+        Left = 166
         Height = 71
-        Top = 12
+        Top = 11
         Width = 160
         Associate = stxtTimer
         Min = 0
@@ -52,10 +52,10 @@ object frmClockSettings: TfrmClockSettings
         Wrap = False
       end
       object btnStartTimer: TButton
-        Left = 6
+        Left = 62
         Height = 86
         Top = 91
-        Width = 288
+        Width = 280
         Caption = 'Start Timer'
         Font.Height = -26
         OnClick = btnStartTimerClick
@@ -66,7 +66,7 @@ object frmClockSettings: TfrmClockSettings
     object TabSheet1: TTabSheet
       Caption = 'Alarm'
       ClientHeight = 185
-      ClientWidth = 300
+      ClientWidth = 412
       object Label2: TLabel
         Left = 46
         Height = 18
@@ -98,7 +98,7 @@ object frmClockSettings: TfrmClockSettings
       object Label3: TLabel
         Left = 14
         Height = 18
-        Top = 91
+        Top = 75
         Width = 33
         Caption = 'Days'
         ParentColor = False
@@ -106,47 +106,47 @@ object frmClockSettings: TfrmClockSettings
       object cbxMon: TCheckBox
         Left = 62
         Height = 24
-        Top = 91
+        Top = 75
         Width = 39
         Caption = 'M'
         TabOrder = 2
       end
       object cbxTue: TCheckBox
-        Left = 102
+        Left = 110
         Height = 24
-        Top = 91
+        Top = 75
         Width = 34
         Caption = 'T'
         TabOrder = 3
       end
       object cbxWed: TCheckBox
-        Left = 145
+        Left = 158
         Height = 24
-        Top = 91
+        Top = 75
         Width = 40
         Caption = 'W'
         TabOrder = 4
       end
       object cbxThu: TCheckBox
-        Left = 190
+        Left = 206
         Height = 24
-        Top = 91
+        Top = 75
         Width = 34
         Caption = 'T'
         TabOrder = 5
       end
       object cbxFri: TCheckBox
-        Left = 230
+        Left = 254
         Height = 24
-        Top = 91
+        Top = 75
         Width = 34
         Caption = 'F'
         TabOrder = 6
       end
       object cbxSun: TCheckBox
-        Left = 190
+        Left = 206
         Height = 24
-        Top = 115
+        Top = 107
         Width = 74
         Caption = 'Sunday'
         TabOrder = 8
@@ -154,7 +154,7 @@ object frmClockSettings: TfrmClockSettings
       object cbxSat: TCheckBox
         Left = 62
         Height = 24
-        Top = 115
+        Top = 107
         Width = 86
         Caption = 'Saturday'
         TabOrder = 7
@@ -163,7 +163,7 @@ object frmClockSettings: TfrmClockSettings
         Left = 14
         Height = 24
         Top = 147
-        Width = 191
+        Width = 190
         Caption = 'Play Music (Silent Alarm)'
         TabOrder = 9
       end
@@ -171,7 +171,7 @@ object frmClockSettings: TfrmClockSettings
     object TabSheet4: TTabSheet
       Caption = 'Reminders'
       ClientHeight = 185
-      ClientWidth = 300
+      ClientWidth = 412
       object Label5: TLabel
         Left = 22
         Height = 18
@@ -213,7 +213,7 @@ object frmClockSettings: TfrmClockSettings
       object cbxGetReminders: TCheckBox
         Left = 22
         Height = 24
-        Top = 107
+        Top = 115
         Width = 217
         Caption = 'Fetch reminders from server'
         TabOrder = 3
@@ -222,12 +222,12 @@ object frmClockSettings: TfrmClockSettings
     object TabSheet5: TTabSheet
       Caption = 'Music'
       ClientHeight = 185
-      ClientWidth = 300
+      ClientWidth = 412
       object edtMusicPath: TEdit
         Left = 110
         Height = 27
         Top = 27
-        Width = 184
+        Width = 240
         TabOrder = 0
         Text = '/home/user/Music'
       end
@@ -245,7 +245,7 @@ object frmClockSettings: TfrmClockSettings
         Left = 110
         Height = 27
         Top = 67
-        Width = 184
+        Width = 240
         TabOrder = 1
         Text = '/home/user/Sleep'
       end
@@ -271,7 +271,7 @@ object frmClockSettings: TfrmClockSettings
         Left = 110
         Height = 27
         Top = 107
-        Width = 184
+        Width = 240
         TabOrder = 2
         Text = '/home/user/Meditation'
       end
@@ -285,11 +285,38 @@ object frmClockSettings: TfrmClockSettings
         ParentColor = False
         WordWrap = True
       end
+      object btnSelectMusic: TButton
+        Left = 358
+        Height = 25
+        Top = 27
+        Width = 40
+        Caption = '..'
+        OnClick = btnSelectMusicClick
+        TabOrder = 4
+      end
+      object btnSelectSleep: TButton
+        Left = 358
+        Height = 25
+        Top = 67
+        Width = 40
+        Caption = '..'
+        OnClick = btnSelectSleepClick
+        TabOrder = 5
+      end
+      object btnSelectMeditation: TButton
+        Left = 358
+        Height = 25
+        Top = 107
+        Width = 40
+        Caption = '..'
+        OnClick = btnSelectMeditationClick
+        TabOrder = 6
+      end
     end
     object TabSheet3: TTabSheet
       Caption = 'Weather'
       ClientHeight = 185
-      ClientWidth = 300
+      ClientWidth = 412
       object edtLocation: TEdit
         Left = 110
         Height = 27
@@ -391,6 +418,10 @@ object frmClockSettings: TfrmClockSettings
     Interval = 200
     OnTimer = tmrSettingsTimer
     left = 240
+    top = 187
+  end
+  object dlgSelectDirectoryDialog: TSelectDirectoryDialog
+    left = 320
     top = 187
   end
 end

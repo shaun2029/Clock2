@@ -15,6 +15,9 @@ type
 
   TfrmClockSettings = class(TForm)
     btnStartTimer: TButton;
+    btnSelectMusic: TButton;
+    btnSelectSleep: TButton;
+    btnSelectMeditation: TButton;
     cbxFri: TCheckBox;
     cbxMon: TCheckBox;
     cbxSat: TCheckBox;
@@ -49,6 +52,7 @@ type
     Label8: TLabel;
     Label9: TLabel;
     PageControl1: TPageControl;
+    dlgSelectDirectoryDialog: TSelectDirectoryDialog;
     stxtTimer: TStaticText;
     TabSheet1: TTabSheet;
     TabSheet2: TTabSheet;
@@ -58,6 +62,9 @@ type
     tmrSettings: TTimer;
     udTimer: TUpDown;
     XMLPropStorage1: TXMLPropStorage;
+    procedure btnSelectMeditationClick(Sender: TObject);
+    procedure btnSelectMusicClick(Sender: TObject);
+    procedure btnSelectSleepClick(Sender: TObject);
     procedure btnStartTimerClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -108,6 +115,24 @@ procedure TfrmClockSettings.btnStartTimerClick(Sender: TObject);
 begin
   FTimerActive := True;
   Self.Close;
+end;
+
+procedure TfrmClockSettings.btnSelectMusicClick(Sender: TObject);
+begin
+  if dlgSelectDirectoryDialog.Execute then
+     edtMusicPath.Text := dlgSelectDirectoryDialog.Filename;
+end;
+
+procedure TfrmClockSettings.btnSelectMeditationClick(Sender: TObject);
+begin
+  if dlgSelectDirectoryDialog.Execute then
+     edtMeditationPath.Text := dlgSelectDirectoryDialog.Filename;
+end;
+
+procedure TfrmClockSettings.btnSelectSleepClick(Sender: TObject);
+begin
+  if dlgSelectDirectoryDialog.Execute then
+     edtSleepPath.Text := dlgSelectDirectoryDialog.Filename;
 end;
 
 procedure TfrmClockSettings.FormCreate(Sender: TObject);
