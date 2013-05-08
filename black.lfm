@@ -1,0 +1,13 @@
+object frmBlack: TfrmBlack
+  Cursor = crNone
+  Left = 324
+  Height = 240
+  Top = 208
+  Width = 320
+  BorderStyle = bsNone
+  Caption = 'frmBlack'
+  Color = clBlack
+  OnClick = FormClick
+  LCLVersion = '1.0.4.0'
+  WindowState = wsMaximized
+end
