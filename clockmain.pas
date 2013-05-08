@@ -20,7 +20,7 @@ uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
   ExtCtrls, MetOffice, Alarm, ClockSettings, Reminders, ReminderList, LCLProc,
   Music, Sync, Process, MusicPlayer, PlaylistCreator, UDPCommandServer,
-  X, Xlib, CTypes;
+  X, Xlib, CTypes, Black;
 
 const
   VERSION = '2.0.0';
@@ -143,8 +143,6 @@ type
 
     FDisplay: PDisplay;
     FAlarmActive: boolean;
-
-    FBacklight: boolean;
 
     FReminderCallback: TReminderCallback;
 
@@ -711,7 +709,6 @@ var
 begin
   Self.Color := clBlack;
   Self.Cursor := crNone;
-  FBacklight := True;
   FReminderCallback := nil;
 
   FMetOffice := TMetOffice.Create;
@@ -1093,12 +1090,16 @@ begin
 end;
 
 procedure TfrmClockMain.lbDisplayClick(Sender: TObject);
+var
+  Form: TfrmBlack;
 begin
   imgDisplay.Picture.Assign(imgOff.Picture);
   Application.ProcessMessages;
 
-  if FBacklight then BacklightOff else BacklightOn;
-  FBacklight := not FBacklight;
+  BacklightOff;
+  Form := TfrmBlack.Create(Self);
+  Form.ShowModal;
+  BacklightOn;
 
   imgDisplay.Picture.Assign(imgOn.Picture);
 end;

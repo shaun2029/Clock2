@@ -8,7 +8,7 @@ uses
   {$ENDIF}
   Interfaces, // this includes the LCL widgetset
   Forms, Main, FindThread, settings, alarm, ClockMain, ClockSettings, MetOffice,
-  Reminders, ReminderList, DatePicker;
+  Reminders, ReminderList, DatePicker, black;
 
 {$IFDEF WINDOWS}{$R picshow.rc}{$ENDIF}
 
@@ -21,6 +21,7 @@ begin
   Application.CreateForm(TfrmReminders, frmReminders);
   Application.CreateForm(TfrmReminderList, frmReminderList);
   Application.CreateForm(TfrmDatePicker, frmDatePicker);
+  Application.CreateForm(TfrmBlack, frmBlack);
   Application.Run;
 end.
 
