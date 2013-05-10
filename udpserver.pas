@@ -125,11 +125,12 @@ begin
                 Inc(PakNo);
               end;
             end;
-          end;
 
-          // minimal sleep
-          if Buffer = '' then
-            Sleep(10);
+            // Try and stop the server dying
+            Socket.CloseSocket;
+            Socket.Free;
+            Socket.Bind('0.0.0.0', '44559');
+          end;
         end;
       finally
         Socket.CloseSocket;
