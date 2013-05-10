@@ -29,6 +29,8 @@ type
     cbxPlayMusic: TCheckBox;
     cbxGetReminders: TCheckBox;
     cbxSilentAlarm: TCheckBox;
+    edtServerPort: TEdit;
+    edtServerAddress: TEdit;
     edtMeditationPath: TEdit;
     edtMusicPath: TEdit;
     edtHour: TSpinEdit;
@@ -43,6 +45,8 @@ type
     Label1: TLabel;
     Label10: TLabel;
     Label11: TLabel;
+    Label12: TLabel;
+    Label13: TLabel;
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;

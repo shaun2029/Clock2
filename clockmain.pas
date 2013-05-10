@@ -7,7 +7,8 @@ unit ClockMain;
 
 {$mode Delphi}
 
-//{$DEFINE PICSHOW}
+{$DEFINE PICSHOW}
+//{$DEFINE DEBUG}
 
 // Zipit does not supprt media keys
 {$IFNDEF CPUARM}
@@ -17,6 +18,7 @@ unit ClockMain;
 interface
 
 uses
+  {$IFDEF LCLGTK2}gtk2, gdk2, glib2,{$ENDIF}
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
   ExtCtrls, MetOffice, Alarm, ClockSettings, Reminders, ReminderList, LCLProc,
   Music, Sync, Process, MusicPlayer, PlaylistCreator, UDPCommandServer,
@@ -123,6 +125,7 @@ type
     FTimer: TAlarm;
     FSyncServer: TSyncServer;
     FSyncClient: TSyncClient;
+    FServerAddress, FServerPort: String;
     FAfterAlarmResumeMusic: boolean;
 
     Images: array [0..4] of TImage;
@@ -565,7 +568,7 @@ begin
   tmrMinute.Enabled := False;
 
   // Reminders
-  if tmrMinute.Tag >= 5 then
+  if tmrMinute.Tag >= 1 then
   begin
     tmrMinute.Tag := 0;
 
@@ -573,7 +576,7 @@ begin
       FSyncServer.RemindersFile(GetAppConfigFile(False))
     else if Assigned(FSyncClient) then
     begin
-      if FSyncClient.GetReminders(Rems) then
+      if FSyncClient.GetReminders(FServerAddress, FServerPort, Rems) then
       begin
         CurrentList := TStringList.Create;
 
@@ -708,7 +711,9 @@ var
   i: Integer;
 begin
   Self.Color := clBlack;
+  {$IFNDEF DEBUG}
   Self.Cursor := crNone;
+  {$ENDIF}
   FReminderCallback := nil;
 
   FMetOffice := TMetOffice.Create;
@@ -775,10 +780,6 @@ begin
   FTimer.OnAfterAlarm := AfterAlarm;
 
   FCurrentLocation := 0;
-
-{$IFDEF PICSHOW}
-  Self.BorderStyle := bsSingle;
-{$ENDIF}
 
   FMusicPlayer := nil;
   FSleepPlayer := nil;
@@ -899,7 +900,7 @@ begin
   FReminderAlarm.ResetAlarm;
   FTimer.ResetAlarm;
 
-  if Key = #27 then {$IFDEF PICSHOW} Self.Hide {$ENDIF}
+  if Key = #27 then {$IFDEF PICSHOW} Close {$ENDIF}
   else if Key = #13 then
   begin
     frmClockSettings.ShowModal;
@@ -1096,10 +1097,10 @@ begin
   imgDisplay.Picture.Assign(imgOff.Picture);
   Application.ProcessMessages;
 
-  BacklightOff;
+  {$IFNDEF DEBUG} BacklightOff; {$ENDIF}
   Form := TfrmBlack.Create(Self);
   Form.ShowModal;
-  BacklightOn;
+  {$IFNDEF DEBUG} BacklightOn; {$ENDIF}
 
   imgDisplay.Picture.Assign(imgOn.Picture);
 end;
@@ -1274,6 +1275,9 @@ begin
   begin
     SetMusicSource(FMusicSource);
   end;
+
+  FServerAddress := frmClockSettings.edtServerAddress.Text;
+  FServerPort := frmClockSettings.edtServerPort.Text;
 
   UpdateReminders;
 end;

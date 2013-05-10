@@ -1,5 +1,4 @@
 object frmClockMain: TfrmClockMain
-  Cursor = crNone
   Left = 284
   Height = 480
   Top = 215
