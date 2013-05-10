@@ -39,7 +39,7 @@ type
     destructor Destroy; override;
     procedure Disconnect;
     function Connect(const Address, Port: string): Boolean;
-    function RequestReminders(out Reminders: string): boolean;
+    function RequestReminders(Address, Port: string; out Reminders: string): boolean;
   end;
 
 implementation
@@ -69,7 +69,7 @@ begin
   Result := FSocket.LastError = 0;
 end;
 
-function TUDPClient.RequestReminders(out Reminders: string): boolean;
+function TUDPClient.RequestReminders(Address, Port: string; out Reminders: string): boolean;
 var
   Buffer: string;
   Data: TStringList;
@@ -83,8 +83,8 @@ begin
   SetLength(Packets, 0);
 
   FSocket.CloseSocket;
-  FSocket.EnableBroadcast(True);
-  FSocket.Connect('255.255.255.255', '44559');
+  FSocket.EnableBroadcast(Address = '255.255.255.255');
+  FSocket.Connect(Address, Port); // Default port 44559;
   FSocket.SendString('REQUEST REMINDERS');
 
   if FSocket.LastError = 0 then

@@ -5,6 +5,7 @@ unit black;
 interface
 
 uses
+  {$IFDEF LCLGTK2}gtk2, gdk2, glib2,{$ENDIF}
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs;
 
 type

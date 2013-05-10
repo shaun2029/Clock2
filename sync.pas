@@ -33,7 +33,7 @@ type
   private
     FClient: TUDPClient;
   public
-    function GetReminders(out Reminders: string): boolean;
+    function GetReminders(Address, Port: string; out Reminders: string): boolean;
 
     constructor Create;
     destructor Destroy; override;
@@ -43,9 +43,9 @@ implementation
 
 { TSyncClient }
 
-function TSyncClient.GetReminders(out Reminders: string): boolean;
+function TSyncClient.GetReminders(Address, Port: string; out Reminders: string): boolean;
 begin
-  Result := FClient.RequestReminders(Reminders);
+  Result := FClient.RequestReminders(Address, Port, Reminders);
 end;
 
 constructor TSyncClient.Create;
