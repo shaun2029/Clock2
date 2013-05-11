@@ -18,14 +18,13 @@ unit ClockMain;
 interface
 
 uses
-  {$IFDEF LCLGTK2}gtk2, gdk2, glib2,{$ENDIF}
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
   ExtCtrls, MetOffice, Alarm, ClockSettings, Reminders, ReminderList, LCLProc,
   Music, Sync, Process, MusicPlayer, PlaylistCreator, UDPCommandServer,
   X, Xlib, CTypes, Black;
 
 const
-  VERSION = '2.0.0';
+  VERSION = '2.0.1';
 
 type
   TReminderCallback = procedure of object;
