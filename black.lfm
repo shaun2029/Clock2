@@ -8,6 +8,7 @@ object frmBlack: TfrmBlack
   Caption = 'frmBlack'
   Color = clBlack
   OnClick = FormClick
+  Position = poDesktopCenter
   LCLVersion = '1.0.4.0'
   WindowState = wsMaximized
 end

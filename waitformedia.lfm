@@ -1,0 +1,38 @@
+object frmWaitForMedia: TfrmWaitForMedia
+  Left = 512
+  Height = 156
+  Top = 262
+  Width = 320
+  BorderStyle = bsSingle
+  Caption = 'Waiting For Media'
+  ClientHeight = 156
+  ClientWidth = 320
+  OnShow = FormShow
+  Position = poDesktopCenter
+  LCLVersion = '1.0.4.0'
+  object lbWaitForMedia: TLabel
+    Left = 16
+    Height = 96
+    Top = 16
+    Width = 288
+    AutoSize = False
+    Caption = 'Waiting for media to become avaliable.'
+    ParentColor = False
+    WordWrap = True
+  end
+  object pbarTimeout: TProgressBar
+    Left = 8
+    Height = 20
+    Top = 128
+    Width = 304
+    Smooth = True
+    Style = pbstMarquee
+    TabOrder = 0
+  end
+  object tmrWait: TTimer
+    Enabled = False
+    OnTimer = tmrWaitTimer
+    left = 132
+    top = 119
+  end
+end

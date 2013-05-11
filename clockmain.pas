@@ -21,7 +21,7 @@ uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
   ExtCtrls, MetOffice, Alarm, ClockSettings, Reminders, ReminderList, LCLProc,
   Music, Sync, Process, MusicPlayer, PlaylistCreator, UDPCommandServer,
-  X, Xlib, CTypes, Black;
+  X, Xlib, CTypes, Black, WaitForMedia;
 
 const
   VERSION = '2.0.1';
@@ -189,6 +189,7 @@ type
   public
     { public declarations }
     HTTPBuffer: string;
+    procedure WaitForMedia(Path: string);
 
   published
     property ReminderCallback: TReminderCallback write FReminderCallback;
@@ -231,6 +232,8 @@ begin
     else Player := nil;
   end;
 
+  WaitForMedia(Player.SearchPath);
+
   if Assigned(Player) then
   begin
     case FMusicState of
@@ -245,6 +248,20 @@ begin
     end;
 
     FMusicState := msPlaying;
+  end;
+end;
+
+procedure TfrmClockMain.WaitForMedia(Path: string);
+var
+  Timeout: TDateTime;
+  frmWait: TfrmWaitForMedia;
+begin
+  if (Path <> '') and not DirectoryExists(Path) then
+  begin
+    Timeout := EncodeTime(0,1,0,0);
+
+    frmWait := TfrmWaitForMedia.Create(Self, Path, Timeout);
+    frmWait.ShowModal;
   end;
 end;
 

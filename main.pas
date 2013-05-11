@@ -43,7 +43,6 @@ type
     procedure ShowClock;
     function ShowPicture: boolean;
     procedure Startup;
-    procedure WaitForMedia;
   public
     { public declarations }
   end; 
@@ -132,11 +131,11 @@ begin
 
   LoadSettings;
 
-  WaitForMedia;
-  Startup;
-
   frmClockMain := TfrmClockMain.Create(Self);
   frmClockMain.ReminderCallback := ReminderCallback;
+
+  frmClockMain.WaitForMedia(FSearchPath);
+  Startup;
 
   tmrEvent.Enabled := True;
   tmrShowClock.Enabled := True;
@@ -287,20 +286,6 @@ begin
     Str := List.Strings[r];
     List.Strings[r] := List.Strings[i];
     List.Strings[i] := Str;
-  end;
-end;
-
-procedure TfrmMain.WaitForMedia;
-var
-  Timeout: TDateTime;
-begin
-  if (FSearchPath <> '') and not DirectoryExists(FSearchPath) then
-  begin
-    Timeout := Now + EncodeTime(0,0,30,0);
-
-    repeat
-      Sleep(1000);
-    until (Now > Timeout) or DirectoryExists(FSearchPath);
   end;
 end;
 
