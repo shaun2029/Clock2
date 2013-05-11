@@ -18,6 +18,7 @@ type
     btnSelectMusic: TButton;
     btnSelectSleep: TButton;
     btnSelectMeditation: TButton;
+    btnPicturePath: TButton;
     cbxFri: TCheckBox;
     cbxMon: TCheckBox;
     cbxSat: TCheckBox;
@@ -29,6 +30,8 @@ type
     cbxPlayMusic: TCheckBox;
     cbxGetReminders: TCheckBox;
     cbxSilentAlarm: TCheckBox;
+    cbxRandomPictures: TCheckBox;
+    edtPicturePath: TEdit;
     edtServerPort: TEdit;
     edtServerAddress: TEdit;
     edtMeditationPath: TEdit;
@@ -47,6 +50,8 @@ type
     Label11: TLabel;
     Label12: TLabel;
     Label13: TLabel;
+    Label14: TLabel;
+    Label15: TLabel;
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
@@ -57,15 +62,18 @@ type
     Label9: TLabel;
     PageControl1: TPageControl;
     dlgSelectDirectoryDialog: TSelectDirectoryDialog;
+    seDelay: TSpinEdit;
     stxtTimer: TStaticText;
     TabSheet1: TTabSheet;
     TabSheet2: TTabSheet;
     TabSheet3: TTabSheet;
     TabSheet4: TTabSheet;
     TabSheet5: TTabSheet;
+    TabSheet6: TTabSheet;
     tmrSettings: TTimer;
     udTimer: TUpDown;
     XMLPropStorage1: TXMLPropStorage;
+    procedure btnPicturePathClick(Sender: TObject);
     procedure btnSelectMeditationClick(Sender: TObject);
     procedure btnSelectMusicClick(Sender: TObject);
     procedure btnSelectSleepClick(Sender: TObject);
@@ -131,6 +139,12 @@ procedure TfrmClockSettings.btnSelectMeditationClick(Sender: TObject);
 begin
   if dlgSelectDirectoryDialog.Execute then
      edtMeditationPath.Text := dlgSelectDirectoryDialog.Filename;
+end;
+
+procedure TfrmClockSettings.btnPicturePathClick(Sender: TObject);
+begin
+  if dlgSelectDirectoryDialog.Execute then
+     edtPicturePath.Text := dlgSelectDirectoryDialog.Filename;
 end;
 
 procedure TfrmClockSettings.btnSelectSleepClick(Sender: TObject);

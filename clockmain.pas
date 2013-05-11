@@ -125,6 +125,7 @@ type
     procedure tmrWeatherTimer(Sender: TObject);
     procedure tmrMinuteTimer(Sender: TObject);
   private
+    FClosing: boolean;
     { private declarations }
     FMPGPlayer: TMusicPlayer;
     FMetOffice: TMetOffice;
@@ -189,7 +190,9 @@ type
     { public declarations }
     HTTPBuffer: string;
 
+  published
     property ReminderCallback: TReminderCallback write FReminderCallback;
+    property Closing: boolean read FClosing;
   end;
 
 var
@@ -720,6 +723,7 @@ procedure TfrmClockMain.FormCreate(Sender: TObject);
 var
   i: Integer;
 begin
+  FClosing := False;
   FConfigFilename := GetAppConfigFile(False);
   FRemindersFilename := ChangeFileExt(GetAppConfigFile(False), '_reminders.cfg');
 
@@ -1029,9 +1033,8 @@ procedure TfrmClockMain.imgExitClick(Sender: TObject);
 begin
   imgExit.Picture.Assign(imgOff.Picture);
   Application.ProcessMessages;
-
+  FClosing := True;
   Close;
-  Halt;
 end;
 
 procedure TfrmClockMain.imgMusicClick(Sender: TObject);

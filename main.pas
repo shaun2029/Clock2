@@ -7,7 +7,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
-  ExtCtrls, StdCtrls, IniFiles, Process, simpleipc, FindPicsThread, Settings,
+  ExtCtrls, StdCtrls, IniFiles, Process, simpleipc, FindPicsThread,
   ClockMain, ClockSettings;
 
 type
@@ -19,9 +19,11 @@ type
     lblLoading: TLabel;
     tmrEvent: TTimer;
     tmrShowClock: TTimer;
+    procedure FormActivate(Sender: TObject);
     procedure FormClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
     procedure tmrEventTimer(Sender: TObject);
     procedure tmrShowClockTimer(Sender: TObject);
   private
@@ -30,7 +32,6 @@ type
     FLastEvent: TDateTime;
     FPictureIndex: integer;
     FPictureList: TStringList;
-    FState: integer;
     FSearchPath: string;
     FFindFiles: TFindPicsThread;
     FRandomPictures: boolean;
@@ -39,7 +40,6 @@ type
     procedure LoadSettings;
     procedure RandomiseList(var List: TStringList);
     procedure SaveSettings;
-    procedure Settings;
     procedure ShowClock;
     function ShowPicture: boolean;
     procedure Startup;
@@ -60,10 +60,7 @@ begin
   IniFile := TIniFile.Create(GetAppConfigFile(False));
 
   try
-    IniFile.WriteString('Settings', 'PicturePath', FSearchPath);
-    IniFile.WriteTime('Settings', 'Delay', FEventDelay);
     IniFile.WriteInteger('Settings', 'Position', FPictureIndex);
-    IniFile.WriteBool('Settings', 'Random', FRandomPictures);
     if Assigned(FPictureList) and (FPictureList.Count > 0) then
       FPictureList.SaveToFile(ChangeFileExt(GetAppConfigFile(False), '.pl'));
   finally
@@ -78,11 +75,11 @@ begin
   IniFile := TIniFile.Create(GetAppConfigFile(False));
 
   try
-    FSearchPath := IniFile.ReadString('Settings', 'PicturePath', '');
-    FRandomPictures := IniFile.ReadBool('Settings', 'Random', FRandomPictures);
+    FSearchPath := frmClockSettings.edtPicturePath.Text;
+    FRandomPictures := frmClockSettings.cbxRandomPictures.Checked;
 
-    FEventDelay := IniFile.ReadTime('Settings', 'Delay', FEventDelay);
-    if FEventDelay = 0 then FEventDelay := EncodeTime(0, 0, 10, 0);
+    if frmClockSettings.seDelay.Value < 1 then FEventDelay := EncodeTime(0, 0, 10, 0)
+    else FEventDelay := EncodeTime(0, 0, frmClockSettings.seDelay.Value, 0);
 
     FPictureIndex := IniFile.ReadInteger('Settings', 'Position', 0);
 
@@ -96,44 +93,8 @@ begin
   end;
 end;
 
-procedure TfrmMain.Settings;
-var
-  frmSettings: TfrmSettings;
-  h, m, s, ms: word;
-begin
-  tmrEvent.Enabled := False;
-
-  frmSettings := TfrmSettings.Create(Self);
-
-  frmSettings.edtPicturePath.Text := FSearchPath;
-  DecodeTime(FEventDelay, h, m, s, ms);
-  s := (m * 60) + s;
-  frmSettings.seDelay.Value := s mod 600;
-
-  Self.Visible := False;
-  frmSettings.ShowModal;
-  Self.Visible := True;
-  FSearchPath := frmSettings.edtPicturePath.Text;
-
-  m := frmSettings.seDelay.Value;
-  s := m mod 60;
-  m := m div 60;
-  FEventDelay := EncodeTime(0, m, s, 0);
-
-  frmSettings.Free;
-
-  tmrEvent.Enabled := True;
-end;
-
 procedure TfrmMain.Startup;
 begin
-  if FSearchPath <> 'off' then
-  begin
-    lblLoading.Visible := True;
-    FState := 1;
-  end
-  else FState := 0;
-
   if Assigned(FFindFiles) then
   begin
     if FSearchPath <> FFindFiles.SearchPath then
@@ -155,6 +116,7 @@ end;
 
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
+  FLastEvent := 0;
   FFindFiles := nil;
   FPictureList := nil;
 {$IFNDEF DEBUG}
@@ -166,10 +128,9 @@ begin
 
   FRandomPictures := True;
 
-  FState := 0;
+  frmClockSettings := TfrmClockSettings.Create(Self);
 
   LoadSettings;
-  if FSearchPath = '' then Settings;
 
   WaitForMedia;
   Startup;
@@ -177,10 +138,19 @@ begin
   frmClockMain := TfrmClockMain.Create(Self);
   frmClockMain.ReminderCallback := ReminderCallback;
 
-  frmClockSettings := TfrmClockSettings.Create(Self);
-
   tmrEvent.Enabled := True;
   tmrShowClock.Enabled := True;
+end;
+
+procedure TfrmMain.FormShow(Sender: TObject);
+begin
+  LoadSettings;
+  if FSearchPath = '' then
+  begin
+    frmClockSettings.ShowModal;
+    LoadSettings;
+  end;
+  Startup;
 end;
 
 procedure TfrmMain.ShowClock;
@@ -188,11 +158,12 @@ var
   TimerState: boolean;
 begin
   Self.Hide;
-  TimerState := tmrEvent.Enabled;
   tmrEvent.Enabled := False;
   frmClockMain.ShowModal;
-  tmrEvent.Enabled := TimerState;
-  Self.Show
+  tmrEvent.Enabled := True;
+
+  if frmClockMain.Closing then Close
+  else Self.Show
 end;
 
 procedure TfrmMain.FormClose(Sender: TObject; var CloseAction: TCloseAction);
@@ -212,24 +183,15 @@ begin
   frmClockSettings.Free;
 end;
 
+procedure TfrmMain.FormActivate(Sender: TObject);
+begin
+
+end;
+
 procedure TfrmMain.FormClick(Sender: TObject);
 begin
-  if (Mouse.CursorPos.x > Screen.Width * 0.8)
-    and (Mouse.CursorPos.Y < Screen.Height * 0.2) then
-  begin
-    Settings;
-    Mouse.CursorPos := Point(Screen.Width, Screen.Height);
-  end
-  else if (Mouse.CursorPos.x > Screen.Width * 0.2) then
-  begin
-    ShowClock;
-    Mouse.CursorPos := Point(Screen.Width, Screen.Height);
-  end
-  else
-  begin
-    Close;
-    Exit;
-  end;
+  ShowClock;
+  Mouse.CursorPos := Point(Screen.Width, Screen.Height);
 end;
 
 function TfrmMain.ShowPicture: boolean;
@@ -263,47 +225,38 @@ begin
   tmrEvent.Enabled := False;
   tmrEvent.Interval := 500;
 
-  case FState of
-    1:
+  if FLastEvent + FEventDelay < Now then
+  begin
+    if Assigned(FFindFiles) then
     begin
-      if FLastEvent + FEventDelay < Now then
+      if FFindFiles.Complete then
       begin
-        if Assigned(FFindFiles) then
-        begin
-          if FFindFiles.Complete then
-          begin
-            if not Assigned(FPictureList) then
-              FPictureList := TStringList.Create;
+        if not Assigned(FPictureList) then
+          FPictureList := TStringList.Create;
 
-            FPictureList.Text := FFindFiles.FileList.Text;
-            lblLoading.Visible := False;
-            if FRandomPictures then RandomiseList(FPictureList);
+        FPictureList.Text := FFindFiles.FileList.Text;
+        lblLoading.Visible := False;
+        if FRandomPictures then RandomiseList(FPictureList);
 
-            FFindFiles.Terminate;
-            FFindFiles.WaitFor;
-            FreeAndNil(FFindFiles);
-          end;
-        end;
-
-        if Assigned(FPictureList) then
-        begin
-          if not imgDisplay.Visible then
-            imgDisplay.Visible := True;
-
-          if ShowPicture then
-            lblLoading.Visible := False;
-
-          FLastEvent := Now;
-        end;
+        FFindFiles.Terminate;
+        FFindFiles.WaitFor;
+        FreeAndNil(FFindFiles);
       end;
     end;
-    else
-      if imgDisplay.Visible then
-        imgDisplay.Visible := False;
+
+    if Assigned(FPictureList) then
+    begin
+      if not imgDisplay.Visible then
+        imgDisplay.Visible := True;
+
+      if ShowPicture then
+        lblLoading.Visible := False;
+
+      FLastEvent := Now;
+    end;
   end;
 
-  if FState > 1 then Close
-  else tmrEvent.Enabled := True;
+  tmrEvent.Enabled := True;
 end;
 
 procedure TfrmMain.tmrShowClockTimer(Sender: TObject);
@@ -341,13 +294,13 @@ procedure TfrmMain.WaitForMedia;
 var
   Timeout: TDateTime;
 begin
-  if not DirectoryExists(FSearchPath) then
+  if (FSearchPath <> '') and not DirectoryExists(FSearchPath) then
   begin
     Timeout := Now + EncodeTime(0,0,30,0);
 
     repeat
       Sleep(1000);
-    until (Timeout > Now) or DirectoryExists(FSearchPath);
+    until (Now > Timeout) or DirectoryExists(FSearchPath);
   end;
 end;
 

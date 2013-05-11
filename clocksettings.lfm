@@ -12,18 +12,75 @@ object frmClockSettings: TfrmClockSettings
   OnKeyDown = FormKeyDown
   OnKeyPress = FormKeyPress
   Position = poMainFormCenter
-  SessionProperties = 'cbxEnableReminders.Checked;cbxFri.Checked;cbxGetReminders.Checked;cbxMon.Checked;cbxPlayMusic.Checked;cbxSat.Checked;cbxSilentAlarm.Checked;cbxSun.Checked;cbxThu.Checked;cbxTue.Checked;cbxWed.Checked;edtHour.Value;edtLocation1.Text;edtLocation2.Text;edtLocation3.Text;edtLocation.Text;edtMeditationPath.Text;edtMinute.Value;edtMusicPath.Text;edtRemHour.Value;edtRemMinute.Value;edtSleepPath.Text;edtServerAddress.Text;edtServerPort.Text'
+  SessionProperties = 'cbxEnableReminders.Checked;cbxFri.Checked;cbxGetReminders.Checked;cbxMon.Checked;cbxPlayMusic.Checked;cbxSat.Checked;cbxSilentAlarm.Checked;cbxSun.Checked;cbxThu.Checked;cbxTue.Checked;cbxWed.Checked;edtHour.Value;edtLocation1.Text;edtLocation2.Text;edtLocation3.Text;edtLocation.Text;edtMeditationPath.Text;edtMinute.Value;edtMusicPath.Text;edtPicturePath.Text;edtRemHour.Value;edtRemMinute.Value;edtServerAddress.Text;edtServerPort.Text;edtSleepPath.Text;seDelay.Value;cbxRandomPictures.Checked'
   LCLVersion = '1.0.4.0'
   object PageControl1: TPageControl
     Left = 8
     Height = 216
     Top = 8
     Width = 416
-    ActivePage = TabSheet2
+    ActivePage = TabSheet6
     ParentFont = False
     TabIndex = 0
     TabOrder = 0
     Options = [nboKeyboardTabSwitch]
+    object TabSheet6: TTabSheet
+      Caption = 'Pictures'
+      ClientHeight = 185
+      ClientWidth = 412
+      object btnPicturePath: TButton
+        Left = 358
+        Height = 25
+        Top = 27
+        Width = 40
+        Caption = '..'
+        OnClick = btnPicturePathClick
+        TabOrder = 0
+      end
+      object edtPicturePath: TEdit
+        Left = 110
+        Height = 27
+        Top = 27
+        Width = 240
+        TabOrder = 1
+      end
+      object Label14: TLabel
+        Left = 14
+        Height = 18
+        Top = 27
+        Width = 87
+        Caption = 'Picture Path:'
+        ParentColor = False
+      end
+      object Label15: TLabel
+        Left = 46
+        Height = 18
+        Top = 67
+        Width = 42
+        Caption = 'Delay:'
+        ParentColor = False
+      end
+      object seDelay: TSpinEdit
+        Left = 110
+        Height = 27
+        Top = 67
+        Width = 50
+        MaxValue = 600
+        MinValue = 1
+        TabOrder = 2
+        Value = 10
+      end
+      object cbxRandomPictures: TCheckBox
+        Left = 14
+        Height = 24
+        Top = 107
+        Width = 140
+        Caption = 'Random Pictures'
+        Checked = True
+        State = cbChecked
+        TabOrder = 3
+      end
+    end
     object TabSheet2: TTabSheet
       Caption = 'Timer'
       ClientHeight = 185
@@ -268,7 +325,7 @@ object frmClockSettings: TfrmClockSettings
         Text = '/home/user/Music'
       end
       object Label9: TLabel
-        Left = 6
+        Left = 14
         Height = 26
         Top = 27
         Width = 96
@@ -286,7 +343,7 @@ object frmClockSettings: TfrmClockSettings
         Text = '/home/user/Sleep'
       end
       object Label10: TLabel
-        Left = 6
+        Left = 14
         Height = 24
         Top = 67
         Width = 96
@@ -312,7 +369,7 @@ object frmClockSettings: TfrmClockSettings
         Text = '/home/user/Meditation'
       end
       object Label11: TLabel
-        Left = 6
+        Left = 14
         Height = 40
         Top = 107
         Width = 96
