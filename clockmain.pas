@@ -137,7 +137,7 @@ type
     FServerAddress, FServerPort: String;
     FAfterAlarmResumeMusic: boolean;
 
-    FConfigFilename, FRemindersFilename: string;
+    FConfigFilename: string;
 
     Images: array [0..4] of TImage;
     ImageURLs: array [0..4] of string;
@@ -603,7 +603,7 @@ begin
     tmrMinute.Tag := 0;
 
     if Assigned(FSyncServer) then
-      FSyncServer.RemindersFile(FremindersFilename)
+      FSyncServer.RemindersFile(frmReminders.Filename)
     else if Assigned(FSyncClient) then
     begin
       if FSyncClient.GetReminders(FServerAddress, FServerPort, Rems) then
@@ -611,13 +611,13 @@ begin
         CurrentList := TStringList.Create;
 
         try
-          if FileExists(FremindersFilename) then
-            CurrentList.LoadFromFile(FremindersFilename);
+          if FileExists(frmReminders.Filename) then
+            CurrentList.LoadFromFile(frmReminders.Filename);
 
           if CurrentList.Text <> Rems then
           begin
             CurrentList.Text := Rems;
-            CurrentList.SaveToFile(FremindersFilename);
+            CurrentList.SaveToFile(frmReminders.Filename);
             frmReminders.ReadReminders;
           end;
         except
@@ -742,7 +742,6 @@ var
 begin
   FClosing := False;
   FConfigFilename := GetAppConfigFile(False);
-  FRemindersFilename := ChangeFileExt(GetAppConfigFile(False), '_reminders.cfg');
 
   Self.Color := clBlack;
   {$IFNDEF DEBUG}
@@ -1328,7 +1327,7 @@ begin
     if not Assigned(FSyncServer) then
     begin
       FSyncServer := TSyncServer.Create;
-      FSyncServer.RemindersFile(FremindersFilename);
+      FSyncServer.RemindersFile(frmReminders.Filename);
     end;
   end;
 

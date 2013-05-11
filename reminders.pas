@@ -37,12 +37,12 @@ type
     rgrpKind: TRadioGroup;
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
-    procedure FormDestroy(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: char);
     procedure FormShow(Sender: TObject);
   private
     FEditing: boolean;
     FReminders: TReminders;
+    FFilename: string;
 
     { private declarations }
   public
@@ -64,6 +64,7 @@ type
     procedure RefreshReminders;
   published
     property Editing: boolean read FEditing write FEditing;
+    property Filename: string read FFilename;
   end;
 
 var
@@ -82,13 +83,9 @@ end;
 
 procedure TfrmReminders.FormCreate(Sender: TObject);
 begin
+  FFilename := ChangeFileExt(GetAppConfigFile(False), '_reminders.cfg');
   ReadReminders;
   FEditing := False;
-end;
-
-procedure TfrmReminders.FormDestroy(Sender: TObject);
-begin
-  WriteReminders;
 end;
 
 procedure TfrmReminders.FormKeyPress(Sender: TObject; var Key: char);
@@ -124,7 +121,7 @@ var
 begin
   SetLength(FReminders, 0);
 
-  Ini := TIniFile.Create(GetAppConfigFile(False));
+  Ini := TIniFile.Create(FFilename);
 
   try
     i := 1;
@@ -163,7 +160,7 @@ var
   i: integer;
   Section: string;
 begin
-  Ini := TIniFile.Create(GetAppConfigFile(False));
+  Ini := TIniFile.Create(FFilename);
 
   try
     for i := 1 to Length(FReminders) do

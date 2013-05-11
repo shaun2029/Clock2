@@ -10,11 +10,10 @@ object frmReminders: TfrmReminders
   KeyPreview = True
   OnClose = FormClose
   OnCreate = FormCreate
-  OnDestroy = FormDestroy
   OnKeyPress = FormKeyPress
   OnShow = FormShow
   Position = poMainFormCenter
-  LCLVersion = '0.9.30.4'
+  LCLVersion = '1.0.4.0'
   object mmoDetail: TMemo
     Left = 8
     Height = 88
@@ -117,6 +116,8 @@ object frmReminders: TfrmReminders
     ChildSizing.ShrinkVertical = crsScaleChilds
     ChildSizing.Layout = cclLeftToRightThenTopToBottom
     ChildSizing.ControlsPerLine = 4
+    ClientHeight = 30
+    ClientWidth = 300
     Columns = 4
     Items.Strings = (
       'One days'
