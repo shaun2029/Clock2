@@ -127,6 +127,8 @@ type
     FServerAddress, FServerPort: String;
     FAfterAlarmResumeMusic: boolean;
 
+    FConfigFilename, FRemindersFilename: string;
+
     Images: array [0..4] of TImage;
     ImageURLs: array [0..4] of string;
     Labels: array [0..9] of TLabel;
@@ -290,17 +292,17 @@ begin
       msrcSleep:
         begin
           FSleepPlayer := TPlayer.Create(FMPGPlayer,
-            ChangeFileExt(GetAppConfigFile(False), '_sleep.cfg'), frmClockSettings.edtSleepPath.Text);
+            ChangeFileExt(FConfigFilename, '_sleep.cfg'), frmClockSettings.edtSleepPath.Text);
         end;
       msrcMusic:
         begin
           FMusicPlayer := TPlayer.Create(FMPGPlayer,
-            ChangeFileExt(GetAppConfigFile(False), '_music.cfg'), frmClockSettings.edtMusicPath.Text);
+            ChangeFileExt(FConfigFilename, '_music.cfg'), frmClockSettings.edtMusicPath.Text);
         end;
       msrcMeditation:
         begin
           FMeditationPlayer := TPlayer.Create(FMPGPlayer,
-            ChangeFileExt(GetAppConfigFile(False), '_meditation.cfg'), frmClockSettings.edtMeditationPath.Text);
+            ChangeFileExt(FConfigFilename, '_meditation.cfg'), frmClockSettings.edtMeditationPath.Text);
         end;
     end;
 
@@ -572,7 +574,7 @@ begin
     tmrMinute.Tag := 0;
 
     if Assigned(FSyncServer) then
-      FSyncServer.RemindersFile(GetAppConfigFile(False))
+      FSyncServer.RemindersFile(FremindersFilename)
     else if Assigned(FSyncClient) then
     begin
       if FSyncClient.GetReminders(FServerAddress, FServerPort, Rems) then
@@ -580,13 +582,13 @@ begin
         CurrentList := TStringList.Create;
 
         try
-          if FileExists(GetAppConfigFile(False)) then
-            CurrentList.LoadFromFile(GetAppConfigFile(False));
+          if FileExists(FremindersFilename) then
+            CurrentList.LoadFromFile(FremindersFilename);
 
           if CurrentList.Text <> Rems then
           begin
             CurrentList.Text := Rems;
-            CurrentList.SaveToFile(GetAppConfigFile(False));
+            CurrentList.SaveToFile(FremindersFilename);
             frmReminders.ReadReminders;
           end;
         except
@@ -709,6 +711,9 @@ procedure TfrmClockMain.FormCreate(Sender: TObject);
 var
   i: Integer;
 begin
+  FConfigFilename := GetAppConfigFile(False);
+  FRemindersFilename := ChangeFileExt(GetAppConfigFile(False), '_reminders.cfg');
+
   Self.Color := clBlack;
   {$IFNDEF DEBUG}
   Self.Cursor := crNone;
@@ -758,7 +763,7 @@ begin
     WindLabels[i].Caption := '';
 
   FMPGPlayer := TMusicPlayer.Create;
-  FMPGPlayer.Equalizer := ChangeFileExt(GetAppConfigFile(False), '_eq.cfg');
+  FMPGPlayer.Equalizer := ChangeFileExt(FConfigFilename, '_eq.cfg');
 
 
   FAlarm := TAlarm.Create(FMPGPlayer);
@@ -907,7 +912,7 @@ begin
   end
   else if (Key = 'l') or (Key='L') then
   begin
-    frmPlaylist.LoadSongs(ChangeFileExt(GetAppConfigFile(False), '_music.cfg'),
+    frmPlaylist.LoadSongs(ChangeFileExt(FConfigFilename, '_music.cfg'),
       frmClockSettings.edtMusicPath.Text);
 
     if frmPlaylist.ShowModal = mrOk then
@@ -1249,7 +1254,7 @@ begin
     if not Assigned(FSyncServer) then
     begin
       FSyncServer := TSyncServer.Create;
-      FSyncServer.RemindersFile(GetAppConfigFile(False));
+      FSyncServer.RemindersFile(FremindersFilename);
     end;
   end;
 
