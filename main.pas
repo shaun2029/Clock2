@@ -1,4 +1,4 @@
-unit Main;
+unit main;
 
 {$mode delphi}
 //{$DEFINE DEBUG}
@@ -17,27 +17,25 @@ type
   TfrmMain = class(TForm)
     imgDisplay: TImage;
     lblLoading: TLabel;
-    tmrShowClock: TTimer;
     tmrEvent: TTimer;
+    tmrShowClock: TTimer;
     procedure FormClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
-    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure tmrEventTimer(Sender: TObject);
     procedure tmrShowClockTimer(Sender: TObject);
   private
     { private declarations }
-    EventDelay: TDateTime;
-    LastEvent: TDateTime;
-    PictureIndex: integer;
-    PictureList: TStringList;
-    State: integer;
-    SearchPath: string;
-    FindFiles: TFindPicsThread;
-    RandomPictures: boolean;
+    FEventDelay: TDateTime;
+    FLastEvent: TDateTime;
+    FPictureIndex: integer;
+    FPictureList: TStringList;
+    FState: integer;
+    FSearchPath: string;
+    FFindFiles: TFindPicsThread;
+    FRandomPictures: boolean;
 
     procedure ReminderCallback;
-    procedure ChangeState;
     procedure LoadSettings;
     procedure RandomiseList(var List: TStringList);
     procedure SaveSettings;
@@ -45,6 +43,7 @@ type
     procedure ShowClock;
     function ShowPicture: boolean;
     procedure Startup;
+    procedure WaitForMedia;
   public
     { public declarations }
   end; 
@@ -61,12 +60,12 @@ begin
   IniFile := TIniFile.Create(GetAppConfigFile(False));
 
   try
-    IniFile.WriteString('Settings', 'PicturePath', SearchPath);
-    IniFile.WriteTime('Settings', 'Delay', EventDelay);
-    IniFile.WriteInteger('Settings', 'Position', PictureIndex);
-    IniFile.WriteBool('Settings', 'Random', RandomPictures);
-    if Assigned(PictureList) and (PictureList.Count > 0) then
-      PictureList.SaveToFile(ChangeFileExt(GetAppConfigFile(False), '.pl'));
+    IniFile.WriteString('Settings', 'PicturePath', FSearchPath);
+    IniFile.WriteTime('Settings', 'Delay', FEventDelay);
+    IniFile.WriteInteger('Settings', 'Position', FPictureIndex);
+    IniFile.WriteBool('Settings', 'Random', FRandomPictures);
+    if Assigned(FPictureList) and (FPictureList.Count > 0) then
+      FPictureList.SaveToFile(ChangeFileExt(GetAppConfigFile(False), '.pl'));
   finally
     IniFile.Free;
   end;
@@ -79,18 +78,18 @@ begin
   IniFile := TIniFile.Create(GetAppConfigFile(False));
 
   try
-    SearchPath := IniFile.ReadString('Settings', 'PicturePath', '');
-    RandomPictures := IniFile.ReadBool('Settings', 'Random', RandomPictures);
+    FSearchPath := IniFile.ReadString('Settings', 'PicturePath', '');
+    FRandomPictures := IniFile.ReadBool('Settings', 'Random', FRandomPictures);
 
-    EventDelay := IniFile.ReadTime('Settings', 'Delay', EventDelay);
-    if EventDelay = 0 then EventDelay := EncodeTime(0, 0, 10, 0);
+    FEventDelay := IniFile.ReadTime('Settings', 'Delay', FEventDelay);
+    if FEventDelay = 0 then FEventDelay := EncodeTime(0, 0, 10, 0);
 
-    PictureIndex := IniFile.ReadInteger('Settings', 'Position', 0);
+    FPictureIndex := IniFile.ReadInteger('Settings', 'Position', 0);
 
     if FileExists(ChangeFileExt(GetAppConfigFile(False), '.pl')) then
     begin
-      if not Assigned(PictureList) then PictureList := TStringList.Create;
-      PictureList.LoadFromFile(ChangeFileExt(GetAppConfigFile(False), '.pl'));
+      if not Assigned(FPictureList) then FPictureList := TStringList.Create;
+      FPictureList.LoadFromFile(ChangeFileExt(GetAppConfigFile(False), '.pl'));
     end;
   finally
     IniFile.Free;
@@ -106,20 +105,20 @@ begin
 
   frmSettings := TfrmSettings.Create(Self);
 
-  frmSettings.edtPicturePath.Text := SearchPath;
-  DecodeTime(EventDelay, h, m, s, ms);
+  frmSettings.edtPicturePath.Text := FSearchPath;
+  DecodeTime(FEventDelay, h, m, s, ms);
   s := (m * 60) + s;
   frmSettings.seDelay.Value := s mod 600;
 
   Self.Visible := False;
   frmSettings.ShowModal;
   Self.Visible := True;
-  SearchPath := frmSettings.edtPicturePath.Text;
+  FSearchPath := frmSettings.edtPicturePath.Text;
 
   m := frmSettings.seDelay.Value;
   s := m mod 60;
   m := m div 60;
-  EventDelay := EncodeTime(0, m, s, 0);
+  FEventDelay := EncodeTime(0, m, s, 0);
 
   frmSettings.Free;
 
@@ -128,36 +127,36 @@ end;
 
 procedure TfrmMain.Startup;
 begin
-  if SearchPath <> 'off' then
+  if FSearchPath <> 'off' then
   begin
     lblLoading.Visible := True;
-    State := 1;
+    FState := 1;
   end
-  else State := 0;
+  else FState := 0;
 
-  if Assigned(FindFiles) then
+  if Assigned(FFindFiles) then
   begin
-    if SearchPath <> FindFiles.SearchPath then
+    if FSearchPath <> FFindFiles.SearchPath then
     begin
-      FindFiles.Terminate;
-      FindFiles.WaitFor;
-      FindFiles.Free;
+      FFindFiles.Terminate;
+      FFindFiles.WaitFor;
+      FFindFiles.Free;
 
-      FindFiles := TFindPicsThread.Create(SearchPath);
-      FindFiles.Resume;
+      FFindFiles := TFindPicsThread.Create(FSearchPath);
+      FFindFiles.Resume;
     end;
   end
   else
   begin
-    FindFiles := TFindPicsThread.Create(SearchPath);
-    FindFiles.Resume;
+    FFindFiles := TFindPicsThread.Create(FSearchPath);
+    FFindFiles.Resume;
   end;
 end;
 
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
-  FindFiles := nil;
-  PictureList := nil;
+  FFindFiles := nil;
+  FPictureList := nil;
 {$IFNDEF DEBUG}
   Self.Width := Screen.Width;
   Self.Height := Screen.Height;
@@ -165,18 +164,14 @@ begin
 {$ENDIF}
   Mouse.CursorPos := Point(Screen.Width, Screen.Height);
 
-  RandomPictures := True;
+  FRandomPictures := True;
 
-  State := 0;
+  FState := 0;
 
   LoadSettings;
-  if SearchPath = '' then Settings;
+  if FSearchPath = '' then Settings;
 
-  if SearchPath = '' then
-  begin
-    Halt;
-  end;
-
+  WaitForMedia;
   Startup;
 
   frmClockMain := TfrmClockMain.Create(Self);
@@ -200,30 +195,17 @@ begin
   Self.Show
 end;
 
-procedure TfrmMain.FormKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-var
-  TimerState: boolean;
-begin
-  if Key <> 67 then
-    ChangeState
-  else
-  begin
-    ShowClock;
-  end;
-end;
-
 procedure TfrmMain.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
   SaveSettings;
 
-  if Assigned(PictureList) then FreeAndNil(PictureList);
+  if Assigned(FPictureList) then FreeAndNil(FPictureList);
 
-  if Assigned(FindFiles) then
+  if Assigned(FFindFiles) then
   begin
-    FindFiles.Terminate;
-    FindFiles.WaitFor;
-    FindFiles.Free;
+    FFindFiles.Terminate;
+    FFindFiles.WaitFor;
+    FFindFiles.Free;
   end;
 
   frmClockMain.Free;
@@ -243,13 +225,11 @@ begin
     ShowClock;
     Mouse.CursorPos := Point(Screen.Width, Screen.Height);
   end
-  else if SearchPath = 'off' then
+  else
   begin
-    // If searchpath is off then skip change state
     Close;
     Exit;
-  end
-  else ChangeState;
+  end;
 end;
 
 function TfrmMain.ShowPicture: boolean;
@@ -258,12 +238,12 @@ var
 begin
   Result := False;
 
-  if PictureIndex < 0 then PictureIndex := PictureList.Count -1;
-  if PictureIndex >= PictureList.Count then PictureIndex := 0;
+  if FPictureIndex < 0 then FPictureIndex := FPictureList.Count -1;
+  if FPictureIndex >= FPictureList.Count then FPictureIndex := 0;
 
   try
-    if FileExists(PictureList.Strings[PictureIndex]) then
-      imgDisplay.Picture.LoadFromFile(PictureList.Strings[PictureIndex]);
+    if FileExists(FPictureList.Strings[FPictureIndex]) then
+      imgDisplay.Picture.LoadFromFile(FPictureList.Strings[FPictureIndex]);
 
     Result := True;
   except
@@ -272,9 +252,9 @@ begin
     end;
   end;
 
-  Inc(PictureIndex , 1);
+  Inc(FPictureIndex , 1);
 
-  if PictureIndex mod 20 = 0 then
+  if FPictureIndex mod 20 = 0 then
     SaveSettings;
 end;
 
@@ -283,29 +263,29 @@ begin
   tmrEvent.Enabled := False;
   tmrEvent.Interval := 500;
 
-  case State of
+  case FState of
     1:
     begin
-      if LastEvent + EventDelay < Now then
+      if FLastEvent + FEventDelay < Now then
       begin
-        if Assigned(FindFiles) then
+        if Assigned(FFindFiles) then
         begin
-          if FindFiles.Complete then
+          if FFindFiles.Complete then
           begin
-            if not Assigned(PictureList) then
-              PictureList := TStringList.Create;
+            if not Assigned(FPictureList) then
+              FPictureList := TStringList.Create;
 
-            PictureList.Text := FindFiles.FileList.Text;
+            FPictureList.Text := FFindFiles.FileList.Text;
             lblLoading.Visible := False;
-            if RandomPictures then RandomiseList(PictureList);
+            if FRandomPictures then RandomiseList(FPictureList);
 
-            FindFiles.Terminate;
-            FindFiles.WaitFor;
-            FreeAndNil(FindFiles);
+            FFindFiles.Terminate;
+            FFindFiles.WaitFor;
+            FreeAndNil(FFindFiles);
           end;
         end;
 
-        if Assigned(PictureList) then
+        if Assigned(FPictureList) then
         begin
           if not imgDisplay.Visible then
             imgDisplay.Visible := True;
@@ -313,7 +293,7 @@ begin
           if ShowPicture then
             lblLoading.Visible := False;
 
-          LastEvent := Now;
+          FLastEvent := Now;
         end;
       end;
     end;
@@ -322,8 +302,7 @@ begin
         imgDisplay.Visible := False;
   end;
 
-  if State > 1 then
-    Close
+  if FState > 1 then Close
   else tmrEvent.Enabled := True;
 end;
 
@@ -342,30 +321,6 @@ begin
   end;
 end;
 
-procedure TfrmMain.ChangeState;
-begin
-  tmrEvent.Enabled := False;
-
-  // Blank path, skip showing images
-  if SearchPath = '/tmp' then Inc(State, 2)
-  else Inc(State);
-
-  case State of
-    1:
-    begin
-      lblLoading.Visible := True;
-    end;
-    else
-    begin
-      lblLoading.Visible := False;
-    end;
-  end;
-
-  Mouse.CursorPos := Point(Screen.Width, Screen.Height);
-
-  tmrEvent.Enabled := True;
-end;
-
 procedure TfrmMain.RandomiseList(var List: TStringList);
 var
   i, r: integer;
@@ -382,6 +337,19 @@ begin
   end;
 end;
 
+procedure TfrmMain.WaitForMedia;
+var
+  Timeout: TDateTime;
+begin
+  if not DirectoryExists(FSearchPath) then
+  begin
+    Timeout := Now + EncodeTime(0,0,30,0);
+
+    repeat
+      Sleep(1000);
+    until (Timeout > Now) or DirectoryExists(FSearchPath);
+  end;
+end;
 
 initialization
   {$I main.lrs}
