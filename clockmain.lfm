@@ -21,7 +21,7 @@ object frmClockMain: TfrmClockMain
   LCLVersion = '1.0.4.0'
   object imgDisplay: TImage
     Cursor = crNone
-    Left = 640
+    Left = 646
     Height = 88
     Top = 376
     Width = 136
@@ -7573,7 +7573,7 @@ object frmClockMain: TfrmClockMain
   end
   object lbDisplay: TLabel
     Cursor = crNone
-    Left = 664
+    Left = 670
     Height = 56
     Top = 395
     Width = 96
@@ -9828,7 +9828,7 @@ object frmClockMain: TfrmClockMain
   end
   object imgReminders: TImage
     Cursor = crNone
-    Left = 22
+    Left = 334
     Height = 88
     Top = 376
     Width = 144
@@ -10699,7 +10699,7 @@ object frmClockMain: TfrmClockMain
   end
   object lbReminders: TLabel
     Cursor = crNone
-    Left = 38
+    Left = 350
     Height = 26
     Top = 408
     Width = 114
@@ -10714,7 +10714,7 @@ object frmClockMain: TfrmClockMain
   end
   object imgWeather: TImage
     Cursor = crNone
-    Left = 178
+    Left = 490
     Height = 88
     Top = 376
     Width = 144
@@ -11585,7 +11585,7 @@ object frmClockMain: TfrmClockMain
   end
   object lbWeather: TLabel
     Cursor = crNone
-    Left = 198
+    Left = 510
     Height = 50
     Top = 395
     Width = 99
@@ -11602,9 +11602,9 @@ object frmClockMain: TfrmClockMain
   end
   object imgUpdateMusic: TImage
     Cursor = crNone
-    Left = 332
+    Left = 22
     Height = 88
-    Top = 376
+    Top = 377
     Width = 144
     OnClick = imgUpdateMusicClick
     Picture.Data = {
@@ -12473,7 +12473,7 @@ object frmClockMain: TfrmClockMain
   end
   object UpdateMusic: TLabel
     Cursor = crNone
-    Left = 364
+    Left = 54
     Height = 50
     Top = 395
     Width = 88
@@ -12490,7 +12490,7 @@ object frmClockMain: TfrmClockMain
   end
   object imgSettings: TImage
     Cursor = crNone
-    Left = 486
+    Left = 178
     Height = 88
     Top = 376
     Width = 144
@@ -13361,7 +13361,7 @@ object frmClockMain: TfrmClockMain
   end
   object lbSettings: TLabel
     Cursor = crNone
-    Left = 518
+    Left = 210
     Height = 26
     Top = 408
     Width = 86
@@ -13376,7 +13376,7 @@ object frmClockMain: TfrmClockMain
   end
   object imgExit: TImage
     Cursor = crNone
-    Left = 640
+    Left = 646
     Height = 88
     Top = 8
     Width = 136
@@ -14247,7 +14247,7 @@ object frmClockMain: TfrmClockMain
   end
   object lbExit: TLabel
     Cursor = crNone
-    Left = 688
+    Left = 694
     Height = 26
     Top = 40
     Width = 40
