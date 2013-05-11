@@ -185,6 +185,7 @@ begin
   frmClockSettings := TfrmClockSettings.Create(Self);
 
   tmrEvent.Enabled := True;
+  tmrShowClock.Enabled := True;
 end;
 
 procedure TfrmMain.ShowClock;
