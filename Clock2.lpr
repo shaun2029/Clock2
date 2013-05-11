@@ -7,7 +7,8 @@ uses
   cthreads,
   {$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, Main, FindThread, settings, alarm, ClockMain, ClockSettings, MetOffice,
+  Forms,
+main, FindThread, alarm, ClockMain, ClockSettings, MetOffice,
   Reminders, ReminderList, DatePicker, black, FindPicsThread, udpserver, sync,
   udpclient, music, udpcommandserver, MusicPlayer;
 
@@ -18,7 +19,6 @@ uses
 begin
   Application.Initialize;
   Application.CreateForm(TfrmMain, frmMain);
-  Application.CreateForm(TfrmSettings, frmSettings);
   Application.CreateForm(TfrmReminders, frmReminders);
   Application.CreateForm(TfrmReminderList, frmReminderList);
   Application.CreateForm(TfrmDatePicker, frmDatePicker);
