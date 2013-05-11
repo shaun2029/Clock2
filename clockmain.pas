@@ -37,6 +37,7 @@ type
 
   TfrmClockMain = class(TForm)
     Image1: TImage;
+    imgExit: TImage;
     imgOn: TImage;
     imgOff: TImage;
     imgDisplay: TImage;
@@ -54,6 +55,8 @@ type
     imgMeditation: TImage;
     ImgSleep: TImage;
     imgPictures: TImage;
+    imgUpdateMusic: TImage;
+    imgSettings: TImage;
     Label1: TLabel;
     Label10: TLabel;
     Label11: TLabel;
@@ -66,6 +69,7 @@ type
     Label18: TLabel;
     Label19: TLabel;
     Label20: TLabel;
+    lbExit: TLabel;
     lbMusic: TLabel;
     Label22: TLabel;
     lbPlay: TLabel;
@@ -88,6 +92,8 @@ type
     Label9: TLabel;
     labSong: TLabel;
     lblTime: TLabel;
+    UpdateMusic: TLabel;
+    lbSettings: TLabel;
     mmoHTML: TStaticText;
     tmrMinute: TTimer;
     tmrWeather: TTimer;
@@ -99,11 +105,13 @@ type
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormKeyPress(Sender: TObject; var Key: char);
     procedure FormShow(Sender: TObject);
+    procedure imgExitClick(Sender: TObject);
     procedure imgMeditationClick(Sender: TObject);
     procedure imgMusicClick(Sender: TObject);
     procedure imgRemindersClick(Sender: TObject);
     procedure imgVolDownClick(Sender: TObject);
     procedure imgVolUpClick(Sender: TObject);
+    procedure imgUpdateMusicClick(Sender: TObject);
     procedure imgWeatherClick(Sender: TObject);
     procedure labSongClick(Sender: TObject);
     procedure lbDisplayClick(Sender: TObject);
@@ -111,6 +119,7 @@ type
     procedure lbNextClick(Sender: TObject);
     procedure lbPicturesClick(Sender: TObject);
     procedure lbPlayClick(Sender: TObject);
+    procedure lbSettingsClick(Sender: TObject);
     procedure lbSleepClick(Sender: TObject);
     procedure tmrTimeTimer(Sender: TObject);
     procedure tmrWeatherTimer(Sender: TObject);
@@ -1016,6 +1025,15 @@ begin
   tmrMinute.Enabled := True;
 end;
 
+procedure TfrmClockMain.imgExitClick(Sender: TObject);
+begin
+  imgExit.Picture.Assign(imgOff.Picture);
+  Application.ProcessMessages;
+
+  Close;
+  Halt;
+end;
+
 procedure TfrmClockMain.imgMusicClick(Sender: TObject);
 begin
   imgMusic.Picture.Assign(imgOff.Picture);
@@ -1034,7 +1052,22 @@ begin
   imgReminders.Picture.Assign(imgOff.Picture);
   Application.ProcessMessages;
 
-  frmReminderList.ShowModal;
+  if (FAlarm.State = asActive)
+    or (FTimer.State = asActive)
+    or (FReminderAlarm.State = asActive) then
+  begin
+    FAlarm.ResetAlarm;
+    FTimer.ResetAlarm;
+    FReminderAlarm.ResetAlarm;
+  end
+  else if mmoHtml.Font.Color = clYellow then
+  begin
+    UpdateWeather;
+  end
+  else
+  begin
+    frmReminderList.ShowModal;
+  end;
 
   imgReminders.Picture.Assign(imgOn.Picture);
 end;
@@ -1065,6 +1098,28 @@ begin
   imgVolUp.Picture.Assign(imgOn.Picture);
 end;
 
+procedure TfrmClockMain.imgUpdateMusicClick(Sender: TObject);
+var
+  Player: TPlayer;
+begin
+  imgUpdateMusic.Picture.Assign(imgOff.Picture);
+  Application.ProcessMessages;
+
+  case FMusicSource of
+    msrcSleep: Player := FSleepPlayer;
+    msrcMeditation: Player := FMeditationPlayer;
+    msrcMusic: Player := FMusicPlayer;
+    else Player := nil;
+  end;
+
+  if Assigned(Player) then
+  begin
+    Player.RescanSearchPath;
+  end;
+
+  imgUpdateMusic.Picture.Assign(imgOn.Picture);
+end;
+
 procedure TfrmClockMain.imgWeatherClick(Sender: TObject);
 begin
   imgWeather.Picture.Assign(imgOff.Picture);
@@ -1078,20 +1133,8 @@ begin
 end;
 
 procedure TfrmClockMain.labSongClick(Sender: TObject);
-var
-  Player: TPlayer;
 begin
-  case FMusicSource of
-    msrcSleep: Player := FSleepPlayer;
-    msrcMeditation: Player := FMeditationPlayer;
-    msrcMusic: Player := FMusicPlayer;
-    else Player := nil;
-  end;
 
-  if Assigned(Player) then
-  begin
-    Player.RescanSearchPath;
-  end;
 end;
 
 procedure TfrmClockMain.lbDisplayClick(Sender: TObject);
@@ -1146,6 +1189,17 @@ begin
   end;
 
   imgPlay.Picture.Assign(imgOn.Picture);
+end;
+
+procedure TfrmClockMain.lbSettingsClick(Sender: TObject);
+begin
+  imgSettings.Picture.Assign(imgOff.Picture);
+  Application.ProcessMessages;
+
+  frmClockSettings.ShowModal;
+  UpdateSettings;
+
+  imgSettings.Picture.Assign(imgOn.Picture);
 end;
 
 procedure TfrmClockMain.lbNextClick(Sender: TObject);
