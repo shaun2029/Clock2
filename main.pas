@@ -144,11 +144,6 @@ end;
 procedure TfrmMain.FormShow(Sender: TObject);
 begin
   LoadSettings;
-  if FSearchPath = '' then
-  begin
-    frmClockSettings.ShowModal;
-    LoadSettings;
-  end;
   Startup;
 end;
 

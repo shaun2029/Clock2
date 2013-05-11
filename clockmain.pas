@@ -1235,6 +1235,13 @@ procedure TfrmClockMain.lbPicturesClick(Sender: TObject);
 begin
   imgPictures.Picture.Assign(imgOff.Picture);
   Application.ProcessMessages;
+
+  if frmClockSettings.edtPicturePath.Text = '' then
+  begin
+    frmClockSettings.PageControl1.TabIndex := 0;
+    frmClockSettings.ShowModal;
+  end;
+
   imgPictures.Picture.Assign(imgOn.Picture);
 
   Close;

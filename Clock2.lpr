@@ -22,7 +22,6 @@ begin
   Application.CreateForm(TfrmReminders, frmReminders);
   Application.CreateForm(TfrmReminderList, frmReminderList);
   Application.CreateForm(TfrmDatePicker, frmDatePicker);
-  Application.CreateForm(TfrmWaitForMedia, frmWaitForMedia);
   Application.Run;
 end.
 

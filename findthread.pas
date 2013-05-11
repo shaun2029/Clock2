@@ -82,8 +82,12 @@ end;
 
 procedure TFindFilesThread.Execute;
 begin
-  FindFiles(FFileList, FPathList, FSearchPath, FExtension);
-  FFileList.Sort;
+  if DirectoryExists(FSearchPath) then
+  begin
+    FindFiles(FFileList, FPathList, FSearchPath, FExtension);
+    FFileList.Sort;
+  end;
+
   FComplete := True;
 end;
 

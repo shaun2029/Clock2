@@ -59,8 +59,11 @@ procedure TFindPicsThread.Execute;
 var
   total: integer;
 begin
-  FindFiles(FileList, FSearchPath, '*.jpg');
-  FindFiles(FileList, FSearchPath, '*.JPG');
+  if DirectoryExists(FSearchPath) then
+  begin
+    FindFiles(FileList, FSearchPath, '*.jpg');
+    FindFiles(FileList, FSearchPath, '*.JPG');
+  end;
 
   FComplete := True;
 end;

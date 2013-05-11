@@ -14,7 +14,7 @@
       <CharSet Value=""/>
       <StringTable ProductVersion=""/>
     </VersionInfo>
-    <BuildModes Count="2" Active="debug">
+    <BuildModes Count="2" Active="i386">
       <Item1 Name="debug" Default="True"/>
       <Item2 Name="i386">
         <CompilerOptions>
@@ -79,11 +79,11 @@
         <Filename Value="Clock2.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="Clock2"/>
-        <EditorIndex Value="18"/>
+        <EditorIndex Value="20"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
-        <CursorPos X="1" Y="26"/>
-        <UsageCount Value="69"/>
+        <CursorPos X="1" Y="25"/>
+        <UsageCount Value="71"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -95,11 +95,11 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="main"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="15"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="27" Y="11"/>
-        <UsageCount Value="69"/>
+        <TopLine Value="83"/>
+        <CursorPos X="17" Y="106"/>
+        <UsageCount Value="71"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit1>
@@ -154,9 +154,9 @@
         <UnitName Value="FindThread"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="30"/>
-        <CursorPos X="17" Y="37"/>
-        <UsageCount Value="61"/>
+        <TopLine Value="56"/>
+        <CursorPos X="3" Y="91"/>
+        <UsageCount Value="63"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit7>
@@ -237,11 +237,11 @@
         <Filename Value="alarm.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="alarm"/>
-        <EditorIndex Value="16"/>
+        <EditorIndex Value="18"/>
         <WindowIndex Value="0"/>
         <TopLine Value="128"/>
         <CursorPos X="69" Y="159"/>
-        <UsageCount Value="51"/>
+        <UsageCount Value="53"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit16>
@@ -252,13 +252,13 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ClockMain"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="5"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="89"/>
-        <CursorPos X="36" Y="160"/>
-        <UsageCount Value="51"/>
+        <TopLine Value="1274"/>
+        <CursorPos X="1" Y="1319"/>
+        <UsageCount Value="53"/>
         <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit17>
       <Unit18>
@@ -268,11 +268,11 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ClockSettings"/>
-        <EditorIndex Value="15"/>
+        <EditorIndex Value="17"/>
         <WindowIndex Value="0"/>
         <TopLine Value="84"/>
         <CursorPos X="34" Y="157"/>
-        <UsageCount Value="51"/>
+        <UsageCount Value="53"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit18>
@@ -284,7 +284,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="510"/>
         <CursorPos X="74" Y="541"/>
-        <UsageCount Value="51"/>
+        <UsageCount Value="53"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit19>
@@ -302,10 +302,12 @@
       </Unit20>
       <Unit21>
         <Filename Value="../../../lazarus/lcl/include/customform.inc"/>
+        <EditorIndex Value="16"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="954"/>
-        <CursorPos X="1" Y="971"/>
+        <TopLine Value="140"/>
+        <CursorPos X="1" Y="161"/>
         <UsageCount Value="11"/>
+        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit21>
       <Unit22>
@@ -315,23 +317,25 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Reminders"/>
-        <EditorIndex Value="12"/>
+        <EditorIndex Value="6"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="138"/>
-        <CursorPos X="17" Y="169"/>
-        <UsageCount Value="47"/>
+        <TopLine Value="78"/>
+        <CursorPos X="1" Y="86"/>
+        <UsageCount Value="49"/>
         <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit22>
       <Unit23>
         <Filename Value="findpicsthread.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="FindPicsThread"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="21"/>
-        <CursorPos X="52" Y="52"/>
-        <UsageCount Value="28"/>
+        <TopLine Value="63"/>
+        <CursorPos X="1" Y="79"/>
+        <UsageCount Value="30"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit23>
@@ -343,16 +347,18 @@
         <WindowIndex Value="0"/>
         <TopLine Value="79"/>
         <CursorPos X="26" Y="82"/>
-        <UsageCount Value="29"/>
+        <UsageCount Value="31"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit24>
       <Unit25>
         <Filename Value="../../../lazarus/lcl/include/control.inc"/>
+        <EditorIndex Value="7"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1072"/>
-        <CursorPos X="1" Y="1085"/>
-        <UsageCount Value="9"/>
+        <TopLine Value="3624"/>
+        <CursorPos X="1" Y="3640"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit25>
       <Unit26>
@@ -413,11 +419,11 @@
         <Filename Value="musicplayer.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="MusicPlayer"/>
-        <EditorIndex Value="17"/>
+        <EditorIndex Value="19"/>
         <WindowIndex Value="0"/>
         <TopLine Value="211"/>
         <CursorPos X="63" Y="222"/>
-        <UsageCount Value="28"/>
+        <UsageCount Value="30"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit33>
@@ -488,9 +494,9 @@
         <UnitName Value="ReminderList"/>
         <EditorIndex Value="13"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="96"/>
+        <TopLine Value="97"/>
         <CursorPos X="1" Y="123"/>
-        <UsageCount Value="28"/>
+        <UsageCount Value="30"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit41>
@@ -498,11 +504,11 @@
         <Filename Value="udpcommandserver.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="udpcommandserver"/>
-        <EditorIndex Value="11"/>
+        <EditorIndex Value="12"/>
         <WindowIndex Value="0"/>
         <TopLine Value="53"/>
         <CursorPos X="3" Y="53"/>
-        <UsageCount Value="28"/>
+        <UsageCount Value="30"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit42>
@@ -510,11 +516,11 @@
         <Filename Value="music.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="music"/>
-        <EditorIndex Value="9"/>
+        <EditorIndex Value="10"/>
         <WindowIndex Value="0"/>
         <TopLine Value="105"/>
         <CursorPos X="17" Y="116"/>
-        <UsageCount Value="28"/>
+        <UsageCount Value="30"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit43>
@@ -525,11 +531,11 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="black"/>
-        <EditorIndex Value="10"/>
+        <EditorIndex Value="11"/>
         <WindowIndex Value="0"/>
         <TopLine Value="8"/>
         <CursorPos X="27" Y="24"/>
-        <UsageCount Value="33"/>
+        <UsageCount Value="35"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit44>
@@ -553,11 +559,11 @@
         <Filename Value="sync.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="sync"/>
-        <EditorIndex Value="7"/>
+        <EditorIndex Value="8"/>
         <WindowIndex Value="0"/>
         <TopLine Value="45"/>
         <CursorPos X="48" Y="46"/>
-        <UsageCount Value="28"/>
+        <UsageCount Value="30"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit47>
@@ -565,11 +571,11 @@
         <Filename Value="udpclient.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="udpclient"/>
-        <EditorIndex Value="8"/>
+        <EditorIndex Value="9"/>
         <WindowIndex Value="0"/>
         <TopLine Value="111"/>
         <CursorPos X="22" Y="111"/>
-        <UsageCount Value="28"/>
+        <UsageCount Value="30"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit48>
@@ -598,135 +604,135 @@
         <ComponentName Value="frmWaitForMedia"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="WaitForMedia"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="4"/>
         <WindowIndex Value="0"/>
         <TopLine Value="34"/>
         <CursorPos X="1" Y="59"/>
-        <UsageCount Value="21"/>
+        <UsageCount Value="23"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit51>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="main.pas"/>
-        <Caret Line="295" Column="48" TopLine="281"/>
+        <Filename Value="findpicsthread.pas"/>
+        <Caret Line="111" Column="1" TopLine="85"/>
       </Position1>
       <Position2>
-        <Filename Value="main.pas"/>
-        <Caret Line="296" Column="10" TopLine="279"/>
+        <Filename Value="findpicsthread.pas"/>
+        <Caret Line="108" Column="1" TopLine="85"/>
       </Position2>
       <Position3>
-        <Filename Value="main.pas"/>
-        <Caret Line="298" Column="1" TopLine="279"/>
+        <Filename Value="findpicsthread.pas"/>
+        <Caret Line="93" Column="1" TopLine="85"/>
       </Position3>
       <Position4>
-        <Filename Value="main.pas"/>
-        <Caret Line="300" Column="1" TopLine="279"/>
+        <Filename Value="findpicsthread.pas"/>
+        <Caret Line="94" Column="1" TopLine="85"/>
       </Position4>
       <Position5>
-        <Filename Value="main.pas"/>
-        <Caret Line="302" Column="1" TopLine="279"/>
+        <Filename Value="findpicsthread.pas"/>
+        <Caret Line="95" Column="1" TopLine="85"/>
       </Position5>
       <Position6>
-        <Filename Value="main.pas"/>
-        <Caret Line="303" Column="1" TopLine="279"/>
+        <Filename Value="findpicsthread.pas"/>
+        <Caret Line="107" Column="1" TopLine="85"/>
       </Position6>
       <Position7>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1036" Column="20" TopLine="1032"/>
+        <Filename Value="findpicsthread.pas"/>
+        <Caret Line="93" Column="1" TopLine="85"/>
       </Position7>
       <Position8>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1047" Column="37" TopLine="1040"/>
+        <Filename Value="findpicsthread.pas"/>
+        <Caret Line="107" Column="1" TopLine="85"/>
       </Position8>
       <Position9>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1165" Column="37" TopLine="1139"/>
+        <Filename Value="findpicsthread.pas"/>
+        <Caret Line="93" Column="1" TopLine="85"/>
       </Position9>
       <Position10>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="findpicsthread.pas"/>
+        <Caret Line="107" Column="1" TopLine="85"/>
       </Position10>
       <Position11>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="172" Column="24" TopLine="148"/>
+        <Filename Value="findpicsthread.pas"/>
+        <Caret Line="93" Column="1" TopLine="85"/>
       </Position11>
       <Position12>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="253" Column="1" TopLine="238"/>
+        <Filename Value="findpicsthread.pas"/>
+        <Caret Line="107" Column="1" TopLine="85"/>
       </Position12>
       <Position13>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="257" Column="14" TopLine="241"/>
+        <Filename Value="findpicsthread.pas"/>
+        <Caret Line="93" Column="1" TopLine="85"/>
       </Position13>
       <Position14>
-        <Filename Value="main.pas"/>
-        <Caret Line="294" Column="51" TopLine="278"/>
+        <Filename Value="findpicsthread.pas"/>
+        <Caret Line="107" Column="1" TopLine="85"/>
       </Position14>
       <Position15>
-        <Filename Value="main.pas"/>
-        <Caret Line="46" Column="42" TopLine="17"/>
+        <Filename Value="findpicsthread.pas"/>
+        <Caret Line="93" Column="1" TopLine="57"/>
       </Position15>
       <Position16>
         <Filename Value="main.pas"/>
-        <Caret Line="135" Column="1" TopLine="120"/>
+        <Caret Line="235" Column="19" TopLine="214"/>
       </Position16>
       <Position17>
         <Filename Value="main.pas"/>
-        <Caret Line="294" Column="37" TopLine="279"/>
+        <Caret Line="236" Column="19" TopLine="214"/>
       </Position17>
       <Position18>
         <Filename Value="main.pas"/>
-        <Caret Line="297" Column="28" TopLine="279"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position18>
       <Position19>
         <Filename Value="main.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Caret Line="36" Column="15" TopLine="10"/>
       </Position19>
       <Position20>
         <Filename Value="main.pas"/>
-        <Caret Line="11" Column="41" TopLine="1"/>
+        <Caret Line="97" Column="25" TopLine="83"/>
       </Position20>
       <Position21>
         <Filename Value="main.pas"/>
-        <Caret Line="46" Column="27" TopLine="21"/>
+        <Caret Line="99" Column="33" TopLine="83"/>
       </Position21>
       <Position22>
         <Filename Value="main.pas"/>
-        <Caret Line="294" Column="1" TopLine="279"/>
+        <Caret Line="101" Column="17" TopLine="83"/>
       </Position22>
       <Position23>
         <Filename Value="main.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Caret Line="102" Column="17" TopLine="83"/>
       </Position23>
       <Position24>
         <Filename Value="main.pas"/>
-        <Caret Line="11" Column="41" TopLine="1"/>
+        <Caret Line="103" Column="17" TopLine="83"/>
       </Position24>
       <Position25>
         <Filename Value="main.pas"/>
-        <Caret Line="46" Column="27" TopLine="21"/>
+        <Caret Line="105" Column="17" TopLine="83"/>
       </Position25>
       <Position26>
-        <Filename Value="main.pas"/>
-        <Caret Line="135" Column="15" TopLine="109"/>
+        <Filename Value="findpicsthread.pas"/>
+        <Caret Line="66" Column="1" TopLine="45"/>
       </Position26>
       <Position27>
-        <Filename Value="main.pas"/>
-        <Caret Line="293" Column="1" TopLine="266"/>
+        <Filename Value="findpicsthread.pas"/>
+        <Caret Line="62" Column="1" TopLine="45"/>
       </Position27>
       <Position28>
-        <Filename Value="main.pas"/>
-        <Caret Line="46" Column="1" TopLine="29"/>
+        <Filename Value="findpicsthread.pas"/>
+        <Caret Line="68" Column="1" TopLine="45"/>
       </Position28>
       <Position29>
-        <Filename Value="main.pas"/>
-        <Caret Line="137" Column="16" TopLine="122"/>
+        <Filename Value="findpicsthread.pas"/>
+        <Caret Line="62" Column="1" TopLine="45"/>
       </Position29>
       <Position30>
-        <Filename Value="waitformedia.pas"/>
-        <Caret Line="51" Column="30" TopLine="27"/>
+        <Filename Value="findthread.pas"/>
+        <Caret Line="91" Column="3" TopLine="56"/>
       </Position30>
     </JumpHistory>
   </ProjectOptions>
@@ -759,14 +765,35 @@
     </Other>
   </CompilerOptions>
   <Debugging>
-    <BreakPoints Count="1">
+    <BreakPoints Count="4">
       <Item1>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="clockmain.pas"/>
-        <Line Value="984"/>
+        <Line Value="983"/>
       </Item1>
+      <Item2>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="clockmain.pas"/>
+        <Line Value="939"/>
+      </Item2>
+      <Item3>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="clockmain.pas"/>
+        <Line Value="1218"/>
+      </Item3>
+      <Item4>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="clockmain.pas"/>
+        <Line Value="1266"/>
+      </Item4>
     </BreakPoints>
     <Exceptions Count="6">
       <Item1>
