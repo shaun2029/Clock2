@@ -36,9 +36,7 @@ implementation
 
 function TFindPicsThread.GetComplete: boolean;
 begin
-//  FCritical.Enter;
   Result := FComplete;
-//  FCritical.Leave;
 end;
 
 constructor TFindPicsThread.Create(SearchPath: string);

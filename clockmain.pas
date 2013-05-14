@@ -24,7 +24,7 @@ uses
   X, Xlib, CTypes, Black, WaitForMedia;
 
 const
-  VERSION = '2.0.1';
+  VERSION = '2.0.2';
 
 type
   TReminderCallback = procedure of object;
@@ -262,6 +262,7 @@ begin
 
     frmWait := TfrmWaitForMedia.Create(Self, Path, Timeout);
     frmWait.ShowModal;
+    frmWait.Free;
   end;
 end;
 
@@ -1167,7 +1168,7 @@ begin
   Form := TfrmBlack.Create(Self);
   Form.ShowModal;
   {$IFNDEF DEBUG} BacklightOn; {$ENDIF}
-
+  Form.Free;
   imgDisplay.Picture.Assign(imgOn.Picture);
 end;
 

@@ -19,7 +19,6 @@ type
     lblLoading: TLabel;
     tmrEvent: TTimer;
     tmrShowClock: TTimer;
-    procedure FormActivate(Sender: TObject);
     procedure FormClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
@@ -100,7 +99,7 @@ begin
     begin
       FFindFiles.Terminate;
       FFindFiles.WaitFor;
-      FFindFiles.Free;
+      FreeAndNil(FFindFiles);
 
       FFindFiles := TFindPicsThread.Create(FSearchPath);
       FFindFiles.Resume;
@@ -170,17 +169,13 @@ begin
   begin
     FFindFiles.Terminate;
     FFindFiles.WaitFor;
-    FFindFiles.Free;
+    FreeAndNil(FFindFiles);
   end;
 
   frmClockMain.Free;
   frmClockSettings.Free;
 end;
 
-procedure TfrmMain.FormActivate(Sender: TObject);
-begin
-
-end;
 
 procedure TfrmMain.FormClick(Sender: TObject);
 begin
