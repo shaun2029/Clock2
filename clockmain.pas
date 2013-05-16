@@ -21,14 +21,12 @@ uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
   ExtCtrls, MetOffice, Alarm, ClockSettings, Reminders, ReminderList, LCLProc,
   Music, Sync, Process, MusicPlayer, PlaylistCreator, UDPCommandServer,
-  X, Xlib, CTypes, Black, WaitForMedia;
+  X, Xlib, CTypes, Black, WaitForMedia, Pictures;
 
 const
-  VERSION = '2.0.2';
+  VERSION = '2.0.3';
 
 type
-  TReminderCallback = procedure of object;
-
   TMusicState = (msOff, msPlaying, msPaused);
   TMusicSource = (msrcNone, msrcSleep, msrcMusic, msrcMeditation);
   TMediaKey = (mkNone, mkAudioPlay, mkAudioNext);
@@ -101,7 +99,6 @@ type
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
-    procedure FormHide(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormKeyPress(Sender: TObject; var Key: char);
     procedure FormShow(Sender: TObject);
@@ -113,7 +110,6 @@ type
     procedure imgVolUpClick(Sender: TObject);
     procedure imgUpdateMusicClick(Sender: TObject);
     procedure imgWeatherClick(Sender: TObject);
-    procedure labSongClick(Sender: TObject);
     procedure lbDisplayClick(Sender: TObject);
     procedure lblTimeClick(Sender: TObject);
     procedure lbNextClick(Sender: TObject);
@@ -125,7 +121,6 @@ type
     procedure tmrWeatherTimer(Sender: TObject);
     procedure tmrMinuteTimer(Sender: TObject);
   private
-    FClosing: boolean;
     { private declarations }
     FMPGPlayer: TMusicPlayer;
     FMetOffice: TMetOffice;
@@ -158,8 +153,6 @@ type
     FDisplay: PDisplay;
     FAlarmActive: boolean;
 
-    FReminderCallback: TReminderCallback;
-
     procedure BacklightOff;
     procedure BacklightOn;
 
@@ -189,11 +182,9 @@ type
   public
     { public declarations }
     HTTPBuffer: string;
-    procedure WaitForMedia(Path: string);
+    function WaitForMedia(Path: string): boolean;
 
   published
-    property ReminderCallback: TReminderCallback write FReminderCallback;
-    property Closing: boolean read FClosing;
   end;
 
 var
@@ -251,19 +242,22 @@ begin
   end;
 end;
 
-procedure TfrmClockMain.WaitForMedia(Path: string);
+function TfrmClockMain.WaitForMedia(Path: string): boolean;
 var
   Timeout: TDateTime;
   frmWait: TfrmWaitForMedia;
 begin
+  Result := False;
+
   if (Path <> '') and not DirectoryExists(Path) then
   begin
     Timeout := EncodeTime(0,1,0,0);
 
     frmWait := TfrmWaitForMedia.Create(Self, Path, Timeout);
-    frmWait.ShowModal;
+    Result := frmWait.ShowModal = mrOk;
     frmWait.Free;
-  end;
+  end
+  else if (Path <> '') then Result := True;
 end;
 
 procedure TfrmClockMain.SetMusicSource(Source: TMusicSource);
@@ -463,9 +457,6 @@ begin
       mmoHTML.Caption := ReminderList.Text;
       ReminderList.Free;
       tmrWeather.Enabled := False;
-
-      if Assigned(FReminderCallback) then
-        FReminderCallback;
     end;
 
     case FMusicSource of
@@ -741,14 +732,9 @@ procedure TfrmClockMain.FormCreate(Sender: TObject);
 var
   i: Integer;
 begin
-  FClosing := False;
   FConfigFilename := GetAppConfigFile(False);
 
   Self.Color := clBlack;
-  {$IFNDEF DEBUG}
-  Self.Cursor := crNone;
-  {$ENDIF}
-  FReminderCallback := nil;
 
   FMetOffice := TMetOffice.Create;
 
@@ -868,13 +854,6 @@ begin
   FReminderAlarm.Free;
   FTimer.Free;
   FCOMServer.Free;
-end;
-
-procedure TfrmClockMain.FormHide(Sender: TObject);
-begin
-  FAlarm.ResetAlarm;
-  FTimer.ResetAlarm;
-  FReminderAlarm.ResetAlarm;
 end;
 
 procedure TfrmClockMain.FormKeyDown(Sender: TObject; var Key: Word;
@@ -1023,7 +1002,30 @@ begin
 end;
 
 procedure TfrmClockMain.FormShow(Sender: TObject);
+var
+  ScreenBounds: TRect;
+  i: Integer;
 begin
+  // Disable cursor if in Touchscreen mode
+  for i := 0 to Self.ComponentCount - 1 do
+  begin
+    if Self.Components[i] is TControl then
+    begin
+      if frmClockSettings.cbxTouchScreen.Checked then
+        TControl(Self.Components[i]).Cursor := crDefault
+      else TControl(Self.Components[i]).Cursor := crDefault;
+    end;
+  end;
+
+  // Force fullscreen if required
+  if frmClockSettings.cbxForceFullscreen.Checked then
+  begin
+    // To full screen
+//    ScreenBounds := Screen.MonitorFromWindow(Handle).BoundsRect;
+//    with ScreenBounds do
+//      SetBounds(Left, Top, Right - Left, Bottom - Top) ;
+  end;
+
   if not FileExists('/usr/bin/mpg123') and not FileExists('/usr/bin/mpg321') then
     ShowMessage('Alarm Not Working' + LineEnding
     + 'The package mpg123 was not found on this system.' + LineEnding
@@ -1050,7 +1052,6 @@ procedure TfrmClockMain.imgExitClick(Sender: TObject);
 begin
   imgExit.Picture.Assign(imgOff.Picture);
   Application.ProcessMessages;
-  FClosing := True;
   Close;
 end;
 
@@ -1152,11 +1153,6 @@ begin
   imgWeather.Picture.Assign(imgOn.Picture);
 end;
 
-procedure TfrmClockMain.labSongClick(Sender: TObject);
-begin
-
-end;
-
 procedure TfrmClockMain.lbDisplayClick(Sender: TObject);
 var
   Form: TfrmBlack;
@@ -1243,9 +1239,13 @@ begin
     frmClockSettings.ShowModal;
   end;
 
-  imgPictures.Picture.Assign(imgOn.Picture);
+  if frmClockSettings.edtPicturePath.Text <> '' then
+  begin
+    if WaitForMedia(frmClockSettings.edtPicturePath.Text) then
+      frmPictures.ShowModal;
+  end;
 
-  Close;
+  imgPictures.Picture.Assign(imgOn.Picture);
 end;
 
 procedure TfrmClockMain.lblTimeClick(Sender: TObject);

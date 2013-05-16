@@ -7,6 +7,8 @@ object frmWaitForMedia: TfrmWaitForMedia
   Caption = 'Waiting For Media'
   ClientHeight = 156
   ClientWidth = 320
+  FormStyle = fsStayOnTop
+  OnClose = FormClose
   OnShow = FormShow
   Position = poDesktopCenter
   LCLVersion = '1.0.4.0'

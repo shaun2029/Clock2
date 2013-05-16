@@ -31,6 +31,8 @@ type
     cbxGetReminders: TCheckBox;
     cbxSilentAlarm: TCheckBox;
     cbxRandomPictures: TCheckBox;
+    cbxForceFullscreen: TCheckBox;
+    cbxTouchScreen: TCheckBox;
     edtPicturePath: TEdit;
     edtServerPort: TEdit;
     edtServerAddress: TEdit;
@@ -70,6 +72,7 @@ type
     TabSheet4: TTabSheet;
     TabSheet5: TTabSheet;
     TabSheet6: TTabSheet;
+    TabSheet7: TTabSheet;
     tmrSettings: TTimer;
     udTimer: TUpDown;
     XMLPropStorage1: TXMLPropStorage;

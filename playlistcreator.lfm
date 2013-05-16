@@ -7,12 +7,13 @@ object frmPlaylist: TfrmPlaylist
   Caption = 'frmPlaylist'
   ClientHeight = 240
   ClientWidth = 320
+  FormStyle = fsStayOnTop
   KeyPreview = True
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
   Position = poMainFormCenter
-  LCLVersion = '0.9.30.4'
+  LCLVersion = '1.0.4.0'
   object lstDisplay: TListBox
     Left = 8
     Height = 224
