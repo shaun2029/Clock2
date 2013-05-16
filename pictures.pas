@@ -6,9 +6,10 @@ unit Pictures;
 interface
 
 uses
+  gtk2, gdk2, glib2,
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
   ExtCtrls, StdCtrls, IniFiles, Process, simpleipc, FindPicsThread,
-  ClockSettings;
+  Settings;
 
 type
 
@@ -18,6 +19,7 @@ type
     imgDisplay: TImage;
     lblLoading: TLabel;
     tmrEvent: TTimer;
+    procedure FormActivate(Sender: TObject);
     procedure FormClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
@@ -70,11 +72,11 @@ begin
   IniFile := TIniFile.Create(GetAppConfigFile(False));
 
   try
-    FSearchPath := frmClockSettings.edtPicturePath.Text;
-    FRandomPictures := frmClockSettings.cbxRandomPictures.Checked;
+    FSearchPath := frmSettings.edtPicturePath.Text;
+    FRandomPictures := frmSettings.cbxRandomPictures.Checked;
 
-    if frmClockSettings.seDelay.Value < 1 then FEventDelay := EncodeTime(0, 0, 10, 0)
-    else FEventDelay := EncodeTime(0, 0, frmClockSettings.seDelay.Value, 0);
+    if frmSettings.seDelay.Value < 1 then FEventDelay := EncodeTime(0, 0, 10, 0)
+    else FEventDelay := EncodeTime(0, 0, frmSettings.seDelay.Value, 0);
 
     FPictureIndex := IniFile.ReadInteger('Settings', 'Position', 0);
 
@@ -156,6 +158,11 @@ end;
 procedure TfrmPictures.FormClick(Sender: TObject);
 begin
   Close;
+end;
+
+procedure TfrmPictures.FormActivate(Sender: TObject);
+begin
+  gdk_window_fullscreen(PGtkWidget(Handle)^.window);
 end;
 
 function TfrmPictures.ShowPicture: boolean;

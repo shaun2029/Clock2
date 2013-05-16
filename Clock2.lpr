@@ -8,7 +8,7 @@ uses
   {$ENDIF}
   Interfaces, // this includes the LCL widgetset
   Forms,
-Pictures, FindThread, alarm, ClockMain, ClockSettings, MetOffice,
+  Pictures, FindThread, alarm, ClockMain, Settings, MetOffice,
   Reminders, ReminderList, DatePicker, black, FindPicsThread, udpserver, sync,
   udpclient, music, udpcommandserver, MusicPlayer, WaitForMedia;
 
@@ -19,7 +19,7 @@ Pictures, FindThread, alarm, ClockMain, ClockSettings, MetOffice,
 begin
   Application.Initialize;
   Application.CreateForm(TfrmClockMain, frmClockMain);
-  Application.CreateForm(TfrmClockSettings, frmClockSettings);
+  Application.CreateForm(TfrmSettings, frmSettings);
   Application.CreateForm(TfrmPictures, frmPictures);
   Application.CreateForm(TfrmReminders, frmReminders);
   Application.CreateForm(TfrmReminderList, frmReminderList);

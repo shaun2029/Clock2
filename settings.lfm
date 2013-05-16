@@ -1,4 +1,4 @@
-object frmClockSettings: TfrmClockSettings
+object frmSettings: TfrmSettings
   Left = 511
   Height = 238
   Top = 198
@@ -511,8 +511,6 @@ object frmClockSettings: TfrmClockSettings
         Top = 19
         Width = 134
         Caption = 'Force Fullscreen'
-        Checked = True
-        State = cbChecked
         TabOrder = 0
       end
       object cbxTouchScreen: TCheckBox
@@ -521,8 +519,6 @@ object frmClockSettings: TfrmClockSettings
         Top = 51
         Width = 171
         Caption = 'Touch Screen Support'
-        Checked = True
-        State = cbChecked
         TabOrder = 1
       end
     end

@@ -10,6 +10,7 @@ object frmPictures: TfrmPictures
   ClientWidth = 400
   Color = clBlack
   KeyPreview = True
+  OnActivate = FormActivate
   OnClick = FormClick
   OnClose = FormClose
   OnCreate = FormCreate

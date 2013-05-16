@@ -4,11 +4,12 @@ object frmClockMain: TfrmClockMain
   Top = 215
   Width = 800
   BorderStyle = bsNone
-  Caption = 'frmClockMain'
+  Caption = 'Shaun''s Clock 2'
   ClientHeight = 480
   ClientWidth = 800
   Color = clGray
   KeyPreview = True
+  OnActivate = FormActivate
   OnClick = lblTimeClick
   OnClose = FormClose
   OnCreate = FormCreate

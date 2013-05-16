@@ -1,4 +1,4 @@
-unit ClockSettings;
+unit Settings;
 
 {$mode objfpc}{$H+}
 //{$DEFINE PICSHOW}
@@ -11,9 +11,9 @@ uses
 
 type
 
-  { TfrmClockSettings }
+  { TfrmSettings }
 
-  TfrmClockSettings = class(TForm)
+  TfrmSettings = class(TForm)
     btnStartTimer: TButton;
     btnSelectMusic: TButton;
     btnSelectSleep: TButton;
@@ -95,15 +95,15 @@ type
   end;
 
 var
-  frmClockSettings: TfrmClockSettings;
+  frmSettings: TfrmSettings;
 
 implementation
 
 {$R *.lfm}
 
-{ TfrmClockSettings }
+{ TfrmSettings }
 
-procedure TfrmClockSettings.FormKeyPress(Sender: TObject; var Key: char);
+procedure TfrmSettings.FormKeyPress(Sender: TObject; var Key: char);
 begin
   if (Key = #27) or (Key = #13) then
   begin
@@ -112,7 +112,7 @@ begin
   end;
 end;
 
-procedure TfrmClockSettings.tmrSettingsTimer(Sender: TObject);
+procedure TfrmSettings.tmrSettingsTimer(Sender: TObject);
 begin
   if stxtTimer.Caption = '0' then
   begin
@@ -126,46 +126,47 @@ begin
   end;
 end;
 
-procedure TfrmClockSettings.btnStartTimerClick(Sender: TObject);
+procedure TfrmSettings.btnStartTimerClick(Sender: TObject);
 begin
   FTimerActive := True;
   Self.Close;
 end;
 
-procedure TfrmClockSettings.btnSelectMusicClick(Sender: TObject);
+procedure TfrmSettings.btnSelectMusicClick(Sender: TObject);
 begin
   if dlgSelectDirectoryDialog.Execute then
      edtMusicPath.Text := dlgSelectDirectoryDialog.Filename;
 end;
 
-procedure TfrmClockSettings.btnSelectMeditationClick(Sender: TObject);
+procedure TfrmSettings.btnSelectMeditationClick(Sender: TObject);
 begin
   if dlgSelectDirectoryDialog.Execute then
      edtMeditationPath.Text := dlgSelectDirectoryDialog.Filename;
 end;
 
-procedure TfrmClockSettings.btnPicturePathClick(Sender: TObject);
+procedure TfrmSettings.btnPicturePathClick(Sender: TObject);
 begin
   if dlgSelectDirectoryDialog.Execute then
      edtPicturePath.Text := dlgSelectDirectoryDialog.Filename;
 end;
 
-procedure TfrmClockSettings.btnSelectSleepClick(Sender: TObject);
+procedure TfrmSettings.btnSelectSleepClick(Sender: TObject);
 begin
   if dlgSelectDirectoryDialog.Execute then
      edtSleepPath.Text := dlgSelectDirectoryDialog.Filename;
 end;
 
-procedure TfrmClockSettings.FormCreate(Sender: TObject);
+procedure TfrmSettings.FormCreate(Sender: TObject);
 begin
   FTimerActive := False;
+  PageControl1.TabIndex := 0;
 
 {$IFDEF PICSHOW}
   Self.BorderStyle := bsSingle;
 {$ENDIF}
 end;
 
-procedure TfrmClockSettings.FormKeyDown(Sender: TObject; var Key: Word;
+procedure TfrmSettings.FormKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
   if PageControl1.Focused then

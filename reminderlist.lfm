@@ -4,7 +4,7 @@ object frmReminderList: TfrmReminderList
   Top = 168
   Width = 416
   BorderStyle = bsSingle
-  Caption = 'frmReminderList'
+  Caption = 'Reminders'
   ClientHeight = 400
   ClientWidth = 416
   FormStyle = fsStayOnTop

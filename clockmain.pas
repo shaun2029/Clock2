@@ -18,8 +18,9 @@ unit ClockMain;
 interface
 
 uses
+  gtk2, gdk2, glib2,
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  ExtCtrls, MetOffice, Alarm, ClockSettings, Reminders, ReminderList, LCLProc,
+  ExtCtrls, MetOffice, Alarm, Settings, Reminders, ReminderList, LCLProc,
   Music, Sync, Process, MusicPlayer, PlaylistCreator, UDPCommandServer,
   X, Xlib, CTypes, Black, WaitForMedia, Pictures;
 
@@ -96,6 +97,7 @@ type
     tmrMinute: TTimer;
     tmrWeather: TTimer;
     tmrTime: TTimer;
+    procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -160,9 +162,11 @@ type
     procedure ConfigureWifi;
     function DayOfWeekStr(Date: TDateTime): string;
     procedure Execute(Command: string);
+    function FormShowModal(MyForm: TForm): integer;
     procedure Log(Message: string);
     procedure PauseMusic;
     procedure PlayMusic;
+    procedure SetCursorType;
     procedure SetMusicSource(Source: TMusicSource);
 
 {$IFDEF GRABXKEYS}
@@ -254,7 +258,7 @@ begin
     Timeout := EncodeTime(0,1,0,0);
 
     frmWait := TfrmWaitForMedia.Create(Self, Path, Timeout);
-    Result := frmWait.ShowModal = mrOk;
+    Result := FormShowModal(frmWait) = mrOk;
     frmWait.Free;
   end
   else if (Path <> '') then Result := True;
@@ -270,17 +274,17 @@ begin
     msrcSleep:
       begin
         Player := FSleepPlayer;
-        PlayerPath := frmClockSettings.edtSleepPath.Text;
+        PlayerPath := frmSettings.edtSleepPath.Text;
       end;
     msrcMeditation:
       begin
         Player := FMeditationPlayer;
-        PlayerPath := frmClockSettings.edtMeditationPath.Text;
+        PlayerPath := frmSettings.edtMeditationPath.Text;
       end;
     msrcMusic:
       begin
         Player := FMusicPlayer;
-        PlayerPath := frmClockSettings.edtMusicPath.Text;
+        PlayerPath := frmSettings.edtMusicPath.Text;
       end
     else
       begin
@@ -316,17 +320,17 @@ begin
       msrcSleep:
         begin
           FSleepPlayer := TPlayer.Create(FMPGPlayer,
-            ChangeFileExt(FConfigFilename, '_sleep.cfg'), frmClockSettings.edtSleepPath.Text);
+            ChangeFileExt(FConfigFilename, '_sleep.cfg'), frmSettings.edtSleepPath.Text);
         end;
       msrcMusic:
         begin
           FMusicPlayer := TPlayer.Create(FMPGPlayer,
-            ChangeFileExt(FConfigFilename, '_music.cfg'), frmClockSettings.edtMusicPath.Text);
+            ChangeFileExt(FConfigFilename, '_music.cfg'), frmSettings.edtMusicPath.Text);
         end;
       msrcMeditation:
         begin
           FMeditationPlayer := TPlayer.Create(FMPGPlayer,
-            ChangeFileExt(FConfigFilename, '_meditation.cfg'), frmClockSettings.edtMeditationPath.Text);
+            ChangeFileExt(FConfigFilename, '_meditation.cfg'), frmSettings.edtMeditationPath.Text);
         end;
     end;
 
@@ -344,7 +348,7 @@ end;
 procedure TfrmClockMain.AfterAlarm;
 begin
   // Possibly start music after alarm
-  if frmClockSettings.cbxPlayMusic.Checked or FAfterAlarmResumeMusic then
+  if frmSettings.cbxPlayMusic.Checked or FAfterAlarmResumeMusic then
   begin
     case FMusicSource of
       msrcSleep: FSleepPlayer.Play;
@@ -830,6 +834,12 @@ begin
 {$ENDIF}
 end;
 
+procedure TfrmClockMain.FormActivate(Sender: TObject);
+begin
+  if frmSettings.cbxForceFullscreen.Checked then
+    gdk_window_fullscreen(PGtkWidget(Handle)^.window);
+end;
+
 procedure TfrmClockMain.FormDestroy(Sender: TObject);
 begin
   if Assigned(FMusicPlayer) then
@@ -916,15 +926,15 @@ begin
   if Key = #27 then {$IFDEF PICSHOW} Close {$ENDIF}
   else if Key = #13 then
   begin
-    frmClockSettings.ShowModal;
+    FormShowModal(frmSettings);
     UpdateSettings;
   end
   else if (Key = 'l') or (Key='L') then
   begin
     frmPlaylist.LoadSongs(ChangeFileExt(FConfigFilename, '_music.cfg'),
-      frmClockSettings.edtMusicPath.Text);
+      frmSettings.edtMusicPath.Text);
 
-    if frmPlaylist.ShowModal = mrOk then
+    if FormShowModal(frmPlaylist) = mrOk then
     begin
       FMusicPlayer.PlaySelection(frmPlaylist.MusicPath);
     end;
@@ -1001,9 +1011,8 @@ begin
   tmrMinute.Enabled := True;
 end;
 
-procedure TfrmClockMain.FormShow(Sender: TObject);
+procedure TfrmClockMain.SetCursorType;
 var
-  ScreenBounds: TRect;
   i: Integer;
 begin
   // Disable cursor if in Touchscreen mode
@@ -1011,21 +1020,15 @@ begin
   begin
     if Self.Components[i] is TControl then
     begin
-      if frmClockSettings.cbxTouchScreen.Checked then
-        TControl(Self.Components[i]).Cursor := crDefault
+      if frmSettings.cbxTouchScreen.Checked then
+        TControl(Self.Components[i]).Cursor := crNone
       else TControl(Self.Components[i]).Cursor := crDefault;
     end;
   end;
+end;
 
-  // Force fullscreen if required
-  if frmClockSettings.cbxForceFullscreen.Checked then
-  begin
-    // To full screen
-//    ScreenBounds := Screen.MonitorFromWindow(Handle).BoundsRect;
-//    with ScreenBounds do
-//      SetBounds(Left, Top, Right - Left, Bottom - Top) ;
-  end;
-
+procedure TfrmClockMain.FormShow(Sender: TObject);
+begin
   if not FileExists('/usr/bin/mpg123') and not FileExists('/usr/bin/mpg321') then
     ShowMessage('Alarm Not Working' + LineEnding
     + 'The package mpg123 was not found on this system.' + LineEnding
@@ -1087,7 +1090,7 @@ begin
   end
   else
   begin
-    frmReminderList.ShowModal;
+    FormShowModal(frmReminderList);
   end;
 
   imgReminders.Picture.Assign(imgOn.Picture);
@@ -1162,7 +1165,7 @@ begin
 
   {$IFNDEF DEBUG} BacklightOff; {$ENDIF}
   Form := TfrmBlack.Create(Self);
-  Form.ShowModal;
+  FormShowModal(Form);
   {$IFNDEF DEBUG} BacklightOn; {$ENDIF}
   Form.Free;
   imgDisplay.Picture.Assign(imgOn.Picture);
@@ -1207,12 +1210,23 @@ begin
   imgPlay.Picture.Assign(imgOn.Picture);
 end;
 
+function TfrmClockMain.FormShowModal(MyForm: TForm): integer;
+begin
+  gdk_window_unfullscreen(PGtkWidget(Handle)^.window);
+
+  MyForm.ShowModal;
+
+  if frmSettings.cbxForceFullscreen.Checked then
+    gdk_window_fullscreen(PGtkWidget(Handle)^.window);
+end;
+
 procedure TfrmClockMain.lbSettingsClick(Sender: TObject);
 begin
   imgSettings.Picture.Assign(imgOff.Picture);
   Application.ProcessMessages;
 
-  frmClockSettings.ShowModal;
+  FormShowModal(frmSettings);
+
   UpdateSettings;
 
   imgSettings.Picture.Assign(imgOn.Picture);
@@ -1233,16 +1247,16 @@ begin
   imgPictures.Picture.Assign(imgOff.Picture);
   Application.ProcessMessages;
 
-  if frmClockSettings.edtPicturePath.Text = '' then
+  if frmSettings.edtPicturePath.Text = '' then
   begin
-    frmClockSettings.PageControl1.TabIndex := 0;
-    frmClockSettings.ShowModal;
+    frmSettings.PageControl1.TabIndex := 0;
+    FormShowModal(frmSettings);
   end;
 
-  if frmClockSettings.edtPicturePath.Text <> '' then
+  if frmSettings.edtPicturePath.Text <> '' then
   begin
-    if WaitForMedia(frmClockSettings.edtPicturePath.Text) then
-      frmPictures.ShowModal;
+    if WaitForMedia(frmSettings.edtPicturePath.Text) then
+      FormShowModal(frmPictures);
   end;
 
   imgPictures.Picture.Assign(imgOn.Picture);
@@ -1261,11 +1275,6 @@ begin
   else if mmoHtml.Font.Color = clYellow then
   begin
     UpdateWeather;
-  end
-  else
-  begin
-    frmClockSettings.ShowModal;
-    UpdateSettings;
   end;
 end;
 
@@ -1276,30 +1285,30 @@ var
   Hours: Integer;
   Player: TPlayer;
 begin
-  Locations[0] := frmClockSettings.edtLocation.Text;
-  Locations[1] := frmClockSettings.edtLocation1.Text;
-  Locations[2] := frmClockSettings.edtLocation2.Text;
-  Locations[3] := frmClockSettings.edtLocation3.Text;
+  Locations[0] := frmSettings.edtLocation.Text;
+  Locations[1] := frmSettings.edtLocation1.Text;
+  Locations[2] := frmSettings.edtLocation2.Text;
+  Locations[3] := frmSettings.edtLocation3.Text;
 
-  FAlarm.Days[1] := frmClockSettings.cbxSun.Checked;
-  FAlarm.Days[2] := frmClockSettings.cbxMon.Checked;
-  FAlarm.Days[3] := frmClockSettings.cbxTue.Checked;
-  FAlarm.Days[4] := frmClockSettings.cbxWed.Checked;
-  FAlarm.Days[5] := frmClockSettings.cbxThu.Checked;
-  FAlarm.Days[6] := frmClockSettings.cbxFri.Checked;
-  FAlarm.Days[7] := frmClockSettings.cbxSat.Checked;
+  FAlarm.Days[1] := frmSettings.cbxSun.Checked;
+  FAlarm.Days[2] := frmSettings.cbxMon.Checked;
+  FAlarm.Days[3] := frmSettings.cbxTue.Checked;
+  FAlarm.Days[4] := frmSettings.cbxWed.Checked;
+  FAlarm.Days[5] := frmSettings.cbxThu.Checked;
+  FAlarm.Days[6] := frmSettings.cbxFri.Checked;
+  FAlarm.Days[7] := frmSettings.cbxSat.Checked;
 
-  FAlarm.AlarmTime := Date + EncodeTime(frmClockSettings.edtHour.Value,
-    frmClockSettings.edtMinute.Value, 0, 0);
+  FAlarm.AlarmTime := Date + EncodeTime(frmSettings.edtHour.Value,
+    frmSettings.edtMinute.Value, 0, 0);
 
-  FAlarm.Silent := frmClockSettings.cbxSilentAlarm.Checked;
+  FAlarm.Silent := frmSettings.cbxSilentAlarm.Checked;
 
-  if frmClockSettings.TimerActive then
+  if frmSettings.TimerActive then
   begin
     for i := 0 to High(FTimer.Days) do
       FTimer.Days[i] := False;
 
-    Minutes := StrToInt(frmClockSettings.stxtTimer.Caption);
+    Minutes := StrToInt(frmSettings.stxtTimer.Caption);
 
     if Minutes > 0 then
     begin
@@ -1312,10 +1321,10 @@ begin
       FTimer.Days[DayOfWeek(FTimer.AlarmTime)] := True;
     end;
 
-    frmClockSettings.TimerActive := False;
+    frmSettings.TimerActive := False;
   end;
 
-  if frmClockSettings.cbxGetReminders.Checked then
+  if frmSettings.cbxGetReminders.Checked then
   begin
     frmReminderList.CanEdit := False;
 
@@ -1361,17 +1370,28 @@ begin
     SetMusicSource(FMusicSource);
   end;
 
-  FServerAddress := frmClockSettings.edtServerAddress.Text;
-  FServerPort := frmClockSettings.edtServerPort.Text;
+  FServerAddress := frmSettings.edtServerAddress.Text;
+  FServerPort := frmSettings.edtServerPort.Text;
 
   UpdateReminders;
+
+  if frmSettings.cbxForceFullscreen.Checked then
+  begin
+    SetCursorType;
+    BorderStyle := bsNone;
+  end
+  else
+  begin
+    SetCursorType;
+    BorderStyle := bsSingle;
+  end;
 end;
 
 procedure TfrmClockMain.UpdateReminders;
 var
   i: Integer;
 begin
-  if frmClockSettings.cbxEnableReminders.Checked then
+  if frmSettings.cbxEnableReminders.Checked then
     FCurrentReminders := frmReminders.GetCurrentReminders
   else SetLength(FCurrentReminders, 0);
 
@@ -1379,8 +1399,8 @@ begin
   for i := 1 to 7 do
     FReminderAlarm.Days[i] := Length(FCurrentReminders) > 0;
 
-  FReminderAlarm.AlarmTime := Date + EncodeTime(frmClockSettings.edtRemHour.Value,
-    frmClockSettings.edtRemMinute.Value, 0, 0);
+  FReminderAlarm.AlarmTime := Date + EncodeTime(frmSettings.edtRemHour.Value,
+    frmSettings.edtRemMinute.Value, 0, 0);
 end;
 
 procedure TfrmClockMain.Shutdown(Reboot: boolean);
