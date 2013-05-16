@@ -7,7 +7,7 @@ object frmBlack: TfrmBlack
   BorderStyle = bsNone
   Caption = 'frmBlack'
   Color = clBlack
-  FormStyle = fsStayOnTop
+  OnActivate = FormActivate
   OnClick = FormClick
   Position = poDesktopCenter
   LCLVersion = '1.0.4.0'

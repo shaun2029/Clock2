@@ -13,6 +13,7 @@ type
   { TfrmBlack }
 
   TfrmBlack = class(TForm)
+    procedure FormActivate(Sender: TObject);
     procedure FormClick(Sender: TObject);
   private
     { private declarations }
@@ -26,6 +27,11 @@ var
 implementation
 
 { TfrmBlack }
+
+procedure TfrmBlack.FormActivate(Sender: TObject);
+begin
+  gdk_window_fullscreen(PGtkWidget(Handle)^.window);
+end;
 
 procedure TfrmBlack.FormClick(Sender: TObject);
 begin

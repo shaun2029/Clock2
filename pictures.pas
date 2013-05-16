@@ -21,8 +21,8 @@ type
     tmrEvent: TTimer;
     procedure FormActivate(Sender: TObject);
     procedure FormClick(Sender: TObject);
-    procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
     procedure FormHide(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure tmrEventTimer(Sender: TObject);
@@ -116,16 +116,25 @@ begin
   FLastEvent := 0;
   FFindFiles := nil;
   FPictureList := nil;
-{$IFNDEF DEBUG}
-  Self.Width := Screen.Width;
-  Self.Height := Screen.Height;
-  Self.WindowState := wsMaximized;
-{$ENDIF}
   Mouse.CursorPos := Point(Screen.Width, Screen.Height);
 
   FRandomPictures := True;
 
   LoadSettings;
+end;
+
+procedure TfrmPictures.FormDestroy(Sender: TObject);
+begin
+  SaveSettings;
+
+  if Assigned(FPictureList) then FreeAndNil(FPictureList);
+
+  if Assigned(FFindFiles) then
+  begin
+    FFindFiles.Terminate;
+    FFindFiles.WaitFor;
+    FreeAndNil(FFindFiles);
+  end;
 end;
 
 procedure TfrmPictures.FormHide(Sender: TObject);
@@ -140,28 +149,18 @@ begin
   tmrEvent.Enabled := True;
 end;
 
-procedure TfrmPictures.FormClose(Sender: TObject; var CloseAction: TCloseAction);
-begin
-  SaveSettings;
-
-  if Assigned(FPictureList) then FreeAndNil(FPictureList);
-
-  if Assigned(FFindFiles) then
-  begin
-    FFindFiles.Terminate;
-    FFindFiles.WaitFor;
-    FreeAndNil(FFindFiles);
-  end;
-end;
-
-
 procedure TfrmPictures.FormClick(Sender: TObject);
 begin
-  Close;
+  ModalResult := mrOk;
 end;
 
 procedure TfrmPictures.FormActivate(Sender: TObject);
+var
+  ScreenBounds: TRect;
 begin
+  ScreenBounds := Screen.MonitorFromWindow(Handle).BoundsRect;
+  with ScreenBounds do
+    SetBounds(Left, Top, Right - Left, Bottom - Top) ;
   gdk_window_fullscreen(PGtkWidget(Handle)^.window);
 end;
 

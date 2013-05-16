@@ -12,8 +12,8 @@ object frmPictures: TfrmPictures
   KeyPreview = True
   OnActivate = FormActivate
   OnClick = FormClick
-  OnClose = FormClose
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   OnHide = FormHide
   OnShow = FormShow
   Position = poScreenCenter

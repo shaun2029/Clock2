@@ -1256,7 +1256,9 @@ begin
   if frmSettings.edtPicturePath.Text <> '' then
   begin
     if WaitForMedia(frmSettings.edtPicturePath.Text) then
+    begin
       FormShowModal(frmPictures);
+    end;
   end;
 
   imgPictures.Picture.Assign(imgOn.Picture);
