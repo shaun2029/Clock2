@@ -14262,7 +14262,6 @@ object frmClockMain: TfrmClockMain
     OnClick = imgExitClick
   end
   object tmrTime: TTimer
-    Interval = 250
     OnTimer = tmrTimeTimer
     left = 458
     top = 128

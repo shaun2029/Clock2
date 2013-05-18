@@ -35,6 +35,7 @@ type
     procedure DestroyPlayProcess;
     procedure EqualizerDefault(Filename: string);
     procedure FlushStdout;
+    procedure FlushStderr;
     function GetState: TMusicPlayerState;
     procedure PlaySong(Song: string);
     procedure SetVolume(Volume: integer);
@@ -68,7 +69,7 @@ const
   {$ifdef CPUARM}
   BUFFER_TIME = 18; // in seconds
   {$else}
-  BUFFER_TIME = 3;
+  BUFFER_TIME = 2;
   {$endif}
 
   // Buffer size in KB. Based on 44100 samples per sec * 2 bytes
@@ -184,13 +185,39 @@ begin
   end;
 end;
 
+procedure TMusicPlayer.FlushStderr;
+const
+  BLOCK_SIZE = 4096;
+var
+  Buffer: array [0..BLOCK_SIZE] of char;
+  Bytes, ReadSize: integer;
+begin
+  if Assigned(FPlayProcess) then
+  begin
+    Bytes := FPlayProcess.Stderr.NumBytesAvailable;
+
+    while Bytes > 0 do
+    begin
+      if Bytes > BLOCK_SIZE then
+        ReadSize := BLOCK_SIZE
+      else
+        ReadSize := Bytes;
+
+      FPlayProcess.Stderr.Read(Buffer[0], ReadSize);
+
+      Bytes := Bytes - ReadSize;
+    end;
+  end;
+end;
+
 function TMusicPlayer.GetState: TMusicPlayerState;
 begin
   if FState = mpsPlaying then
   begin
     // Play buffer
     if not FPlayProcess.Running
-      or (FPlayProcess.Output.NumBytesAvailable = 0) then
+      or ((FPlayProcess.Output.NumBytesAvailable = 0)
+      and (FPlayProcess.Stderr.NumBytesAvailable = 0)) then
     begin
       if not FPlayProcess.Running or (Now > FPlayTimeout) then
       begin
@@ -210,6 +237,7 @@ begin
     end;
 
     FlushStdout;
+    FlushStderr;
   end;
 
   Result := FState;
