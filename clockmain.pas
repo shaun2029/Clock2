@@ -227,22 +227,23 @@ begin
     else Player := nil;
   end;
 
-  WaitForMedia(Player.SearchPath);
-
-  if Assigned(Player) then
+  if WaitForMedia(Player.SearchPath) then
   begin
-    case FMusicState of
-      msOff, msPaused:
-        begin
-          Player.Play;
-        end;
-      msPlaying:
-        begin
-          Player.Next; // if playing play next track
-	      end;
-    end;
+    if Assigned(Player) then
+    begin
+      case FMusicState of
+        msOff, msPaused:
+          begin
+            Player.Play;
+          end;
+        msPlaying:
+          begin
+            Player.Next; // if playing play next track
+	        end;
+      end;
 
-    FMusicState := msPlaying;
+      FMusicState := msPlaying;
+    end;
   end;
 end;
 
@@ -1214,7 +1215,7 @@ function TfrmClockMain.FormShowModal(MyForm: TForm): integer;
 begin
   gdk_window_unfullscreen(PGtkWidget(Handle)^.window);
 
-  MyForm.ShowModal;
+  Result := MyForm.ShowModal;
 
   if frmSettings.cbxForceFullscreen.Checked then
     gdk_window_fullscreen(PGtkWidget(Handle)^.window);
