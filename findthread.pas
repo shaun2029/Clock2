@@ -140,8 +140,6 @@ begin
       DirList.Add(StartDir + SR.Name);
 
     IsFound := FindNext(SR) = 0;
-
-    Sleep(10);
   end;
   FindClose(SR);
 
