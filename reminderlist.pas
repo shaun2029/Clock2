@@ -5,19 +5,31 @@ unit ReminderList;
 interface
 
 uses
-  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls, Reminders;
+  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
+  Buttons, Reminders;
 
 type
 
   { TfrmReminderList }
 
   TfrmReminderList = class(TForm)
+    btnDelete: TBitBtn;
+    btnEdit: TBitBtn;
+    btnAdd: TBitBtn;
+    btnOk: TBitBtn;
     lbxReminders: TListBox;
+    procedure btnAddClick(Sender: TObject);
+    procedure btnDeleteClick(Sender: TObject);
+    procedure btnEditClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: char);
     procedure FormShow(Sender: TObject);
+    procedure lbxRemindersDblClick(Sender: TObject);
   private
     FCanEdit: boolean;
+    procedure AddReminder;
+    procedure DeleteReminder(Index: integer);
+    procedure EditReminder(Index: integer);
     procedure SetCanEdit(const AValue: boolean);
     { private declarations }
   public
@@ -37,63 +49,26 @@ implementation
 { TfrmReminderList }
 
 procedure TfrmReminderList.FormKeyPress(Sender: TObject; var Key: char);
-var
-  Index: integer;
 begin
   if Key = #27 then
   begin
-    Self.Close
+    Close
   end
   else if FCanEdit then
   begin
     if (Key = 'd') or (Key = 'D') then
     begin
-      Index := lbxReminders.ItemIndex;
-
-      FReminders.DeleteReminder(lbxReminders.ItemIndex);
-      lbxReminders.Clear;
-      FReminders.PopulateList(lbxReminders.Items);
-
-      if Index < lbxReminders.Count - 1 then
-        lbxReminders.ItemIndex := Index
-      else if lbxReminders.Count > 0 then
-        lbxReminders.ItemIndex := lbxReminders.Count - 1;
-
+      DeleteReminder(lbxReminders.ItemIndex);
       Key := #0;
     end
     else if (Key = #13) or (Key = 'e') or (Key = 'E') then
     begin
-      Index := lbxReminders.ItemIndex;
-
-      FReminders.DisplayReminder(Index);
-
-      FReminders.Editing := True;
-
-      if FReminders.ShowModal = mrOk then
-      begin
-        FReminders.UpdateWithCurrentReminder(Index);
-
-        lbxReminders.Clear;
-        FReminders.PopulateList(lbxReminders.Items);
-
-        if Index < lbxReminders.Count - 1 then
-          lbxReminders.ItemIndex := Index
-        else if lbxReminders.Count > 0 then
-          lbxReminders.ItemIndex := lbxReminders.Count - 1;
-      end;
-
-      FReminders.Editing := False;
-
+      EditReminder(lbxReminders.ItemIndex);
       Key := #0;
     end
     else if (Key = 'a') or (Key = 'A') then
     begin
-      frmReminders.ShowModal;
-
-      lbxReminders.Clear;
-      FReminders.SortReminders;
-      FReminders.PopulateList(lbxReminders.Items);
-
+      AddReminder;
       Key := #0;
     end;
   end
@@ -105,9 +80,68 @@ begin
   end;
 end;
 
+procedure TfrmReminderList.EditReminder(Index: integer);
+begin
+  FReminders.DisplayReminder(Index);
+
+  FReminders.Editing := True;
+
+  if FReminders.ShowModal = mrOk then
+  begin
+    FReminders.UpdateWithCurrentReminder(Index);
+
+    lbxReminders.Clear;
+    FReminders.PopulateList(lbxReminders.Items);
+
+    if Index < lbxReminders.Count - 1 then
+      lbxReminders.ItemIndex := Index
+    else if lbxReminders.Count > 0 then
+      lbxReminders.ItemIndex := lbxReminders.Count - 1;
+  end;
+
+  FReminders.Editing := False;
+end;
+
+procedure TfrmReminderList.AddReminder;
+begin
+  frmReminders.ShowModal;
+
+  lbxReminders.Clear;
+  FReminders.SortReminders;
+  FReminders.PopulateList(lbxReminders.Items);
+end;
+
+procedure TfrmReminderList.DeleteReminder(Index: integer);
+begin
+  FReminders.DeleteReminder(lbxReminders.ItemIndex);
+  lbxReminders.Clear;
+  FReminders.PopulateList(lbxReminders.Items);
+
+  if Index < lbxReminders.Count - 1 then
+    lbxReminders.ItemIndex := Index
+  else if lbxReminders.Count > 0 then
+    lbxReminders.ItemIndex := lbxReminders.Count - 1;
+end;
+
+
 procedure TfrmReminderList.FormCreate(Sender: TObject);
 begin
   FCanEdit := False;
+end;
+
+procedure TfrmReminderList.btnAddClick(Sender: TObject);
+begin
+  AddReminder;
+end;
+
+procedure TfrmReminderList.btnDeleteClick(Sender: TObject);
+begin
+  DeleteReminder(lbxReminders.ItemIndex);
+end;
+
+procedure TfrmReminderList.btnEditClick(Sender: TObject);
+begin
+  EditReminder(lbxReminders.ItemIndex);
 end;
 
 procedure TfrmReminderList.FormShow(Sender: TObject);
@@ -116,6 +150,11 @@ begin
   FReminders.SortReminders;
   FReminders.PopulateList(lbxReminders.Items);
   if lbxReminders.Count > 0 then lbxReminders.ItemIndex := 0;
+end;
+
+procedure TfrmReminderList.lbxRemindersDblClick(Sender: TObject);
+begin
+  EditReminder(lbxReminders.ItemIndex);
 end;
 
 procedure TfrmReminderList.SetCanEdit(const AValue: boolean);

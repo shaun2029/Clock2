@@ -14,7 +14,7 @@
       <CharSet Value=""/>
       <StringTable ProductVersion=""/>
     </VersionInfo>
-    <BuildModes Count="2" Active="i386">
+    <BuildModes Count="2" Active="debug">
       <Item1 Name="debug" Default="True"/>
       <Item2 Name="i386">
         <CompilerOptions>
@@ -75,16 +75,16 @@
         <PackageName Value="LCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="52">
+    <Units Count="54">
       <Unit0>
         <Filename Value="Clock2.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="Clock2"/>
-        <EditorIndex Value="17"/>
+        <EditorIndex Value="18"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="18" Y="12"/>
-        <UsageCount Value="82"/>
+        <UsageCount Value="97"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -96,13 +96,13 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Pictures"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="13"/>
+        <EditorIndex Value="14"/>
         <WindowIndex Value="0"/>
         <TopLine Value="143"/>
-        <CursorPos X="134" Y="150"/>
-        <UsageCount Value="82"/>
+        <CursorPos X="43" Y="148"/>
+        <UsageCount Value="97"/>
         <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit1>
       <Unit2>
@@ -113,7 +113,7 @@
         <UnitName Value="Main"/>
         <TopLine Value="211"/>
         <CursorPos X="21" Y="218"/>
-        <UsageCount Value="12"/>
+        <UsageCount Value="10"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit2>
       <Unit3>
@@ -122,7 +122,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="161"/>
         <CursorPos X="22" Y="169"/>
-        <UsageCount Value="19"/>
+        <UsageCount Value="17"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit3>
       <Unit4>
@@ -130,7 +130,7 @@
         <UnitName Value="main_ipc_unit"/>
         <TopLine Value="25"/>
         <CursorPos X="42" Y="39"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="7"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit4>
       <Unit5>
@@ -139,7 +139,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="26"/>
         <CursorPos X="3" Y="34"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="8"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit5>
       <Unit6>
@@ -147,7 +147,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="683"/>
         <CursorPos X="82" Y="691"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="8"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit6>
       <Unit7>
@@ -158,7 +158,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="125"/>
         <CursorPos X="68" Y="134"/>
-        <UsageCount Value="74"/>
+        <UsageCount Value="89"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit7>
@@ -168,7 +168,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="421"/>
         <CursorPos X="1" Y="437"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="7"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit8>
       <Unit9>
@@ -177,7 +177,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="7"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="7"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit9>
       <Unit10>
@@ -186,7 +186,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="49"/>
         <CursorPos X="1" Y="1"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="7"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit10>
       <Unit11>
@@ -195,7 +195,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="109"/>
         <CursorPos X="1" Y="138"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="7"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit11>
       <Unit12>
@@ -203,7 +203,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="3130"/>
         <CursorPos X="1" Y="3150"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="7"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit12>
       <Unit13>
@@ -213,11 +213,11 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Settings"/>
-        <EditorIndex Value="18"/>
+        <EditorIndex Value="19"/>
         <WindowIndex Value="0"/>
         <TopLine Value="68"/>
         <CursorPos X="1" Y="84"/>
-        <UsageCount Value="55"/>
+        <UsageCount Value="70"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit13>
@@ -227,7 +227,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="174"/>
         <CursorPos X="1" Y="182"/>
-        <UsageCount Value="11"/>
+        <UsageCount Value="9"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit14>
       <Unit15>
@@ -235,7 +235,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="3"/>
         <CursorPos X="23" Y="23"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="8"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit15>
       <Unit16>
@@ -245,7 +245,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="128"/>
         <CursorPos X="69" Y="159"/>
-        <UsageCount Value="64"/>
+        <UsageCount Value="79"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit16>
       <Unit17>
@@ -255,11 +255,11 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ClockMain"/>
-        <EditorIndex Value="14"/>
+        <EditorIndex Value="15"/>
         <WindowIndex Value="0"/>
         <TopLine Value="221"/>
         <CursorPos X="1" Y="237"/>
-        <UsageCount Value="64"/>
+        <UsageCount Value="79"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -268,11 +268,11 @@
         <Filename Value="metoffice.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="MetOffice"/>
-        <EditorIndex Value="12"/>
+        <EditorIndex Value="13"/>
         <WindowIndex Value="0"/>
         <TopLine Value="427"/>
         <CursorPos X="35" Y="427"/>
-        <UsageCount Value="64"/>
+        <UsageCount Value="79"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit18>
@@ -285,7 +285,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="28"/>
         <CursorPos X="1" Y="54"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="7"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit19>
       <Unit20>
@@ -294,7 +294,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="954"/>
         <CursorPos X="1" Y="971"/>
-        <UsageCount Value="13"/>
+        <UsageCount Value="21"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit20>
@@ -305,11 +305,12 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Reminders"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="5"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="78"/>
-        <CursorPos X="1" Y="86"/>
-        <UsageCount Value="60"/>
+        <TopLine Value="315"/>
+        <CursorPos X="32" Y="331"/>
+        <UsageCount Value="75"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -322,7 +323,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
-        <UsageCount Value="41"/>
+        <UsageCount Value="56"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit22>
@@ -334,7 +335,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="79"/>
         <CursorPos X="26" Y="82"/>
-        <UsageCount Value="42"/>
+        <UsageCount Value="57"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit23>
@@ -343,7 +344,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1428"/>
         <CursorPos X="1" Y="1445"/>
-        <UsageCount Value="11"/>
+        <UsageCount Value="9"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit24>
       <Unit25>
@@ -351,7 +352,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="491"/>
         <CursorPos X="1" Y="509"/>
-        <UsageCount Value="20"/>
+        <UsageCount Value="18"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit25>
       <Unit26>
@@ -359,7 +360,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="5308"/>
         <CursorPos X="1" Y="5323"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="8"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit26>
       <Unit27>
@@ -368,28 +369,28 @@
         <WindowIndex Value="0"/>
         <TopLine Value="105"/>
         <CursorPos X="1" Y="128"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="8"/>
       </Unit27>
       <Unit28>
         <Filename Value="../../../lazarus/lcl/interfaces/gtk2/gtk2proc.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="3576"/>
         <CursorPos X="1" Y="3594"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="8"/>
       </Unit28>
       <Unit29>
         <Filename Value="../../../lazarus/lcl/interfaces/gtk2/gtk2callback.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="2400"/>
         <CursorPos X="1" Y="2415"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="8"/>
       </Unit29>
       <Unit30>
         <Filename Value="../../../lazarus/lcl/interfaces/gtk2/gtk2widgetset.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="2375"/>
         <CursorPos X="1" Y="2391"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="8"/>
       </Unit30>
       <Unit31>
         <Filename Value="id3engine.pas"/>
@@ -397,18 +398,18 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1070"/>
         <CursorPos X="1" Y="1082"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="7"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit31>
       <Unit32>
         <Filename Value="musicplayer.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="MusicPlayer"/>
-        <EditorIndex Value="16"/>
+        <EditorIndex Value="17"/>
         <WindowIndex Value="0"/>
         <TopLine Value="204"/>
         <CursorPos X="61" Y="236"/>
-        <UsageCount Value="41"/>
+        <UsageCount Value="56"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit32>
@@ -417,7 +418,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1037"/>
         <CursorPos X="1" Y="1049"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="8"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit33>
       <Unit34>
@@ -425,7 +426,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="225"/>
         <CursorPos X="1" Y="240"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="7"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit34>
       <Unit35>
@@ -434,7 +435,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1079"/>
         <CursorPos X="1" Y="1094"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="7"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit35>
       <Unit36>
@@ -442,7 +443,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="223"/>
         <CursorPos X="1" Y="235"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="7"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit36>
       <Unit37>
@@ -451,7 +452,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="799"/>
         <CursorPos X="12" Y="810"/>
-        <UsageCount Value="11"/>
+        <UsageCount Value="9"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit37>
       <Unit38>
@@ -459,7 +460,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="7"/>
         <DefaultSyntaxHighlighter Value="None"/>
       </Unit38>
       <Unit39>
@@ -467,7 +468,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="8"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit39>
       <Unit40>
@@ -477,11 +478,11 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ReminderList"/>
-        <EditorIndex Value="11"/>
+        <EditorIndex Value="12"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="97"/>
-        <CursorPos X="121" Y="103"/>
-        <UsageCount Value="41"/>
+        <TopLine Value="82"/>
+        <CursorPos X="51" Y="111"/>
+        <UsageCount Value="56"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -490,11 +491,11 @@
         <Filename Value="udpcommandserver.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="udpcommandserver"/>
-        <EditorIndex Value="10"/>
+        <EditorIndex Value="11"/>
         <WindowIndex Value="0"/>
         <TopLine Value="53"/>
         <CursorPos X="3" Y="53"/>
-        <UsageCount Value="41"/>
+        <UsageCount Value="56"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit41>
@@ -502,11 +503,11 @@
         <Filename Value="music.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="music"/>
-        <EditorIndex Value="8"/>
+        <EditorIndex Value="9"/>
         <WindowIndex Value="0"/>
         <TopLine Value="105"/>
         <CursorPos X="17" Y="116"/>
-        <UsageCount Value="41"/>
+        <UsageCount Value="56"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit42>
@@ -517,11 +518,11 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="black"/>
-        <EditorIndex Value="9"/>
+        <EditorIndex Value="10"/>
         <WindowIndex Value="0"/>
         <TopLine Value="14"/>
         <CursorPos X="1" Y="38"/>
-        <UsageCount Value="46"/>
+        <UsageCount Value="61"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -532,25 +533,25 @@
         <WindowIndex Value="0"/>
         <TopLine Value="35"/>
         <CursorPos X="10" Y="61"/>
-        <UsageCount Value="15"/>
+        <UsageCount Value="13"/>
       </Unit44>
       <Unit45>
         <Filename Value="/usr/share/fpcsrc/2.6.0/packages/gtk2/src/gtk+/gtk/gtkwidget.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="4" Y="5"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="8"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit45>
       <Unit46>
         <Filename Value="sync.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="sync"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="7"/>
         <WindowIndex Value="0"/>
         <TopLine Value="45"/>
         <CursorPos X="48" Y="46"/>
-        <UsageCount Value="41"/>
+        <UsageCount Value="56"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit46>
@@ -558,11 +559,11 @@
         <Filename Value="udpclient.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="udpclient"/>
-        <EditorIndex Value="7"/>
+        <EditorIndex Value="8"/>
         <WindowIndex Value="0"/>
         <TopLine Value="111"/>
         <CursorPos X="22" Y="111"/>
-        <UsageCount Value="41"/>
+        <UsageCount Value="56"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit47>
@@ -572,7 +573,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="141"/>
         <CursorPos X="1" Y="157"/>
-        <UsageCount Value="11"/>
+        <UsageCount Value="9"/>
       </Unit48>
       <Unit49>
         <Filename Value="synapse/source/lib/blcksock.pas"/>
@@ -580,7 +581,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="430"/>
         <CursorPos X="31" Y="430"/>
-        <UsageCount Value="14"/>
+        <UsageCount Value="12"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit49>
       <Unit50>
@@ -594,7 +595,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="38"/>
         <CursorPos X="49" Y="50"/>
-        <UsageCount Value="34"/>
+        <UsageCount Value="49"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -605,132 +606,160 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="PlaylistCreator"/>
-        <EditorIndex Value="15"/>
+        <EditorIndex Value="16"/>
         <WindowIndex Value="0"/>
         <TopLine Value="29"/>
         <CursorPos X="3" Y="45"/>
-        <UsageCount Value="14"/>
+        <UsageCount Value="22"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit51>
+      <Unit52>
+        <Filename Value="datepicker.pas"/>
+        <ComponentName Value="frmDatePicker"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="DatePicker"/>
+        <EditorIndex Value="6"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="15"/>
+        <CursorPos X="92" Y="19"/>
+        <UsageCount Value="17"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit52>
+      <Unit53>
+        <Filename Value="/usr/share/fpcsrc/2.6.0/packages/fcl-base/src/inifiles.pp"/>
+        <UnitName Value="IniFiles"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="638"/>
+        <CursorPos X="16" Y="656"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit53>
     </Units>
-    <JumpHistory Count="29" HistoryIndex="28">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="waitformedia.pas"/>
-        <Caret Line="44" Column="1" TopLine="37"/>
+        <Filename Value="reminders.pas"/>
+        <Caret Line="386" Column="3" TopLine="364"/>
       </Position1>
       <Position2>
-        <Filename Value="waitformedia.pas"/>
-        <Caret Line="47" Column="1" TopLine="37"/>
+        <Filename Value="reminders.pas"/>
+        <Caret Line="385" Column="3" TopLine="363"/>
       </Position2>
       <Position3>
-        <Filename Value="waitformedia.pas"/>
-        <Caret Line="43" Column="1" TopLine="37"/>
+        <Filename Value="reminders.pas"/>
+        <Caret Line="386" Column="3" TopLine="364"/>
       </Position3>
       <Position4>
-        <Filename Value="waitformedia.pas"/>
-        <Caret Line="62" Column="1" TopLine="37"/>
+        <Filename Value="reminders.pas"/>
+        <Caret Line="377" Column="4" TopLine="47"/>
       </Position4>
       <Position5>
-        <Filename Value="waitformedia.pas"/>
-        <Caret Line="64" Column="1" TopLine="38"/>
+        <Filename Value="reminderlist.pas"/>
+        <Caret Line="87" Column="33" TopLine="55"/>
       </Position5>
       <Position6>
-        <Filename Value="../../../lazarus/lcl/include/customform.inc"/>
-        <Caret Line="971" Column="1" TopLine="954"/>
+        <Filename Value="reminders.pas"/>
+        <Caret Line="155" Column="39" TopLine="144"/>
       </Position6>
       <Position7>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="263" Column="26" TopLine="241"/>
+        <Filename Value="reminders.pas"/>
+        <Caret Line="184" Column="64" TopLine="159"/>
       </Position7>
       <Position8>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="931" Column="18" TopLine="905"/>
+        <Filename Value="reminders.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position8>
       <Position9>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="939" Column="21" TopLine="913"/>
+        <Filename Value="reminders.pas"/>
+        <Caret Line="56" Column="29" TopLine="30"/>
       </Position9>
       <Position10>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1095" Column="18" TopLine="1069"/>
+        <Filename Value="reminders.pas"/>
+        <Caret Line="90" Column="17" TopLine="64"/>
       </Position10>
       <Position11>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1170" Column="16" TopLine="1144"/>
+        <Filename Value="reminders.pas"/>
+        <Caret Line="168" Column="1" TopLine="137"/>
       </Position11>
       <Position12>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1219" Column="13" TopLine="1198"/>
+        <Filename Value="reminders.pas"/>
+        <Caret Line="161" Column="1" TopLine="137"/>
       </Position12>
       <Position13>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1230" Column="16" TopLine="1204"/>
+        <Filename Value="reminders.pas"/>
+        <Caret Line="163" Column="1" TopLine="137"/>
       </Position13>
       <Position14>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="261" Column="28" TopLine="242"/>
+        <Filename Value="reminders.pas"/>
+        <Caret Line="164" Column="1" TopLine="138"/>
       </Position14>
       <Position15>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="946" Column="18" TopLine="920"/>
+        <Filename Value="reminders.pas"/>
+        <Caret Line="157" Column="14" TopLine="152"/>
       </Position15>
       <Position16>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1093" Column="18" TopLine="1067"/>
+        <Filename Value="reminders.pas"/>
+        <Caret Line="162" Column="20" TopLine="152"/>
       </Position16>
       <Position17>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1168" Column="15" TopLine="1142"/>
+        <Filename Value="reminders.pas"/>
+        <Caret Line="190" Column="18" TopLine="165"/>
       </Position17>
       <Position18>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1217" Column="13" TopLine="1187"/>
+        <Filename Value="reminders.pas"/>
+        <Caret Line="190" Column="18" TopLine="165"/>
       </Position18>
       <Position19>
-        <Filename Value="clockmain.pas"/>
+        <Filename Value="reminders.pas"/>
         <Caret Line="1" Column="1" TopLine="1"/>
       </Position19>
       <Position20>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="165" Column="27" TopLine="141"/>
+        <Filename Value="reminders.pas"/>
+        <Caret Line="14" Column="68" TopLine="1"/>
       </Position20>
       <Position21>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="261" Column="28" TopLine="235"/>
+        <Filename Value="reminders.pas"/>
+        <Caret Line="36" Column="24" TopLine="10"/>
       </Position21>
       <Position22>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="reminders.pas"/>
+        <Caret Line="98" Column="11" TopLine="72"/>
       </Position22>
       <Position23>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1068" Column="37" TopLine="1061"/>
+        <Filename Value="reminders.pas"/>
+        <Caret Line="314" Column="28" TopLine="288"/>
       </Position23>
       <Position24>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1181" Column="37" TopLine="1155"/>
+        <Filename Value="reminders.pas"/>
+        <Caret Line="331" Column="28" TopLine="305"/>
       </Position24>
       <Position25>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="reminders.pas"/>
+        <Caret Line="390" Column="16" TopLine="364"/>
       </Position25>
       <Position26>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="168" Column="24" TopLine="144"/>
+        <Filename Value="reminders.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position26>
       <Position27>
-        <Filename Value="findthread.pas"/>
-        <Caret Line="144" Column="12" TopLine="90"/>
+        <Filename Value="reminders.pas"/>
+        <Caret Line="14" Column="68" TopLine="1"/>
       </Position27>
       <Position28>
-        <Filename Value="findthread.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="reminders.pas"/>
+        <Caret Line="36" Column="24" TopLine="10"/>
       </Position28>
       <Position29>
-        <Filename Value="findpicsthread.pas"/>
-        <Caret Line="102" Column="1" TopLine="78"/>
+        <Filename Value="reminders.pas"/>
+        <Caret Line="98" Column="16" TopLine="72"/>
       </Position29>
+      <Position30>
+        <Filename Value="reminders.pas"/>
+        <Caret Line="314" Column="32" TopLine="298"/>
+      </Position30>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

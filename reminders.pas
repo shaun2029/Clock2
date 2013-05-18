@@ -11,7 +11,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs,
-  StdCtrls, EditBtn, ExtCtrls, DatePicker, IniFiles, LCLProc;
+  StdCtrls, EditBtn, ExtCtrls, IniFiles, LCLProc, Buttons, Calendar;
 
 type
 
@@ -31,14 +31,17 @@ type
   { TfrmReminders }
 
   TfrmReminders = class(TForm)
+    btnOk: TBitBtn;
+    btnCancel: TBitBtn;
+    Calendar: TCalendar;
     cgrpWarning: TCheckGroup;
-    edtDate: TDateEdit;
+    GroupBox1: TGroupBox;
     mmoDetail: TMemo;
     rgrpKind: TRadioGroup;
+    procedure btnOkClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: char);
-    procedure FormShow(Sender: TObject);
   private
     FEditing: boolean;
     FReminders: TReminders;
@@ -76,6 +79,12 @@ implementation
 
 { TfrmReminders }
 
+procedure TfrmReminders.btnOkClick(Sender: TObject);
+begin
+  if not FEditing then AddCurrentReminder;
+  ModalResult := mrOk;
+end;
+
 procedure TfrmReminders.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
   WriteReminders;
@@ -86,6 +95,7 @@ begin
   FFilename := ChangeFileExt(GetAppConfigFile(False), '_reminders.cfg');
   ReadReminders;
   FEditing := False;
+  Calendar.DateTime := Now;
 end;
 
 procedure TfrmReminders.FormKeyPress(Sender: TObject; var Key: char);
@@ -97,19 +107,7 @@ begin
   else if Key = #13 then
   begin
     if not FEditing then AddCurrentReminder;
-    Self.ModalResult := mrOk;
-  end;
-end;
-
-procedure TfrmReminders.FormShow(Sender: TObject);
-begin
-  if not FEditing then
-  begin
-    if frmDatePicker.ShowModal = mrOk then
-    begin
-      edtDate.Date := frmDatePicker.Calendar.DateTime;
-    end
-    else Self.ModalResult := mrCancel;
+    ModalResult := mrOk;
   end;
 end;
 
@@ -161,6 +159,7 @@ var
   Section: string;
 begin
   Ini := TIniFile.Create(FFilename);
+  Ini.CacheUpdates := True;
 
   try
     for i := 1 to Length(FReminders) do
@@ -188,6 +187,7 @@ begin
     end;
   end;
 
+  Ini.UpdateFile;
   Ini.Free;
 end;
 
@@ -311,7 +311,7 @@ procedure TfrmReminders.AddCurrentReminder;
 var
   Rem: TReminder;
 begin
-  Rem.Date := edtDate.Date;
+  Rem.Date := Calendar.DateTime;
   Rem.Detail := mmoDetail.Text;
   Rem.Kind := TReminderKind(rgrpKind.ItemIndex);
   Rem.WarningDay := cgrpWarning.Checked[0];
@@ -328,7 +328,7 @@ begin
   // Out of bounds
   if (Index < 0) or (Index > Length(FReminders) - 1) then Exit;
 
-  Rem.Date := edtDate.Date;
+  Rem.Date := Calendar.DateTime;
   Rem.Detail := mmoDetail.Text;
   Rem.Kind := TReminderKind(rgrpKind.ItemIndex);
   Rem.WarningDay := cgrpWarning.Checked[0];
@@ -387,7 +387,7 @@ begin
 
   Rem := FReminders[Index];
 
-  edtDate.Date := Rem.Date;
+  Calendar.DateTime := Rem.Date;
   mmoDetail.Text := Rem.Detail;
   rgrpKind.ItemIndex := Ord(Rem.Kind);
   cgrpWarning.Checked[0] := Rem.WarningDay;
