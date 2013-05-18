@@ -8,7 +8,6 @@ object frmReminders: TfrmReminders
   ClientHeight = 440
   ClientWidth = 374
   KeyPreview = True
-  OnClose = FormClose
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
   Position = poMainFormCenter

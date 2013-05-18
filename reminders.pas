@@ -39,7 +39,6 @@ type
     mmoDetail: TMemo;
     rgrpKind: TRadioGroup;
     procedure btnOkClick(Sender: TObject);
-    procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: char);
   private
@@ -83,11 +82,6 @@ procedure TfrmReminders.btnOkClick(Sender: TObject);
 begin
   if not FEditing then AddCurrentReminder;
   ModalResult := mrOk;
-end;
-
-procedure TfrmReminders.FormClose(Sender: TObject; var CloseAction: TCloseAction);
-begin
-  WriteReminders;
 end;
 
 procedure TfrmReminders.FormCreate(Sender: TObject);
@@ -211,6 +205,7 @@ begin
   end;
 
   SetLength(FReminders, Length(FReminders) - 1);
+  WriteReminders;
 end;
 
 procedure TfrmReminders.SortReminders(Reminders: TReminders);
@@ -336,6 +331,7 @@ begin
   Rem.WarningWeek := cgrpWarning.Checked[2];
 
   FReminders[Index] := Rem;
+  WriteReminders;
 end;
 
 procedure TfrmReminders.RefreshReminders;
