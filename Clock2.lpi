@@ -96,6 +96,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Pictures"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="13"/>
         <WindowIndex Value="0"/>
         <TopLine Value="143"/>
@@ -317,7 +318,6 @@
         <Filename Value="findpicsthread.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="FindPicsThread"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
