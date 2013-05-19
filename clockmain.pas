@@ -1155,22 +1155,23 @@ begin
 end;
 
 procedure TfrmClockMain.imgUpdateMusicClick(Sender: TObject);
-var
-  Player: TPlayer;
 begin
   imgUpdateMusic.Picture.Assign(imgOff.Picture);
   Application.ProcessMessages;
 
-  case FMusicSource of
-    msrcSleep: Player := FSleepPlayer;
-    msrcMeditation: Player := FMeditationPlayer;
-    msrcMusic: Player := FMusicPlayer;
-    else Player := nil;
+  if Assigned(FSleepPlayer) then
+  begin
+    FSleepPlayer.RescanSearchPath;
   end;
 
-  if Assigned(Player) then
+  if Assigned(FMeditationPlayer) then
   begin
-    Player.RescanSearchPath;
+    FMeditationPlayer.RescanSearchPath;
+  end;
+
+  if Assigned(FMusicPlayer) then
+  begin
+    FMusicPlayer.RescanSearchPath;
   end;
 
   imgUpdateMusic.Picture.Assign(imgOn.Picture);
