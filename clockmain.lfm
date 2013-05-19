@@ -1764,10 +1764,10 @@ object frmClockMain: TfrmClockMain
   end
   object lblTime: TLabel
     Cursor = crNone
-    Left = 330
+    Left = 326
     Height = 31
     Top = 9
-    Width = 292
+    Width = 300
     AutoSize = False
     Caption = 'lblTime'
     Font.Color = clWhite
@@ -2064,10 +2064,10 @@ object frmClockMain: TfrmClockMain
   end
   object labLocation: TLabel
     Cursor = crNone
-    Left = 330
+    Left = 326
     Height = 23
     Top = 37
-    Width = 292
+    Width = 300
     AutoSize = False
     Caption = 'Updating ...'
     Font.Color = clWhite
@@ -2076,21 +2076,6 @@ object frmClockMain: TfrmClockMain
     ParentColor = False
     ParentFont = False
     OnClick = lblTimeClick
-  end
-  object mmoHTML: TStaticText
-    Cursor = crNone
-    Left = 326
-    Height = 153
-    Top = 64
-    Width = 300
-    Color = clBlack
-    Font.Color = clWhite
-    Font.Height = -16
-    Font.Name = 'Sans'
-    OnClick = lblTimeClick
-    ParentFont = False
-    ParentColor = False
-    TabOrder = 0
   end
   object Label11: TLabel
     Cursor = crNone
@@ -15168,6 +15153,21 @@ object frmClockMain: TfrmClockMain
     ParentColor = False
     ParentFont = False
     OnClick = lbPreviousClick
+  end
+  object lbWeatherSummary: TLabel
+    Cursor = crNone
+    Left = 326
+    Height = 146
+    Top = 64
+    Width = 300
+    AutoSize = False
+    Font.Color = clWhite
+    Font.Height = -15
+    Font.Name = 'Sans'
+    ParentColor = False
+    ParentFont = False
+    WordWrap = True
+    OnClick = lblTimeClick
   end
   object tmrTime: TTimer
     OnTimer = tmrTimeTimer

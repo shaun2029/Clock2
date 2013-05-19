@@ -25,7 +25,7 @@ uses
   X, Xlib, CTypes, Black, WaitForMedia, Pictures;
 
 const
-  VERSION = '2.0.4';
+  VERSION = '2.0.5';
 
 type
   TMusicState = (msOff, msPlaying, msPaused);
@@ -69,6 +69,7 @@ type
     Label18: TLabel;
     Label19: TLabel;
     Label20: TLabel;
+    lbWeatherSummary: TLabel;
     lbExit: TLabel;
     lbMusic: TLabel;
     Label22: TLabel;
@@ -95,7 +96,6 @@ type
     lblTime: TLabel;
     UpdateMusic: TLabel;
     lbSettings: TLabel;
-    mmoHTML: TStaticText;
     tmrMinute: TTimer;
     tmrWeather: TTimer;
     tmrTime: TTimer;
@@ -172,6 +172,7 @@ type
     procedure PlayPreviousMusic;
     procedure SetCursorType;
     procedure SetMusicSource(Source: TMusicSource);
+    procedure UpdatingMusic(Player: TPlayer);
 
 {$IFDEF GRABXKEYS}
     procedure GrabMediaKeys;
@@ -463,7 +464,7 @@ begin
     end;
 
     // Do not update weather if reminder is displayed
-    if (mmoHTML.Font.Color = clYellow) then
+    if (lbWeatherSummary.Font.Color = clYellow) then
     begin
       tmrWeather.Enabled := False;
     end;
@@ -486,11 +487,11 @@ begin
 
     if (FReminderAlarm.State = asActive) and (ReminderState <> asActive) then
     begin
-      mmoHTML.Font.Color := clYellow;
+      lbWeatherSummary.Font.Color := clYellow;
       ReminderList := TStringList.Create;
       frmReminders.SortReminders(FCurrentReminders);
       frmReminders.PopulateList(FCurrentReminders, ReminderList);
-      mmoHTML.Caption := ReminderList.Text;
+      lbWeatherSummary.Caption := ReminderList.Text;
       ReminderList.Free;
       tmrWeather.Enabled := False;
     end;
@@ -714,7 +715,7 @@ var
 begin
   tmrWeather.Enabled := False;
 
-  mmoHTML.Font.Color := clWhite;
+  lbWeatherSummary.Font.Color := clWhite;
 
   FWeatherReport := '';
 
@@ -728,7 +729,7 @@ begin
         if i = 0 then
         begin
           labLocation.Caption := Forecast.Title;
-          mmoHTML.Caption := Forecast.Report;
+          lbWeatherSummary.Caption := Forecast.Report;
         end;
 
         DayLabels[i].Caption := Forecast.Day;
@@ -741,14 +742,14 @@ begin
       end
       else
       begin
-        mmoHTML.Caption := 'Failed to update weather' + LineEnding + 'Press W to configure Wifi.';
+        lbWeatherSummary.Caption := 'Failed to update weather' + LineEnding + 'Press W to configure Wifi.';
         tmrWeather.Enabled := True;
         Exit;
       end;
     except
       on E: exception do
       begin
-        mmoHTML.Caption := 'Exception updating weather' + LineEnding + 'Press W to configure Wifi.';
+        lbWeatherSummary.Caption := 'Exception updating weather' + LineEnding + 'Press W to configure Wifi.';
         DebugLn('Unhandled Exception: Failure during weather update.');
         DebugLn('Exception: ' + E.Message);
         tmrWeather.Enabled := True;
@@ -759,7 +760,7 @@ begin
     Application.ProcessMessages;
   end;
 
-  FWeatherReport := labLocation.Caption + LineEnding + mmoHTML.Caption;
+  FWeatherReport := labLocation.Caption + LineEnding + lbWeatherSummary.Caption;
   tmrWeather.Enabled := True;
 end;
 
@@ -1035,7 +1036,7 @@ begin
     end;
   end
   else if ((Key = ' ') or (Key = 'w') or (Key = 'W'))
-    and (mmoHtml.Font.Color = clYellow) then
+    and (lbWeatherSummary.Font.Color = clYellow) then
   begin
     UpdateWeather;
   end;
@@ -1116,7 +1117,7 @@ begin
     FTimer.ResetAlarm;
     FReminderAlarm.ResetAlarm;
   end
-  else if mmoHtml.Font.Color = clYellow then
+  else if lbWeatherSummary.Font.Color = clYellow then
   begin
     UpdateWeather;
   end
@@ -1154,26 +1155,46 @@ begin
   imgVolUp.Picture.Assign(imgOn.Picture);
 end;
 
+
+procedure TfrmClockMain.UpdatingMusic(Player: TPlayer);
+var
+  i: Integer;
+begin
+  if Assigned(Player) then
+  begin
+    repeat
+      i := Player.Tick;
+      Application.ProcessMessages;
+    until i < 0;
+  end;
+end;
+
 procedure TfrmClockMain.imgUpdateMusicClick(Sender: TObject);
 begin
   imgUpdateMusic.Picture.Assign(imgOff.Picture);
+  Self.Enabled := False;
+
   Application.ProcessMessages;
 
   if Assigned(FSleepPlayer) then
   begin
     FSleepPlayer.RescanSearchPath;
+    UpdatingMusic(FSleepPlayer);
   end;
 
   if Assigned(FMeditationPlayer) then
   begin
     FMeditationPlayer.RescanSearchPath;
+    UpdatingMusic(FMeditationPlayer);
   end;
 
   if Assigned(FMusicPlayer) then
   begin
     FMusicPlayer.RescanSearchPath;
+    UpdatingMusic(FMusicPlayer);
   end;
 
+  Self.Enabled := True;
   imgUpdateMusic.Picture.Assign(imgOn.Picture);
 end;
 
@@ -1317,7 +1338,7 @@ begin
     FTimer.ResetAlarm;
     FReminderAlarm.ResetAlarm;
   end
-  else if mmoHtml.Font.Color = clYellow then
+  else if lbWeatherSummary.Font.Color = clYellow then
   begin
     UpdateWeather;
   end;
@@ -1497,7 +1518,7 @@ begin
 //  Self.WindowState := wsMinimized;
 
   lblTime.Caption := 'Configure Wifi ...';
-  mmoHTML.Caption := '';
+  lbWeatherSummary.Caption := '';
   Application.ProcessMessages;
 
   Process := TProcess.Create(nil);
