@@ -136,7 +136,15 @@ end;
 
 procedure TfrmReminderList.btnDeleteClick(Sender: TObject);
 begin
-  DeleteReminder(lbxReminders.ItemIndex);
+  if lbxReminders.ItemIndex >= 0 then
+  begin
+    if MessageDlg('Delete Reminder',
+      Format('Delete reminder%s%s', [LineEnding, lbxReminders.Items.Strings[lbxReminders.ItemIndex]]),
+      mtConfirmation, [mbNo, mbYes], 0) = mrYes then
+    begin
+      DeleteReminder(lbxReminders.ItemIndex);
+    end;
+  end;
 end;
 
 procedure TfrmReminderList.btnEditClick(Sender: TObject);
