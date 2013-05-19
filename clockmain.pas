@@ -669,16 +669,18 @@ end;
 procedure TfrmClockMain.BacklightOn;
 begin
   try
+    Execute('xset dpms force on');
     Execute('backlight-on');
-  finally
+  except
   end;
 end;
 
 procedure TfrmClockMain.BacklightOff;
 begin
   try
+    Execute('xset dpms force off');
     Execute('backlight-off');
-  finally
+  except
   end;
 end;
 
@@ -1217,10 +1219,10 @@ begin
   imgDisplay.Picture.Assign(imgOff.Picture);
   Application.ProcessMessages;
 
-  {$IFNDEF DEBUG} BacklightOff; {$ENDIF}
+  BacklightOff;
   Form := TfrmBlack.Create(Self);
   FormShowModal(Form);
-  {$IFNDEF DEBUG} BacklightOn; {$ENDIF}
+  BacklightOn;
   Form.Free;
   imgDisplay.Picture.Assign(imgOn.Picture);
 end;
