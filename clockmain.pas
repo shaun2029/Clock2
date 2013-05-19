@@ -37,6 +37,7 @@ type
   TfrmClockMain = class(TForm)
     Image1: TImage;
     imgExit: TImage;
+    imgPrevious: TImage;
     imgOn: TImage;
     imgOff: TImage;
     imgDisplay: TImage;
@@ -71,6 +72,7 @@ type
     lbExit: TLabel;
     lbMusic: TLabel;
     Label22: TLabel;
+    lbPrevious: TLabel;
     lbPlay: TLabel;
     lbReminders: TLabel;
     lbWeather: TLabel;
@@ -117,6 +119,7 @@ type
     procedure lbNextClick(Sender: TObject);
     procedure lbPicturesClick(Sender: TObject);
     procedure lbPlayClick(Sender: TObject);
+    procedure lbPreviousClick(Sender: TObject);
     procedure lbSettingsClick(Sender: TObject);
     procedure lbSleepClick(Sender: TObject);
     procedure tmrTimeTimer(Sender: TObject);
@@ -166,6 +169,7 @@ type
     procedure Log(Message: string);
     procedure PauseMusic;
     procedure PlayMusic;
+    procedure PlayPreviousMusic;
     procedure SetCursorType;
     procedure SetMusicSource(Source: TMusicSource);
 
@@ -239,6 +243,33 @@ begin
         msPlaying:
           begin
             Player.Next; // if playing play next track
+	        end;
+      end;
+
+      FMusicState := msPlaying;
+    end;
+  end;
+end;
+
+procedure TfrmClockMain.PlayPreviousMusic;
+var
+  Player: TPlayer;
+begin
+  case FMusicSource of
+    msrcSleep: Player := FSleepPlayer;
+    msrcMeditation: Player := FMeditationPlayer;
+    msrcMusic: Player := FMusicPlayer;
+    else Player := nil;
+  end;
+
+  if WaitForMedia(Player.SearchPath) then
+  begin
+    if Assigned(Player) then
+    begin
+      case FMusicState of
+        msOff, msPaused, msPlaying:
+          begin
+            Player.Previous;
 	        end;
       end;
 
@@ -1241,6 +1272,16 @@ begin
   PlayMusic;
 
   imgNext.Picture.Assign(imgOn.Picture);
+end;
+
+procedure TfrmClockMain.lbPreviousClick(Sender: TObject);
+begin
+  imgPrevious.Picture.Assign(imgOff.Picture);
+  Application.ProcessMessages;
+
+  PlayPreviousMusic;
+
+  imgPrevious.Picture.Assign(imgOn.Picture);
 end;
 
 procedure TfrmClockMain.lbPicturesClick(Sender: TObject);

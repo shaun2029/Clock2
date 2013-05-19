@@ -15,6 +15,7 @@ uses
 type
 
   TPlayerState = (psStopped, psPlaying);
+  TPlayDirection = (pdCurrent, pdPrevious, pdNext);
 
   { TPlayer }
 
@@ -36,7 +37,7 @@ type
     function GetSongTitle: string;
     procedure LoadSettings;
     function PlayPlaylistSong: boolean;
-    procedure PlaySong(Next: boolean);
+    procedure PlaySong(Play: TPlayDirection);
     procedure RandomiseList(var List: TStringList);
     procedure SaveSettings;
     procedure StopSong;
@@ -48,6 +49,7 @@ type
        This is because mpg123 output buffering is an issue. }
     procedure Stop;
     procedure Next;
+    procedure Previous;
 
     procedure RescanSearchPath;
 
@@ -148,7 +150,7 @@ begin
 //DebugLn('Music: Play');
 
   FState := psPlaying;
-  PlaySong(False);
+  PlaySong(pdCurrent);
   
   Tick;
 end;
@@ -158,7 +160,17 @@ begin
 //DebugLn('Music: Next');
 
   FState := psPlaying;
-  PlaySong(True);
+  PlaySong(pdNext);
+
+  Tick;
+end;
+
+procedure TPlayer.Previous;
+begin
+//DebugLn('Music: Next');
+
+  FState := psPlaying;
+  PlaySong(pdPrevious);
 
   Tick;
 end;
@@ -194,19 +206,22 @@ begin
   begin
     if FMusicPlayer.State = mpsStopped then
     begin
-      PlaySong(True);
+      PlaySong(pdNext);
     end;
   end;
 end;
 
-procedure TPlayer.PlaySong(Next: boolean);
+procedure TPlayer.PlaySong(Play: TPlayDirection);
 var
   Filename: string;
 begin
   if PlayPlaylistSong then Exit;
 
-  if Next then Inc(FSongIndex , 1);
-  
+  case Play of
+    pdPrevious: Dec(FSongIndex , 1);
+    pdNext: Inc(FSongIndex , 1);
+  end;
+
   if FSongIndex < 0 then FSongIndex := FSongList.Count -1;
   if FSongIndex >= FSongList.Count then FSongIndex := 0;
 
