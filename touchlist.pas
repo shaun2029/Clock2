@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  ExtCtrls, types;
+  ExtCtrls, types, LCLProc;
 
 type
   TTouchItemSelected = procedure(Sender: TObject; Index: integer) of object;
@@ -22,12 +22,14 @@ type
     FScrollbarColour: TColor;
     FScrollbarPositionColour: TColor;
     FPageButtonColour: TColor;
+    FTrimItems: boolean;
 
     procedure MouseDown(Button: TMouseButton; Shift:TShiftState; X,Y:Integer); override;
     procedure SetItemIndex(AValue: integer);
     procedure SetPageButtonColour(AValue: TColor);
     procedure SetScrollbarColour(AValue: TColor);
     procedure SetSelectedColour(AValue: TColor);
+    procedure SetTrimItems(AValue: boolean);
     procedure SetWindowColour(AValue: TColor);
 
     procedure Paint; override;
@@ -44,6 +46,7 @@ type
     property ScrollbarColour: TColor read FScrollbarColour write SetScrollbarColour;
     property PageButtonColour: TColor read FPageButtonColour write SetPageButtonColour;
     property ItemIndex: integer read FItemIndex write SetItemIndex;
+    property TrimItems: boolean read FTrimItems write SetTrimItems;
   end;
 
 const
@@ -65,6 +68,7 @@ var
   BarLength: Integer;
   PosPage: Integer;
   Position: Int64;
+  ItemStr: string;
 begin
   Canvas.Brush.Color := FWindowColour;
   Canvas.Brush.Style := bsSolid;
@@ -77,6 +81,7 @@ begin
   TextHeight := Canvas.TextHeight('Jj');
   TextHeight := TextHeight + TextHeight div 3;
 
+  // Write items
   while (i >= 0) and (i < Items.Count) do
   begin
     if i <> FItemIndex then
@@ -84,7 +89,20 @@ begin
     else
       Canvas.Brush.Color := FSelectedColour;
 
-    Canvas.TextOut(x, y, Items.Strings[i]);
+    ItemStr := Items.Strings[i];
+    ItemStr := ExcludeTrailingPathDelimiter(ItemStr);
+
+    if FTrimItems then
+    begin
+      // Trim from the front of the string until it fits
+      while Canvas.TextExtent(ItemStr).cx > (Width - SCROLLBAR_WIDTH - LEFT_MARGIN * 2) do
+      begin
+        ItemStr := UTF8Copy(ItemStr, 2, UTF8Length(ItemStr));
+      end;
+    end;
+
+    Canvas.TextOut(x, y, ItemStr);
+
     Inc(y, TextHeight);
     Inc(i);
 
@@ -234,6 +252,13 @@ begin
   Invalidate;
 end;
 
+procedure TTouchList.SetTrimItems(AValue: boolean);
+begin
+  if FTrimItems=AValue then Exit;
+  FTrimItems:=AValue;
+  Invalidate;
+end;
+
 procedure TTouchList.SetWindowColour(AValue: TColor);
 begin
   if FWindowColour=AValue then Exit;
@@ -259,6 +284,8 @@ begin
   FScrollbarColour := $D0D0D0;
   FScrollbarPositionColour := $A0A0A0;
   FPageButtonColour := $C0C0C0;
+
+  FTrimItems := False;
 end;
 
 destructor TTouchList.Destroy;

@@ -969,13 +969,17 @@ begin
   end
   else if (Key = 'l') or (Key='L') then
   begin
+    frmPlaylist := TfrmPlaylist.Create(Self);
+
     frmPlaylist.LoadSongs(ChangeFileExt(FConfigFilename, '_music.cfg'),
       frmSettings.edtMusicPath.Text);
 
     if FormShowModal(frmPlaylist) = mrOk then
     begin
-      FMusicPlayer.PlaySelection(frmPlaylist.MusicPath);
+      FMusicPlayer.PlaySelection(frmPlaylist.SelectedMusic.Text);
     end;
+
+    frmPlaylist.Free;
   end
   else if (Key = 'r') or (Key = 'R') then frmReminderList.Show
   else if (Key = 'n') or (Key = 'N') then
@@ -1306,13 +1310,17 @@ begin
   imgPrevious.Picture.Assign(imgOff.Picture);
   Application.ProcessMessages;
 
+  frmPlaylist := TfrmPlaylist.Create(Self);
+
   frmPlaylist.LoadSongs(ChangeFileExt(FConfigFilename, '_music.cfg'),
     frmSettings.edtMusicPath.Text);
 
   if FormShowModal(frmPlaylist) = mrOk then
   begin
-    FMusicPlayer.PlaySelection(frmPlaylist.MusicPath);
+    FMusicPlayer.PlaySelection(frmPlaylist.SelectedMusic.Text);
   end;
+
+  frmPlaylist.Free;
 
   imgPrevious.Picture.Assign(imgOn.Picture);
 end;

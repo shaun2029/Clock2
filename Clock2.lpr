@@ -23,7 +23,6 @@ begin
   Application.CreateForm(TfrmPictures, frmPictures);
   Application.CreateForm(TfrmReminders, frmReminders);
   Application.CreateForm(TfrmReminderList, frmReminderList);
-  Application.CreateForm(TfrmPlaylist, frmPlaylist);
   Application.Run;
 end.
 

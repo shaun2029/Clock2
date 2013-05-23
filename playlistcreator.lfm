@@ -2,11 +2,11 @@ object frmPlaylist: TfrmPlaylist
   Left = 407
   Height = 427
   Top = 230
-  Width = 370
+  Width = 728
   BorderStyle = bsSingle
   Caption = 'Play Album'
   ClientHeight = 427
-  ClientWidth = 370
+  ClientWidth = 728
   FormStyle = fsStayOnTop
   KeyPreview = True
   OnCreate = FormCreate
@@ -31,7 +31,7 @@ object frmPlaylist: TfrmPlaylist
     TabOrder = 1
   end
   object btnOk: TBitBtn
-    Left = 285
+    Left = 648
     Height = 30
     Top = 392
     Width = 75
@@ -40,5 +40,20 @@ object frmPlaylist: TfrmPlaylist
     Kind = bkOK
     ModalResult = 1
     TabOrder = 2
+  end
+  object btnAdd: TBitBtn
+    Left = 285
+    Height = 30
+    Top = 392
+    Width = 75
+    Caption = 'Add'
+    TabOrder = 3
+  end
+  object Panel2: TPanel
+    Left = 368
+    Height = 378
+    Top = 8
+    Width = 352
+    TabOrder = 4
   end
 end

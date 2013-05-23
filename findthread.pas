@@ -18,7 +18,7 @@ type
 
   TFindFilesThread = class(TThread)
   private
-    FSearchPath: string;
+    FSearchPaths: string;
     FExtension: string;
     FComplete: boolean;
     FCritical: TCriticalSection;
@@ -28,13 +28,13 @@ type
     function GetComplete: boolean;
     function GetCount: integer;
   public
-    constructor Create(FileList, PathList: TStringList; SearchPath, Extension: string);
+    constructor Create(FileList, PathList: TStringList; SearchPaths, Extension: string);
     destructor Destroy; override;
 
     procedure Execute; override;
   published
     property Complete: boolean read GetComplete;
-    property SearchPath: string read FSearchPath;
+    property SearchPaths: string read FSearchPaths;
     property Count: integer read GetCount;
   end;
 
@@ -57,10 +57,10 @@ end;
 { The FileList and PathList are used in combination when producing a file file path.
   This is done to save memory when storing files.}
 constructor TFindFilesThread.Create(FileList, PathList: TStringList;
-  SearchPath, Extension: string);
+  SearchPaths, Extension: string);
 begin
   inherited Create(True);
-  FSearchPath := SearchPath;
+  FSearchPaths := SearchPaths;
   FComplete := False;
   FExtension := Extension;
 
@@ -81,13 +81,25 @@ begin
 end;
 
 procedure TFindFilesThread.Execute;
+var
+  Paths: TStringList;
+  i: Integer;
 begin
-  if DirectoryExists(FSearchPath) then
+  Paths := TStringList.Create;
+
+  Paths.Text := FSearchPaths;
+
+  for i := 0 to Paths.Count - 1 do
   begin
-    FindFiles(FFileList, FPathList, FSearchPath, FExtension);
-    FFileList.Sort;
+    if DirectoryExists(Paths.Strings[i]) then
+    begin
+      FindFiles(FFileList, FPathList, Paths.Strings[i], FExtension);
+    end;
   end;
 
+  FFileList.Sort;
+
+  Paths.Free;
   FComplete := True;
 end;
 

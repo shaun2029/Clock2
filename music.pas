@@ -55,7 +55,7 @@ type
 
     function Tick: integer;
 
-    procedure PlaySelection(SearchPath: string);
+    procedure PlaySelection(SearchPaths: string);
 
     constructor Create(MusicPlayer: TMusicPlayer; ConfigFile, SearchPath: string);
     destructor Destroy; override;
@@ -381,7 +381,7 @@ begin
   else Result := '';
 end;
 
-procedure TPlayer.PlaySelection(SearchPath: string);
+procedure TPlayer.PlaySelection(SearchPaths: string);
 begin
   if Assigned(FFindPlayFiles) then
   begin
@@ -390,7 +390,7 @@ begin
     FreeAndNil(FFindPlayFiles);
   end;
 
-  FFindPlayFiles := TFindFilesThread.Create(FPlaySongList, FPlayPathList, SearchPath, '.mp3');
+  FFindPlayFiles := TFindFilesThread.Create(FPlaySongList, FPlayPathList, SearchPaths, '.mp3');
   FFindPlayFiles.Resume;
 end;
 

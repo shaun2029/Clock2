@@ -18,9 +18,11 @@ type
   { TfrmPlaylist }
 
   TfrmPlaylist = class(TForm)
+    btnAdd: TBitBtn;
     btnBack: TBitBtn;
     btnOk: TBitBtn;
     Panel1: TPanel;
+    Panel2: TPanel;
     procedure btnBackClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -32,7 +34,7 @@ type
     FPath: TStringList;
     FPathList: TStringList;
     FStartPath: string;
-    lstDisplay: TTouchList;
+    lstDisplay, lstSelected: TTouchList;
     FItemIndex: integer;
 
     procedure Display(Next: boolean);
@@ -42,9 +44,10 @@ type
     procedure OnItemSelected(Sender: TObject; Index: integer);
   public
     { public declarations }
+    SelectedMusic: TStringList;
+
     procedure LoadSongs(const ConfigFile, StartPath: string);
   published
-    property MusicPath: string read GetMusicPath;
   end;
 
 var
@@ -64,6 +67,14 @@ begin
   lstDisplay.Parent := Panel1;
   lstDisplay.OnItemSelected := OnItemSelected;
   lstDisplay.Font.Size := 14;
+
+  lstSelected := TTouchList.Create(Panel2);
+  lstSelected.Parent := Panel2;
+  lstSelected.Font.Size := 14;
+  lstSelected.TrimItems := True;
+
+  SelectedMusic := TStringList.Create;
+
   FItemIndex := -1;
 end;
 
@@ -75,6 +86,8 @@ end;
 procedure TfrmPlaylist.FormDestroy(Sender: TObject);
 begin
   lstDisplay.Free;
+  lstSelected.Free;
+  SelectedMusic.Free;
   FPathList.Free;
   FPath.Free;
 end;
@@ -111,6 +124,7 @@ var
   Data, SelectedStr: string;
   CurrPath: string;
   SelectList: TStringList;
+  MusicPath: string;
 begin
   FItemIndex := -1;
 
@@ -125,7 +139,20 @@ begin
   else
     Selectedstr := '';
 
-  if Next then Level := FLevel + 1
+  if Next then
+  begin
+    if Level = FLevel + 1 then
+    begin
+      // Reached final level, make selection
+      MusicPath := GetMusicPath;
+      if SelectedMusic.IndexOf(MusicPath) < 0 then
+      begin
+        lstSelected.Items.Add(MusicPath);
+        SelectedMusic.Add(MusicPath);
+      end;
+    end
+    else Level := FLevel + 1
+  end
   else
   begin
     if Flevel <= FMinLevel then Flevel := FMinLevel

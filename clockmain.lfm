@@ -16043,12 +16043,12 @@ object frmClockMain: TfrmClockMain
   object lbPictures1: TLabel
     Cursor = crNone
     Left = 26
-    Height = 26
-    Top = 314
+    Height = 58
+    Top = 303
     Width = 128
     Alignment = taCenter
     AutoSize = False
-    Caption = 'Play Album'
+    Caption = 'Play'#10'Albums'
     Font.Color = clWhite
     Font.Height = -21
     Font.Name = 'Sans'
