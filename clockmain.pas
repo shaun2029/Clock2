@@ -37,6 +37,7 @@ type
   TfrmClockMain = class(TForm)
     Image1: TImage;
     imgExit: TImage;
+    imgPictures1: TImage;
     imgPrevious: TImage;
     imgOn: TImage;
     imgOff: TImage;
@@ -69,6 +70,7 @@ type
     Label18: TLabel;
     Label19: TLabel;
     Label20: TLabel;
+    lbPictures1: TLabel;
     lbWeatherSummary: TLabel;
     lbExit: TLabel;
     lbMusic: TLabel;
@@ -117,6 +119,7 @@ type
     procedure lbDisplayClick(Sender: TObject);
     procedure lblTimeClick(Sender: TObject);
     procedure lbNextClick(Sender: TObject);
+    procedure lbPictures1Click(Sender: TObject);
     procedure lbPicturesClick(Sender: TObject);
     procedure lbPlayClick(Sender: TObject);
     procedure lbPreviousClick(Sender: TObject);
@@ -1296,6 +1299,22 @@ begin
   PlayMusic;
 
   imgNext.Picture.Assign(imgOn.Picture);
+end;
+
+procedure TfrmClockMain.lbPictures1Click(Sender: TObject);
+begin
+  imgPrevious.Picture.Assign(imgOff.Picture);
+  Application.ProcessMessages;
+
+  frmPlaylist.LoadSongs(ChangeFileExt(FConfigFilename, '_music.cfg'),
+    frmSettings.edtMusicPath.Text);
+
+  if FormShowModal(frmPlaylist) = mrOk then
+  begin
+    FMusicPlayer.PlaySelection(frmPlaylist.MusicPath);
+  end;
+
+  imgPrevious.Picture.Assign(imgOn.Picture);
 end;
 
 procedure TfrmClockMain.lbPreviousClick(Sender: TObject);

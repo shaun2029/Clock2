@@ -11,14 +11,17 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  IniFiles;
+  ExtCtrls, Buttons, IniFiles, TouchList;
 
 type
 
   { TfrmPlaylist }
 
   TfrmPlaylist = class(TForm)
-    lstDisplay: TListBox;
+    btnBack: TBitBtn;
+    btnOk: TBitBtn;
+    Panel1: TPanel;
+    procedure btnBackClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -29,11 +32,14 @@ type
     FPath: TStringList;
     FPathList: TStringList;
     FStartPath: string;
+    lstDisplay: TTouchList;
+    FItemIndex: integer;
 
     procedure Display(Next: boolean);
 
     function GetLevel(Level: integer; const Path: string; out Data: string): boolean;
     function GetMusicPath: string;
+    procedure OnItemSelected(Sender: TObject; Index: integer);
   public
     { public declarations }
     procedure LoadSongs(const ConfigFile, StartPath: string);
@@ -54,10 +60,21 @@ procedure TfrmPlaylist.FormCreate(Sender: TObject);
 begin
   FPathList := TStringList.Create;
   FPath := TStringList.Create;
+  lstDisplay := TTouchList.Create(Panel1);
+  lstDisplay.Parent := Panel1;
+  lstDisplay.OnItemSelected := OnItemSelected;
+  lstDisplay.Font.Size := 14;
+  FItemIndex := -1;
+end;
+
+procedure TfrmPlaylist.btnBackClick(Sender: TObject);
+begin
+  Display(False);
 end;
 
 procedure TfrmPlaylist.FormDestroy(Sender: TObject);
 begin
+  lstDisplay.Free;
   FPathList.Free;
   FPath.Free;
 end;
@@ -80,6 +97,11 @@ begin
   end;
 end;
 
+procedure TfrmPlaylist.OnItemSelected(Sender: TObject; Index: integer);
+begin
+  Display(True);
+end;
+
 { Claculate what needs to be displayed for file navigation.
   If Next is true display the next branch else display the previous. }
 procedure TfrmPlaylist.Display(Next: boolean);
@@ -90,6 +112,8 @@ var
   CurrPath: string;
   SelectList: TStringList;
 begin
+  FItemIndex := -1;
+
   Found := False;
   SelectList := TStringList.Create;
   Selected := lstDisplay.ItemIndex;
@@ -174,7 +198,7 @@ begin
     FLevel := Level;
   end;
 
-  lstDisplay.Sorted := True;
+  lstDisplay.Items.Sorted := True;
   SelectList.Free;
 end;
 
@@ -208,7 +232,7 @@ begin
   end;
 
   FPath.Clear;
-  lstDisplay.Clear;
+  lstDisplay.Items.Clear;
 
   FLevel := FMinLevel - 1;
   Display(True);
