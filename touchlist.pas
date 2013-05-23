@@ -51,8 +51,8 @@ type
 
 const
   LEFT_MARGIN = 8;
-  SCROLLBAR_WIDTH = 24;
-  PAGE_BUTTON_HEIGHT = 24;
+  SCROLLBAR_WIDTH = 32;
+  PAGE_BUTTON_HEIGHT = 32;
 
 implementation
 
@@ -74,12 +74,12 @@ begin
   Canvas.Brush.Style := bsSolid;
   Canvas.FillRect(0, 0, Width-1, Height-1);
 
+  TextHeight := Canvas.TextHeight('Jj');
+  TextHeight := TextHeight + TextHeight div 2;
+
   x := 10;
   y := 0;
   i := FPositionIndex;
-
-  TextHeight := Canvas.TextHeight('Jj');
-  TextHeight := TextHeight + TextHeight div 3;
 
   // Write items
   while (i >= 0) and (i < Items.Count) do
@@ -101,7 +101,7 @@ begin
       end;
     end;
 
-    Canvas.TextOut(x, y, ItemStr);
+    Canvas.TextOut(x, y + TextHeight div 3, ItemStr);
 
     Inc(y, TextHeight);
     Inc(i);

@@ -254,14 +254,12 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ClockMain"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="14"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="946"/>
-        <CursorPos X="1" Y="973"/>
+        <TopLine Value="1308"/>
+        <CursorPos X="16" Y="1325"/>
         <UsageCount Value="86"/>
         <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit17>
       <Unit18>
@@ -607,8 +605,8 @@
         <UnitName Value="PlaylistCreator"/>
         <EditorIndex Value="15"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="26"/>
-        <CursorPos X="1" Y="50"/>
+        <TopLine Value="6"/>
+        <CursorPos X="53" Y="225"/>
         <UsageCount Value="27"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -624,7 +622,6 @@
         <TopLine Value="15"/>
         <CursorPos X="92" Y="19"/>
         <UsageCount Value="19"/>
-        <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit52>
       <Unit53>
@@ -680,10 +677,11 @@
         <Filename Value="touchlist.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="TouchList"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="16"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="78"/>
-        <CursorPos X="42" Y="92"/>
+        <TopLine Value="86"/>
+        <CursorPos X="43" Y="104"/>
         <UsageCount Value="23"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -700,124 +698,124 @@
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="music.pas"/>
-        <Caret Line="393" Column="16" TopLine="367"/>
+        <Filename Value="findthread.pas"/>
+        <Caret Line="89" Column="34" TopLine="73"/>
       </Position1>
       <Position2>
         <Filename Value="findthread.pas"/>
-        <Caret Line="101" Column="3" TopLine="73"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position2>
       <Position3>
         <Filename Value="findthread.pas"/>
-        <Caret Line="89" Column="34" TopLine="73"/>
+        <Caret Line="21" Column="17" TopLine="1"/>
       </Position3>
       <Position4>
         <Filename Value="findthread.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Caret Line="37" Column="50" TopLine="11"/>
       </Position4>
       <Position5>
         <Filename Value="findthread.pas"/>
-        <Caret Line="21" Column="17" TopLine="1"/>
+        <Caret Line="60" Column="14" TopLine="37"/>
       </Position5>
       <Position6>
         <Filename Value="findthread.pas"/>
-        <Caret Line="37" Column="50" TopLine="11"/>
+        <Caret Line="63" Column="14" TopLine="37"/>
       </Position6>
       <Position7>
         <Filename Value="findthread.pas"/>
-        <Caret Line="60" Column="14" TopLine="37"/>
+        <Caret Line="89" Column="34" TopLine="63"/>
       </Position7>
       <Position8>
         <Filename Value="findthread.pas"/>
-        <Caret Line="63" Column="14" TopLine="37"/>
+        <Caret Line="31" Column="68" TopLine="7"/>
       </Position8>
       <Position9>
         <Filename Value="findthread.pas"/>
-        <Caret Line="89" Column="34" TopLine="63"/>
+        <Caret Line="95" Column="39" TopLine="69"/>
       </Position9>
       <Position10>
         <Filename Value="findthread.pas"/>
-        <Caret Line="31" Column="68" TopLine="7"/>
+        <Caret Line="87" Column="3" TopLine="71"/>
       </Position10>
       <Position11>
         <Filename Value="findthread.pas"/>
-        <Caret Line="95" Column="39" TopLine="69"/>
+        <Caret Line="92" Column="7" TopLine="75"/>
       </Position11>
       <Position12>
-        <Filename Value="findthread.pas"/>
-        <Caret Line="87" Column="3" TopLine="71"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="977" Column="23" TopLine="962"/>
       </Position12>
       <Position13>
-        <Filename Value="findthread.pas"/>
-        <Caret Line="92" Column="7" TopLine="75"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="1314" Column="31" TopLine="1298"/>
       </Position13>
       <Position14>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="977" Column="23" TopLine="962"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position14>
       <Position15>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="1314" Column="31" TopLine="1298"/>
+        <Caret Line="977" Column="33" TopLine="951"/>
       </Position15>
       <Position16>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Caret Line="1314" Column="31" TopLine="1288"/>
       </Position16>
       <Position17>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="977" Column="33" TopLine="951"/>
+        <Filename Value="findthread.pas"/>
+        <Caret Line="88" Column="1" TopLine="81"/>
       </Position17>
       <Position18>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1314" Column="31" TopLine="1288"/>
+        <Filename Value="findthread.pas"/>
+        <Caret Line="90" Column="1" TopLine="81"/>
       </Position18>
       <Position19>
         <Filename Value="findthread.pas"/>
-        <Caret Line="88" Column="1" TopLine="81"/>
+        <Caret Line="92" Column="1" TopLine="81"/>
       </Position19>
       <Position20>
         <Filename Value="findthread.pas"/>
-        <Caret Line="90" Column="1" TopLine="81"/>
+        <Caret Line="94" Column="1" TopLine="81"/>
       </Position20>
       <Position21>
         <Filename Value="findthread.pas"/>
-        <Caret Line="92" Column="1" TopLine="81"/>
+        <Caret Line="96" Column="1" TopLine="81"/>
       </Position21>
       <Position22>
         <Filename Value="findthread.pas"/>
         <Caret Line="94" Column="1" TopLine="81"/>
       </Position22>
       <Position23>
-        <Filename Value="findthread.pas"/>
-        <Caret Line="96" Column="1" TopLine="81"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="1309" Column="14" TopLine="1288"/>
       </Position23>
       <Position24>
-        <Filename Value="findthread.pas"/>
-        <Caret Line="94" Column="1" TopLine="81"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="1311" Column="14" TopLine="1288"/>
       </Position24>
       <Position25>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="1309" Column="14" TopLine="1288"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position25>
       <Position26>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="1311" Column="14" TopLine="1288"/>
+        <Caret Line="982" Column="22" TopLine="959"/>
       </Position26>
       <Position27>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Caret Line="1323" Column="14" TopLine="1297"/>
       </Position27>
       <Position28>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="982" Column="22" TopLine="959"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position28>
       <Position29>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="1323" Column="14" TopLine="1297"/>
+        <Caret Line="973" Column="1" TopLine="946"/>
       </Position29>
       <Position30>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="playlistcreator.pas"/>
+        <Caret Line="212" Column="4" TopLine="199"/>
       </Position30>
     </JumpHistory>
   </ProjectOptions>

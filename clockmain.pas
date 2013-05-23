@@ -37,7 +37,7 @@ type
   TfrmClockMain = class(TForm)
     Image1: TImage;
     imgExit: TImage;
-    imgPictures1: TImage;
+    imgPlayAlbums: TImage;
     imgPrevious: TImage;
     imgOn: TImage;
     imgOff: TImage;
@@ -70,7 +70,7 @@ type
     Label18: TLabel;
     Label19: TLabel;
     Label20: TLabel;
-    lbPictures1: TLabel;
+    lbPlayAlbums: TLabel;
     lbWeatherSummary: TLabel;
     lbExit: TLabel;
     lbMusic: TLabel;
@@ -119,7 +119,7 @@ type
     procedure lbDisplayClick(Sender: TObject);
     procedure lblTimeClick(Sender: TObject);
     procedure lbNextClick(Sender: TObject);
-    procedure lbPictures1Click(Sender: TObject);
+    procedure lbPlayAlbumsClick(Sender: TObject);
     procedure lbPicturesClick(Sender: TObject);
     procedure lbPlayClick(Sender: TObject);
     procedure lbPreviousClick(Sender: TObject);
@@ -1305,9 +1305,9 @@ begin
   imgNext.Picture.Assign(imgOn.Picture);
 end;
 
-procedure TfrmClockMain.lbPictures1Click(Sender: TObject);
+procedure TfrmClockMain.lbPlayAlbumsClick(Sender: TObject);
 begin
-  imgPrevious.Picture.Assign(imgOff.Picture);
+  imgPlayAlbums.Picture.Assign(imgOff.Picture);
   Application.ProcessMessages;
 
   frmPlaylist := TfrmPlaylist.Create(Self);
@@ -1322,7 +1322,7 @@ begin
 
   frmPlaylist.Free;
 
-  imgPrevious.Picture.Assign(imgOn.Picture);
+  imgPlayAlbums.Picture.Assign(imgOn.Picture);
 end;
 
 procedure TfrmClockMain.lbPreviousClick(Sender: TObject);

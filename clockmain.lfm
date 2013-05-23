@@ -20,13 +20,13 @@ object frmClockMain: TfrmClockMain
   OnShow = FormShow
   Position = poDesktopCenter
   LCLVersion = '1.0.4.0'
-  object imgPictures1: TImage
+  object imgPlayAlbums: TImage
     Cursor = crNone
     Left = 16
     Height = 88
     Top = 284
     Width = 144
-    OnClick = lbPictures1Click
+    OnClick = lbPlayAlbumsClick
     Picture.Data = {
       1754506F727461626C654E6574776F726B47726170686963456B000089504E47
       0D0A1A0A0000000D49484452000001CC000001DA08060000008D547900000000
@@ -16040,7 +16040,7 @@ object frmClockMain: TfrmClockMain
     WordWrap = True
     OnClick = lblTimeClick
   end
-  object lbPictures1: TLabel
+  object lbPlayAlbums: TLabel
     Cursor = crNone
     Left = 26
     Height = 58
@@ -16054,7 +16054,7 @@ object frmClockMain: TfrmClockMain
     Font.Name = 'Sans'
     ParentColor = False
     ParentFont = False
-    OnClick = lbPictures1Click
+    OnClick = lbPlayAlbumsClick
   end
   object tmrTime: TTimer
     OnTimer = tmrTimeTimer

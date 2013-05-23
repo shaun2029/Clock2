@@ -141,17 +141,7 @@ begin
 
   if Next then
   begin
-    if Level = FLevel + 1 then
-    begin
-      // Reached final level, make selection
-      MusicPath := GetMusicPath;
-      if SelectedMusic.IndexOf(MusicPath) < 0 then
-      begin
-        lstSelected.Items.Add(MusicPath);
-        SelectedMusic.Add(MusicPath);
-      end;
-    end
-    else Level := FLevel + 1
+    Level := FLevel + 1
   end
   else
   begin
@@ -223,6 +213,16 @@ begin
     end;
 
     FLevel := Level;
+  end
+  else
+  begin
+    // Reached final level, make selection
+    MusicPath := GetMusicPath;
+    if SelectedMusic.IndexOf(MusicPath) < 0 then
+    begin
+      lstSelected.Items.Add(MusicPath);
+      SelectedMusic.Add(MusicPath);
+    end;
   end;
 
   lstDisplay.Items.Sorted := True;
