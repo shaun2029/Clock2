@@ -24,6 +24,7 @@ type
     FPageButtonColour: TColor;
     FTrimItems: boolean;
 
+    function GetTextHeight: integer;
     procedure MouseDown(Button: TMouseButton; Shift:TShiftState; X,Y:Integer); override;
     procedure SetItemIndex(AValue: integer);
     procedure SetPageButtonColour(AValue: TColor);
@@ -58,6 +59,12 @@ implementation
 
 { TTouchList }
 
+function TTouchList.GetTextHeight: integer;
+begin
+  Result := Canvas.TextHeight('Jj');
+  Result := Result * 2;
+end;
+
 procedure TTouchList.Paint;
 var
   TextHeight: Integer;
@@ -74,8 +81,7 @@ begin
   Canvas.Brush.Style := bsSolid;
   Canvas.FillRect(0, 0, Width-1, Height-1);
 
-  TextHeight := Canvas.TextHeight('Jj');
-  TextHeight := TextHeight + TextHeight div 2;
+  TextHeight := GetTextHeight;
 
   x := 10;
   y := 0;
@@ -101,7 +107,7 @@ begin
       end;
     end;
 
-    Canvas.TextOut(x, y + TextHeight div 3, ItemStr);
+    Canvas.TextOut(x, y + TextHeight div 4, ItemStr);
 
     Inc(y, TextHeight);
     Inc(i);
@@ -164,8 +170,7 @@ procedure TTouchList.MouseDown(Button: TMouseButton; Shift: TShiftState; X,
 var
   TextHeight, BarPosition, BarLength, Pages, DisplayedLines: integer;
 begin
-  TextHeight := Canvas.TextHeight('Jj');
-  TextHeight := TextHeight + TextHeight div 3;
+  TextHeight := GetTextHeight;
   DisplayedLines := Height div TextHeight;
 
   Pages := (Items.Count div DisplayedLines);
