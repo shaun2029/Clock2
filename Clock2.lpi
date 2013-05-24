@@ -14,7 +14,7 @@
       <CharSet Value=""/>
       <StringTable ProductVersion=""/>
     </VersionInfo>
-    <BuildModes Count="2" Active="i386">
+    <BuildModes Count="2" Active="debug">
       <Item1 Name="debug" Default="True"/>
       <Item2 Name="i386">
         <CompilerOptions>
@@ -80,11 +80,11 @@
         <Filename Value="Clock2.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="Clock2"/>
-        <EditorIndex Value="18"/>
+        <EditorIndex Value="17"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="61" Y="25"/>
-        <UsageCount Value="105"/>
+        <UsageCount Value="110"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -96,11 +96,11 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Pictures"/>
-        <EditorIndex Value="13"/>
+        <EditorIndex Value="12"/>
         <WindowIndex Value="0"/>
         <TopLine Value="165"/>
         <CursorPos X="48" Y="165"/>
-        <UsageCount Value="105"/>
+        <UsageCount Value="110"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit1>
@@ -125,7 +125,7 @@
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit3>
       <Unit4>
-        <Filename Value="../../../.cache/.fr-TixB7g/Laz_IPC/main_ipc_unit.pas"/>
+        <Filename Value="../../.cache/.fr-TixB7g/Laz_IPC/main_ipc_unit.pas"/>
         <UnitName Value="main_ipc_unit"/>
         <TopLine Value="25"/>
         <CursorPos X="42" Y="39"/>
@@ -155,9 +155,9 @@
         <UnitName Value="FindThread"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="37"/>
+        <TopLine Value="15"/>
         <CursorPos X="32" Y="15"/>
-        <UsageCount Value="97"/>
+        <UsageCount Value="102"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit7>
@@ -198,7 +198,7 @@
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit11>
       <Unit12>
-        <Filename Value="../../../Programs/lazarus/lazarus/lcl/include/control.inc"/>
+        <Filename Value="../../Programs/lazarus/lazarus/lcl/include/control.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="3130"/>
         <CursorPos X="1" Y="3150"/>
@@ -212,16 +212,16 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Settings"/>
-        <EditorIndex Value="19"/>
+        <EditorIndex Value="18"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="68"/>
-        <CursorPos X="1" Y="84"/>
-        <UsageCount Value="78"/>
+        <TopLine Value="53"/>
+        <CursorPos X="83" Y="83"/>
+        <UsageCount Value="83"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit13>
       <Unit14>
-        <Filename Value="../../../Programs/lazarus/lazarus/lcl/customtimer.pas"/>
+        <Filename Value="../../Programs/lazarus/lazarus/lcl/customtimer.pas"/>
         <UnitName Value="CustomTimer"/>
         <WindowIndex Value="0"/>
         <TopLine Value="174"/>
@@ -244,7 +244,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="128"/>
         <CursorPos X="69" Y="159"/>
-        <UsageCount Value="87"/>
+        <UsageCount Value="92"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit16>
       <Unit17>
@@ -254,23 +254,24 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ClockMain"/>
-        <EditorIndex Value="14"/>
+        <EditorIndex Value="13"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1308"/>
-        <CursorPos X="16" Y="1325"/>
-        <UsageCount Value="87"/>
+        <TopLine Value="715"/>
+        <CursorPos X="30" Y="1318"/>
+        <UsageCount Value="92"/>
         <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit17>
       <Unit18>
         <Filename Value="metoffice.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="MetOffice"/>
-        <EditorIndex Value="12"/>
+        <EditorIndex Value="11"/>
         <WindowIndex Value="0"/>
         <TopLine Value="427"/>
         <CursorPos X="35" Y="427"/>
-        <UsageCount Value="87"/>
+        <UsageCount Value="92"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit18>
@@ -287,13 +288,11 @@
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit19>
       <Unit20>
-        <Filename Value="../../../lazarus/lcl/include/customform.inc"/>
-        <EditorIndex Value="4"/>
+        <Filename Value="../lcl/include/customform.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="954"/>
         <CursorPos X="1" Y="971"/>
         <UsageCount Value="24"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit20>
       <Unit21>
@@ -303,11 +302,11 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Reminders"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="4"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="26"/>
-        <CursorPos X="1" Y="43"/>
-        <UsageCount Value="83"/>
+        <TopLine Value="346"/>
+        <CursorPos X="17" Y="372"/>
+        <UsageCount Value="88"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -320,7 +319,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
-        <UsageCount Value="64"/>
+        <UsageCount Value="69"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit22>
@@ -332,12 +331,12 @@
         <WindowIndex Value="0"/>
         <TopLine Value="79"/>
         <CursorPos X="26" Y="82"/>
-        <UsageCount Value="65"/>
+        <UsageCount Value="70"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit23>
       <Unit24>
-        <Filename Value="../../../lazarus/lcl/include/control.inc"/>
+        <Filename Value="../lcl/include/control.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="2097"/>
         <CursorPos X="1" Y="2112"/>
@@ -345,7 +344,7 @@
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit24>
       <Unit25>
-        <Filename Value="../../../lazarus/fpc/2.6.0/rtl/inc/objpas.inc"/>
+        <Filename Value="../fpc/2.6.0/rtl/inc/objpas.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="491"/>
         <CursorPos X="1" Y="509"/>
@@ -353,7 +352,7 @@
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit25>
       <Unit26>
-        <Filename Value="../../../lazarus/lcl/include/wincontrol.inc"/>
+        <Filename Value="../lcl/include/wincontrol.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="5308"/>
         <CursorPos X="1" Y="5323"/>
@@ -361,7 +360,7 @@
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit26>
       <Unit27>
-        <Filename Value="../../../lazarus/lcl/lclmessageglue.pas"/>
+        <Filename Value="../lcl/lclmessageglue.pas"/>
         <UnitName Value="LCLMessageGlue"/>
         <WindowIndex Value="0"/>
         <TopLine Value="105"/>
@@ -369,21 +368,21 @@
         <UsageCount Value="10"/>
       </Unit27>
       <Unit28>
-        <Filename Value="../../../lazarus/lcl/interfaces/gtk2/gtk2proc.inc"/>
+        <Filename Value="../lcl/interfaces/gtk2/gtk2proc.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="3576"/>
         <CursorPos X="1" Y="3594"/>
         <UsageCount Value="8"/>
       </Unit28>
       <Unit29>
-        <Filename Value="../../../lazarus/lcl/interfaces/gtk2/gtk2callback.inc"/>
+        <Filename Value="../lcl/interfaces/gtk2/gtk2callback.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="2400"/>
         <CursorPos X="1" Y="2415"/>
         <UsageCount Value="8"/>
       </Unit29>
       <Unit30>
-        <Filename Value="../../../lazarus/lcl/interfaces/gtk2/gtk2widgetset.inc"/>
+        <Filename Value="../lcl/interfaces/gtk2/gtk2widgetset.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="2298"/>
         <CursorPos X="1" Y="2313"/>
@@ -402,16 +401,16 @@
         <Filename Value="musicplayer.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="MusicPlayer"/>
-        <EditorIndex Value="17"/>
+        <EditorIndex Value="16"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="205"/>
+        <TopLine Value="16"/>
         <CursorPos X="61" Y="236"/>
-        <UsageCount Value="64"/>
+        <UsageCount Value="69"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit32>
       <Unit33>
-        <Filename Value="../../../lazarus/lcl/include/application.inc"/>
+        <Filename Value="../lcl/include/application.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1037"/>
         <CursorPos X="1" Y="1049"/>
@@ -419,7 +418,7 @@
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit33>
       <Unit34>
-        <Filename Value="../../../lazarus/fpc/2.6.0/rtl/objpas/sysutils/dati.inc"/>
+        <Filename Value="../fpc/2.6.0/rtl/objpas/sysutils/dati.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="225"/>
         <CursorPos X="1" Y="240"/>
@@ -427,7 +426,7 @@
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit34>
       <Unit35>
-        <Filename Value="../../../lazarus/fpc/2.6.0/rtl/unix/sysutils.pp"/>
+        <Filename Value="../fpc/2.6.0/rtl/unix/sysutils.pp"/>
         <UnitName Value="sysutils"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1079"/>
@@ -436,7 +435,7 @@
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit35>
       <Unit36>
-        <Filename Value="../../../lazarus/lcl/include/spinedit.inc"/>
+        <Filename Value="../lcl/include/spinedit.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="223"/>
         <CursorPos X="1" Y="235"/>
@@ -475,23 +474,24 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ReminderList"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="5"/>
         <WindowIndex Value="0"/>
         <TopLine Value="125"/>
         <CursorPos X="47" Y="140"/>
-        <UsageCount Value="64"/>
+        <UsageCount Value="69"/>
         <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit40>
       <Unit41>
         <Filename Value="udpcommandserver.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="udpcommandserver"/>
-        <EditorIndex Value="11"/>
+        <EditorIndex Value="10"/>
         <WindowIndex Value="0"/>
         <TopLine Value="53"/>
         <CursorPos X="3" Y="53"/>
-        <UsageCount Value="64"/>
+        <UsageCount Value="69"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit41>
@@ -499,11 +499,11 @@
         <Filename Value="music.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="music"/>
-        <EditorIndex Value="9"/>
+        <EditorIndex Value="8"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="367"/>
-        <CursorPos X="16" Y="393"/>
-        <UsageCount Value="64"/>
+        <TopLine Value="326"/>
+        <CursorPos X="24" Y="354"/>
+        <UsageCount Value="69"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit42>
@@ -514,17 +514,17 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="black"/>
-        <EditorIndex Value="10"/>
+        <EditorIndex Value="9"/>
         <WindowIndex Value="0"/>
         <TopLine Value="13"/>
         <CursorPos X="1" Y="38"/>
-        <UsageCount Value="69"/>
+        <UsageCount Value="74"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit43>
       <Unit44>
-        <Filename Value="../../../lazarus/lcl/controls.pp"/>
+        <Filename Value="../lcl/controls.pp"/>
         <UnitName Value="Controls"/>
         <WindowIndex Value="0"/>
         <TopLine Value="35"/>
@@ -543,11 +543,11 @@
         <Filename Value="sync.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="sync"/>
-        <EditorIndex Value="7"/>
+        <EditorIndex Value="6"/>
         <WindowIndex Value="0"/>
         <TopLine Value="45"/>
         <CursorPos X="48" Y="46"/>
-        <UsageCount Value="64"/>
+        <UsageCount Value="69"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit46>
@@ -555,16 +555,16 @@
         <Filename Value="udpclient.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="udpclient"/>
-        <EditorIndex Value="8"/>
+        <EditorIndex Value="7"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="111"/>
+        <TopLine Value="81"/>
         <CursorPos X="22" Y="111"/>
-        <UsageCount Value="64"/>
+        <UsageCount Value="69"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit47>
       <Unit48>
-        <Filename Value="../../../lazarus/lcl/customtimer.pas"/>
+        <Filename Value="../lcl/customtimer.pas"/>
         <UnitName Value="CustomTimer"/>
         <WindowIndex Value="0"/>
         <TopLine Value="141"/>
@@ -591,9 +591,8 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
-        <UsageCount Value="57"/>
+        <UsageCount Value="62"/>
         <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit50>
       <Unit51>
@@ -603,11 +602,12 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="PlaylistCreator"/>
-        <EditorIndex Value="15"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="14"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="6"/>
-        <CursorPos X="53" Y="225"/>
-        <UsageCount Value="28"/>
+        <TopLine Value="230"/>
+        <CursorPos X="20" Y="251"/>
+        <UsageCount Value="33"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -634,7 +634,7 @@
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit53>
       <Unit54>
-        <Filename Value="../../../lazarus/lcl/include/buttoncontrol.inc"/>
+        <Filename Value="../lcl/include/buttoncontrol.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="11"/>
         <CursorPos X="1" Y="22"/>
@@ -642,7 +642,7 @@
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit54>
       <Unit55>
-        <Filename Value="../../../lazarus/lcl/include/buttons.inc"/>
+        <Filename Value="../lcl/include/buttons.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="160"/>
         <CursorPos X="1" Y="176"/>
@@ -650,7 +650,7 @@
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit55>
       <Unit56>
-        <Filename Value="../../../lazarus/lcl/include/bitbtn.inc"/>
+        <Filename Value="../lcl/include/bitbtn.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="43"/>
         <CursorPos X="1" Y="59"/>
@@ -658,7 +658,7 @@
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit56>
       <Unit57>
-        <Filename Value="../../../lazarus/lcl/interfaces/gtk2/gtk2wsstdctrls.pp"/>
+        <Filename Value="../lcl/interfaces/gtk2/gtk2wsstdctrls.pp"/>
         <UnitName Value="Gtk2WSStdCtrls"/>
         <WindowIndex Value="0"/>
         <TopLine Value="2403"/>
@@ -666,7 +666,7 @@
         <UsageCount Value="10"/>
       </Unit57>
       <Unit58>
-        <Filename Value="../../../lazarus/lcl/dialogs.pp"/>
+        <Filename Value="../lcl/dialogs.pp"/>
         <UnitName Value="Dialogs"/>
         <WindowIndex Value="0"/>
         <TopLine Value="20"/>
@@ -677,12 +677,11 @@
         <Filename Value="touchlist.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="TouchList"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="16"/>
+        <EditorIndex Value="15"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="91"/>
-        <CursorPos X="43" Y="110"/>
-        <UsageCount Value="24"/>
+        <TopLine Value="228"/>
+        <CursorPos X="3" Y="240"/>
+        <UsageCount Value="29"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit59>
@@ -698,124 +697,124 @@
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="findthread.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="playlistcreator.pas"/>
+        <Caret Line="167" Column="1" TopLine="149"/>
       </Position1>
       <Position2>
-        <Filename Value="findthread.pas"/>
-        <Caret Line="21" Column="17" TopLine="1"/>
+        <Filename Value="playlistcreator.pas"/>
+        <Caret Line="169" Column="1" TopLine="156"/>
       </Position2>
       <Position3>
-        <Filename Value="findthread.pas"/>
-        <Caret Line="37" Column="50" TopLine="11"/>
+        <Filename Value="playlistcreator.pas"/>
+        <Caret Line="171" Column="1" TopLine="156"/>
       </Position3>
       <Position4>
-        <Filename Value="findthread.pas"/>
-        <Caret Line="60" Column="14" TopLine="37"/>
+        <Filename Value="playlistcreator.pas"/>
+        <Caret Line="172" Column="1" TopLine="156"/>
       </Position4>
       <Position5>
-        <Filename Value="findthread.pas"/>
-        <Caret Line="63" Column="14" TopLine="37"/>
+        <Filename Value="playlistcreator.pas"/>
+        <Caret Line="176" Column="1" TopLine="156"/>
       </Position5>
       <Position6>
-        <Filename Value="findthread.pas"/>
-        <Caret Line="89" Column="34" TopLine="63"/>
+        <Filename Value="playlistcreator.pas"/>
+        <Caret Line="178" Column="1" TopLine="162"/>
       </Position6>
       <Position7>
-        <Filename Value="findthread.pas"/>
-        <Caret Line="31" Column="68" TopLine="7"/>
+        <Filename Value="playlistcreator.pas"/>
+        <Caret Line="186" Column="1" TopLine="162"/>
       </Position7>
       <Position8>
-        <Filename Value="findthread.pas"/>
-        <Caret Line="95" Column="39" TopLine="69"/>
+        <Filename Value="playlistcreator.pas"/>
+        <Caret Line="188" Column="1" TopLine="169"/>
       </Position8>
       <Position9>
-        <Filename Value="findthread.pas"/>
-        <Caret Line="87" Column="3" TopLine="71"/>
+        <Filename Value="playlistcreator.pas"/>
+        <Caret Line="190" Column="1" TopLine="169"/>
       </Position9>
       <Position10>
-        <Filename Value="findthread.pas"/>
-        <Caret Line="92" Column="7" TopLine="75"/>
+        <Filename Value="playlistcreator.pas"/>
+        <Caret Line="195" Column="1" TopLine="170"/>
       </Position10>
       <Position11>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="977" Column="23" TopLine="962"/>
+        <Filename Value="playlistcreator.pas"/>
+        <Caret Line="205" Column="1" TopLine="190"/>
       </Position11>
       <Position12>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1314" Column="31" TopLine="1298"/>
+        <Filename Value="playlistcreator.pas"/>
+        <Caret Line="207" Column="1" TopLine="190"/>
       </Position12>
       <Position13>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="playlistcreator.pas"/>
+        <Caret Line="210" Column="42" TopLine="190"/>
       </Position13>
       <Position14>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="977" Column="33" TopLine="951"/>
+        <Filename Value="playlistcreator.pas"/>
+        <Caret Line="207" Column="43" TopLine="184"/>
       </Position14>
       <Position15>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1314" Column="31" TopLine="1288"/>
+        <Filename Value="playlistcreator.pas"/>
+        <Caret Line="164" Column="8" TopLine="157"/>
       </Position15>
       <Position16>
-        <Filename Value="findthread.pas"/>
-        <Caret Line="88" Column="1" TopLine="81"/>
+        <Filename Value="playlistcreator.pas"/>
+        <Caret Line="165" Column="1" TopLine="157"/>
       </Position16>
       <Position17>
-        <Filename Value="findthread.pas"/>
-        <Caret Line="90" Column="1" TopLine="81"/>
+        <Filename Value="playlistcreator.pas"/>
+        <Caret Line="166" Column="1" TopLine="157"/>
       </Position17>
       <Position18>
-        <Filename Value="findthread.pas"/>
-        <Caret Line="92" Column="1" TopLine="81"/>
+        <Filename Value="playlistcreator.pas"/>
+        <Caret Line="167" Column="1" TopLine="157"/>
       </Position18>
       <Position19>
-        <Filename Value="findthread.pas"/>
-        <Caret Line="94" Column="1" TopLine="81"/>
+        <Filename Value="playlistcreator.pas"/>
+        <Caret Line="169" Column="1" TopLine="157"/>
       </Position19>
       <Position20>
-        <Filename Value="findthread.pas"/>
-        <Caret Line="96" Column="1" TopLine="81"/>
+        <Filename Value="playlistcreator.pas"/>
+        <Caret Line="171" Column="1" TopLine="157"/>
       </Position20>
       <Position21>
-        <Filename Value="findthread.pas"/>
-        <Caret Line="94" Column="1" TopLine="81"/>
+        <Filename Value="playlistcreator.pas"/>
+        <Caret Line="172" Column="1" TopLine="157"/>
       </Position21>
       <Position22>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1309" Column="14" TopLine="1288"/>
+        <Filename Value="playlistcreator.pas"/>
+        <Caret Line="176" Column="1" TopLine="157"/>
       </Position22>
       <Position23>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1311" Column="14" TopLine="1288"/>
+        <Filename Value="playlistcreator.pas"/>
+        <Caret Line="178" Column="1" TopLine="157"/>
       </Position23>
       <Position24>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="playlistcreator.pas"/>
+        <Caret Line="186" Column="1" TopLine="167"/>
       </Position24>
       <Position25>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="982" Column="22" TopLine="959"/>
+        <Filename Value="playlistcreator.pas"/>
+        <Caret Line="188" Column="1" TopLine="173"/>
       </Position25>
       <Position26>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1323" Column="14" TopLine="1297"/>
+        <Filename Value="playlistcreator.pas"/>
+        <Caret Line="190" Column="1" TopLine="173"/>
       </Position26>
       <Position27>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="playlistcreator.pas"/>
+        <Caret Line="195" Column="46" TopLine="183"/>
       </Position27>
       <Position28>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="973" Column="1" TopLine="946"/>
+        <Filename Value="playlistcreator.pas"/>
+        <Caret Line="196" Column="45" TopLine="181"/>
       </Position28>
       <Position29>
         <Filename Value="playlistcreator.pas"/>
-        <Caret Line="212" Column="4" TopLine="199"/>
+        <Caret Line="195" Column="1" TopLine="181"/>
       </Position29>
       <Position30>
-        <Filename Value="touchlist.pas"/>
-        <Caret Line="174" Column="1" TopLine="160"/>
+        <Filename Value="playlistcreator.pas"/>
+        <Caret Line="196" Column="1" TopLine="181"/>
       </Position30>
     </JumpHistory>
   </ProjectOptions>

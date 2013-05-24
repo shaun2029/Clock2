@@ -1,17 +1,17 @@
 object frmWaitForMedia: TfrmWaitForMedia
   Left = 512
-  Height = 156
+  Height = 203
   Top = 262
   Width = 320
   BorderStyle = bsSingle
   Caption = 'Waiting For Media'
-  ClientHeight = 156
+  ClientHeight = 203
   ClientWidth = 320
   FormStyle = fsStayOnTop
   OnClose = FormClose
   OnShow = FormShow
   Position = poDesktopCenter
-  LCLVersion = '1.0.4.0'
+  LCLVersion = '1.0.1.3'
   object lbWaitForMedia: TLabel
     Left = 16
     Height = 96
@@ -30,6 +30,17 @@ object frmWaitForMedia: TfrmWaitForMedia
     Smooth = True
     Style = pbstMarquee
     TabOrder = 0
+  end
+  object BitBtn1: TBitBtn
+    Left = 224
+    Height = 40
+    Top = 159
+    Width = 88
+    Cancel = True
+    DefaultCaption = True
+    Kind = bkCancel
+    ModalResult = 2
+    TabOrder = 1
   end
   object tmrWait: TTimer
     Enabled = False

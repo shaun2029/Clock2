@@ -1,11 +1,11 @@
 object frmPlaylist: TfrmPlaylist
   Left = 407
-  Height = 427
+  Height = 440
   Top = 230
   Width = 728
   BorderStyle = bsSingle
   Caption = 'Play Album'
-  ClientHeight = 427
+  ClientHeight = 440
   ClientWidth = 728
   FormStyle = fsStayOnTop
   KeyPreview = True
@@ -23,30 +23,31 @@ object frmPlaylist: TfrmPlaylist
   end
   object btnBack: TBitBtn
     Left = 8
-    Height = 30
+    Height = 40
     Top = 392
-    Width = 75
+    Width = 88
     Caption = 'Back'
     OnClick = btnBackClick
     TabOrder = 1
   end
   object btnOk: TBitBtn
-    Left = 648
-    Height = 30
+    Left = 632
+    Height = 40
     Top = 392
-    Width = 75
+    Width = 88
     Default = True
     DefaultCaption = True
     Kind = bkOK
     ModalResult = 1
     TabOrder = 2
   end
-  object btnAdd: TBitBtn
-    Left = 285
-    Height = 30
+  object btnAddAll: TBitBtn
+    Left = 272
+    Height = 40
     Top = 392
-    Width = 75
-    Caption = 'Add'
+    Width = 88
+    Caption = 'Add All'
+    OnClick = btnAddAllClick
     TabOrder = 3
   end
   object Panel2: TPanel
@@ -55,5 +56,24 @@ object frmPlaylist: TfrmPlaylist
     Top = 8
     Width = 352
     TabOrder = 4
+  end
+  object BitBtn1: TBitBtn
+    Left = 536
+    Height = 40
+    Top = 392
+    Width = 88
+    Cancel = True
+    DefaultCaption = True
+    Kind = bkCancel
+    ModalResult = 2
+    TabOrder = 5
+  end
+  object tbxRandom: TToggleBox
+    Left = 368
+    Height = 40
+    Top = 392
+    Width = 160
+    Caption = 'Random Order'
+    TabOrder = 6
   end
 end

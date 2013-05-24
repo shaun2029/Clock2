@@ -22,7 +22,10 @@ type
   TPlayer = class
   private
     FSongList, FPathList: TStringList;
+    FFindSongList, FFindPathList: TStringList;
     FPlaySongList, FPlayPathList: TStringList;
+    FFindPlaySongList, FFindPlayPathList: TStringList;
+    FRandomPlaySelection: boolean;
 
     FFindFiles: TFindFilesThread;
     FFindPlayFiles: TFindFilesThread;
@@ -30,13 +33,14 @@ type
     FMusicPlayer: TMusicPlayer;
     FConfigFile, FSearchPath: string;
     FSongIndex: integer;
+    FPlaylistIndex: integer;
     FState: TPlayerState;
 
     function GetFileName(Index: integer; SongList, PathList: TStringList): string;
     function GetSongArtist: string;
     function GetSongTitle: string;
     procedure LoadSettings;
-    function PlayPlaylistSong: boolean;
+    function PlayPlaylistSong(Play: TPlayDirection): boolean;
     procedure PlaySong(Play: TPlayDirection);
     procedure RandomiseList(var List: TStringList);
     procedure SaveSettings;
@@ -55,7 +59,7 @@ type
 
     function Tick: integer;
 
-    procedure PlaySelection(SearchPaths: string);
+    procedure PlaySelection(SearchPaths: string; Random: boolean);
 
     constructor Create(MusicPlayer: TMusicPlayer; ConfigFile, SearchPath: string);
     destructor Destroy; override;
@@ -81,6 +85,10 @@ begin
   FPathList := TStringList.Create;
   FPlaySongList := TStringList.Create;
   FPlayPathList := TStringList.Create;
+  FFindSongList := TStringList.Create;
+  FFindPathList := TStringList.Create;
+  FFindPlaySongList := TStringList.Create;
+  FFindPlayPathList := TStringList.Create;
   FSongIndex := 0;
   FState := psStopped;
 
@@ -109,6 +117,10 @@ begin
   FPathList.Free;
   FPlaySongList.Free;
   FPlayPathList.Free;
+  FFindSongList.Free;
+  FFindPathList.Free;
+  FFindPlaySongList.Free;
+  FFindPlayPathList.Free;
 
   inherited Destroy;
 end;
@@ -188,7 +200,9 @@ begin
       FFindFiles.Terminate;
       FFindFiles.WaitFor;
       FreeAndNil(FFindFiles);
-      RandomiseList(FSongList);
+      RandomiseList(FFindSongList);
+      FSongList.Text := FFindSongList.Text;
+      FPathList.Text := FFindPathList.Text;
     end
     else Result := FFindFiles.Count;
   end
@@ -199,6 +213,10 @@ begin
       FFindPlayFiles.Terminate;
       FFindPlayFiles.WaitFor;
       FreeAndNil(FFindPlayFiles);
+      if FRandomPlaySelection then RandomiseList(FFindPlaySongList);
+      FPlaySongList.Text := FFindPlaySongList.Text;
+      FPlayPathList.Text := FFindPlayPathList.Text;
+      FPlaylistIndex := -1;
     end
     else Result := FFindPlayFiles.Count;
   end
@@ -215,54 +233,64 @@ procedure TPlayer.PlaySong(Play: TPlayDirection);
 var
   Filename: string;
 begin
-  if PlayPlaylistSong then Exit;
-
-  case Play of
-    pdPrevious: Dec(FSongIndex , 1);
-    pdNext: Inc(FSongIndex , 1);
-  end;
-
-  if FSongIndex < 0 then FSongIndex := FSongList.Count -1;
-  if FSongIndex >= FSongList.Count then FSongIndex := 0;
-
-  try
-    if (FSongIndex < FSongList.Count) then
-    begin
-      Filename := GetFilename(FSongIndex, FSongList, FPathList);
-
-      if FileExists(Filename) then FMusicPlayer.Play(Filename)
-      else DebugLn('Music: Failed to find "' + Filename + '"');
+  if not PlayPlaylistSong(Play) then
+  begin
+    case Play of
+      pdPrevious: Dec(FSongIndex , 1);
+      pdNext: Inc(FSongIndex , 1);
     end;
-  except
-    on E: Exception do
-    begin
-      DebugLn(Self.ClassName + #9#9 + E.Message);
-    end;
-  end;
 
-  SaveSettings;
+    if FSongIndex < 0 then FSongIndex := FSongList.Count -1;
+    if FSongIndex >= FSongList.Count then FSongIndex := 0;
+
+    try
+      if (FSongIndex < FSongList.Count) then
+      begin
+        Filename := GetFilename(FSongIndex, FSongList, FPathList);
+
+        if FileExists(Filename) then FMusicPlayer.Play(Filename)
+        else DebugLn('Music: Failed to find "' + Filename + '"');
+      end;
+    except
+      on E: Exception do
+      begin
+        DebugLn(Self.ClassName + #9#9 + E.Message);
+      end;
+    end;
+
+    SaveSettings;
+  end;
 end;
 
-function TPlayer.PlayPlaylistSong: boolean;
+function TPlayer.PlayPlaylistSong(Play: TPlayDirection): boolean;
 var
   Filename: string;
 begin
   Result := False;
 
-  if FPlaySongList.Count > 0 then
+  if FPlaylistIndex <= FPlaySongList.Count -1 then
   begin
-    Result := True;
+    case Play of
+      pdPrevious: Dec(FPlaylistIndex , 1);
+      pdNext: Inc(FPlaylistIndex , 1);
+    end;
 
-    try
-      Filename := GetFilename(0, FPlaySongList, FPlayPathList);
-      FPlaySongList.Delete(0);
+    if FPlaylistIndex < 0 then FPlaylistIndex := 0;
 
-      if FileExists(Filename) then FMusicPlayer.Play(Filename)
-      else DebugLn('Music: Failed to find "' + Filename + '"');
-    except
-      on E: Exception do
-      begin
-        DebugLn(Self.ClassName + #9#9 + E.Message);
+    if FPlaylistIndex < FPlaySongList.Count -1 then
+    begin
+      Result := True;
+
+      try
+        Filename := GetFilename(FPlaylistIndex, FPlaySongList, FPlayPathList);
+
+        if FileExists(Filename) then FMusicPlayer.Play(Filename)
+        else DebugLn('Music: Failed to find "' + Filename + '"');
+      except
+        on E: Exception do
+        begin
+          DebugLn(Self.ClassName + #9#9 + E.Message);
+        end;
       end;
     end;
   end;
@@ -348,11 +376,13 @@ begin
     FFindFiles.Terminate;
     FFindFiles.WaitFor;
     FreeAndNil(FFindFiles);
-    RandomiseList(FSongList);
+    RandomiseList(FFindSongList);
+    FSongList.Text := FFindSongList.Text;
+    FPathList.Text := FFindPathList.Text;
   end
   else
   begin
-    FFindFiles := TFindFilesThread.Create(FSongList, FPathList, FSearchPath, '.mp3');
+    FFindFiles := TFindFilesThread.Create(FFindSongList, FFindPathList, FSearchPath, '.mp3');
     FFindFiles.Resume;
   end;
 end;
@@ -381,8 +411,10 @@ begin
   else Result := '';
 end;
 
-procedure TPlayer.PlaySelection(SearchPaths: string);
+procedure TPlayer.PlaySelection(SearchPaths: string; Random: boolean);
 begin
+  FRandomPlaySelection := Random;
+
   if Assigned(FFindPlayFiles) then
   begin
     FFindPlayFiles.Terminate;
@@ -390,7 +422,7 @@ begin
     FreeAndNil(FFindPlayFiles);
   end;
 
-  FFindPlayFiles := TFindFilesThread.Create(FPlaySongList, FPlayPathList, SearchPaths, '.mp3');
+  FFindPlayFiles := TFindFilesThread.Create(FFindPlaySongList, FFindPlayPathList, SearchPaths, '.mp3');
   FFindPlayFiles.Resume;
 end;
 

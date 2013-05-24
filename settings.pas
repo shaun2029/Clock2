@@ -7,13 +7,14 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  Spin, XMLPropStorage, ComCtrls, ExtCtrls;
+  Spin, XMLPropStorage, ComCtrls, ExtCtrls, Buttons;
 
 type
 
   { TfrmSettings }
 
   TfrmSettings = class(TForm)
+    BitBtn1: TBitBtn;
     btnStartTimer: TButton;
     btnSelectMusic: TButton;
     btnSelectSleep: TButton;

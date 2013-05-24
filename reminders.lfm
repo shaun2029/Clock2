@@ -1,17 +1,17 @@
 object frmReminders: TfrmReminders
   Left = 416
-  Height = 440
+  Height = 446
   Top = 233
   Width = 374
   BorderStyle = bsSingle
   Caption = 'Reminder'
-  ClientHeight = 440
+  ClientHeight = 446
   ClientWidth = 374
   KeyPreview = True
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
   Position = poMainFormCenter
-  LCLVersion = '1.0.4.0'
+  LCLVersion = '1.0.1.3'
   object rgrpKind: TRadioGroup
     Left = 8
     Height = 48
@@ -26,16 +26,17 @@ object frmReminders: TfrmReminders
     ChildSizing.ShrinkHorizontal = crsScaleChilds
     ChildSizing.ShrinkVertical = crsScaleChilds
     ChildSizing.Layout = cclLeftToRightThenTopToBottom
-    ChildSizing.ControlsPerLine = 4
-    ClientHeight = 29
+    ChildSizing.ControlsPerLine = 5
+    ClientHeight = 30
     ClientWidth = 356
-    Columns = 4
+    Columns = 5
     ItemIndex = 0
     Items.Strings = (
       'Once '
       'Week'
       'Month'
       'Year'
+      'Quater'
     )
     TabOrder = 0
   end
@@ -54,7 +55,7 @@ object frmReminders: TfrmReminders
     ChildSizing.ShrinkVertical = crsScaleChilds
     ChildSizing.Layout = cclLeftToRightThenTopToBottom
     ChildSizing.ControlsPerLine = 4
-    ClientHeight = 30
+    ClientHeight = 31
     ClientWidth = 356
     Columns = 4
     Items.Strings = (
@@ -69,7 +70,7 @@ object frmReminders: TfrmReminders
   end
   object btnOk: TBitBtn
     Left = 280
-    Height = 30
+    Height = 40
     Top = 400
     Width = 88
     Default = True
@@ -81,7 +82,7 @@ object frmReminders: TfrmReminders
   end
   object btnCancel: TBitBtn
     Left = 184
-    Height = 30
+    Height = 40
     Top = 400
     Width = 88
     Cancel = True
@@ -92,9 +93,9 @@ object frmReminders: TfrmReminders
   end
   object Calendar: TCalendar
     Left = 8
-    Height = 192
+    Height = 160
     Top = 0
-    Width = 360
+    Width = 225
     DateTime = 25569
     TabOrder = 4
   end
@@ -104,7 +105,7 @@ object frmReminders: TfrmReminders
     Top = 200
     Width = 361
     Caption = 'Reminder'
-    ClientHeight = 62
+    ClientHeight = 63
     ClientWidth = 357
     TabOrder = 5
     object mmoDetail: TMemo

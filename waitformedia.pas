@@ -6,13 +6,14 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
-  StdCtrls, ExtCtrls, ComCtrls;
+  StdCtrls, ExtCtrls, ComCtrls, Buttons;
 
 type
 
   { TfrmWaitForMedia }
 
   TfrmWaitForMedia = class(TForm)
+    BitBtn1: TBitBtn;
     lbWaitForMedia: TLabel;
     pbarTimeout: TProgressBar;
     tmrWait: TTimer;

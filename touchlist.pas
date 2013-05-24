@@ -228,12 +228,21 @@ begin
 end;
 
 procedure TTouchList.SetItemIndex(AValue: integer);
+var
+  DisplayedLines: Integer;
 begin
   if FItemIndex = AValue then Exit;
   if AValue < Items.Count -1 then
-    FItemIndex := AValue
+  begin
+    FItemIndex := AValue;
+    DisplayedLines := Height div GetTextHeight;
+    if DisplayedLines > 0 then
+      FPositionIndex := (FItemIndex div DisplayedLines) * DisplayedLines;
+  end
   else
+  begin
     FItemIndex := -1;
+  end;
 end;
 
 procedure TTouchList.SetPageButtonColour(AValue: TColor);

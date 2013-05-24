@@ -15,7 +15,7 @@ uses
 
 type
 
-  TReminderKind = (rkOnce, rkWeekly, rkMonthly, rkYearly);
+  TReminderKind = (rkOnce, rkWeekly, rkMonthly, rkYearly, rkQuaterly);
 
   TReminder = record
     Date: TDateTime;
@@ -360,6 +360,13 @@ begin
             // Add one month to the reminder
             DecodeDate(FReminders[i].Date, Year, Month, Day);
             IncAMonth(Year, Month, Day, 1);
+            FReminders[i].Date := EncodeDate(Year, Month, Day);
+          end;
+        rkQuaterly:
+          begin
+            // Add four months to the reminder
+            DecodeDate(FReminders[i].Date, Year, Month, Day);
+            IncAMonth(Year, Month, Day, 4);
             FReminders[i].Date := EncodeDate(Year, Month, Day);
           end;
         rkYearly:

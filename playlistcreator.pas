@@ -18,11 +18,14 @@ type
   { TfrmPlaylist }
 
   TfrmPlaylist = class(TForm)
-    btnAdd: TBitBtn;
+    BitBtn1: TBitBtn;
+    btnAddAll: TBitBtn;
     btnBack: TBitBtn;
     btnOk: TBitBtn;
     Panel1: TPanel;
     Panel2: TPanel;
+    tbxRandom: TToggleBox;
+    procedure btnAddAllClick(Sender: TObject);
     procedure btnBackClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -34,20 +37,23 @@ type
     FPath: TStringList;
     FPathList: TStringList;
     FStartPath: string;
-    lstDisplay, lstSelected: TTouchList;
+    lstDisplay: TTouchList;
     FItemIndex: integer;
 
     procedure Display(Next: boolean);
 
     function GetLevel(Level: integer; const Path: string; out Data: string): boolean;
     function GetMusicPath: string;
+    function GetRandomOrder: boolean;
     procedure OnItemSelected(Sender: TObject; Index: integer);
+    procedure OnDeleteSelected(Sender: TObject; Index: integer);
   public
     { public declarations }
-    SelectedMusic: TStringList;
+    lstSelected: TTouchList;
 
     procedure LoadSongs(const ConfigFile, StartPath: string);
   published
+    property Random: boolean read GetRandomOrder;
   end;
 
 var
@@ -72,8 +78,7 @@ begin
   lstSelected.Parent := Panel2;
   lstSelected.Font.Size := 14;
   lstSelected.TrimItems := True;
-
-  SelectedMusic := TStringList.Create;
+  lstSelected.OnItemSelected := OnDeleteSelected;
 
   FItemIndex := -1;
 end;
@@ -83,11 +88,32 @@ begin
   Display(False);
 end;
 
+procedure TfrmPlaylist.btnAddAllClick(Sender: TObject);
+var
+  Selected: integer;
+  MusicPath: String;
+  i: Integer;
+begin
+  btnAddAll.Enabled := False;
+  Selected := lstDisplay.ItemIndex;
+
+  for i := 0 to lstDisplay.Items.Count -1 do
+  begin
+    lstDisplay.ItemIndex := i;
+
+    MusicPath := GetMusicPath;
+    if lstSelected.Items.IndexOf(MusicPath) < 0 then
+      lstSelected.Items.Add(MusicPath);
+  end;
+
+  lstDisplay.ItemIndex := Selected;
+  btnAddAll.Enabled := True;
+end;
+
 procedure TfrmPlaylist.FormDestroy(Sender: TObject);
 begin
   lstDisplay.Free;
   lstSelected.Free;
-  SelectedMusic.Free;
   FPathList.Free;
   FPath.Free;
 end;
@@ -113,6 +139,14 @@ end;
 procedure TfrmPlaylist.OnItemSelected(Sender: TObject; Index: integer);
 begin
   Display(True);
+end;
+
+procedure TfrmPlaylist.OnDeleteSelected(Sender: TObject; Index: integer);
+begin
+  if Sender is TTouchList then
+  begin
+    TTouchList(Sender).Items.Delete(Index);
+  end;
 end;
 
 { Claculate what needs to be displayed for file navigation.
@@ -170,7 +204,7 @@ begin
 
   for i := 0 to FPathList.Count -1 do
   begin
-    if (Pos(CurrPath, FPathList.Strings[i]) = 1)
+    if (Pos(IncludeTrailingPathDelimiter(CurrPath), FPathList.Strings[i]) = 1)
       and GetLevel(Level, FPathList.Strings[i], Data) then
     begin
       if not Found then
@@ -214,15 +248,12 @@ begin
 
     FLevel := Level;
   end
-  else
+  else if Next then
   begin
     // Reached final level, make selection
     MusicPath := GetMusicPath;
-    if SelectedMusic.IndexOf(MusicPath) < 0 then
-    begin
+    if lstSelected.Items.IndexOf(MusicPath) < 0 then
       lstSelected.Items.Add(MusicPath);
-      SelectedMusic.Add(MusicPath);
-    end;
   end;
 
   lstDisplay.Items.Sorted := True;
@@ -339,6 +370,11 @@ begin
       Result := Result + lstDisplay.Items.Strings[Selected] + '/';
     end;
   end;
+end;
+
+function TfrmPlaylist.GetRandomOrder: boolean;
+begin
+  Result := tbxRandom.Checked;
 end;
 
 

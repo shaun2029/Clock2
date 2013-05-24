@@ -25,7 +25,7 @@ uses
   X, Xlib, CTypes, Black, WaitForMedia, Pictures;
 
 const
-  VERSION = '2.0.5';
+  VERSION = '2.0.6';
 
 type
   TMusicState = (msOff, msPlaying, msPaused);
@@ -976,7 +976,7 @@ begin
 
     if FormShowModal(frmPlaylist) = mrOk then
     begin
-      FMusicPlayer.PlaySelection(frmPlaylist.SelectedMusic.Text);
+      FMusicPlayer.PlaySelection(frmPlaylist.lstSelected.Items.Text, False);
     end;
 
     frmPlaylist.Free;
@@ -1317,7 +1317,7 @@ begin
 
   if FormShowModal(frmPlaylist) = mrOk then
   begin
-    FMusicPlayer.PlaySelection(frmPlaylist.SelectedMusic.Text);
+    FMusicPlayer.PlaySelection(frmPlaylist.lstSelected.Items.Text, frmPlaylist.Random);
   end;
 
   frmPlaylist.Free;
