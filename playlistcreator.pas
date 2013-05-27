@@ -261,6 +261,7 @@ begin
   SelectList.Free;
 end;
 
+{
 function TfrmPlaylist.PathCompare(CurrPath, NewPath: string): boolean; inline;
 var
   CurrLen: integer;
@@ -272,6 +273,33 @@ begin
   if CurrLen > Length(NewPath) then Exit;
 
   for i := CurrLen downto 1 do
+    if CurrPath[i] <> NewPath[i] then Exit;
+
+  Result := True;
+end;
+}
+
+function TfrmPlaylist.PathCompare(CurrPath, NewPath: string): boolean; inline;
+var
+  CurrLen, NewLen: integer;
+  PCurrPath, PNewPath: PDWord;
+  i: Integer;
+begin
+  Result := False;
+
+  CurrLen := Length(CurrPath);
+  if CurrLen > Length(NewPath) then Exit;
+
+  NewLen := CurrLen - (CurrLen mod 4);
+
+  for i := CurrLen downto NewLen do
+    if CurrPath[i] <> NewPath[i] then Exit;
+
+  PCurrPath := @CurrPath[1];
+  PNewPath := @NewPath[1];
+  NewLen := NewLen div 4;
+
+  for i := 0 to NewLen - 1 do
     if CurrPath[i] <> NewPath[i] then Exit;
 
   Result := True;
