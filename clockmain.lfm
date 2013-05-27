@@ -22,7 +22,7 @@ object frmClockMain: TfrmClockMain
   LCLVersion = '1.0.4.0'
   object imgPlayAlbums: TImage
     Cursor = crNone
-    Left = 16
+    Left = 14
     Height = 88
     Top = 284
     Width = 144
@@ -1764,9 +1764,9 @@ object frmClockMain: TfrmClockMain
   end
   object imgDisplay: TImage
     Cursor = crNone
-    Left = 482
+    Left = 640
     Height = 88
-    Top = 377
+    Top = 285
     Width = 144
     OnClick = lbDisplayClick
     Picture.Data = {
@@ -9315,9 +9315,9 @@ object frmClockMain: TfrmClockMain
   end
   object lbDisplay: TLabel
     Cursor = crNone
-    Left = 491
+    Left = 649
     Height = 56
-    Top = 396
+    Top = 304
     Width = 128
     Alignment = taCenter
     AutoSize = False
@@ -13347,9 +13347,9 @@ object frmClockMain: TfrmClockMain
   end
   object imgUpdateMusic: TImage
     Cursor = crNone
-    Left = 640
+    Left = 482
     Height = 88
-    Top = 285
+    Top = 377
     Width = 144
     OnClick = imgUpdateMusicClick
     Picture.Data = {
@@ -14218,9 +14218,9 @@ object frmClockMain: TfrmClockMain
   end
   object UpdateMusic: TLabel
     Cursor = crNone
-    Left = 650
+    Left = 492
     Height = 50
-    Top = 303
+    Top = 395
     Width = 128
     Alignment = taCenter
     AutoSize = False
@@ -16042,7 +16042,7 @@ object frmClockMain: TfrmClockMain
   end
   object lbPlayAlbums: TLabel
     Cursor = crNone
-    Left = 26
+    Left = 24
     Height = 58
     Top = 303
     Width = 128

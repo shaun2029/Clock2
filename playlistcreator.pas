@@ -47,6 +47,7 @@ type
     function GetRandomOrder: boolean;
     procedure OnItemSelected(Sender: TObject; Index: integer);
     procedure OnDeleteSelected(Sender: TObject; Index: integer);
+    function PathCompare(CurrPath, NewPath: string): boolean;
   public
     { public declarations }
     lstSelected: TTouchList;
@@ -204,7 +205,7 @@ begin
 
   for i := 0 to FPathList.Count -1 do
   begin
-    if (Pos(IncludeTrailingPathDelimiter(CurrPath), FPathList.Strings[i]) = 1)
+    if PathCompare(IncludeTrailingPathDelimiter(CurrPath), FPathList.Strings[i])
       and GetLevel(Level, FPathList.Strings[i], Data) then
     begin
       if not Found then
@@ -258,6 +259,22 @@ begin
 
   lstDisplay.Items.Sorted := True;
   SelectList.Free;
+end;
+
+function TfrmPlaylist.PathCompare(CurrPath, NewPath: string): boolean; inline;
+var
+  CurrLen: integer;
+  i: Integer;
+begin
+  Result := False;
+
+  CurrLen := Length(CurrPath);
+  if CurrLen > Length(NewPath) then Exit;
+
+  for i := CurrLen downto 1 do
+    if CurrPath[i] <> NewPath[i] then Exit;
+
+  Result := True;
 end;
 
 procedure TfrmPlaylist.LoadSongs(const ConfigFile, StartPath: string);

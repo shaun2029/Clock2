@@ -169,6 +169,7 @@ procedure TTouchList.MouseDown(Button: TMouseButton; Shift: TShiftState; X,
   Y: Integer);
 var
   TextHeight, BarPosition, BarLength, Pages, DisplayedLines: integer;
+  SelectedItem: integer;
 begin
   TextHeight := GetTextHeight;
   DisplayedLines := Height div TextHeight;
@@ -183,10 +184,13 @@ begin
       if X < Width - SCROLLBAR_WIDTH then
       begin
         // Text clicked
-        FItemIndex := FPositionIndex + (Y div TextHeight);
-        Invalidate;
-
-        if Assigned(OnItemSelected) then OnItemSelected(Self, FItemIndex);
+        SelectedItem := FPositionIndex + (Y div TextHeight);
+        if (SelectedItem >= 0) and (SelectedItem <= Items.Count - 1) then
+        begin
+          FItemIndex := SelectedItem;
+          if Assigned(OnItemSelected) then OnItemSelected(Self, FItemIndex);
+          Invalidate;
+        end;
       end
       else
       begin
@@ -232,7 +236,7 @@ var
   DisplayedLines: Integer;
 begin
   if FItemIndex = AValue then Exit;
-  if AValue < Items.Count -1 then
+  if AValue <= Items.Count -1 then
   begin
     FItemIndex := AValue;
     DisplayedLines := Height div GetTextHeight;

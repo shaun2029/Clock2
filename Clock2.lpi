@@ -84,7 +84,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="61" Y="25"/>
-        <UsageCount Value="110"/>
+        <UsageCount Value="114"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -100,7 +100,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="165"/>
         <CursorPos X="48" Y="165"/>
-        <UsageCount Value="110"/>
+        <UsageCount Value="114"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit1>
@@ -157,7 +157,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="15"/>
         <CursorPos X="32" Y="15"/>
-        <UsageCount Value="102"/>
+        <UsageCount Value="106"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit7>
@@ -216,7 +216,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="53"/>
         <CursorPos X="83" Y="83"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="87"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit13>
@@ -244,7 +244,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="128"/>
         <CursorPos X="69" Y="159"/>
-        <UsageCount Value="92"/>
+        <UsageCount Value="96"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit16>
       <Unit17>
@@ -256,11 +256,10 @@
         <UnitName Value="ClockMain"/>
         <EditorIndex Value="13"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="715"/>
-        <CursorPos X="30" Y="1318"/>
-        <UsageCount Value="92"/>
+        <TopLine Value="1222"/>
+        <CursorPos X="97" Y="1223"/>
+        <UsageCount Value="96"/>
         <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit17>
       <Unit18>
@@ -271,7 +270,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="427"/>
         <CursorPos X="35" Y="427"/>
-        <UsageCount Value="92"/>
+        <UsageCount Value="96"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit18>
@@ -306,7 +305,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="346"/>
         <CursorPos X="17" Y="372"/>
-        <UsageCount Value="88"/>
+        <UsageCount Value="92"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -319,7 +318,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
-        <UsageCount Value="69"/>
+        <UsageCount Value="73"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit22>
@@ -331,7 +330,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="79"/>
         <CursorPos X="26" Y="82"/>
-        <UsageCount Value="70"/>
+        <UsageCount Value="74"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit23>
@@ -403,9 +402,9 @@
         <UnitName Value="MusicPlayer"/>
         <EditorIndex Value="16"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="16"/>
+        <TopLine Value="198"/>
         <CursorPos X="61" Y="236"/>
-        <UsageCount Value="69"/>
+        <UsageCount Value="73"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit32>
@@ -478,7 +477,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="125"/>
         <CursorPos X="47" Y="140"/>
-        <UsageCount Value="69"/>
+        <UsageCount Value="73"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -491,7 +490,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="53"/>
         <CursorPos X="3" Y="53"/>
-        <UsageCount Value="69"/>
+        <UsageCount Value="73"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit41>
@@ -503,7 +502,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="326"/>
         <CursorPos X="24" Y="354"/>
-        <UsageCount Value="69"/>
+        <UsageCount Value="73"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit42>
@@ -516,9 +515,9 @@
         <UnitName Value="black"/>
         <EditorIndex Value="9"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="13"/>
+        <TopLine Value="6"/>
         <CursorPos X="1" Y="38"/>
-        <UsageCount Value="74"/>
+        <UsageCount Value="78"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -547,7 +546,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="45"/>
         <CursorPos X="48" Y="46"/>
-        <UsageCount Value="69"/>
+        <UsageCount Value="73"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit46>
@@ -559,7 +558,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="81"/>
         <CursorPos X="22" Y="111"/>
-        <UsageCount Value="69"/>
+        <UsageCount Value="73"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit47>
@@ -591,7 +590,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
-        <UsageCount Value="62"/>
+        <UsageCount Value="66"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit50>
@@ -602,12 +601,11 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="PlaylistCreator"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="14"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="230"/>
-        <CursorPos X="20" Y="251"/>
-        <UsageCount Value="33"/>
+        <TopLine Value="132"/>
+        <CursorPos X="1" Y="149"/>
+        <UsageCount Value="37"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -677,11 +675,12 @@
         <Filename Value="touchlist.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="TouchList"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="15"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="228"/>
-        <CursorPos X="3" Y="240"/>
-        <UsageCount Value="29"/>
+        <TopLine Value="168"/>
+        <CursorPos X="1" Y="193"/>
+        <UsageCount Value="33"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit59>
@@ -698,123 +697,123 @@
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="playlistcreator.pas"/>
-        <Caret Line="167" Column="1" TopLine="149"/>
+        <Caret Line="50" Column="25" TopLine="18"/>
       </Position1>
       <Position2>
         <Filename Value="playlistcreator.pas"/>
-        <Caret Line="169" Column="1" TopLine="156"/>
+        <Caret Line="208" Column="1" TopLine="195"/>
       </Position2>
       <Position3>
         <Filename Value="playlistcreator.pas"/>
-        <Caret Line="171" Column="1" TopLine="156"/>
+        <Caret Line="270" Column="18" TopLine="251"/>
       </Position3>
       <Position4>
         <Filename Value="playlistcreator.pas"/>
-        <Caret Line="172" Column="1" TopLine="156"/>
+        <Caret Line="274" Column="8" TopLine="254"/>
       </Position4>
       <Position5>
         <Filename Value="playlistcreator.pas"/>
-        <Caret Line="176" Column="1" TopLine="156"/>
+        <Caret Line="264" Column="35" TopLine="254"/>
       </Position5>
       <Position6>
         <Filename Value="playlistcreator.pas"/>
-        <Caret Line="178" Column="1" TopLine="162"/>
+        <Caret Line="98" Column="3" TopLine="92"/>
       </Position6>
       <Position7>
         <Filename Value="playlistcreator.pas"/>
-        <Caret Line="186" Column="1" TopLine="162"/>
+        <Caret Line="101" Column="15" TopLine="91"/>
       </Position7>
       <Position8>
         <Filename Value="playlistcreator.pas"/>
-        <Caret Line="188" Column="1" TopLine="169"/>
+        <Caret Line="99" Column="1" TopLine="91"/>
       </Position8>
       <Position9>
         <Filename Value="playlistcreator.pas"/>
-        <Caret Line="190" Column="1" TopLine="169"/>
+        <Caret Line="101" Column="1" TopLine="91"/>
       </Position9>
       <Position10>
         <Filename Value="playlistcreator.pas"/>
-        <Caret Line="195" Column="1" TopLine="170"/>
+        <Caret Line="103" Column="1" TopLine="91"/>
       </Position10>
       <Position11>
         <Filename Value="playlistcreator.pas"/>
-        <Caret Line="205" Column="1" TopLine="190"/>
+        <Caret Line="105" Column="1" TopLine="91"/>
       </Position11>
       <Position12>
         <Filename Value="playlistcreator.pas"/>
-        <Caret Line="207" Column="1" TopLine="190"/>
+        <Caret Line="106" Column="1" TopLine="91"/>
       </Position12>
       <Position13>
         <Filename Value="playlistcreator.pas"/>
-        <Caret Line="210" Column="42" TopLine="190"/>
+        <Caret Line="107" Column="1" TopLine="91"/>
       </Position13>
       <Position14>
         <Filename Value="playlistcreator.pas"/>
-        <Caret Line="207" Column="43" TopLine="184"/>
+        <Caret Line="103" Column="1" TopLine="91"/>
       </Position14>
       <Position15>
         <Filename Value="playlistcreator.pas"/>
-        <Caret Line="164" Column="8" TopLine="157"/>
+        <Caret Line="105" Column="1" TopLine="91"/>
       </Position15>
       <Position16>
         <Filename Value="playlistcreator.pas"/>
-        <Caret Line="165" Column="1" TopLine="157"/>
+        <Caret Line="106" Column="1" TopLine="91"/>
       </Position16>
       <Position17>
         <Filename Value="playlistcreator.pas"/>
-        <Caret Line="166" Column="1" TopLine="157"/>
+        <Caret Line="107" Column="1" TopLine="91"/>
       </Position17>
       <Position18>
         <Filename Value="playlistcreator.pas"/>
-        <Caret Line="167" Column="1" TopLine="157"/>
+        <Caret Line="103" Column="1" TopLine="91"/>
       </Position18>
       <Position19>
         <Filename Value="playlistcreator.pas"/>
-        <Caret Line="169" Column="1" TopLine="157"/>
+        <Caret Line="105" Column="1" TopLine="91"/>
       </Position19>
       <Position20>
         <Filename Value="playlistcreator.pas"/>
-        <Caret Line="171" Column="1" TopLine="157"/>
+        <Caret Line="373" Column="1" TopLine="354"/>
       </Position20>
       <Position21>
         <Filename Value="playlistcreator.pas"/>
-        <Caret Line="172" Column="1" TopLine="157"/>
+        <Caret Line="374" Column="1" TopLine="354"/>
       </Position21>
       <Position22>
         <Filename Value="playlistcreator.pas"/>
-        <Caret Line="176" Column="1" TopLine="157"/>
+        <Caret Line="376" Column="1" TopLine="354"/>
       </Position22>
       <Position23>
         <Filename Value="playlistcreator.pas"/>
-        <Caret Line="178" Column="1" TopLine="157"/>
+        <Caret Line="381" Column="1" TopLine="360"/>
       </Position23>
       <Position24>
         <Filename Value="playlistcreator.pas"/>
-        <Caret Line="186" Column="1" TopLine="167"/>
+        <Caret Line="383" Column="1" TopLine="360"/>
       </Position24>
       <Position25>
         <Filename Value="playlistcreator.pas"/>
-        <Caret Line="188" Column="1" TopLine="173"/>
+        <Caret Line="390" Column="1" TopLine="360"/>
       </Position25>
       <Position26>
         <Filename Value="playlistcreator.pas"/>
-        <Caret Line="190" Column="1" TopLine="173"/>
+        <Caret Line="106" Column="1" TopLine="87"/>
       </Position26>
       <Position27>
-        <Filename Value="playlistcreator.pas"/>
-        <Caret Line="195" Column="46" TopLine="183"/>
+        <Filename Value="touchlist.pas"/>
+        <Caret Line="49" Column="67" TopLine="31"/>
       </Position27>
       <Position28>
-        <Filename Value="playlistcreator.pas"/>
-        <Caret Line="196" Column="45" TopLine="181"/>
+        <Filename Value="touchlist.pas"/>
+        <Caret Line="235" Column="15" TopLine="213"/>
       </Position28>
       <Position29>
         <Filename Value="playlistcreator.pas"/>
-        <Caret Line="195" Column="1" TopLine="181"/>
+        <Caret Line="149" Column="7" TopLine="132"/>
       </Position29>
       <Position30>
-        <Filename Value="playlistcreator.pas"/>
-        <Caret Line="196" Column="1" TopLine="181"/>
+        <Filename Value="touchlist.pas"/>
+        <Caret Line="34" Column="57" TopLine="23"/>
       </Position30>
     </JumpHistory>
   </ProjectOptions>
