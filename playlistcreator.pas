@@ -292,14 +292,15 @@ begin
 
   NewLen := CurrLen - (CurrLen mod 4);
 
-  for i := CurrLen downto NewLen do
-    if CurrPath[i] <> NewPath[i] then Exit;
-
   PCurrPath := @CurrPath[1];
   PNewPath := @NewPath[1];
-  NewLen := NewLen div 4;
 
-  for i := 0 to NewLen - 1 do
+  // Process DWords
+  for i := 0 to (NewLen div 4) - 1 do
+    if PCurrPath[i] <> PNewPath[i] then Exit;
+
+  // Process single chars
+  for i := NewLen+1 to CurrLen do
     if CurrPath[i] <> NewPath[i] then Exit;
 
   Result := True;

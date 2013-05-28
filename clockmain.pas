@@ -25,7 +25,7 @@ uses
   X, Xlib, CTypes, Black, WaitForMedia, Pictures;
 
 const
-  VERSION = '2.0.6';
+  VERSION = '2.0.7';
 
 type
   TMusicState = (msOff, msPlaying, msPaused);
@@ -173,7 +173,7 @@ type
     procedure PauseMusic;
     procedure PlayMusic;
     procedure PlayPreviousMusic;
-    procedure SetCursorType;
+    procedure SetCursorType(MyForm: TForm);
     procedure SetMusicSource(Source: TMusicSource);
     procedure UpdatingMusic(Player: TPlayer);
 
@@ -1053,18 +1053,23 @@ begin
   tmrMinute.Enabled := True;
 end;
 
-procedure TfrmClockMain.SetCursorType;
+procedure TfrmClockMain.SetCursorType(MyForm: TForm);
 var
   i: Integer;
 begin
+
   // Disable cursor if in Touchscreen mode
-  for i := 0 to Self.ComponentCount - 1 do
+  if frmSettings.cbxTouchScreen.Checked then
+    MyForm.Cursor := crNone
+  else MyForm.Cursor := crDefault;
+
+  for i := 0 to MyForm.ComponentCount - 1 do
   begin
-    if Self.Components[i] is TControl then
+    if MyForm.Components[i] is TControl then
     begin
       if frmSettings.cbxTouchScreen.Checked then
-        TControl(Self.Components[i]).Cursor := crNone
-      else TControl(Self.Components[i]).Cursor := crDefault;
+        TControl(MyForm.Components[i]).Cursor := crNone
+      else TControl(MyForm.Components[i]).Cursor := crDefault;
     end;
   end;
 end;
@@ -1277,6 +1282,7 @@ function TfrmClockMain.FormShowModal(MyForm: TForm): integer;
 begin
   gdk_window_unfullscreen(PGtkWidget(Handle)^.window);
 
+  SetCursorType(MyForm);
   Result := MyForm.ShowModal;
 
   if frmSettings.cbxForceFullscreen.Checked then
@@ -1469,15 +1475,14 @@ begin
   FServerPort := frmSettings.edtServerPort.Text;
 
   UpdateReminders;
+  SetCursorType(Self);
 
   if frmSettings.cbxForceFullscreen.Checked then
   begin
-    SetCursorType;
     BorderStyle := bsNone;
   end
   else
   begin
-    SetCursorType;
     BorderStyle := bsSingle;
   end;
 end;
