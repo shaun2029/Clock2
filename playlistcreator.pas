@@ -15,6 +15,11 @@ uses
 
 type
 
+  TPathList = record
+    Path: string;
+    List: string;
+  end;
+
   { TfrmPlaylist }
 
   TfrmPlaylist = class(TForm)
@@ -39,6 +44,7 @@ type
     FStartPath: string;
     lstDisplay: TTouchList;
     FItemIndex: integer;
+    FPathLists: array of TPathList;
 
     procedure Display(Next: boolean);
 
@@ -70,6 +76,8 @@ procedure TfrmPlaylist.FormCreate(Sender: TObject);
 begin
   FPathList := TStringList.Create;
   FPath := TStringList.Create;
+  SetLength(FPathLists, 0);
+
   lstDisplay := TTouchList.Create(Panel1);
   lstDisplay.Parent := Panel1;
   lstDisplay.OnItemSelected := OnItemSelected;
@@ -113,6 +121,7 @@ end;
 
 procedure TfrmPlaylist.FormDestroy(Sender: TObject);
 begin
+  SetLength(FPathLists, 0);
   lstDisplay.Free;
   lstSelected.Free;
   FPathList.Free;
@@ -155,7 +164,7 @@ end;
 procedure TfrmPlaylist.Display(Next: boolean);
 var
   i, Level, Selected: Integer;
-  Found: boolean;
+  Found, Cached: boolean;
   Data, SelectedStr: string;
   CurrPath: string;
   SelectList: TStringList;
@@ -180,7 +189,7 @@ begin
   end
   else
   begin
-    if Flevel <= FMinLevel then Flevel := FMinLevel
+    if Flevel <= FMinLevel then Level := FMinLevel
     else Level := FLevel - 1;
   end;
 
@@ -203,22 +212,50 @@ begin
     end;
   end;
 
-  for i := 0 to FPathList.Count -1 do
-  begin
-    if PathCompare(IncludeTrailingPathDelimiter(CurrPath), FPathList.Strings[i])
-      and GetLevel(Level, FPathList.Strings[i], Data) then
-    begin
-      if not Found then
-      begin
-        Found := True;
-      end;
+  // Use cached path list if avaliable
+  Cached := False;
 
-      if SelectList.IndexOf(Data) < 0 then
-        SelectList.Add(Data);
+  for i := 0 to Length(FPathLists) - 1 do
+  begin
+    // Search the cache.
+    if FPathLists[i].Path = CurrPath then
+    begin
+      SelectList.Text := FPathLists[i].List;
+      Cached := True;
+      Break;
     end;
   end;
 
-  if Found then
+  if not Cached then
+  begin
+    // Search path list for selected paths.
+    for i := 0 to FPathList.Count -1 do
+    begin
+      if PathCompare(IncludeTrailingPathDelimiter(CurrPath), FPathList.Strings[i])
+        and GetLevel(Level, FPathList.Strings[i], Data) then
+      begin
+        if not Found then
+        begin
+          // Track if any paths are found.
+          Found := True;
+        end;
+
+        // Add path if not duplicating existing entry.
+        if SelectList.IndexOf(Data) < 0 then
+          SelectList.Add(Data);
+      end;
+    end;
+
+    if Found then
+    begin
+      // Add list to cache
+      SetLength(FPathLists, Length(FPathLists) + 1);
+      FPathLists[Length(FPathLists) - 1].Path := CurrPath;
+      FPathLists[Length(FPathLists) - 1].List := SelectList.Text;
+    end;
+  end;
+
+  if Found or Cached then
   begin
     lstDisplay.Items.Text := SelectList.Text;
 
@@ -235,11 +272,12 @@ begin
 
       if FPath.Count > 0 then
       begin
+        // Re-select the previously selected item.
         Selected := lstDisplay.Items.IndexOf(FPath.Strings[FPath.Count - 1]);
 
         if Selected >= 0 then
         begin
-         lstDisplay.ItemIndex := Selected;
+          lstDisplay.ItemIndex := Selected;
         end
       end;
 
@@ -261,24 +299,7 @@ begin
   SelectList.Free;
 end;
 
-{
-function TfrmPlaylist.PathCompare(CurrPath, NewPath: string): boolean; inline;
-var
-  CurrLen: integer;
-  i: Integer;
-begin
-  Result := False;
-
-  CurrLen := Length(CurrPath);
-  if CurrLen > Length(NewPath) then Exit;
-
-  for i := CurrLen downto 1 do
-    if CurrPath[i] <> NewPath[i] then Exit;
-
-  Result := True;
-end;
-}
-
+// Quickly compare paths to find if NewPath is contained within CurrPath.
 function TfrmPlaylist.PathCompare(CurrPath, NewPath: string): boolean; inline;
 var
   CurrLen, NewLen: integer;
@@ -299,13 +320,14 @@ begin
   for i := 0 to (NewLen div 4) - 1 do
     if PCurrPath[i] <> PNewPath[i] then Exit;
 
-  // Process single chars
+  // Process remaining single chars
   for i := NewLen+1 to CurrLen do
     if CurrPath[i] <> NewPath[i] then Exit;
 
   Result := True;
 end;
 
+// Load the list of paths from a playlist path file.
 procedure TfrmPlaylist.LoadSongs(const ConfigFile, StartPath: string);
 var
   IniFile: TIniFile;
@@ -342,6 +364,7 @@ begin
   Display(True);
 end;
 
+// Get the piece of the path indicated by level.
 function TfrmPlaylist.GetLevel(Level: integer; const Path: string; out Data: string): boolean;
 var
   SPos, EPos, Lev: integer;
@@ -395,6 +418,7 @@ begin
   end;
 end;
 
+// Generate the complete path to the selected item.
 function TfrmPlaylist.GetMusicPath: string;
 var
   i: integer;

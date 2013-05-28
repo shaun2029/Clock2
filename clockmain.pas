@@ -10,7 +10,7 @@ unit ClockMain;
 {$DEFINE PICSHOW}
 //{$DEFINE DEBUG}
 
-// Zipit does not supprt media keys
+// Zipit does not support media keys
 {$IFNDEF CPUARM}
   {$DEFINE GRABXKEYS}
 {$ENDIF}

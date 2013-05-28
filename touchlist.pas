@@ -52,8 +52,8 @@ type
 
 const
   LEFT_MARGIN = 8;
-  SCROLLBAR_WIDTH = 32;
-  PAGE_BUTTON_HEIGHT = 32;
+  SCROLLBAR_WIDTH = 40;
+  PAGE_BUTTON_HEIGHT = 40;
 
 implementation
 
