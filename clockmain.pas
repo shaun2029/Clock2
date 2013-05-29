@@ -171,6 +171,7 @@ type
     function FormShowModal(MyForm: TForm): integer;
     procedure Log(Message: string);
     procedure PauseMusic;
+    procedure PlayAlbums;
     procedure PlayMusic;
     procedure PlayPreviousMusic;
     procedure SetCursorType(MyForm: TForm);
@@ -969,17 +970,7 @@ begin
   end
   else if (Key = 'l') or (Key='L') then
   begin
-    frmPlaylist := TfrmPlaylist.Create(Self);
-
-    frmPlaylist.LoadSongs(ChangeFileExt(FConfigFilename, '_music.cfg'),
-      frmSettings.edtMusicPath.Text);
-
-    if FormShowModal(frmPlaylist) = mrOk then
-    begin
-      FMusicPlayer.PlaySelection(frmPlaylist.lstSelected.Items.Text, False);
-    end;
-
-    frmPlaylist.Free;
+    PlayAlbums;
   end
   else if (Key = 'r') or (Key = 'R') then frmReminderList.Show
   else if (Key = 'n') or (Key = 'N') then
@@ -1316,17 +1307,7 @@ begin
   imgPlayAlbums.Picture.Assign(imgOff.Picture);
   Application.ProcessMessages;
 
-  frmPlaylist := TfrmPlaylist.Create(Self);
-
-  frmPlaylist.LoadSongs(ChangeFileExt(FConfigFilename, '_music.cfg'),
-    frmSettings.edtMusicPath.Text);
-
-  if FormShowModal(frmPlaylist) = mrOk then
-  begin
-    FMusicPlayer.PlaySelection(frmPlaylist.lstSelected.Items.Text, frmPlaylist.Random);
-  end;
-
-  frmPlaylist.Free;
+  PlayAlbums;
 
   imgPlayAlbums.Picture.Assign(imgOn.Picture);
 end;
@@ -1614,6 +1595,49 @@ begin
   end;
 
   Process.Free;
+end;
+
+procedure TfrmClockMain.PlayAlbums;
+var
+  Player: TPlayer;
+  SongFile, PlayerPath: String;
+begin
+  // Test is the search path has changed
+  case FMusicSource of
+    msrcSleep:
+      begin
+        Player := FSleepPlayer;
+        SongFile := ChangeFileExt(FConfigFilename, '_sleep.cfg');
+        PlayerPath := frmSettings.edtSleepPath.Text;
+      end;
+    msrcMeditation:
+      begin
+        Player := FMeditationPlayer;
+        SongFile := ChangeFileExt(FConfigFilename, '_meditation.cfg');
+        PlayerPath := frmSettings.edtMeditationPath.Text;
+      end;
+    msrcMusic:
+      begin
+        Player := FMusicPlayer;
+        SongFile := ChangeFileExt(FConfigFilename, '_music.cfg');
+        PlayerPath := frmSettings.edtMusicPath.Text;
+      end
+    else
+    begin
+      Exit;
+    end;
+  end;
+
+  frmPlaylist := TfrmPlaylist.Create(Self);
+
+  frmPlaylist.LoadSongs(SongFile, PlayerPath);
+
+  if FormShowModal(frmPlaylist) = mrOk then
+  begin
+    Player.PlaySelection(frmPlaylist.lstSelected.Items.Text, frmPlaylist.Random);
+  end;
+
+  frmPlaylist.Free;
 end;
 
 procedure TfrmClockMain.Log(Message: string);
