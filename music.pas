@@ -277,7 +277,7 @@ begin
 
     if FPlaylistIndex < 0 then FPlaylistIndex := 0;
 
-    if FPlaylistIndex < FPlaySongList.Count -1 then
+    if FPlaylistIndex <= FPlaySongList.Count -1 then
     begin
       Result := True;
 

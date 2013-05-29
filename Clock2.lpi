@@ -14,7 +14,7 @@
       <CharSet Value=""/>
       <StringTable ProductVersion=""/>
     </VersionInfo>
-    <BuildModes Count="2" Active="debug">
+    <BuildModes Count="2" Active="i386">
       <Item1 Name="debug" Default="True"/>
       <Item2 Name="i386">
         <CompilerOptions>
@@ -155,8 +155,8 @@
         <UnitName Value="FindThread"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="15"/>
-        <CursorPos X="32" Y="15"/>
+        <TopLine Value="81"/>
+        <CursorPos X="1" Y="104"/>
         <UsageCount Value="108"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -254,10 +254,11 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ClockMain"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="13"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="127"/>
-        <CursorPos X="26" Y="14"/>
+        <TopLine Value="17"/>
+        <CursorPos X="19" Y="28"/>
         <UsageCount Value="98"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -403,8 +404,8 @@
         <UnitName Value="MusicPlayer"/>
         <EditorIndex Value="16"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="198"/>
-        <CursorPos X="61" Y="236"/>
+        <TopLine Value="319"/>
+        <CursorPos X="124" Y="225"/>
         <UsageCount Value="75"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -501,8 +502,8 @@
         <UnitName Value="music"/>
         <EditorIndex Value="8"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="326"/>
-        <CursorPos X="24" Y="354"/>
+        <TopLine Value="348"/>
+        <CursorPos X="25" Y="280"/>
         <UsageCount Value="75"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -676,7 +677,6 @@
         <Filename Value="touchlist.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="TouchList"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="15"/>
         <WindowIndex Value="0"/>
         <TopLine Value="30"/>
@@ -697,124 +697,124 @@
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="playlistcreator.pas"/>
-        <Caret Line="259" Column="1" TopLine="246"/>
+        <Filename Value="music.pas"/>
+        <Caret Line="415" Column="3" TopLine="399"/>
       </Position1>
       <Position2>
-        <Filename Value="playlistcreator.pas"/>
-        <Caret Line="261" Column="1" TopLine="246"/>
+        <Filename Value="music.pas"/>
+        <Caret Line="418" Column="1" TopLine="399"/>
       </Position2>
       <Position3>
-        <Filename Value="playlistcreator.pas"/>
-        <Caret Line="263" Column="1" TopLine="246"/>
+        <Filename Value="music.pas"/>
+        <Caret Line="425" Column="1" TopLine="399"/>
       </Position3>
       <Position4>
-        <Filename Value="playlistcreator.pas"/>
-        <Caret Line="264" Column="1" TopLine="246"/>
+        <Filename Value="findthread.pas"/>
+        <Caret Line="61" Column="1" TopLine="45"/>
       </Position4>
       <Position5>
-        <Filename Value="playlistcreator.pas"/>
-        <Caret Line="252" Column="1" TopLine="207"/>
+        <Filename Value="findthread.pas"/>
+        <Caret Line="74" Column="1" TopLine="48"/>
       </Position5>
       <Position6>
-        <Filename Value="playlistcreator.pas"/>
-        <Caret Line="218" Column="1" TopLine="207"/>
+        <Filename Value="findthread.pas"/>
+        <Caret Line="62" Column="1" TopLine="48"/>
       </Position6>
       <Position7>
-        <Filename Value="playlistcreator.pas"/>
-        <Caret Line="221" Column="1" TopLine="207"/>
+        <Filename Value="findthread.pas"/>
+        <Caret Line="63" Column="1" TopLine="48"/>
       </Position7>
       <Position8>
-        <Filename Value="playlistcreator.pas"/>
-        <Caret Line="229" Column="1" TopLine="207"/>
+        <Filename Value="findthread.pas"/>
+        <Caret Line="64" Column="1" TopLine="48"/>
       </Position8>
       <Position9>
-        <Filename Value="playlistcreator.pas"/>
-        <Caret Line="232" Column="1" TopLine="219"/>
+        <Filename Value="findthread.pas"/>
+        <Caret Line="65" Column="1" TopLine="48"/>
       </Position9>
       <Position10>
-        <Filename Value="playlistcreator.pas"/>
-        <Caret Line="234" Column="1" TopLine="225"/>
+        <Filename Value="findthread.pas"/>
+        <Caret Line="67" Column="1" TopLine="48"/>
       </Position10>
       <Position11>
-        <Filename Value="playlistcreator.pas"/>
-        <Caret Line="249" Column="1" TopLine="225"/>
+        <Filename Value="findthread.pas"/>
+        <Caret Line="68" Column="1" TopLine="48"/>
       </Position11>
       <Position12>
-        <Filename Value="playlistcreator.pas"/>
-        <Caret Line="258" Column="1" TopLine="240"/>
+        <Filename Value="findthread.pas"/>
+        <Caret Line="70" Column="1" TopLine="48"/>
       </Position12>
       <Position13>
-        <Filename Value="playlistcreator.pas"/>
-        <Caret Line="290" Column="1" TopLine="275"/>
+        <Filename Value="findthread.pas"/>
+        <Caret Line="71" Column="1" TopLine="48"/>
       </Position13>
       <Position14>
-        <Filename Value="playlistcreator.pas"/>
-        <Caret Line="293" Column="1" TopLine="215"/>
+        <Filename Value="findthread.pas"/>
+        <Caret Line="73" Column="1" TopLine="48"/>
       </Position14>
       <Position15>
-        <Filename Value="playlistcreator.pas"/>
-        <Caret Line="216" Column="1" TopLine="210"/>
+        <Filename Value="findthread.pas"/>
+        <Caret Line="74" Column="1" TopLine="81"/>
       </Position15>
       <Position16>
-        <Filename Value="playlistcreator.pas"/>
-        <Caret Line="218" Column="1" TopLine="210"/>
+        <Filename Value="findthread.pas"/>
+        <Caret Line="88" Column="1" TopLine="81"/>
       </Position16>
       <Position17>
-        <Filename Value="playlistcreator.pas"/>
-        <Caret Line="221" Column="1" TopLine="210"/>
+        <Filename Value="findthread.pas"/>
+        <Caret Line="90" Column="1" TopLine="81"/>
       </Position17>
       <Position18>
-        <Filename Value="playlistcreator.pas"/>
-        <Caret Line="229" Column="1" TopLine="210"/>
+        <Filename Value="findthread.pas"/>
+        <Caret Line="92" Column="1" TopLine="81"/>
       </Position18>
       <Position19>
-        <Filename Value="playlistcreator.pas"/>
-        <Caret Line="232" Column="1" TopLine="219"/>
+        <Filename Value="findthread.pas"/>
+        <Caret Line="94" Column="1" TopLine="81"/>
       </Position19>
       <Position20>
-        <Filename Value="playlistcreator.pas"/>
-        <Caret Line="188" Column="20" TopLine="174"/>
+        <Filename Value="findthread.pas"/>
+        <Caret Line="96" Column="1" TopLine="81"/>
       </Position20>
       <Position21>
-        <Filename Value="playlistcreator.pas"/>
-        <Caret Line="192" Column="14" TopLine="174"/>
+        <Filename Value="findthread.pas"/>
+        <Caret Line="100" Column="1" TopLine="81"/>
       </Position21>
       <Position22>
-        <Filename Value="playlistcreator.pas"/>
-        <Caret Line="186" Column="1" TopLine="174"/>
+        <Filename Value="findthread.pas"/>
+        <Caret Line="102" Column="1" TopLine="81"/>
       </Position22>
       <Position23>
-        <Filename Value="playlistcreator.pas"/>
-        <Caret Line="188" Column="20" TopLine="174"/>
+        <Filename Value="findthread.pas"/>
+        <Caret Line="103" Column="1" TopLine="81"/>
       </Position23>
       <Position24>
-        <Filename Value="playlistcreator.pas"/>
-        <Caret Line="192" Column="14" TopLine="174"/>
+        <Filename Value="findthread.pas"/>
+        <Caret Line="104" Column="1" TopLine="81"/>
       </Position24>
       <Position25>
-        <Filename Value="playlistcreator.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="music.pas"/>
+        <Caret Line="422" Column="125" TopLine="255"/>
       </Position25>
       <Position26>
-        <Filename Value="playlistcreator.pas"/>
-        <Caret Line="41" Column="11" TopLine="15"/>
+        <Filename Value="music.pas"/>
+        <Caret Line="269" Column="1" TopLine="255"/>
       </Position26>
       <Position27>
-        <Filename Value="playlistcreator.pas"/>
-        <Caret Line="188" Column="20" TopLine="162"/>
+        <Filename Value="music.pas"/>
+        <Caret Line="271" Column="1" TopLine="255"/>
       </Position27>
       <Position28>
-        <Filename Value="playlistcreator.pas"/>
-        <Caret Line="192" Column="39" TopLine="167"/>
+        <Filename Value="music.pas"/>
+        <Caret Line="273" Column="1" TopLine="255"/>
       </Position28>
       <Position29>
-        <Filename Value="playlistcreator.pas"/>
-        <Caret Line="193" Column="20" TopLine="170"/>
+        <Filename Value="music.pas"/>
+        <Caret Line="275" Column="1" TopLine="255"/>
       </Position29>
       <Position30>
-        <Filename Value="playlistcreator.pas"/>
-        <Caret Line="186" Column="1" TopLine="170"/>
+        <Filename Value="music.pas"/>
+        <Caret Line="278" Column="1" TopLine="255"/>
       </Position30>
     </JumpHistory>
   </ProjectOptions>

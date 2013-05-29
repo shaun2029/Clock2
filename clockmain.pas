@@ -25,7 +25,7 @@ uses
   X, Xlib, CTypes, Black, WaitForMedia, Pictures;
 
 const
-  VERSION = '2.0.7';
+  VERSION = '2.0.8';
 
 type
   TMusicState = (msOff, msPlaying, msPaused);
