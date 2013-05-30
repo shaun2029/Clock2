@@ -86,15 +86,7 @@ begin
   FSongArtist := '';
 
   try
-    if FID3v1.LoadFromFile(Song) = ID3V1LIBRARY_SUCCESS then
-    begin
-      //* Get Title
-      FSongTitle := FID3v1.Title;
-
-      //* Get Artist
-      FSongArtist := FID3v1.Artist;
-    end
-    else if FID3v2.LoadFromFile(Song) = ID3V2LIBRARY_SUCCESS then
+    if FID3v2.LoadFromFile(Song) = ID3V2LIBRARY_SUCCESS then
     begin
       //* Get Title
       FSongTitle := FID3v2.GetUnicodeText('TIT2');
@@ -102,6 +94,14 @@ begin
       //* Get Artist
       FSongArtist := FID3v2.GetUnicodeText('TPE1');
     end
+    else if FID3v1.LoadFromFile(Song) = ID3V1LIBRARY_SUCCESS then
+    begin
+      //* Get Title
+      FSongTitle := FID3v1.Title;
+
+      //* Get Artist
+      FSongArtist := FID3v1.Artist;
+    end;
   except
     on E: Exception do
     begin

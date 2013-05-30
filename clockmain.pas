@@ -25,7 +25,7 @@ uses
   X, Xlib, CTypes, Black, WaitForMedia, Pictures;
 
 const
-  VERSION = '2.0.8';
+  VERSION = '2.0.9';
 
 type
   TMusicState = (msOff, msPlaying, msPaused);
@@ -306,8 +306,7 @@ var
   Player: TPlayer;
   PlayerPath: String;
 begin
-  // Test is the search path has changed
-  case FMusicSource of
+  case Source of
     msrcSleep:
       begin
         Player := FSleepPlayer;
@@ -330,28 +329,12 @@ begin
       end;
   end;
 
-  if (Source <> FMusicSource)
-    or (Assigned(Player) and (PlayerPath <> Player.SearchPath)) then
-  begin
-    // Free old source
-    case FMusicSource of
-      msrcSleep:
-        begin
-          FSleepPlayer.Stop;
-          FreeAndNil(FSleepPlayer);
-        end;
-      msrcMusic:
-        begin
-          FMusicPlayer.Stop;
-          FreeAndNil(FMusicPlayer);
-        end;
-      msrcMeditation:
-        begin
-          FMeditationPlayer.Stop;
-          FreeAndNil(FMeditationPlayer);
-        end;
-    end;
+  // Test is the search path has changed
+  if (Assigned(Player) and (PlayerPath <> Player.SearchPath)) then
+    FreeAndNil(Player);
 
+  if not Assigned(Player) then
+  begin
     //Create new source
     case Source of
       msrcSleep:
@@ -370,9 +353,9 @@ begin
             ChangeFileExt(FConfigFilename, '_meditation.cfg'), frmSettings.edtMeditationPath.Text);
         end;
     end;
-
-    FMusicSource := Source;
   end;
+
+  FMusicSource := Source;
 end;
 
 procedure TfrmClockMain.BeforeAlarm;
@@ -1084,7 +1067,13 @@ begin
   frmReminderList.FReminders := frmReminders;
 
   // Do only once
-  if FMusicSource = msrcNone then SetMusicSource(msrcMusic);
+  if FMusicSource = msrcNone then
+  begin
+    // Initialise music sources
+    SetMusicSource(msrcSleep);
+    SetMusicSource(msrcMeditation);
+    SetMusicSource(msrcMusic);
+  end;
 
   tmrMinute.Enabled := True;
 end;
@@ -1600,7 +1589,7 @@ end;
 procedure TfrmClockMain.PlayAlbums;
 var
   Player: TPlayer;
-  SongFile, PlayerPath: String;
+  SongFile: String;
 begin
   // Test is the search path has changed
   case FMusicSource of
@@ -1608,19 +1597,16 @@ begin
       begin
         Player := FSleepPlayer;
         SongFile := ChangeFileExt(FConfigFilename, '_sleep.cfg');
-        PlayerPath := frmSettings.edtSleepPath.Text;
       end;
     msrcMeditation:
       begin
         Player := FMeditationPlayer;
         SongFile := ChangeFileExt(FConfigFilename, '_meditation.cfg');
-        PlayerPath := frmSettings.edtMeditationPath.Text;
       end;
     msrcMusic:
       begin
         Player := FMusicPlayer;
         SongFile := ChangeFileExt(FConfigFilename, '_music.cfg');
-        PlayerPath := frmSettings.edtMusicPath.Text;
       end
     else
     begin
@@ -1630,7 +1616,7 @@ begin
 
   frmPlaylist := TfrmPlaylist.Create(Self);
 
-  frmPlaylist.LoadSongs(SongFile, PlayerPath);
+  frmPlaylist.LoadSongs(SongFile, Player.SearchPath);
 
   if FormShowModal(frmPlaylist) = mrOk then
   begin

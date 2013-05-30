@@ -84,7 +84,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="61" Y="25"/>
-        <UsageCount Value="117"/>
+        <UsageCount Value="118"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -100,7 +100,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="165"/>
         <CursorPos X="48" Y="165"/>
-        <UsageCount Value="117"/>
+        <UsageCount Value="118"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit1>
@@ -157,7 +157,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="81"/>
         <CursorPos X="1" Y="104"/>
-        <UsageCount Value="109"/>
+        <UsageCount Value="110"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit7>
@@ -216,7 +216,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="53"/>
         <CursorPos X="83" Y="83"/>
-        <UsageCount Value="90"/>
+        <UsageCount Value="91"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit13>
@@ -244,7 +244,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="128"/>
         <CursorPos X="69" Y="159"/>
-        <UsageCount Value="99"/>
+        <UsageCount Value="100"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit16>
       <Unit17>
@@ -257,9 +257,9 @@
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="13"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1593"/>
-        <CursorPos X="66" Y="1636"/>
-        <UsageCount Value="99"/>
+        <TopLine Value="1"/>
+        <CursorPos X="19" Y="28"/>
+        <UsageCount Value="100"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -272,7 +272,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="427"/>
         <CursorPos X="35" Y="427"/>
-        <UsageCount Value="99"/>
+        <UsageCount Value="100"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit18>
@@ -307,7 +307,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="346"/>
         <CursorPos X="17" Y="372"/>
-        <UsageCount Value="95"/>
+        <UsageCount Value="96"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -320,7 +320,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
-        <UsageCount Value="76"/>
+        <UsageCount Value="77"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit22>
@@ -332,7 +332,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="79"/>
         <CursorPos X="26" Y="82"/>
-        <UsageCount Value="77"/>
+        <UsageCount Value="78"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit23>
@@ -404,9 +404,9 @@
         <UnitName Value="MusicPlayer"/>
         <EditorIndex Value="16"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="319"/>
-        <CursorPos X="124" Y="225"/>
-        <UsageCount Value="76"/>
+        <TopLine Value="158"/>
+        <CursorPos X="10" Y="97"/>
+        <UsageCount Value="77"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit32>
@@ -479,7 +479,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="125"/>
         <CursorPos X="47" Y="140"/>
-        <UsageCount Value="76"/>
+        <UsageCount Value="77"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -492,7 +492,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="53"/>
         <CursorPos X="3" Y="53"/>
-        <UsageCount Value="76"/>
+        <UsageCount Value="77"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit41>
@@ -502,9 +502,9 @@
         <UnitName Value="music"/>
         <EditorIndex Value="8"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="188"/>
-        <CursorPos X="60" Y="208"/>
-        <UsageCount Value="76"/>
+        <TopLine Value="289"/>
+        <CursorPos X="17" Y="303"/>
+        <UsageCount Value="77"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit42>
@@ -519,7 +519,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="7"/>
         <CursorPos X="1" Y="38"/>
-        <UsageCount Value="81"/>
+        <UsageCount Value="82"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -548,7 +548,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="45"/>
         <CursorPos X="48" Y="46"/>
-        <UsageCount Value="76"/>
+        <UsageCount Value="77"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit46>
@@ -560,7 +560,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="81"/>
         <CursorPos X="22" Y="111"/>
-        <UsageCount Value="76"/>
+        <UsageCount Value="77"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit47>
@@ -592,7 +592,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
-        <UsageCount Value="69"/>
+        <UsageCount Value="70"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit50>
@@ -605,9 +605,9 @@
         <UnitName Value="PlaylistCreator"/>
         <EditorIndex Value="14"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="326"/>
+        <TopLine Value="322"/>
         <CursorPos X="33" Y="331"/>
-        <UsageCount Value="40"/>
+        <UsageCount Value="41"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -681,7 +681,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="30"/>
         <CursorPos X="26" Y="56"/>
-        <UsageCount Value="36"/>
+        <UsageCount Value="37"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit59>
@@ -697,124 +697,124 @@
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="music.pas"/>
-        <Caret Line="278" Column="1" TopLine="255"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="309" Column="1" TopLine="293"/>
       </Position1>
       <Position2>
-        <Filename Value="music.pas"/>
-        <Caret Line="245" Column="119" TopLine="198"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="1168" Column="1" TopLine="1152"/>
       </Position2>
       <Position3>
-        <Filename Value="music.pas"/>
-        <Caret Line="413" Column="4" TopLine="398"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="1169" Column="1" TopLine="1152"/>
       </Position3>
       <Position4>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="1326" Column="17" TopLine="1310"/>
+        <Caret Line="1171" Column="1" TopLine="1152"/>
       </Position4>
       <Position5>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="1463" Column="31" TopLine="1438"/>
+        <Caret Line="1173" Column="1" TopLine="1152"/>
       </Position5>
       <Position6>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Caret Line="1175" Column="1" TopLine="1152"/>
       </Position6>
       <Position7>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="153" Column="17" TopLine="128"/>
+        <Caret Line="1176" Column="1" TopLine="1152"/>
       </Position7>
       <Position8>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="218" Column="34" TopLine="192"/>
+        <Caret Line="1179" Column="1" TopLine="1153"/>
       </Position8>
       <Position9>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="234" Column="38" TopLine="208"/>
+        <Caret Line="1181" Column="1" TopLine="1155"/>
       </Position9>
       <Position10>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="265" Column="38" TopLine="239"/>
+        <Caret Line="1182" Column="1" TopLine="1156"/>
       </Position10>
       <Position11>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="375" Column="1" TopLine="357"/>
+        <Caret Line="1185" Column="1" TopLine="1159"/>
       </Position11>
       <Position12>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="1326" Column="31" TopLine="1313"/>
+        <Caret Line="1187" Column="1" TopLine="1161"/>
       </Position12>
       <Position13>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Caret Line="1188" Column="1" TopLine="1162"/>
       </Position13>
       <Position14>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="979" Column="33" TopLine="953"/>
+        <Caret Line="1191" Column="1" TopLine="1165"/>
       </Position14>
       <Position15>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="1326" Column="31" TopLine="1300"/>
+        <Caret Line="1192" Column="1" TopLine="291"/>
       </Position15>
       <Position16>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Caret Line="309" Column="1" TopLine="291"/>
       </Position16>
       <Position17>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="973" Column="1" TopLine="967"/>
+        <Caret Line="317" Column="1" TopLine="291"/>
       </Position17>
       <Position18>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="1313" Column="14" TopLine="1290"/>
+        <Caret Line="318" Column="1" TopLine="292"/>
       </Position18>
       <Position19>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="1636" Column="36" TopLine="1614"/>
+        <Caret Line="333" Column="1" TopLine="318"/>
       </Position19>
       <Position20>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="1599" Column="35" TopLine="1583"/>
+        <Caret Line="336" Column="1" TopLine="318"/>
       </Position20>
       <Position21>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="1623" Column="27" TopLine="1613"/>
+        <Caret Line="343" Column="7" TopLine="307"/>
       </Position21>
       <Position22>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="1600" Column="16" TopLine="1596"/>
+        <Caret Line="309" Column="1" TopLine="302"/>
       </Position22>
       <Position23>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="1638" Column="5" TopLine="1617"/>
+        <Caret Line="322" Column="1" TopLine="302"/>
       </Position23>
       <Position24>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="1630" Column="19" TopLine="1614"/>
+        <Caret Line="323" Column="1" TopLine="302"/>
       </Position24>
       <Position25>
-        <Filename Value="playlistcreator.pas"/>
-        <Caret Line="61" Column="24" TopLine="48"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="333" Column="1" TopLine="308"/>
       </Position25>
       <Position26>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="1630" Column="59" TopLine="1608"/>
+        <Caret Line="336" Column="1" TopLine="311"/>
       </Position26>
       <Position27>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Caret Line="358" Column="1" TopLine="343"/>
       </Position27>
       <Position28>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="324" Column="47" TopLine="300"/>
+        <Caret Line="1595" Column="1" TopLine="1579"/>
       </Position28>
       <Position29>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="325" Column="1" TopLine="306"/>
+        <Caret Line="1603" Column="1" TopLine="1579"/>
       </Position29>
       <Position30>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="1633" Column="45" TopLine="1614"/>
+        <Caret Line="1604" Column="1" TopLine="1579"/>
       </Position30>
     </JumpHistory>
   </ProjectOptions>
@@ -851,15 +851,6 @@
     </Other>
   </CompilerOptions>
   <Debugging>
-    <BreakPoints Count="1">
-      <Item1>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="clockmain.pas"/>
-        <Line Value="1606"/>
-      </Item1>
-    </BreakPoints>
     <Exceptions Count="6">
       <Item1>
         <Name Value="EAbort"/>
