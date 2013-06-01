@@ -22,10 +22,10 @@ uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
   ExtCtrls, MetOffice, Alarm, Settings, Reminders, ReminderList, LCLProc,
   Music, Sync, Process, MusicPlayer, PlaylistCreator, UDPCommandServer,
-  X, Xlib, CTypes, Black, WaitForMedia, Pictures;
+  X, Xlib, CTypes, Black, WaitForMedia, Pictures, DateTime;
 
 const
-  VERSION = '2.0.9';
+  VERSION = '2.0.10';
 
 type
   TMusicState = (msOff, msPlaying, msPaused);
@@ -139,6 +139,7 @@ type
     FSyncClient: TSyncClient;
     FServerAddress, FServerPort: String;
     FAfterAlarmResumeMusic: boolean;
+    FLinuxDateTime: TLinuxDateTime;
 
     FConfigFilename: string;
 
@@ -406,8 +407,6 @@ end;
 
 procedure TfrmClockMain.tmrTimeTimer(Sender: TObject);
 var
-  H, M, S, MS: word;
-  Day, Month, Year: word;
   Current: TDateTime;
   DayStr: string;
   TimeCaption: string;
@@ -418,14 +417,15 @@ var
   Player: TPlayer;
   PlayerName, Song: string;
   ReminderState: TAlarmState;
+  Day, Month, Year: word;
+  Hour, Min, Sec, MSec: word;
 begin
-  Current := Now;
+  Current := FLinuxDateTime.GetLocalTime;
 
-  DecodeTime(Current, H, M, S, MS);
-  DecodeDate(Current, Year, Month, Day);
   DayStr := Copy(DayOfWeekStr(Current), 1, 3);
-
-  TimeCaption := Format('%s %.2d/%.2d %.2d:%.2d:%.2d ', [DayStr, Day, Month, H, M, S]);
+  DecodeDate(Current, Year, Month, Day);
+  DecodeTime(Current, Hour, Min, Sec, MSec);
+  TimeCaption := Format('%s %.2d/%.2d %.2d:%.2d:%.2d ', [DayStr, Day, Month, Hour, Min, Sec]);
 
   if TimeCaption <> lblTime.Caption then
     lblTime.Caption := TimeCaption;
@@ -841,6 +841,8 @@ begin
 
   FWeatherReport := '';
 
+  FLinuxDateTime := TLinuxDateTime.Create;
+
 {$IFDEF GRABXKEYS}
   GrabMediaKeys;
 {$ENDIF}
@@ -851,6 +853,7 @@ begin
   FAlarm.ResetAlarm;
   FTimer.ResetAlarm;
   FReminderAlarm.ResetAlarm;
+  FLinuxDateTime.Free;
 {$IFDEF GRABXKEYS}
   ReleaseMediaKeys;
 {$ENDIF}
