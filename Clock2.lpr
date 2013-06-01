@@ -10,19 +10,22 @@ uses
   Forms, Pictures, FindThread, alarm, ClockMain, Settings, MetOffice, Reminders,
   ReminderList, Black, FindPicsThread, udpserver, sync, udpclient,
   music, udpcommandserver, MusicPlayer, WaitForMedia, PlaylistCreator,
-  TouchList;
+  TouchList, UniqueInstanceRaw, DateTime;
 
 {$IFDEF WINDOWS}{$R picshow.rc}{$ENDIF}
 
 {$R *.res}
 
 begin
-  Application.Initialize;
-  Application.CreateForm(TfrmClockMain, frmClockMain);
-  Application.CreateForm(TfrmSettings, frmSettings);
-  Application.CreateForm(TfrmPictures, frmPictures);
-  Application.CreateForm(TfrmReminders, frmReminders);
-  Application.CreateForm(TfrmReminderList, frmReminderList);
-  Application.Run;
+  if not InstanceRunning('Clock2App') then
+  begin
+    Application.Initialize;
+    Application.CreateForm(TfrmClockMain, frmClockMain);
+    Application.CreateForm(TfrmSettings, frmSettings);
+    Application.CreateForm(TfrmPictures, frmPictures);
+    Application.CreateForm(TfrmReminders, frmReminders);
+    Application.CreateForm(TfrmReminderList, frmReminderList);
+    Application.Run;
+  end;
 end.
 
