@@ -49,25 +49,6 @@ type
     property State: TMusicPlayerState read GetState;
   end;
 
-const
-  {  Older versions of MPG123 (0.1.12) continue playing for the length
-   of the buffer after verbose output has stopped. The verbose output
-   is used to work out when playback has stopped.
-
-   Newer versions of MPG123 (0.2.13) stop playing when the verbose
-   output stops. To work around this problem, the buffer for non ARM
-   systems is short.}
-
-  // Zipit requires a big buffer for network play.
-  {$ifdef CPUARM}
-  BUFFER_TIME = 18; // in seconds
-  {$else}
-  BUFFER_TIME = 2;
-  {$endif}
-
-  // Buffer size in KB. Based on 44100 samples per sec * 2 bytes
-  BUFFER_SIZE = (44100 * 2 * 2 * BUFFER_TIME) div 1024;
-
 implementation
 
 procedure TMusicPlayer.PlaySong(Song: string);
@@ -147,8 +128,6 @@ begin
 end;
 
 procedure TMusicPlayer.StopSong;
-var
-  Command: string;
 begin
   if FState = mpsPlaying then
   begin

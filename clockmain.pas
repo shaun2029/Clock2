@@ -18,7 +18,7 @@ unit ClockMain;
 interface
 
 uses
-  gtk2, gdk2, glib2,
+  gtk2, gdk2,
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
   ExtCtrls, MetOffice, Alarm, Settings, Reminders, ReminderList, LCLProc,
   Music, Sync, Process, MusicPlayer, PlaylistCreator, UDPCommandServer,
@@ -411,7 +411,7 @@ var
   DayStr: string;
   TimeCaption: string;
   ReminderList: TStringList;
-  i, j, k: Integer;
+  i: Integer;
   Command: TRemoteCommand;
   Key: Char;
   Player: TPlayer;
