@@ -59,43 +59,51 @@ begin
   FSongTitle := '';
   FSongArtist := '';
 
-  try
-    if FID3v2.LoadFromFile(Song) = ID3V2LIBRARY_SUCCESS then
-    begin
-      //* Get Title
-      FSongTitle := FID3v2.GetUnicodeText('TIT2');
+  if FileExists(Song) then
+  begin
+    try
+      if FID3v2.LoadFromFile(Song) = ID3V2LIBRARY_SUCCESS then
+      begin
+        //* Get Title
+        FSongTitle := FID3v2.GetUnicodeText('TIT2');
 
-      //* Get Artist
-      FSongArtist := FID3v2.GetUnicodeText('TPE1');
-    end
-    else if FID3v1.LoadFromFile(Song) = ID3V1LIBRARY_SUCCESS then
-    begin
-      //* Get Title
-      FSongTitle := FID3v1.Title;
+        //* Get Artist
+        FSongArtist := FID3v2.GetUnicodeText('TPE1');
+      end
+      else if FID3v1.LoadFromFile(Song) = ID3V1LIBRARY_SUCCESS then
+      begin
+        //* Get Title
+        FSongTitle := FID3v1.Title;
 
-      //* Get Artist
-      FSongArtist := FID3v1.Artist;
+        //* Get Artist
+        FSongArtist := FID3v1.Artist;
+      end;
+    except
+      on E: Exception do
+      begin
+        DebugLn(Self.ClassName + #9#9 + 'Failed to get ID3 Tags for "'
+          + ExtractFilename(Song) + '"');
+        DebugLn(Self.ClassName + #9#9 + E.Message);
+      end;
     end;
-  except
-    on E: Exception do
-    begin
-      DebugLn(Self.ClassName + #9#9 + 'Failed to get ID3 Tags for "'
-        + ExtractFilename(Song) + '"');
-      DebugLn(Self.ClassName + #9#9 + E.Message);
-    end;
+  end
+  else
+  begin
+    //* Get Title
+    FSongTitle := 'Unknown';
+
+    //* Get Artist
+    FSongArtist := 'Unknown';
   end;
 
   try
-    if FileExists(Song) then
-    begin
-      if Assigned(FPlayProcess) then DestroyPlayProcess;
+    if Assigned(FPlayProcess) then DestroyPlayProcess;
 
-      StartPlayProcess(Song, FPlayProcess);
+    StartPlayProcess(Song, FPlayProcess);
 
-      if Trim(FSongTitle) = '' then FSongTitle := ExtractFilename(Song);
+    if Trim(FSongTitle) = '' then FSongTitle := ExtractFilename(Song);
 
-      FState := mpsPlaying;
-    end;
+    FState := mpsPlaying;
   except
     on E: Exception do
     begin
@@ -109,7 +117,19 @@ begin
   Process := TProcess.Create(nil);
   Process.Options := Process.Options;
 
-  Process.CommandLine := 'mplayer ' + '"' + Song + '"';
+  { If the file does not exist then it could be a URL of a stream.
+    Use mplayer to play streams. Prefer MPG123 for MP3 files as it
+    supports replaygain. }
+
+  if not FileExists(Song) or not FileExists('/usr/bin/mpg123')
+    or not (LowerCase(ExtractFileExt(Song)) = '.mp3') then
+  begin
+    Process.CommandLine := 'mplayer "' + Song + '"';
+  end
+  else
+  begin
+    Process.CommandLine := 'mpg123 --rva-mix "' + Song + '"';
+  end;
 
   Process.Execute;
 end;

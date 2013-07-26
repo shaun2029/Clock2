@@ -22,14 +22,14 @@ uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
   ExtCtrls, MetOffice, Alarm, Settings, Reminders, ReminderList, LCLProc,
   Music, Sync, Process, MusicPlayer, PlaylistCreator, UDPCommandServer,
-  X, Xlib, CTypes, Black, WaitForMedia, Pictures, DateTime;
+  X, Xlib, CTypes, Black, WaitForMedia, Pictures, DateTime, SourcePicker;
 
 const
   VERSION = '2.0.11';
 
 type
   TMusicState = (msOff, msPlaying, msPaused);
-  TMusicSource = (msrcNone, msrcSleep, msrcMusic, msrcMeditation);
+  TMusicSource = (msrcNone, msrcSleep, msrcMusic, msrcMeditation, msrcRadio);
   TMediaKey = (mkNone, mkAudioPlay, mkAudioNext);
 
   { TfrmClockMain }
@@ -53,7 +53,7 @@ type
     Image4: TImage;
     Image5: TImage;
     imgMusic: TImage;
-    imgMeditation: TImage;
+    imgRadio: TImage;
     ImgSleep: TImage;
     imgPictures: TImage;
     imgUpdateMusic: TImage;
@@ -74,7 +74,7 @@ type
     lbWeatherSummary: TLabel;
     lbExit: TLabel;
     lbMusic: TLabel;
-    Label22: TLabel;
+    Radio: TLabel;
     lbPrevious: TLabel;
     lbPlay: TLabel;
     lbReminders: TLabel;
@@ -109,7 +109,7 @@ type
     procedure FormKeyPress(Sender: TObject; var Key: char);
     procedure FormShow(Sender: TObject);
     procedure imgExitClick(Sender: TObject);
-    procedure imgMeditationClick(Sender: TObject);
+    procedure imgRadioClick(Sender: TObject);
     procedure imgMusicClick(Sender: TObject);
     procedure imgRemindersClick(Sender: TObject);
     procedure imgVolDownClick(Sender: TObject);
@@ -151,7 +151,7 @@ type
     Locations: array[0..3] of string;
     FCurrentLocation: integer;
 
-    FMusicPlayer, FSleepPlayer, FMeditationPlayer: TPlayer;
+    FMusicPlayer, FSleepPlayer, FMeditationPlayer, FRadioPlayer: TPlayer;
  	  FMusicState: TMusicState;
     FMusicSource: TMusicSource;
 
@@ -219,6 +219,7 @@ begin
           msrcSleep: FSleepPlayer.Stop;
           msrcMusic: FMusicPlayer.Stop;
           msrcMeditation: FMeditationPlayer.Stop;
+          msrcRadio: FRadioPlayer.Stop;
         end;
 
 	      FMusicState := msPaused;
@@ -234,6 +235,7 @@ begin
     msrcSleep: Player := FSleepPlayer;
     msrcMeditation: Player := FMeditationPlayer;
     msrcMusic: Player := FMusicPlayer;
+    msrcRadio: Player := FRadioPlayer;
     else Player := nil;
   end;
 
@@ -265,6 +267,7 @@ begin
     msrcSleep: Player := FSleepPlayer;
     msrcMeditation: Player := FMeditationPlayer;
     msrcMusic: Player := FMusicPlayer;
+    msrcRadio: Player := FRadioPlayer;
     else Player := nil;
   end;
 
@@ -299,7 +302,7 @@ begin
     Result := FormShowModal(frmWait) = mrOk;
     frmWait.Free;
   end
-  else if (Path <> '') then Result := True;
+  else Result := True;
 end;
 
 procedure TfrmClockMain.SetMusicSource(Source: TMusicSource);
@@ -322,6 +325,11 @@ begin
       begin
         Player := FMusicPlayer;
         PlayerPath := frmSettings.edtMusicPath.Text;
+      end;
+    msrcRadio:
+      begin
+        Player := FRadioPlayer;
+        PlayerPath := '';
       end
     else
       begin
@@ -353,6 +361,10 @@ begin
           FMeditationPlayer := TPlayer.Create(FMPGPlayer,
             ChangeFileExt(FConfigFilename, '_meditation.cfg'), frmSettings.edtMeditationPath.Text);
         end;
+      msrcRadio:
+        begin
+          FRadioPlayer := TPlayer.Create(FMPGPlayer, '', '');
+        end;
     end;
   end;
 
@@ -375,6 +387,7 @@ begin
       msrcSleep: FSleepPlayer.Play;
       msrcMusic: FMusicPlayer.Play;
       msrcMeditation: FMeditationPlayer.Play;
+      msrcRadio: FRadioPlayer.Play;
       else
       begin
         SetMusicSource(msrcMusic);
@@ -498,6 +511,11 @@ begin
         begin
           Player := FMusicPlayer;
           PlayerName := 'music';
+        end;
+      msrcRadio:
+        begin
+          Player := FRadioPlayer;
+          PlayerName := 'radio';
         end;
       else Player := nil;
     end;
@@ -828,6 +846,7 @@ begin
   FMusicPlayer := nil;
   FSleepPlayer := nil;
   FMeditationPlayer := nil;
+  FRadioPlayer := nil;
   FSyncServer := nil;
   FSyncClient := nil;
 
@@ -873,6 +892,9 @@ begin
 
   if Assigned(FMeditationPlayer) then
     FMeditationPlayer.Free;
+
+  if Assigned(FRadioPlayer) then
+    FRadioPlayer.Free;
 
   FMPGPlayer.Free;
 
@@ -1087,14 +1109,47 @@ begin
 end;
 
 procedure TfrmClockMain.imgMusicClick(Sender: TObject);
+var
+  Picker: TfrmSourcePicker;
+  Sources: TSourceArray;
 begin
   imgMusic.Picture.Assign(imgOff.Picture);
   Application.ProcessMessages;
 
-  SetMusicSource(msrcMusic);
+  SetLength(Sources, 3);
+  Sources[0].Title := 'Music';
+  Sources[1].Title := 'Meditation';
+  Sources[2].Title := 'Sleep';
+  Sources[0].Resource := '';
+  Sources[1].Resource := '';
+  Sources[2].Resource := '';
 
-  if not FAlarmActive then PlayMusic
-  else PauseMusic;
+  Picker := TfrmSourcePicker.Create(Self, Sources);
+
+  if frmSettings.cbxForceFullscreen.Checked then
+  begin
+    Picker.BorderStyle := bsNone;
+  end
+  else
+  begin
+    Picker.BorderStyle := bsSingle;
+  end;
+
+  SetCursorType(Picker);
+
+  if Picker.ShowModal = mrOK then
+  begin
+    case Picker.ItemIndex of
+      0:   SetMusicSource(msrcMusic);
+      1:   SetMusicSource(msrcMeditation);
+      2:   SetMusicSource(msrcSleep);
+    end;
+
+    if not FAlarmActive then PlayMusic
+    else PauseMusic;
+  end;
+
+  Picker.Free;
 
   imgMusic.Picture.Assign(imgOn.Picture);
 end;
@@ -1220,17 +1275,57 @@ begin
   imgDisplay.Picture.Assign(imgOn.Picture);
 end;
 
-procedure TfrmClockMain.imgMeditationClick(Sender: TObject);
+procedure TfrmClockMain.imgRadioClick(Sender: TObject);
+var
+  Picker: TfrmSourcePicker;
+  Sources: TSourceArray;
 begin
-  imgMeditation.Picture.Assign(imgOff.Picture);
+  imgRadio.Picture.Assign(imgOff.Picture);
   Application.ProcessMessages;
 
-  SetMusicSource(msrcMeditation);
+  SetLength(Sources, 8);
+  Sources[0].Title := 'BBC Radio 1';
+  Sources[0].Resource := 'http://www.bbc.co.uk/radio/listen/live/r1_heaacv2.pls';
+  Sources[1].Title := 'BBC Radio 1Xtra';
+  Sources[1].Resource := 'http://www.bbc.co.uk/radio/listen/live/r1x_heaacv2.pls';
+  Sources[2].Title := 'BBC Radio 2';
+  Sources[2].Resource := 'http://www.bbc.co.uk/radio/listen/live/r2_heaacv2.pls';
+  Sources[3].Title := 'BBC Radio 3';
+  Sources[3].Resource := 'http://www.bbc.co.uk/radio/listen/live/r3_heaacv2.pls';
+  Sources[4].Title := 'BBC Radio 4';
+  Sources[4].Resource := 'http://www.bbc.co.uk/radio/listen/live/r4_heaacv2.pls';
+  Sources[5].Title := 'BBC Radio 5 live';
+  Sources[5].Resource := 'http://www.bbc.co.uk/radio/listen/live/r5l_heaacv2.pls';
+  Sources[6].Title := 'BBC Radio 5 live Sports Extra';
+  Sources[6].Resource := 'http://www.bbc.co.uk/radio/listen/live/r5lsp_heaacv2.pls';
+  Sources[7].Title := 'BBC Radio 6 Music';
+  Sources[7].Resource := 'http://www.bbc.co.uk/radio/listen/live/r6_heaacv2.pls';
 
-  if not FAlarmActive then PlayMusic
-  else PauseMusic;
+  Picker := TfrmSourcePicker.Create(Self, Sources);
 
-  imgMeditation.Picture.Assign(imgOn.Picture);
+  if frmSettings.cbxForceFullscreen.Checked then
+  begin
+    Picker.BorderStyle := bsNone;
+  end
+  else
+  begin
+    Picker.BorderStyle := bsSingle;
+  end;
+
+  SetCursorType(Picker);
+
+  if Picker.ShowModal = mrOK then
+  begin
+    SetMusicSource(msrcRadio);
+    FRadioPlayer.StreamTitle := Sources[Picker.ItemIndex].Title;
+    FRadioPlayer.StreamURL := Sources[Picker.ItemIndex].Resource;
+
+    if not FAlarmActive then PlayMusic
+    else PauseMusic;
+  end;
+
+  Picker.Free;
+  imgRadio.Picture.Assign(imgOn.Picture);
 end;
 
 procedure TfrmClockMain.lbSleepClick(Sender: TObject);
@@ -1432,6 +1527,10 @@ begin
     msrcMusic:
       begin
         Player := FMusicPlayer;
+      end;
+    msrcRadio:
+      begin
+        Player := FRadioPlayer;
       end
     else Player := nil;
   end;

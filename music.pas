@@ -35,6 +35,8 @@ type
     FSongIndex: integer;
     FPlaylistIndex: integer;
     FState: TPlayerState;
+    FStreamTitle: string;
+    FStreamURL: string;
 
     function GetFileName(Index: integer; SongList, PathList: TStringList): string;
     function GetSongArtist: string;
@@ -68,6 +70,8 @@ type
     property SongTitle: string read GetSongTitle;
     property State: TPlayerState read FState;
     property SearchPath: string read FSearchPath;
+    property StreamURL: string write FStreamURL;
+    property StreamTitle: string read FStreamTitle write FStreamTitle;
   end;
 
 implementation
@@ -77,6 +81,9 @@ implementation
 constructor TPlayer.Create(MusicPlayer: TMusicPlayer; ConfigFile, SearchPath: string);
 begin
   inherited Create;
+
+  FStreamURL := '';
+  FStreamTitle := '';
 
   FMusicPlayer := MusicPlayer;
 
@@ -233,7 +240,9 @@ procedure TPlayer.PlaySong(Play: TPlayDirection);
 var
   Filename: string;
 begin
-  if not PlayPlaylistSong(Play) then
+  if FStreamURL <> '' then
+    FMusicPlayer.Play(FStreamURL)
+  else if not PlayPlaylistSong(Play) then
   begin
     case Play of
       pdPrevious: Dec(FSongIndex , 1);
@@ -345,12 +354,14 @@ end;
 
 function TPlayer.GetSongArtist: string;
 begin
-  Result := FMusicPlayer.SongArtist;
+  if FStreamURL <> '' then Result := ''
+  else Result := FMusicPlayer.SongArtist;
 end;
 
 function TPlayer.GetSongTitle: string;
 begin
-  Result := FMusicPlayer.SongTitle;
+  if FStreamURL <> '' then Result := StreamTitle
+  else Result := FMusicPlayer.SongTitle;
 end;
 
 procedure TPlayer.RandomiseList(var List: TStringList);
