@@ -805,8 +805,6 @@ begin
     WindLabels[i].Caption := '';
 
   FMPGPlayer := TMusicPlayer.Create;
-  FMPGPlayer.Equalizer := ChangeFileExt(FConfigFilename, '_eq.cfg');
-
 
   FAlarm := TAlarm.Create(FMPGPlayer);
   FAlarm.Path := ExtractFilePath(Application.ExeName);

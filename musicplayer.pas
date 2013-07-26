@@ -21,25 +21,19 @@ type
   TMusicPlayer  = class
   private
     FVolume: integer;
-    FEqualizer: string;
     FPlayProcess: TProcess;
     FPlayTimeout: TDateTime;
     FSongArtist: string;
     FSongTitle: string;
     FState: TMusicPlayerState;
-    FBufferTime: integer;
-    FPlayLength: TDateTime;
     FID3v1: TID3v1Tag;
     FID3v2: TID3v2Tag;
 
     procedure DestroyPlayProcess;
-    procedure EqualizerDefault(Filename: string);
-    procedure FlushStdout;
-    procedure FlushStderr;
     function GetState: TMusicPlayerState;
     procedure PlaySong(Song: string);
     procedure SetVolume(Volume: integer);
-    procedure StartPlayProcess(out Process: TProcess);
+    procedure StartPlayProcess(Song: string; out Process: TProcess);
     procedure StopSong;
   public
     constructor Create;
@@ -53,7 +47,6 @@ type
     property SongArtist: string read FSongArtist;
     property SongTitle: string read FSongTitle;
     property State: TMusicPlayerState read GetState;
-    property Equalizer: string write FEqualizer;
   end;
 
 const
@@ -114,18 +107,11 @@ begin
   try
     if FileExists(Song) then
     begin
-      if not Assigned(FPlayProcess) then
-        StartPlayProcess(FPlayProcess);
+      if Assigned(FPlayProcess) then DestroyPlayProcess;
 
-      FPlayLength := Now; // used to detect if a play error occurs
+      StartPlayProcess(Song, FPlayProcess);
 
       if Trim(FSongTitle) = '' then FSongTitle := ExtractFilename(Song);
-      Song := 'LOAD ' + Song + #10;
-      FPlayProcess.Input.Write(Song[1], Length(Song));
-
-      // playout buffer
-      // Timeout starts with long timeout to allow for startup time.
-      FPlayTimeout := Now + EncodeTime(0, 0, 45, 0);
 
       FState := mpsPlaying;
     end;
@@ -137,107 +123,24 @@ begin
   end;
 end;
 
-procedure TMusicPlayer.StartPlayProcess(out Process: TProcess);
+procedure TMusicPlayer.StartPlayProcess(Song: string; out Process: TProcess);
 begin
-  if (FEqualizer <> '') and not FileExists(FEqualizer) then
-    EqualizerDefault(FEqualizer);
-
   Process := TProcess.Create(nil);
-  Process.Options := Process.Options + [poUsePipes];
+  Process.Options := Process.Options;
 
-  // Use mpg321 if possible
-  if FileExists('/usr/bin/mpg321') then
-  begin
-    Process.CommandLine := 'mpg321 -R 1';
-    FBufferTime := 1;
-  end
-  else
-  begin
-    Process.CommandLine := Format('mpg123 --rva-mix --buffer %d --preload 1.0 -R', [BUFFER_SIZE]);
-    FBufferTime := BUFFER_TIME;
-  end;
+  Process.CommandLine := 'mplayer ' + '"' + Song + '"';
 
   Process.Execute;
-end;
-
-procedure TMusicPlayer.FlushStdout;
-const
-  BLOCK_SIZE = 4096;
-var
-  Buffer: array [0..BLOCK_SIZE] of char;
-  Bytes, ReadSize: integer;
-begin
-  if Assigned(FPlayProcess) then
-  begin
-    Bytes := FPlayProcess.Output.NumBytesAvailable;
-
-    while Bytes > 0 do
-    begin
-      if Bytes > BLOCK_SIZE then
-        ReadSize := BLOCK_SIZE
-      else
-        ReadSize := Bytes;
-
-      FPlayProcess.Output.Read(Buffer[0], ReadSize);
-
-      Bytes := Bytes - ReadSize;
-    end;
-  end;
-end;
-
-procedure TMusicPlayer.FlushStderr;
-const
-  BLOCK_SIZE = 4096;
-var
-  Buffer: array [0..BLOCK_SIZE] of char;
-  Bytes, ReadSize: integer;
-begin
-  if Assigned(FPlayProcess) then
-  begin
-    Bytes := FPlayProcess.Stderr.NumBytesAvailable;
-
-    while Bytes > 0 do
-    begin
-      if Bytes > BLOCK_SIZE then
-        ReadSize := BLOCK_SIZE
-      else
-        ReadSize := Bytes;
-
-      FPlayProcess.Stderr.Read(Buffer[0], ReadSize);
-
-      Bytes := Bytes - ReadSize;
-    end;
-  end;
 end;
 
 function TMusicPlayer.GetState: TMusicPlayerState;
 begin
   if FState = mpsPlaying then
   begin
-    // Play buffer
-    if not FPlayProcess.Running
-      or ((FPlayProcess.Output.NumBytesAvailable = 0)
-      and (FPlayProcess.Stderr.NumBytesAvailable = 0)) then
+    if not FPlayProcess.Running then
     begin
-      if not FPlayProcess.Running or (Now > FPlayTimeout) then
-      begin
-        FState := mpsStopped;
-
-        // Assume that the play process is in an error state if the play time is too short < 1 min
-        if (Now - FPlayLength) < EncodeTime(0, 1, 0, 0) then
-        begin
-          // Kill the play process
-          DestroyPlayProcess;
-        end;
-      end;
-    end
-    else
-    begin
-      FPlayTimeout := Now + EncodeTime(0, 0, FBufferTime + 1, 0);
+      DestroyPlayProcess;
     end;
-
-    FlushStdout;
-    FlushStderr;
   end;
 
   Result := FState;
@@ -249,12 +152,7 @@ var
 begin
   if FState = mpsPlaying then
   begin
-    // Stop command broken when using a buffer
-    //Command := 'STOP' + #10;
-    Command := 'PAUSE' + #10;
-
-    FPlayProcess.Input.Write(Command[1], Length(Command));
-    FState := mpsStopped;
+    DestroyPlayProcess;
   end;
 end;
 
@@ -276,7 +174,6 @@ end;
 constructor TMusicPlayer.Create;
 begin
   FPlayProcess := nil;
-  FEqualizer := '';
   FVolume := 50;
   SetVolume(FVolume);
 
@@ -340,59 +237,6 @@ procedure TMusicPlayer.Stop;
 begin
   StopSong;
 end;
-
-procedure TMusicPlayer.EqualizerDefault(Filename: string);
-var
-  myFile : TextFile;
-begin
-  try
-    // Try to open the file for writing to
-    AssignFile(myFile, Filename);
-    ReWrite(myFile);
-
-    WriteLn(myFile, '# mpg123 equalizer file');
-    WriteLn(myFile, '# 32 Band 2 Channel');
-    WriteLn(myFile, '# Levels 0 -> 1 e.g. 0.5 0.5');
-    WriteLn(myFile, '#');
-    WriteLn(myFile, '1 1');
-    WriteLn(myFile, '1 1');
-    WriteLn(myFile, '1 1');
-    WriteLn(myFile, '1 1');
-    WriteLn(myFile, '1 1');
-    WriteLn(myFile, '1 1');
-    WriteLn(myFile, '1 1');
-    WriteLn(myFile, '1 1');
-    WriteLn(myFile, '1 1');
-    WriteLn(myFile, '1 1');
-    WriteLn(myFile, '1 1');
-    WriteLn(myFile, '1 1');
-    WriteLn(myFile, '1 1');
-    WriteLn(myFile, '1 1');
-    WriteLn(myFile, '1 1');
-    WriteLn(myFile, '1 1');
-    WriteLn(myFile, '1 1');
-    WriteLn(myFile, '1 1');
-    WriteLn(myFile, '1 1');
-    WriteLn(myFile, '1 1');
-    WriteLn(myFile, '1 1');
-    WriteLn(myFile, '1 1');
-    WriteLn(myFile, '1 1');
-    WriteLn(myFile, '1 1');
-    WriteLn(myFile, '1 1');
-    WriteLn(myFile, '1 1');
-    WriteLn(myFile, '1 1');
-    WriteLn(myFile, '1 1');
-    WriteLn(myFile, '1 1');
-    WriteLn(myFile, '1 1');
-    WriteLn(myFile, '1 1');
-    WriteLn(myFile, '1 1');
-    WriteLn(myFile, '');
-
-    // Close the file
-    CloseFile(myFile);
-  except
-  end;
- end;
 
 end.
 
