@@ -468,9 +468,9 @@ begin
 
     ReminderState := FReminderAlarm.State;
 
-    FAlarm.Tick;
-    FReminderAlarm.Tick;
-    FTimer.Tick;
+    FAlarm.Tick(Current);
+    FReminderAlarm.Tick(Current);
+    FTimer.Tick(Current);
 
     if (FReminderAlarm.State = asActive) and (ReminderState <> asActive) then
     begin

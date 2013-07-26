@@ -10,7 +10,7 @@ unit alarm;
 interface
 
 uses
-  Classes, SysUtils, Process, LCLProc, MusicPlayer;
+  Classes, SysUtils, Process, LCLProc, MusicPlayer, DateTime;
 
 type
 
@@ -35,7 +35,7 @@ type
   public
     Days: array [1..7] of boolean;
 
-    procedure Tick;
+    procedure Tick(CurrTime: TDateTime);
     procedure ResetAlarm;
     procedure Stop;
 
@@ -69,11 +69,8 @@ DebugLn('Alarm: Sound alarm');
   FMusicPlayer.Play(AlarmFile);
 end;
 
-procedure TAlarm.Tick;
-var
-  CurrTime: TDateTime;
+procedure TAlarm.Tick(CurrTime: TDateTime);
 begin
-  CurrTime := Now;
   FAlarmTime := Date + Frac(FAlarmTime);
 
   // Is the alarm set to go off for the current day?
