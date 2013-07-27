@@ -25,7 +25,7 @@ uses
   X, Xlib, CTypes, Black, WaitForMedia, Pictures, DateTime, SourcePicker;
 
 const
-  VERSION = '2.0.11';
+  VERSION = '2.0.12';
 
 type
   TMusicState = (msOff, msPlaying, msPaused);
@@ -70,6 +70,7 @@ type
     Label18: TLabel;
     Label19: TLabel;
     Label20: TLabel;
+    Label22: TLabel;
     lbPlayAlbums: TLabel;
     lbWeatherSummary: TLabel;
     lbExit: TLabel;
@@ -96,6 +97,7 @@ type
     Label9: TLabel;
     labSong: TLabel;
     lblTime: TLabel;
+    tmrComServer: TTimer;
     UpdateMusic: TLabel;
     lbSettings: TLabel;
     tmrMinute: TTimer;
@@ -125,6 +127,7 @@ type
     procedure lbPreviousClick(Sender: TObject);
     procedure lbSettingsClick(Sender: TObject);
     procedure lbSleepClick(Sender: TObject);
+    procedure tmrComServerTimer(Sender: TObject);
     procedure tmrTimeTimer(Sender: TObject);
     procedure tmrWeatherTimer(Sender: TObject);
     procedure tmrMinuteTimer(Sender: TObject);
@@ -165,8 +168,6 @@ type
     procedure BacklightOff;
     procedure BacklightOn;
 
-    procedure CloseApp;
-    procedure ConfigureWifi;
     function DayOfWeekStr(Date: TDateTime): string;
     procedure Execute(Command: string);
     function FormShowModal(MyForm: TForm): integer;
@@ -539,59 +540,6 @@ begin
       labSong.Caption := Song;
 
     tmrTime.Tag := 0;
-  end;
-
-  if Assigned(FCOMServer) then
-  begin
-    FCOMServer.Playing := LabSong.Caption;
-    FCOMServer.WeatherReport := FWeatherReport;
-    FCOMServer.SetImageURLs(ImageURLs);
-    FCOMServer.SetWeatherReports(FWeatherReports);
-
-    Command := FCOMServer.GetCommand;
-
-    case Command of
-      rcomNext:
-        begin
-          case FMusicSource of
-            msrcSleep: Key := 's';
-            msrcMeditation: Key := 'd';
-            else Key := 'm';
-          end;
-
-          FormKeyPress(Self, Key);
-        end;
-      rcomMusic:
-        begin
-          Key := 'm';
-          FormKeyPress(Self, Key);
-        end;
-      rcomSleep:
-        begin
-          Key := 's';
-          FormKeyPress(Self, Key);
-        end;
-      rcomMeditation:
-        begin
-          Key := 'd';
-          FormKeyPress(Self, Key);
-        end;
-      rcomPause:
-        begin
-          Key := 'p';
-          FormKeyPress(Self, Key);
-        end;
-      rcomVolumeUp:
-        begin
-          Key := '.';
-          FormKeyPress(Self, Key);
-        end;
-      rcomVolumeDown:
-        begin
-          Key := ',';
-          FormKeyPress(Self, Key);
-        end;
-    end;
   end;
 
 {$IFDEF GRABXKEYS}
@@ -1341,6 +1289,65 @@ begin
   imgSleep.Picture.Assign(imgOn.Picture);
 end;
 
+procedure TfrmClockMain.tmrComServerTimer(Sender: TObject);
+var
+  Command: TRemoteCommand;
+  Key: Char;
+begin
+  if Assigned(FCOMServer) then
+  begin
+    FCOMServer.Playing := LabSong.Caption;
+    FCOMServer.WeatherReport := FWeatherReport;
+    FCOMServer.SetImageURLs(ImageURLs);
+    FCOMServer.SetWeatherReports(FWeatherReports);
+
+    Command := FCOMServer.GetCommand;
+
+    case Command of
+      rcomNext:
+        begin
+          case FMusicSource of
+            msrcSleep: Key := 's';
+            msrcMeditation: Key := 'd';
+            else Key := 'm';
+          end;
+
+          FormKeyPress(Self, Key);
+        end;
+      rcomMusic:
+        begin
+          Key := 'm';
+          FormKeyPress(Self, Key);
+        end;
+      rcomSleep:
+        begin
+          Key := 's';
+          FormKeyPress(Self, Key);
+        end;
+      rcomMeditation:
+        begin
+          Key := 'd';
+          FormKeyPress(Self, Key);
+        end;
+      rcomPause:
+        begin
+          Key := 'p';
+          FormKeyPress(Self, Key);
+        end;
+      rcomVolumeUp:
+        begin
+          Key := '.';
+          FormKeyPress(Self, Key);
+        end;
+      rcomVolumeDown:
+        begin
+          Key := ',';
+          FormKeyPress(Self, Key);
+        end;
+    end;
+  end;
+end;
+
 procedure TfrmClockMain.lbPlayClick(Sender: TObject);
 begin
   imgPlay.Picture.Assign(imgOff.Picture);
@@ -1579,6 +1586,7 @@ var
 begin
   tmrWeather.Enabled := False;
   tmrTime.Enabled := False;
+  tmrComServer.Enabled := False;
   tmrMinute.Enabled := False;
 
   Self.KeyPreview := False;
@@ -1599,84 +1607,6 @@ begin
     Process.Options := Process.Options + [poWaitOnExit];
     Process.Execute;
    except
-    on E: Exception do
-    begin
-      DebugLn(Self.ClassName + #9#9 + E.Message);
-    end;
-  end;
-
-  Process.Free;
-end;
-
-procedure TfrmClockMain.ConfigureWifi;
-var
-  Process: TProcess;
-begin
-  tmrWeather.Enabled := False;
-  tmrTime.Enabled := False;
-  tmrMinute.Enabled := False;
-  Self.KeyPreview := False;
-
-  PauseMusic;
-
-//  Self.WindowState := wsMinimized;
-
-  lblTime.Caption := 'Configure Wifi ...';
-  lbWeatherSummary.Caption := '';
-  Application.ProcessMessages;
-
-  Process := TProcess.Create(nil);
-
-  try
-    Process.CommandLine := 'sudo /usr/local/sbin/ewoc-z2sid-term';
-    Process.Options := Process.Options + [poWaitOnExit];
-    Process.Execute;
-
-    lblTime.Caption := 'Updating weather ...';
-
-    Application.ProcessMessages;
-
-    UpdateWeather;
-
-    tmrWeather.Enabled := True;
-    tmrTime.Enabled := True;
-    tmrMinute.Enabled := True;
-
-    AfterAlarm;
-
-    Self.KeyPreview := True;
-  except
-    on E: Exception do
-    begin
-      DebugLn(Self.ClassName + #9#9 + E.Message);
-    end;
-  end;
-
-  Process.Free;
-end;
-
-procedure TfrmClockMain.CloseApp;
-var
-  Process: TProcess;
-begin
-  tmrWeather.Enabled := False;
-  tmrTime.Enabled := False;
-  tmrMinute.Enabled := False;
-  Self.KeyPreview := False;
-
-  PauseMusic;
-
-  Process := TProcess.Create(nil);
-
-  try
-    if FileExists('/usr/bin/lxpanel') then
-    begin
-      Process.CommandLine := '/usr/bin/lxpanel';
-      Process.Execute;
-    end;
-
-    Self.Close;
-  except
     on E: Exception do
     begin
       DebugLn(Self.ClassName + #9#9 + E.Message);

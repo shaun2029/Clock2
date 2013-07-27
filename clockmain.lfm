@@ -16073,4 +16073,10 @@ object frmClockMain: TfrmClockMain
     left = 450
     top = 176
   end
+  object tmrComServer: TTimer
+    Interval = 250
+    OnTimer = tmrComServerTimer
+    left = 488
+    top = 80
+  end
 end
