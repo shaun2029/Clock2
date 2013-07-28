@@ -23,6 +23,7 @@ type
 
   TCOMServerThread = class(TThread)
   private
+    FOnCommand: TThreadMethod;
     FPort: integer;
     FPlaying: string;
     FWeatherReport: string;
@@ -48,16 +49,17 @@ type
   published
     property Playing: string write SetPlaying;
     property WeatherReport: string write SetWeatherReport;
+    property OnCommand: TThreadMethod read FOnCommand write FOnCommand;
   end;
 
   TCOMServer = class
   private
     FCOMServerThread: TCOMServerThread;
+    procedure SetOnCommand(AValue: TThreadMethod);
     procedure SetPlaying(const AValue: string);
     procedure SetWeatherReport(const AValue: string);
   public
     function GetCommand: TRemoteCommand;
-
     procedure SetImageURLs(URLs: array of string);
     procedure SetWeatherReports(Reports: array of string);
 
@@ -66,6 +68,7 @@ type
   published
     property Playing: string write SetPlaying;
     property WeatherReport: string write SetWeatherReport;
+    property OnCommand: TThreadMethod write SetOnCommand;
   end;
 
 implementation
@@ -75,6 +78,11 @@ implementation
 procedure TCOMServer.SetPlaying(const AValue: string);
 begin
   FCOMServerThread.Playing := AValue;
+end;
+
+procedure TCOMServer.SetOnCommand(AValue: TThreadMethod);
+begin
+  FCOMServerThread.OnCommand := AValue;
 end;
 
 procedure TCOMServer.SetWeatherReport(const AValue: string);
@@ -189,42 +197,49 @@ begin
               FCritical.Enter;
               FCommand := rcomNext;
               FCritical.Leave;
+              if Assigned(FOnCommand) then Self.Synchronize(FOnCommand);
             end
             else if Buffer = 'CLOCK:MUSIC' then
             begin
               FCritical.Enter;
               FCommand := rcomMusic;
               FCritical.Leave;
+              if Assigned(FOnCommand) then Self.Synchronize(FOnCommand);
             end
             else if Buffer = 'CLOCK:SLEEP' then
             begin
               FCritical.Enter;
               FCommand := rcomSleep;
               FCritical.Leave;
+              if Assigned(FOnCommand) then Self.Synchronize(FOnCommand);
             end
             else if Buffer = 'CLOCK:MEDITATION' then
             begin
               FCritical.Enter;
               FCommand := rcomMeditation;
               FCritical.Leave;
+              if Assigned(FOnCommand) then Self.Synchronize(FOnCommand);
             end
             else if Buffer = 'CLOCK:PAUSE' then
             begin
               FCritical.Enter;
               FCommand := rcomPause;
               FCritical.Leave;
+              if Assigned(FOnCommand) then Self.Synchronize(FOnCommand);
             end
             else if Buffer = 'CLOCK:VOLUP' then
             begin
               FCritical.Enter;
               FCommand := rcomVolumeUp;
               FCritical.Leave;
+              if Assigned(FOnCommand) then Self.Synchronize(FOnCommand);
             end
             else if Buffer = 'CLOCK:VOLDOWN' then
             begin
               FCritical.Enter;
               FCommand := rcomVolumeDown;
               FCritical.Leave;
+              if Assigned(FOnCommand) then Self.Synchronize(FOnCommand);
             end
             else if Buffer = 'CLOCK:PLAYING' then
             begin
@@ -253,10 +268,6 @@ begin
               FCritical.Leave;
             end;
           end;
-
-          // minimal sleep
-          if Buffer = '' then
-            Sleep(10);
         end;
       finally
         Socket.CloseSocket;
@@ -284,6 +295,7 @@ begin
   FPlaying := '--------';
   FWeatherReport := '';
   FPort := Port;
+  FOnCommand := nil;
 end;
 
 destructor TCOMServerThread.Destroy;

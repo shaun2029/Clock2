@@ -97,7 +97,6 @@ type
     Label9: TLabel;
     labSong: TLabel;
     lblTime: TLabel;
-    tmrComServer: TTimer;
     UpdateMusic: TLabel;
     lbSettings: TLabel;
     tmrMinute: TTimer;
@@ -127,7 +126,6 @@ type
     procedure lbPreviousClick(Sender: TObject);
     procedure lbSettingsClick(Sender: TObject);
     procedure lbSleepClick(Sender: TObject);
-    procedure tmrComServerTimer(Sender: TObject);
     procedure tmrTimeTimer(Sender: TObject);
     procedure tmrWeatherTimer(Sender: TObject);
     procedure tmrMinuteTimer(Sender: TObject);
@@ -179,6 +177,7 @@ type
     procedure SetCursorType(MyForm: TForm);
     procedure SetMusicSource(Source: TMusicSource);
     procedure UpdatingMusic(Player: TPlayer);
+    procedure ComServerCallback;
 
 {$IFDEF GRABXKEYS}
     procedure GrabMediaKeys;
@@ -426,7 +425,6 @@ var
   TimeCaption: string;
   ReminderList: TStringList;
   i: Integer;
-  Command: TRemoteCommand;
   Key: Char;
   Player: TPlayer;
   PlayerName, Song: string;
@@ -538,6 +536,14 @@ begin
 
     if labSong.Caption <> Song then
       labSong.Caption := Song;
+
+    if Assigned(FCOMServer) then
+    begin
+      FCOMServer.Playing := LabSong.Caption;
+      FCOMServer.WeatherReport := FWeatherReport;
+      FCOMServer.SetImageURLs(ImageURLs);
+      FCOMServer.SetWeatherReports(FWeatherReports);
+    end;
 
     tmrTime.Tag := 0;
   end;
@@ -803,6 +809,7 @@ begin
   FAlarmActive := False;
 
   FCOMServer := TCOMServer.Create(44558);
+  FCOMServer.OnCommand := ComServerCallback;
 
   FWeatherReport := '';
 
@@ -1289,62 +1296,54 @@ begin
   imgSleep.Picture.Assign(imgOn.Picture);
 end;
 
-procedure TfrmClockMain.tmrComServerTimer(Sender: TObject);
+procedure TfrmClockMain.ComServerCallback;
 var
   Command: TRemoteCommand;
   Key: Char;
 begin
-  if Assigned(FCOMServer) then
-  begin
-    FCOMServer.Playing := LabSong.Caption;
-    FCOMServer.WeatherReport := FWeatherReport;
-    FCOMServer.SetImageURLs(ImageURLs);
-    FCOMServer.SetWeatherReports(FWeatherReports);
+  Command := FComServer.GetCommand;
 
-    Command := FCOMServer.GetCommand;
+  case Command of
+    rcomNext:
+      begin
+        case FMusicSource of
+          msrcSleep: Key := 's';
+          msrcMeditation: Key := 'd';
+          else Key := 'm';
+        end;
 
-    case Command of
-      rcomNext:
-        begin
-          case FMusicSource of
-            msrcSleep: Key := 's';
-            msrcMeditation: Key := 'd';
-            else Key := 'm';
-          end;
-
-          FormKeyPress(Self, Key);
-        end;
-      rcomMusic:
-        begin
-          Key := 'm';
-          FormKeyPress(Self, Key);
-        end;
-      rcomSleep:
-        begin
-          Key := 's';
-          FormKeyPress(Self, Key);
-        end;
-      rcomMeditation:
-        begin
-          Key := 'd';
-          FormKeyPress(Self, Key);
-        end;
-      rcomPause:
-        begin
-          Key := 'p';
-          FormKeyPress(Self, Key);
-        end;
-      rcomVolumeUp:
-        begin
-          Key := '.';
-          FormKeyPress(Self, Key);
-        end;
-      rcomVolumeDown:
-        begin
-          Key := ',';
-          FormKeyPress(Self, Key);
-        end;
-    end;
+        FormKeyPress(Self, Key);
+      end;
+    rcomMusic:
+      begin
+        Key := 'm';
+        FormKeyPress(Self, Key);
+      end;
+    rcomSleep:
+      begin
+        Key := 's';
+        FormKeyPress(Self, Key);
+      end;
+    rcomMeditation:
+      begin
+        Key := 'd';
+        FormKeyPress(Self, Key);
+      end;
+    rcomPause:
+      begin
+        Key := 'p';
+        FormKeyPress(Self, Key);
+      end;
+    rcomVolumeUp:
+      begin
+        Key := '.';
+        FormKeyPress(Self, Key);
+      end;
+    rcomVolumeDown:
+      begin
+        Key := ',';
+        FormKeyPress(Self, Key);
+      end;
   end;
 end;
 
@@ -1586,7 +1585,6 @@ var
 begin
   tmrWeather.Enabled := False;
   tmrTime.Enabled := False;
-  tmrComServer.Enabled := False;
   tmrMinute.Enabled := False;
 
   Self.KeyPreview := False;
