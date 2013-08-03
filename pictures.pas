@@ -151,6 +151,7 @@ end;
 
 procedure TfrmPictures.FormClick(Sender: TObject);
 begin
+  Savesettings;
   ModalResult := mrOk;
 end;
 
@@ -186,7 +187,7 @@ begin
 
   Inc(FPictureIndex , 1);
 
-  if FPictureIndex mod 20 = 0 then
+  if FPictureIndex mod 360 = 0 then
     SaveSettings;
 end;
 
