@@ -124,7 +124,7 @@ begin
   if not FileExists(Song) or not FileExists('/usr/bin/mpg123')
     or not (LowerCase(ExtractFileExt(Song)) = '.mp3') then
   begin
-    Process.CommandLine := 'mplayer "' + Song + '"';
+    Process.CommandLine := 'mplayer -cache 256 -cache-min 50 "' + Song + '"'
   end
   else
   begin
