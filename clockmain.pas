@@ -21,11 +21,11 @@ uses
   gtk2, gdk2,
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
   ExtCtrls, MetOffice, Alarm, Settings, Reminders, ReminderList, LCLProc,
-  Music, Sync, Process, MusicPlayer, PlaylistCreator, UDPCommandServer,
+  Music, Sync, Process, MusicPlayer, PlaylistCreator, commandserver,
   X, Xlib, CTypes, Black, WaitForMedia, Pictures, DateTime, SourcePicker;
 
 const
-  VERSION = '2.0.13';
+  VERSION = '2.1.0';
 
 type
   TMusicState = (msOff, msPlaying, msPaused);

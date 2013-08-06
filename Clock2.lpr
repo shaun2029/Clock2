@@ -9,7 +9,7 @@ uses
   Interfaces, // this includes the LCL widgetset
   Forms, Pictures, FindThread, alarm, ClockMain, Settings, MetOffice, Reminders,
   ReminderList, Black, FindPicsThread, udpserver, sync, udpclient,
-  music, udpcommandserver, MusicPlayer, WaitForMedia, PlaylistCreator,
+  music, commandserver, MusicPlayer, WaitForMedia, PlaylistCreator,
   TouchList, UniqueInstanceRaw, DateTime, SourcePicker;
 
 {$IFDEF WINDOWS}{$R picshow.rc}{$ENDIF}

@@ -3,7 +3,7 @@
 // shauns2029@gmail.com
 //
 
-unit udpcommandserver;
+unit commandserver;
 
 {$mode objfpc}{$H+}
 
@@ -30,6 +30,7 @@ type
     FWeatherReports: array [0..4] of string;
     FImageURLs: array [0..4] of string;
 
+    procedure AttendConnection(Socket: TTCPBlockSocket);
     procedure Log(Message: string);
     procedure SetPlaying(const AValue: string);
     procedure SetWeatherReport(const AValue: string);
@@ -170,111 +171,131 @@ end;
 
 procedure TCOMServerThread.Execute;
 var
-  Socket: TUDPBlockSocket;
+  ListenerSocket, ConnectionSocket: TTCPBlockSocket;
   Buffer: string;
 begin
-  Socket := TUDPBlockSocket.Create;
-  try
-    Socket.Bind('0.0.0.0', IntToStr(FPort));
+  ListenerSocket := TTCPBlockSocket.Create;
+  ConnectionSocket := TTCPBlockSocket.Create;
 
-    if Socket.LastError <> 0 then
-    begin
-      Log(Format('Bind failed with error code %d', [Socket.LastError]));
-      while not Terminated do Sleep(100);
-    end
-    else
-    begin
-      try
-        while not Terminated do
-        begin
-          // wait one second for new packet
-          Buffer := Socket.RecvPacket(1000);
+  ListenerSocket.CreateSocket;
+  ListenerSocket.SetLinger(true,10);
+  ListenerSocket.Bind('0.0.0.0',IntToStr(FPort));
+  ListenerSocket.Listen;
+  ListenerSocket.ConvertLineEnd := True;
 
-          if Socket.LastError = 0 then
-          begin
-            if Buffer = 'CLOCK:NEXT' then
-            begin
-              FCritical.Enter;
-              FCommand := rcomNext;
-              FCritical.Leave;
-              if Assigned(FOnCommand) then Self.Synchronize(FOnCommand);
-            end
-            else if Buffer = 'CLOCK:MUSIC' then
-            begin
-              FCritical.Enter;
-              FCommand := rcomMusic;
-              FCritical.Leave;
-              if Assigned(FOnCommand) then Self.Synchronize(FOnCommand);
-            end
-            else if Buffer = 'CLOCK:SLEEP' then
-            begin
-              FCritical.Enter;
-              FCommand := rcomSleep;
-              FCritical.Leave;
-              if Assigned(FOnCommand) then Self.Synchronize(FOnCommand);
-            end
-            else if Buffer = 'CLOCK:MEDITATION' then
-            begin
-              FCritical.Enter;
-              FCommand := rcomMeditation;
-              FCritical.Leave;
-              if Assigned(FOnCommand) then Self.Synchronize(FOnCommand);
-            end
-            else if Buffer = 'CLOCK:PAUSE' then
-            begin
-              FCritical.Enter;
-              FCommand := rcomPause;
-              FCritical.Leave;
-              if Assigned(FOnCommand) then Self.Synchronize(FOnCommand);
-            end
-            else if Buffer = 'CLOCK:VOLUP' then
-            begin
-              FCritical.Enter;
-              FCommand := rcomVolumeUp;
-              FCritical.Leave;
-              if Assigned(FOnCommand) then Self.Synchronize(FOnCommand);
-            end
-            else if Buffer = 'CLOCK:VOLDOWN' then
-            begin
-              FCritical.Enter;
-              FCommand := rcomVolumeDown;
-              FCritical.Leave;
-              if Assigned(FOnCommand) then Self.Synchronize(FOnCommand);
-            end
-            else if Buffer = 'CLOCK:PLAYING' then
-            begin
-              FCritical.Enter;
-              Socket.SendString(FPlaying);
-              FCritical.Leave;
-            end
-            else if Buffer = 'CLOCK:WEATHER' then
-            begin
-              FCritical.Enter;
-              Socket.SendString(FWeatherReport);
-              FCritical.Leave;
-            end
-            else if (Pos('CLOCK:WEATHER:', Buffer) = 1)
-              and (Length(Buffer) = 15) then
-            begin
-              FCritical.Enter;
-              Socket.SendString(FWeatherReports[StrToIntDef(Buffer[15], 0)]);
-              FCritical.Leave;
-            end
-            else if (Pos('CLOCK:WEATHERIMAGE:', Buffer) = 1)
-              and (Length(Buffer) = 20) then
-            begin
-              FCritical.Enter;
-              Socket.SendString(FImageURLs[StrToIntDef(Buffer[20], 0)]);
-              FCritical.Leave;
-            end;
-          end;
-        end;
-      finally
-        Socket.CloseSocket;
-      end;
+  if ListenerSocket.LastError = 0 then
+  repeat
+    if ListenerSocket.canread(1000) then
+    begin
+      ConnectionSocket.Socket := ListenerSocket.accept;
+      ConnectionSocket.ConvertLineEnd := True;
+      //WriteLn('Attending Connection. Error code (0=Success): ', ConnectionSocket.lasterror);
+      AttendConnection(ConnectionSocket);
+      ConnectionSocket.CloseSocket;
     end;
-  finally
-    Socket.Free;
+  until Terminated;
+
+  ListenerSocket.Free;
+  ConnectionSocket.Free;
+end;
+
+procedure TCOMServerThread.AttendConnection(Socket: TTCPBlockSocket);
+var
+  Buffer: string;
+  LastError: integer;
+begin
+  // wait one second for new packet
+  Buffer := Socket.RecvString(15000);
+  LastError := Socket.LastError;
+
+  if LastError = 0 then
+  begin
+    if Buffer = 'CLOCK:NEXT' then
+    begin
+      FCritical.Enter;
+      FCommand := rcomNext;
+      FCritical.Leave;
+      if Assigned(FOnCommand) then Self.Synchronize(FOnCommand);
+      Socket.SendString(':OK' + #10);
+    end
+    else if Buffer = 'CLOCK:MUSIC' then
+    begin
+      FCritical.Enter;
+      FCommand := rcomMusic;
+      FCritical.Leave;
+      if Assigned(FOnCommand) then Self.Synchronize(FOnCommand);
+      Socket.SendString(':OK' + #10);
+    end
+    else if Buffer = 'CLOCK:SLEEP' then
+    begin
+      FCritical.Enter;
+      FCommand := rcomSleep;
+      FCritical.Leave;
+      if Assigned(FOnCommand) then Self.Synchronize(FOnCommand);
+      Socket.SendString(':OK' + #10);
+    end
+    else if Buffer = 'CLOCK:MEDITATION' then
+    begin
+      FCritical.Enter;
+      FCommand := rcomMeditation;
+      FCritical.Leave;
+      if Assigned(FOnCommand) then Self.Synchronize(FOnCommand);
+      Socket.SendString(':OK' + #10);
+    end
+    else if Buffer = 'CLOCK:PAUSE' then
+    begin
+      FCritical.Enter;
+      FCommand := rcomPause;
+      FCritical.Leave;
+      if Assigned(FOnCommand) then Self.Synchronize(FOnCommand);
+      Socket.SendString(':OK' + #10);
+    end
+    else if Buffer = 'CLOCK:VOLUP' then
+    begin
+      FCritical.Enter;
+      FCommand := rcomVolumeUp;
+      FCritical.Leave;
+      if Assigned(FOnCommand) then Self.Synchronize(FOnCommand);
+      Socket.SendString(':OK' + #10);
+    end
+    else if Buffer = 'CLOCK:VOLDOWN' then
+    begin
+      FCritical.Enter;
+      FCommand := rcomVolumeDown;
+      FCritical.Leave;
+      if Assigned(FOnCommand) then Self.Synchronize(FOnCommand);
+      Socket.SendString(':OK' + #10);
+    end
+    else if Buffer = 'CLOCK:PLAYING' then
+    begin
+      FCritical.Enter;
+      Socket.SendString(FPlaying + #10);
+      FCritical.Leave;
+      Socket.SendString(':OK' + #10);
+    end
+    else if Buffer = 'CLOCK:WEATHER' then
+    begin
+      FCritical.Enter;
+      Socket.SendString(FWeatherReport + #10);
+      FCritical.Leave;
+      Socket.SendString(':OK' + #10);
+    end
+    else if (Pos('CLOCK:WEATHER:', Buffer) = 1)
+      and (Length(Buffer) = 15) then
+    begin
+      FCritical.Enter;
+      Socket.SendString(FWeatherReports[StrToIntDef(Buffer[15], 0)] + #10);
+      FCritical.Leave;
+      Socket.SendString(':OK' + #10);
+    end
+    else if (Pos('CLOCK:WEATHERIMAGE:', Buffer) = 1)
+      and (Length(Buffer) = 20) then
+    begin
+      FCritical.Enter;
+      Socket.SendString(FImageURLs[StrToIntDef(Buffer[20], 0)] + #10);
+      FCritical.Leave;
+      Socket.SendString(':OK' + #10);
+    end;
   end;
 end;
 
