@@ -159,10 +159,12 @@ procedure TfrmPictures.FormActivate(Sender: TObject);
 var
   ScreenBounds: TRect;
 begin
+{$IFNDEF DEBUG}
   ScreenBounds := Screen.MonitorFromWindow(Handle).BoundsRect;
   with ScreenBounds do
     SetBounds(Left, Top, Right - Left, Bottom - Top) ;
   gdk_window_fullscreen(PGtkWidget(Handle)^.window);
+{$ENDIF}
 end;
 
 function TfrmPictures.ShowPicture: boolean;

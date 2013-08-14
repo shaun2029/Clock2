@@ -34,6 +34,9 @@ type
     cbxRandomPictures: TCheckBox;
     cbxForceFullscreen: TCheckBox;
     cbxTouchScreen: TCheckBox;
+    cbxMonitorConnection: TCheckBox;
+    edtTestHost: TEdit;
+    edtConnectionResetComand: TEdit;
     edtPicturePath: TEdit;
     edtServerPort: TEdit;
     edtServerAddress: TEdit;
@@ -55,6 +58,8 @@ type
     Label13: TLabel;
     Label14: TLabel;
     Label15: TLabel;
+    Label16: TLabel;
+    Label17: TLabel;
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
@@ -74,6 +79,7 @@ type
     TabSheet5: TTabSheet;
     TabSheet6: TTabSheet;
     TabSheet7: TTabSheet;
+    TabSheet8: TTabSheet;
     tmrSettings: TTimer;
     udTimer: TUpDown;
     XMLPropStorage1: TXMLPropStorage;

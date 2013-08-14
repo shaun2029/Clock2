@@ -75,15 +75,17 @@
         <PackageName Value="LCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="38">
+    <Units Count="42">
       <Unit0>
         <Filename Value="Clock2.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="Clock2"/>
+        <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
-        <CursorPos X="36" Y="20"/>
+        <CursorPos X="73" Y="13"/>
         <UsageCount Value="225"/>
+        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit0>
       <Unit1>
@@ -93,12 +95,13 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Pictures"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="8"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="131"/>
-        <CursorPos X="16" Y="154"/>
+        <TopLine Value="22"/>
+        <CursorPos X="3" Y="4"/>
         <UsageCount Value="225"/>
         <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit1>
       <Unit2>
@@ -127,10 +130,12 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Settings"/>
+        <EditorIndex Value="7"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="53"/>
-        <CursorPos X="83" Y="83"/>
+        <TopLine Value="1"/>
+        <CursorPos X="57" Y="16"/>
         <UsageCount Value="200"/>
+        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit4>
       <Unit5>
@@ -153,8 +158,8 @@
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="19" Y="28"/>
+        <TopLine Value="1747"/>
+        <CursorPos X="19" Y="1777"/>
         <UsageCount Value="207"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -164,10 +169,12 @@
         <Filename Value="metoffice.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="MetOffice"/>
+        <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="427"/>
-        <CursorPos X="35" Y="427"/>
+        <TopLine Value="159"/>
+        <CursorPos X="44" Y="226"/>
         <UsageCount Value="207"/>
+        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit7>
       <Unit8>
@@ -223,7 +230,7 @@
         <Filename Value="musicplayer.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="MusicPlayer"/>
-        <EditorIndex Value="8"/>
+        <EditorIndex Value="12"/>
         <WindowIndex Value="0"/>
         <TopLine Value="19"/>
         <CursorPos X="48" Y="127"/>
@@ -248,10 +255,10 @@
         <Filename Value="commandserver.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="commandserver"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="9"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="268"/>
-        <CursorPos X="36" Y="297"/>
+        <TopLine Value="169"/>
+        <CursorPos X="1" Y="174"/>
         <UsageCount Value="212"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -260,7 +267,7 @@
         <Filename Value="music.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="music"/>
-        <EditorIndex Value="7"/>
+        <EditorIndex Value="11"/>
         <WindowIndex Value="0"/>
         <TopLine Value="22"/>
         <CursorPos X="23" Y="36"/>
@@ -308,9 +315,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="WaitForMedia"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="10"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="42"/>
+        <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
         <UsageCount Value="205"/>
         <Loaded Value="True"/>
@@ -348,7 +355,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="30"/>
         <CursorPos X="26" Y="56"/>
-        <UsageCount Value="198"/>
+        <UsageCount Value="200"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit23>
       <Unit24>
@@ -402,7 +409,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="41"/>
         <CursorPos X="37" Y="41"/>
-        <UsageCount Value="178"/>
+        <UsageCount Value="188"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit29>
       <Unit30>
@@ -412,11 +419,11 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="SourcePicker"/>
-        <EditorIndex Value="9"/>
+        <EditorIndex Value="13"/>
         <WindowIndex Value="0"/>
         <TopLine Value="36"/>
         <CursorPos X="30" Y="49"/>
-        <UsageCount Value="74"/>
+        <UsageCount Value="84"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit30>
@@ -454,157 +461,195 @@
       </Unit34>
       <Unit35>
         <Filename Value="/usr/share/fpcsrc/2.6.0/rtl/objpas/classes/classesh.inc"/>
-        <EditorIndex Value="5"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1470"/>
+        <TopLine Value="1468"/>
         <CursorPos X="40" Y="1468"/>
         <UsageCount Value="34"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit35>
       <Unit36>
         <Filename Value="synapse/source/lib/blcksock.pas"/>
         <UnitName Value="blcksock"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="5"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="758"/>
-        <CursorPos X="14" Y="772"/>
-        <UsageCount Value="16"/>
+        <TopLine Value="1"/>
+        <CursorPos X="1" Y="1"/>
+        <UsageCount Value="19"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit36>
       <Unit37>
         <Filename Value="synapse/source/lib/ssfpc.pas"/>
         <UnitName Value="ssfpc"/>
-        <EditorIndex Value="4"/>
         <WindowIndex Value="0"/>
         <TopLine Value="148"/>
         <CursorPos X="106" Y="165"/>
         <UsageCount Value="16"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit37>
+      <Unit38>
+        <Filename Value="connectionhealth.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ConnectionHealth"/>
+        <EditorIndex Value="4"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="35"/>
+        <CursorPos X="56" Y="96"/>
+        <UsageCount Value="29"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit38>
+      <Unit39>
+        <Filename Value="synapse/source/lib/pingsend.pas"/>
+        <UnitName Value="pingsend"/>
+        <EditorIndex Value="6"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="343"/>
+        <CursorPos X="36" Y="359"/>
+        <UsageCount Value="14"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit39>
+      <Unit40>
+        <Filename Value="/usr/share/fpcsrc/2.6.0/rtl/objpas/sysutils/osutilsh.inc"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="11" Y="27"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit40>
+      <Unit41>
+        <Filename Value="synapse/source/lib/httpsend.pas"/>
+        <UnitName Value="httpsend"/>
+        <EditorIndex Value="3"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="332"/>
+        <CursorPos X="1" Y="357"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit41>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="195" Column="13" TopLine="183"/>
+        <Filename Value="synapse/source/lib/httpsend.pas"/>
+        <Caret Line="197" Column="40" TopLine="173"/>
       </Position1>
       <Position2>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="189" Column="1" TopLine="183"/>
+        <Filename Value="synapse/source/lib/httpsend.pas"/>
+        <Caret Line="364" Column="30" TopLine="338"/>
       </Position2>
       <Position3>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="206" Column="1" TopLine="182"/>
+        <Filename Value="synapse/source/lib/httpsend.pas"/>
+        <Caret Line="741" Column="1" TopLine="721"/>
       </Position3>
       <Position4>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="187" Column="129" TopLine="174"/>
+        <Filename Value="synapse/source/lib/httpsend.pas"/>
+        <Caret Line="185" Column="5" TopLine="167"/>
       </Position4>
       <Position5>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="206" Column="1" TopLine="190"/>
+        <Filename Value="synapse/source/lib/httpsend.pas"/>
+        <Caret Line="186" Column="16" TopLine="167"/>
       </Position5>
       <Position6>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="182" Column="1" TopLine="163"/>
+        <Filename Value="synapse/source/lib/httpsend.pas"/>
+        <Caret Line="193" Column="40" TopLine="169"/>
       </Position6>
       <Position7>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="209" Column="1" TopLine="193"/>
+        <Filename Value="synapse/source/lib/httpsend.pas"/>
+        <Caret Line="197" Column="40" TopLine="173"/>
       </Position7>
       <Position8>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="211" Column="1" TopLine="193"/>
+        <Filename Value="synapse/source/lib/httpsend.pas"/>
+        <Caret Line="364" Column="30" TopLine="338"/>
       </Position8>
       <Position9>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="218" Column="1" TopLine="193"/>
+        <Filename Value="synapse/source/lib/httpsend.pas"/>
+        <Caret Line="725" Column="30" TopLine="699"/>
       </Position9>
       <Position10>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="211" Column="1" TopLine="193"/>
+        <Filename Value="synapse/source/lib/httpsend.pas"/>
+        <Caret Line="693" Column="30" TopLine="667"/>
       </Position10>
       <Position11>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="206" Column="1" TopLine="193"/>
+        <Filename Value="synapse/source/lib/httpsend.pas"/>
+        <Caret Line="246" Column="30" TopLine="220"/>
       </Position11>
       <Position12>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="207" Column="1" TopLine="193"/>
+        <Filename Value="synapse/source/lib/httpsend.pas"/>
+        <Caret Line="390" Column="16" TopLine="381"/>
       </Position12>
       <Position13>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="203" Column="43" TopLine="193"/>
+        <Filename Value="synapse/source/lib/blcksock.pas"/>
+        <Caret Line="1377" Column="14" TopLine="1361"/>
       </Position13>
       <Position14>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="206" Column="1" TopLine="193"/>
+        <Filename Value="synapse/source/lib/blcksock.pas"/>
+        <Caret Line="1396" Column="61" TopLine="1370"/>
       </Position14>
       <Position15>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="207" Column="1" TopLine="193"/>
+        <Filename Value="synapse/source/lib/blcksock.pas"/>
+        <Caret Line="3966" Column="12" TopLine="3940"/>
       </Position15>
       <Position16>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="209" Column="1" TopLine="193"/>
+        <Filename Value="synapse/source/lib/blcksock.pas"/>
+        <Caret Line="3977" Column="12" TopLine="3951"/>
       </Position16>
       <Position17>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="206" Column="1" TopLine="193"/>
+        <Filename Value="synapse/source/lib/blcksock.pas"/>
+        <Caret Line="4002" Column="1" TopLine="3976"/>
       </Position17>
       <Position18>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="207" Column="1" TopLine="193"/>
+        <Filename Value="synapse/source/lib/httpsend.pas"/>
+        <Caret Line="489" Column="16" TopLine="477"/>
       </Position18>
       <Position19>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="206" Column="33" TopLine="193"/>
+        <Filename Value="synapse/source/lib/httpsend.pas"/>
+        <Caret Line="104" Column="29" TopLine="89"/>
       </Position19>
       <Position20>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="211" Column="1" TopLine="193"/>
+        <Filename Value="synapse/source/lib/httpsend.pas"/>
+        <Caret Line="355" Column="32" TopLine="335"/>
       </Position20>
       <Position21>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="209" Column="1" TopLine="193"/>
+        <Filename Value="synapse/source/lib/httpsend.pas"/>
+        <Caret Line="359" Column="34" TopLine="335"/>
       </Position21>
       <Position22>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="206" Column="17" TopLine="193"/>
+        <Filename Value="synapse/source/lib/httpsend.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position22>
       <Position23>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="188" Column="5" TopLine="174"/>
+        <Filename Value="synapse/source/lib/httpsend.pas"/>
+        <Caret Line="103" Column="31" TopLine="79"/>
       </Position23>
       <Position24>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="196" Column="53" TopLine="192"/>
+        <Filename Value="synapse/source/lib/httpsend.pas"/>
+        <Caret Line="62" Column="10" TopLine="62"/>
       </Position24>
       <Position25>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="211" Column="1" TopLine="191"/>
+        <Filename Value="synapse/source/lib/httpsend.pas"/>
+        <Caret Line="104" Column="31" TopLine="80"/>
       </Position25>
       <Position26>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="213" Column="1" TopLine="191"/>
+        <Filename Value="synapse/source/lib/httpsend.pas"/>
+        <Caret Line="332" Column="37" TopLine="306"/>
       </Position26>
       <Position27>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="211" Column="1" TopLine="191"/>
+        <Filename Value="synapse/source/lib/httpsend.pas"/>
+        <Caret Line="356" Column="32" TopLine="330"/>
       </Position27>
       <Position28>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="811" Column="39" TopLine="768"/>
+        <Filename Value="synapse/source/lib/httpsend.pas"/>
+        <Caret Line="494" Column="25" TopLine="482"/>
       </Position28>
       <Position29>
-        <Filename Value="clockmain.pas"/>
+        <Filename Value="synapse/source/lib/httpsend.pas"/>
         <Caret Line="1" Column="1" TopLine="1"/>
       </Position29>
       <Position30>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="219" Column="15" TopLine="202"/>
+        <Filename Value="synapse/source/lib/httpsend.pas"/>
+        <Caret Line="105" Column="29" TopLine="81"/>
       </Position30>
     </JumpHistory>
   </ProjectOptions>

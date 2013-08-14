@@ -22,10 +22,11 @@ uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
   ExtCtrls, MetOffice, Alarm, Settings, Reminders, ReminderList, LCLProc,
   Music, Sync, Process, MusicPlayer, PlaylistCreator, commandserver,
-  X, Xlib, CTypes, Black, WaitForMedia, Pictures, DateTime, SourcePicker;
+  X, Xlib, CTypes, Black, WaitForMedia, Pictures, DateTime, SourcePicker,
+  ConnectionHealth;
 
 const
-  VERSION = '2.1.0';
+  VERSION = '2.1.2';
 
 type
   TMusicState = (msOff, msPlaying, msPaused);
@@ -141,6 +142,7 @@ type
     FServerAddress, FServerPort: String;
     FAfterAlarmResumeMusic: boolean;
     FLinuxDateTime: TLinuxDateTime;
+    FConnectionHealth: TConnectionHealth;
 
     FConfigFilename: string;
 
@@ -585,7 +587,7 @@ var
 begin
   tmrMinute.Enabled := False;
 
-  // Reminders
+  // Reminders every two minutes
   if tmrMinute.Tag >= 1 then
   begin
     tmrMinute.Tag := 0;
@@ -619,6 +621,11 @@ begin
 
     frmReminders.RefreshReminders;
     UpdateReminders;
+
+    if Assigned(FConnectionHealth) then
+    begin
+      FConnectionHealth.TestConnection;
+    end;
   end
   else tmrMinute.Tag := tmrMinute.Tag + 1;
 
@@ -675,6 +682,9 @@ var
   i: Integer;
 begin
   tmrWeather.Enabled := False;
+
+  if not Assigned(FMetOffice) then
+    FMetOffice := TMetOffice.Create;
 
   lbWeatherSummary.Font.Color := clWhite;
 
@@ -734,7 +744,7 @@ begin
 
   Self.Color := clBlack;
 
-  FMetOffice := TMetOffice.Create;
+  FMetOffice := nil;
 
   labSong.Caption := '';
 
@@ -804,6 +814,8 @@ begin
   FSyncServer := nil;
   FSyncClient := nil;
 
+  FConnectionHealth := nil;
+
   FMusicState := msOff;
   FMusicSource := msrcNone;
   FAlarmActive := False;
@@ -859,7 +871,12 @@ begin
   if Assigned(FSyncServer) then
     FreeAndNil(FSyncServer);
 
-  FMetOffice.Free;
+  if Assigned(FConnectionHealth) then
+    FreeAndNil(FConnectionHealth);
+
+  if Assigned(FMetOffice) then
+    FreeAndNil(FMetOffice);
+
   FAlarm.Free;
   FReminderAlarm.Free;
   FTimer.Free;
@@ -1560,6 +1577,21 @@ begin
   else
   begin
     BorderStyle := bsSingle;
+  end;
+
+  if frmSettings.cbxMonitorConnection.Checked then
+  begin
+    if not Assigned(FConnectionHealth) then
+      FConnectionHealth := TConnectionHealth.Create;
+
+    FConnectionHealth.Host := frmSettings.edtTestHost.Text;
+    FConnectionHealth.ResetCommand := frmSettings.edtConnectionResetComand.Text;
+    FConnectionHealth.AutoReset := True;
+  end
+  else
+  begin
+    if Assigned(FConnectionHealth) then
+      FreeAndNil(FConnectionHealth);
   end;
 end;
 

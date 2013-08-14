@@ -12,22 +12,22 @@ object frmSettings: TfrmSettings
   OnKeyDown = FormKeyDown
   OnKeyPress = FormKeyPress
   Position = poMainFormCenter
-  SessionProperties = 'cbxEnableReminders.Checked;cbxForceFullscreen.Checked;cbxFri.Checked;cbxGetReminders.Checked;cbxMon.Checked;cbxPlayMusic.Checked;cbxRandomPictures.Checked;cbxSat.Checked;cbxSilentAlarm.Checked;cbxSun.Checked;cbxThu.Checked;cbxTue.Checked;cbxWed.Checked;edtHour.Value;edtLocation1.Text;edtLocation2.Text;edtLocation3.Text;edtLocation.Text;edtMeditationPath.Text;edtMinute.Value;edtMusicPath.Text;edtPicturePath.Text;edtRemHour.Value;edtRemMinute.Value;edtServerAddress.Text;edtServerPort.Text;edtSleepPath.Text;seDelay.Value;cbxTouchScreen.Checked'
-  LCLVersion = '1.0.1.3'
+  SessionProperties = 'cbxEnableReminders.Checked;cbxForceFullscreen.Checked;cbxFri.Checked;cbxGetReminders.Checked;cbxMon.Checked;cbxPlayMusic.Checked;cbxRandomPictures.Checked;cbxSat.Checked;cbxSilentAlarm.Checked;cbxSun.Checked;cbxThu.Checked;cbxTouchScreen.Checked;cbxTue.Checked;cbxWed.Checked;edtConnectionTimeout.Value;edtHour.Value;edtLocation1.Text;edtLocation2.Text;edtLocation3.Text;edtLocation.Text;edtMeditationPath.Text;edtMinute.Value;edtMusicPath.Text;edtPicturePath.Text;edtRemHour.Value;edtRemMinute.Value;edtServerAddress.Text;edtServerPort.Text;edtSleepPath.Text;seDelay.Value;cbxMonitorConnection.Checked;edtConnectionResetComand.Text;edtTestHost.Text'
+  LCLVersion = '1.0.4.0'
   object PageControl1: TPageControl
     Left = 8
     Height = 216
     Top = 8
     Width = 416
-    ActivePage = TabSheet6
+    ActivePage = TabSheet8
     ParentFont = False
-    TabIndex = 0
+    TabIndex = 7
     TabOrder = 0
     Options = [nboKeyboardTabSwitch]
     object TabSheet6: TTabSheet
       Caption = 'Pictures'
-      ClientHeight = 188
-      ClientWidth = 408
+      ClientHeight = 185
+      ClientWidth = 412
       object btnPicturePath: TButton
         Left = 358
         Height = 25
@@ -39,30 +39,30 @@ object frmSettings: TfrmSettings
       end
       object edtPicturePath: TEdit
         Left = 110
-        Height = 23
+        Height = 27
         Top = 27
         Width = 240
         TabOrder = 1
       end
       object Label14: TLabel
         Left = 14
-        Height = 16
+        Height = 18
         Top = 27
-        Width = 68
+        Width = 87
         Caption = 'Picture Path:'
         ParentColor = False
       end
       object Label15: TLabel
         Left = 46
-        Height = 16
+        Height = 18
         Top = 67
-        Width = 33
+        Width = 42
         Caption = 'Delay:'
         ParentColor = False
       end
       object seDelay: TSpinEdit
         Left = 110
-        Height = 23
+        Height = 27
         Top = 67
         Width = 50
         MaxValue = 600
@@ -72,9 +72,9 @@ object frmSettings: TfrmSettings
       end
       object cbxRandomPictures: TCheckBox
         Left = 14
-        Height = 19
+        Height = 24
         Top = 107
-        Width = 110
+        Width = 140
         Caption = 'Random Pictures'
         Checked = True
         State = cbChecked
@@ -83,8 +83,8 @@ object frmSettings: TfrmSettings
     end
     object TabSheet2: TTabSheet
       Caption = 'Timer'
-      ClientHeight = 188
-      ClientWidth = 408
+      ClientHeight = 185
+      ClientWidth = 412
       object stxtTimer: TStaticText
         Left = 78
         Height = 71
@@ -122,19 +122,19 @@ object frmSettings: TfrmSettings
     end
     object TabSheet1: TTabSheet
       Caption = 'Alarm'
-      ClientHeight = 188
-      ClientWidth = 408
+      ClientHeight = 185
+      ClientWidth = 412
       object Label2: TLabel
         Left = 46
-        Height = 16
+        Height = 18
         Top = 27
-        Width = 63
+        Width = 78
         Caption = 'Alarm Time'
         ParentColor = False
       end
       object edtHour: TSpinEdit
         Left = 134
-        Height = 23
+        Height = 27
         Top = 27
         Width = 50
         MaxValue = 23
@@ -144,7 +144,7 @@ object frmSettings: TfrmSettings
       end
       object edtMinute: TSpinEdit
         Left = 198
-        Height = 23
+        Height = 27
         Top = 27
         Width = 50
         MaxValue = 59
@@ -154,92 +154,92 @@ object frmSettings: TfrmSettings
       end
       object Label3: TLabel
         Left = 14
-        Height = 16
+        Height = 18
         Top = 75
-        Width = 26
+        Width = 33
         Caption = 'Days'
         ParentColor = False
       end
       object cbxMon: TCheckBox
         Left = 62
-        Height = 19
+        Height = 24
         Top = 75
-        Width = 31
+        Width = 39
         Caption = 'M'
         TabOrder = 2
       end
       object cbxTue: TCheckBox
         Left = 110
-        Height = 19
+        Height = 24
         Top = 75
-        Width = 27
+        Width = 34
         Caption = 'T'
         TabOrder = 3
       end
       object cbxWed: TCheckBox
         Left = 158
-        Height = 19
+        Height = 24
         Top = 75
-        Width = 31
+        Width = 40
         Caption = 'W'
         TabOrder = 4
       end
       object cbxThu: TCheckBox
         Left = 206
-        Height = 19
+        Height = 24
         Top = 75
-        Width = 27
+        Width = 34
         Caption = 'T'
         TabOrder = 5
       end
       object cbxFri: TCheckBox
         Left = 254
-        Height = 19
+        Height = 24
         Top = 75
-        Width = 26
+        Width = 34
         Caption = 'F'
         TabOrder = 6
       end
       object cbxSun: TCheckBox
         Left = 206
-        Height = 19
+        Height = 24
         Top = 107
-        Width = 59
+        Width = 74
         Caption = 'Sunday'
         TabOrder = 8
       end
       object cbxSat: TCheckBox
         Left = 62
-        Height = 19
+        Height = 24
         Top = 107
-        Width = 66
+        Width = 86
         Caption = 'Saturday'
         TabOrder = 7
       end
       object cbxSilentAlarm: TCheckBox
         Left = 14
-        Height = 19
+        Height = 24
         Top = 147
-        Width = 152
+        Width = 190
         Caption = 'Play Music (Silent Alarm)'
         TabOrder = 9
       end
     end
     object TabSheet4: TTabSheet
       Caption = 'Reminders'
-      ClientHeight = 188
-      ClientWidth = 408
+      ClientHeight = 185
+      ClientWidth = 412
       object Label5: TLabel
         Left = 22
-        Height = 16
+        Height = 18
         Top = 27
-        Width = 82
+        Width = 102
         Caption = 'Reminder Time'
         ParentColor = False
       end
       object edtRemHour: TSpinEdit
         Left = 134
-        Height = 23
+        Height = 27
         Top = 27
         Width = 50
         MaxValue = 23
@@ -249,7 +249,7 @@ object frmSettings: TfrmSettings
       end
       object edtRemMinute: TSpinEdit
         Left = 198
-        Height = 23
+        Height = 27
         Top = 27
         Width = 50
         MaxValue = 59
@@ -258,9 +258,9 @@ object frmSettings: TfrmSettings
       end
       object cbxEnableReminders: TCheckBox
         Left = 22
-        Height = 19
+        Height = 24
         Top = 75
-        Width = 111
+        Width = 143
         Caption = 'Enable reminders'
         Checked = True
         State = cbChecked
@@ -268,9 +268,9 @@ object frmSettings: TfrmSettings
       end
       object cbxGetReminders: TCheckBox
         Left = 22
-        Height = 19
+        Height = 24
         Top = 107
-        Width = 168
+        Width = 217
         Caption = 'Fetch reminders from server'
         Checked = True
         State = cbChecked
@@ -278,7 +278,7 @@ object frmSettings: TfrmSettings
       end
       object edtServerAddress: TEdit
         Left = 134
-        Height = 23
+        Height = 27
         Top = 144
         Width = 133
         TabOrder = 4
@@ -286,7 +286,7 @@ object frmSettings: TfrmSettings
       end
       object edtServerPort: TEdit
         Left = 318
-        Height = 23
+        Height = 27
         Hint = 'Default port  44559'
         Top = 144
         Width = 56
@@ -297,28 +297,28 @@ object frmSettings: TfrmSettings
       end
       object Label12: TLabel
         Left = 22
-        Height = 16
+        Height = 18
         Top = 144
-        Width = 78
+        Width = 103
         Caption = 'Server Address'
         ParentColor = False
       end
       object Label13: TLabel
         Left = 278
-        Height = 16
+        Height = 18
         Top = 144
-        Width = 23
+        Width = 31
         Caption = 'Port'
         ParentColor = False
       end
     end
     object TabSheet5: TTabSheet
       Caption = 'Music'
-      ClientHeight = 188
-      ClientWidth = 408
+      ClientHeight = 185
+      ClientWidth = 412
       object edtMusicPath: TEdit
         Left = 110
-        Height = 23
+        Height = 27
         Top = 27
         Width = 240
         TabOrder = 0
@@ -336,7 +336,7 @@ object frmSettings: TfrmSettings
       end
       object edtSleepPath: TEdit
         Left = 110
-        Height = 23
+        Height = 27
         Top = 67
         Width = 240
         TabOrder = 1
@@ -354,15 +354,15 @@ object frmSettings: TfrmSettings
       end
       object cbxPlayMusic: TCheckBox
         Left = 110
-        Height = 19
+        Height = 24
         Top = 155
-        Width = 137
+        Width = 175
         Caption = 'Play music after alarm'
         TabOrder = 3
       end
       object edtMeditationPath: TEdit
         Left = 110
-        Height = 23
+        Height = 27
         Top = 107
         Width = 240
         TabOrder = 2
@@ -408,11 +408,11 @@ object frmSettings: TfrmSettings
     end
     object TabSheet3: TTabSheet
       Caption = 'Weather'
-      ClientHeight = 188
-      ClientWidth = 408
+      ClientHeight = 185
+      ClientWidth = 412
       object edtLocation: TEdit
         Left = 110
-        Height = 24
+        Height = 27
         Hint = 'Location code from metoffice.co.gov/mobile'
         Top = 19
         Width = 158
@@ -424,7 +424,7 @@ object frmSettings: TfrmSettings
       end
       object edtLocation1: TEdit
         Left = 110
-        Height = 24
+        Height = 27
         Hint = 'Location code from metoffice.co.gov/mobile'
         Top = 51
         Width = 158
@@ -436,7 +436,7 @@ object frmSettings: TfrmSettings
       end
       object edtLocation2: TEdit
         Left = 110
-        Height = 24
+        Height = 27
         Hint = 'Location code from metoffice.co.gov/mobile'
         Top = 83
         Width = 158
@@ -448,7 +448,7 @@ object frmSettings: TfrmSettings
       end
       object edtLocation3: TEdit
         Left = 110
-        Height = 24
+        Height = 27
         Hint = 'Location code from metoffice.co.gov/mobile'
         Top = 115
         Width = 158
@@ -462,7 +462,7 @@ object frmSettings: TfrmSettings
         Left = 22
         Height = 16
         Top = 155
-        Width = 240
+        Width = 246
         Caption = 'Location code from metoffice.gov.uk/mobile'
         Font.Height = -12
         ParentColor = False
@@ -470,56 +470,101 @@ object frmSettings: TfrmSettings
       end
       object Label1: TLabel
         Left = 14
-        Height = 16
+        Height = 18
         Top = 19
-        Width = 56
+        Width = 71
         Caption = 'Location 1'
         ParentColor = False
       end
       object Label6: TLabel
         Left = 14
-        Height = 16
+        Height = 18
         Top = 51
-        Width = 56
+        Width = 71
         Caption = 'Location 2'
         ParentColor = False
       end
       object Label7: TLabel
         Left = 14
-        Height = 16
+        Height = 18
         Top = 83
-        Width = 56
+        Width = 71
         Caption = 'Location 3'
         ParentColor = False
       end
       object Label8: TLabel
         Left = 14
-        Height = 16
+        Height = 18
         Top = 115
-        Width = 56
+        Width = 71
         Caption = 'Location 4'
         ParentColor = False
       end
     end
     object TabSheet7: TTabSheet
       Caption = 'GUI'
-      ClientHeight = 188
-      ClientWidth = 408
+      ClientHeight = 185
+      ClientWidth = 412
       object cbxForceFullscreen: TCheckBox
         Left = 14
-        Height = 19
+        Height = 24
         Top = 19
-        Width = 105
+        Width = 134
         Caption = 'Force Fullscreen'
         TabOrder = 0
       end
       object cbxTouchScreen: TCheckBox
         Left = 14
-        Height = 19
+        Height = 24
         Top = 51
-        Width = 137
+        Width = 171
         Caption = 'Touch Screen Support'
         TabOrder = 1
+      end
+    end
+    object TabSheet8: TTabSheet
+      Caption = 'Connection'
+      ClientHeight = 185
+      ClientWidth = 412
+      object cbxMonitorConnection: TCheckBox
+        Left = 14
+        Height = 24
+        Top = 19
+        Width = 221
+        Caption = 'Monitor Network Connection'
+        TabOrder = 0
+      end
+      object edtTestHost: TEdit
+        Left = 86
+        Height = 27
+        Top = 59
+        Width = 312
+        TabOrder = 1
+        Text = '192.168.1.1'
+      end
+      object Label16: TLabel
+        Left = 14
+        Height = 18
+        Top = 59
+        Width = 65
+        Caption = 'Test Host'
+        ParentColor = False
+      end
+      object Label17: TLabel
+        Left = 14
+        Height = 18
+        Top = 99
+        Width = 190
+        Caption = 'Connection Reset Command'
+        ParentColor = False
+      end
+      object edtConnectionResetComand: TEdit
+        Left = 14
+        Height = 27
+        Top = 123
+        Width = 384
+        TabOrder = 2
+        Text = 'sudo service network-manager restart'
       end
     end
   end

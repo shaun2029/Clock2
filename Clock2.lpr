@@ -10,7 +10,7 @@ uses
   Forms, Pictures, FindThread, alarm, ClockMain, Settings, MetOffice, Reminders,
   ReminderList, Black, FindPicsThread, udpserver, sync, udpclient,
   music, commandserver, MusicPlayer, WaitForMedia, PlaylistCreator,
-  TouchList, UniqueInstanceRaw, DateTime, SourcePicker;
+  TouchList, UniqueInstanceRaw, DateTime, SourcePicker, ConnectionHealth;
 
 {$IFDEF WINDOWS}{$R picshow.rc}{$ENDIF}
 
@@ -25,7 +25,7 @@ begin
     Application.CreateForm(TfrmPictures, frmPictures);
     Application.CreateForm(TfrmReminders, frmReminders);
     Application.CreateForm(TfrmReminderList, frmReminderList);
-  Application.CreateForm(TfrmSourcePicker, frmSourcePicker);
+    Application.CreateForm(TfrmSourcePicker, frmSourcePicker);
     Application.Run;
   end;
 end.
