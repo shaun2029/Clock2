@@ -75,7 +75,7 @@
         <PackageName Value="LCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="42">
+    <Units Count="43">
       <Unit0>
         <Filename Value="Clock2.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -83,7 +83,7 @@
         <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
-        <CursorPos X="73" Y="13"/>
+        <CursorPos X="72" Y="10"/>
         <UsageCount Value="225"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -97,7 +97,7 @@
         <UnitName Value="Pictures"/>
         <EditorIndex Value="8"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="22"/>
+        <TopLine Value="4"/>
         <CursorPos X="3" Y="4"/>
         <UsageCount Value="225"/>
         <Loaded Value="True"/>
@@ -155,11 +155,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ClockMain"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1747"/>
-        <CursorPos X="19" Y="1777"/>
+        <TopLine Value="840"/>
+        <CursorPos X="1" Y="856"/>
         <UsageCount Value="207"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -169,10 +168,11 @@
         <Filename Value="metoffice.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="MetOffice"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="159"/>
-        <CursorPos X="44" Y="226"/>
+        <TopLine Value="552"/>
+        <CursorPos X="15" Y="197"/>
         <UsageCount Value="207"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -232,7 +232,7 @@
         <UnitName Value="MusicPlayer"/>
         <EditorIndex Value="12"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="19"/>
+        <TopLine Value="96"/>
         <CursorPos X="48" Y="127"/>
         <UsageCount Value="212"/>
         <Loaded Value="True"/>
@@ -409,7 +409,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="41"/>
         <CursorPos X="37" Y="41"/>
-        <UsageCount Value="188"/>
+        <UsageCount Value="190"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit29>
       <Unit30>
@@ -421,9 +421,9 @@
         <UnitName Value="SourcePicker"/>
         <EditorIndex Value="13"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="36"/>
-        <CursorPos X="30" Y="49"/>
-        <UsageCount Value="84"/>
+        <TopLine Value="72"/>
+        <CursorPos X="59" Y="87"/>
+        <UsageCount Value="86"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit30>
@@ -474,7 +474,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
-        <UsageCount Value="19"/>
+        <UsageCount Value="20"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit36>
@@ -493,9 +493,9 @@
         <UnitName Value="ConnectionHealth"/>
         <EditorIndex Value="4"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="35"/>
+        <TopLine Value="65"/>
         <CursorPos X="56" Y="96"/>
-        <UsageCount Value="29"/>
+        <UsageCount Value="31"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit38>
@@ -506,7 +506,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="343"/>
         <CursorPos X="36" Y="359"/>
-        <UsageCount Value="14"/>
+        <UsageCount Value="15"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit39>
@@ -525,131 +525,139 @@
         <WindowIndex Value="0"/>
         <TopLine Value="332"/>
         <CursorPos X="1" Y="357"/>
-        <UsageCount Value="11"/>
+        <UsageCount Value="12"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit41>
+      <Unit42>
+        <Filename Value="../../../lazarus/lcl/include/control.inc"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="2702"/>
+        <CursorPos X="1" Y="2718"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit42>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="synapse/source/lib/httpsend.pas"/>
-        <Caret Line="197" Column="40" TopLine="173"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="882" Column="28" TopLine="856"/>
       </Position1>
       <Position2>
-        <Filename Value="synapse/source/lib/httpsend.pas"/>
-        <Caret Line="364" Column="30" TopLine="338"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="683" Column="2" TopLine="664"/>
       </Position2>
       <Position3>
-        <Filename Value="synapse/source/lib/httpsend.pas"/>
-        <Caret Line="741" Column="1" TopLine="721"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="740" Column="1" TopLine="1022"/>
       </Position3>
       <Position4>
-        <Filename Value="synapse/source/lib/httpsend.pas"/>
-        <Caret Line="185" Column="5" TopLine="167"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="839" Column="3" TopLine="837"/>
       </Position4>
       <Position5>
-        <Filename Value="synapse/source/lib/httpsend.pas"/>
-        <Caret Line="186" Column="16" TopLine="167"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="856" Column="3" TopLine="854"/>
       </Position5>
       <Position6>
-        <Filename Value="synapse/source/lib/httpsend.pas"/>
-        <Caret Line="193" Column="40" TopLine="169"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="839" Column="1" TopLine="823"/>
       </Position6>
       <Position7>
-        <Filename Value="synapse/source/lib/httpsend.pas"/>
-        <Caret Line="197" Column="40" TopLine="173"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="840" Column="1" TopLine="823"/>
       </Position7>
       <Position8>
-        <Filename Value="synapse/source/lib/httpsend.pas"/>
-        <Caret Line="364" Column="30" TopLine="338"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="841" Column="1" TopLine="823"/>
       </Position8>
       <Position9>
-        <Filename Value="synapse/source/lib/httpsend.pas"/>
-        <Caret Line="725" Column="30" TopLine="699"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="842" Column="1" TopLine="823"/>
       </Position9>
       <Position10>
-        <Filename Value="synapse/source/lib/httpsend.pas"/>
-        <Caret Line="693" Column="30" TopLine="667"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="844" Column="1" TopLine="823"/>
       </Position10>
       <Position11>
-        <Filename Value="synapse/source/lib/httpsend.pas"/>
-        <Caret Line="246" Column="30" TopLine="220"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="846" Column="1" TopLine="823"/>
       </Position11>
       <Position12>
-        <Filename Value="synapse/source/lib/httpsend.pas"/>
-        <Caret Line="390" Column="16" TopLine="381"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="856" Column="1" TopLine="840"/>
       </Position12>
       <Position13>
-        <Filename Value="synapse/source/lib/blcksock.pas"/>
-        <Caret Line="1377" Column="14" TopLine="1361"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="857" Column="1" TopLine="840"/>
       </Position13>
       <Position14>
-        <Filename Value="synapse/source/lib/blcksock.pas"/>
-        <Caret Line="1396" Column="61" TopLine="1370"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="859" Column="1" TopLine="840"/>
       </Position14>
       <Position15>
-        <Filename Value="synapse/source/lib/blcksock.pas"/>
-        <Caret Line="3966" Column="12" TopLine="3940"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="860" Column="1" TopLine="840"/>
       </Position15>
       <Position16>
-        <Filename Value="synapse/source/lib/blcksock.pas"/>
-        <Caret Line="3977" Column="12" TopLine="3951"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="862" Column="1" TopLine="840"/>
       </Position16>
       <Position17>
-        <Filename Value="synapse/source/lib/blcksock.pas"/>
-        <Caret Line="4002" Column="1" TopLine="3976"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="863" Column="1" TopLine="840"/>
       </Position17>
       <Position18>
-        <Filename Value="synapse/source/lib/httpsend.pas"/>
-        <Caret Line="489" Column="16" TopLine="477"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="865" Column="1" TopLine="840"/>
       </Position18>
       <Position19>
-        <Filename Value="synapse/source/lib/httpsend.pas"/>
-        <Caret Line="104" Column="29" TopLine="89"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="868" Column="1" TopLine="842"/>
       </Position19>
       <Position20>
-        <Filename Value="synapse/source/lib/httpsend.pas"/>
-        <Caret Line="355" Column="32" TopLine="335"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="870" Column="1" TopLine="844"/>
       </Position20>
       <Position21>
-        <Filename Value="synapse/source/lib/httpsend.pas"/>
-        <Caret Line="359" Column="34" TopLine="335"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="873" Column="1" TopLine="847"/>
       </Position21>
       <Position22>
-        <Filename Value="synapse/source/lib/httpsend.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="874" Column="1" TopLine="848"/>
       </Position22>
       <Position23>
-        <Filename Value="synapse/source/lib/httpsend.pas"/>
-        <Caret Line="103" Column="31" TopLine="79"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="876" Column="1" TopLine="850"/>
       </Position23>
       <Position24>
-        <Filename Value="synapse/source/lib/httpsend.pas"/>
-        <Caret Line="62" Column="10" TopLine="62"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="877" Column="1" TopLine="851"/>
       </Position24>
       <Position25>
-        <Filename Value="synapse/source/lib/httpsend.pas"/>
-        <Caret Line="104" Column="31" TopLine="80"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="882" Column="1" TopLine="857"/>
       </Position25>
       <Position26>
-        <Filename Value="synapse/source/lib/httpsend.pas"/>
-        <Caret Line="332" Column="37" TopLine="306"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="883" Column="1" TopLine="858"/>
       </Position26>
       <Position27>
-        <Filename Value="synapse/source/lib/httpsend.pas"/>
-        <Caret Line="356" Column="32" TopLine="330"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="884" Column="1" TopLine="859"/>
       </Position27>
       <Position28>
-        <Filename Value="synapse/source/lib/httpsend.pas"/>
-        <Caret Line="494" Column="25" TopLine="482"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="885" Column="1" TopLine="860"/>
       </Position28>
       <Position29>
-        <Filename Value="synapse/source/lib/httpsend.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="Clock2.lpr"/>
+        <Caret Line="10" Column="72" TopLine="1"/>
       </Position29>
       <Position30>
-        <Filename Value="synapse/source/lib/httpsend.pas"/>
-        <Caret Line="105" Column="29" TopLine="81"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="839" Column="1" TopLine="823"/>
       </Position30>
     </JumpHistory>
   </ProjectOptions>

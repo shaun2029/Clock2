@@ -20,13 +20,13 @@ interface
 uses
   gtk2, gdk2,
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  ExtCtrls, MetOffice, Alarm, Settings, Reminders, ReminderList, LCLProc,
+  ExtCtrls, {MetOffice,} Alarm, Settings, Reminders, ReminderList, LCLProc,
   Music, Sync, Process, MusicPlayer, PlaylistCreator, commandserver,
   X, Xlib, CTypes, Black, WaitForMedia, Pictures, DateTime, SourcePicker,
   ConnectionHealth;
 
 const
-  VERSION = '2.1.2';
+  VERSION = '2.2.0';
 
 type
   TMusicState = (msOff, msPlaying, msPaused);
@@ -133,7 +133,7 @@ type
   private
     { private declarations }
     FMPGPlayer: TMusicPlayer;
-    FMetOffice: TMetOffice;
+//    FMetOffice: TMetOffice;
     FAlarm, FReminderAlarm: TAlarm;
     FCurrentReminders: TReminders;
     FTimer: TAlarm;
@@ -677,11 +677,13 @@ begin
 end;
 
 procedure TfrmClockMain.UpdateWeather;
-var
+{var
   Forecast: TWeatherReport;
   i: Integer;
+}
 begin
   tmrWeather.Enabled := False;
+{
 
   if not Assigned(FMetOffice) then
     FMetOffice := TMetOffice.Create;
@@ -733,8 +735,8 @@ begin
 
   FWeatherReport := labLocation.Caption + LineEnding + lbWeatherSummary.Caption;
   tmrWeather.Enabled := True;
+}
 end;
-
 
 procedure TfrmClockMain.FormCreate(Sender: TObject);
 var
@@ -744,7 +746,7 @@ begin
 
   Self.Color := clBlack;
 
-  FMetOffice := nil;
+//  FMetOffice := nil;
 
   labSong.Caption := '';
 
@@ -874,8 +876,8 @@ begin
   if Assigned(FConnectionHealth) then
     FreeAndNil(FConnectionHealth);
 
-  if Assigned(FMetOffice) then
-    FreeAndNil(FMetOffice);
+//  if Assigned(FMetOffice) then
+//    FreeAndNil(FMetOffice);
 
   FAlarm.Free;
   FReminderAlarm.Free;
@@ -1255,9 +1257,11 @@ begin
   imgRadio.Picture.Assign(imgOff.Picture);
   Application.ProcessMessages;
 
-  SetLength(Sources, 8);
+  SetLength(Sources, 12);
+
   Sources[0].Title := 'BBC Radio 1';
   Sources[0].Resource := 'http://www.bbc.co.uk/radio/listen/live/r1_heaacv2.pls';
+{
   Sources[1].Title := 'BBC Radio 1Xtra';
   Sources[1].Resource := 'http://www.bbc.co.uk/radio/listen/live/r1x_heaacv2.pls';
   Sources[2].Title := 'BBC Radio 2';
@@ -1266,12 +1270,30 @@ begin
   Sources[3].Resource := 'http://www.bbc.co.uk/radio/listen/live/r3_heaacv2.pls';
   Sources[4].Title := 'BBC Radio 4';
   Sources[4].Resource := 'http://www.bbc.co.uk/radio/listen/live/r4_heaacv2.pls';
-  Sources[5].Title := 'BBC Radio 5 live';
-  Sources[5].Resource := 'http://www.bbc.co.uk/radio/listen/live/r5l_heaacv2.pls';
-  Sources[6].Title := 'BBC Radio 5 live Sports Extra';
-  Sources[6].Resource := 'http://www.bbc.co.uk/radio/listen/live/r5lsp_heaacv2.pls';
-  Sources[7].Title := 'BBC Radio 6 Music';
-  Sources[7].Resource := 'http://www.bbc.co.uk/radio/listen/live/r6_heaacv2.pls';
+}
+  Sources[1].Title := 'Roots Reggae';
+  Sources[1].Resource := 'http://pub8.sky.fm/sky_rootsreggae';
+  Sources[2].Title := 'Roots Legacy Reggae';
+  Sources[2].Resource := 'http://88.191.164.141:443/stream/1/';
+  Sources[3].Title := 'Dreamscapes';
+  Sources[3].Resource := 'http://pub7.sky.fm/sky_dreamscapes';
+  Sources[4].Title := 'Relaxation';
+  Sources[4].Resource := 'http://pub6.sky.fm/sky_relaxation';
+  Sources[5].Title := 'Nature';
+  Sources[5].Resource := 'http://pub1.sky.fm/sky_nature';
+  Sources[6].Title := 'BBC Radio 5 live';
+  Sources[6].Resource := 'http://www.bbc.co.uk/radio/listen/live/r5l_heaacv2.pls';
+  Sources[7].Title := 'BBC Radio 5 live Sports Extra';
+  Sources[7].Resource := 'http://www.bbc.co.uk/radio/listen/live/r5lsp_heaacv2.pls';
+//  Sources[7].Title := 'BBC Radio 6 Music';
+//  Sources[7].Resource := 'http://www.bbc.co.uk/radio/listen/live/r6_heaacv2.pls';
+  Sources[8].Title := 'Radio 2000';
+  Sources[8].Resource := 'http://216.246.37.51/pbs-radio2000-live';
+
+
+
+
+
 
   Picker := TfrmSourcePicker.Create(Self, Sources);
 

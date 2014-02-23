@@ -30,6 +30,7 @@ type
     imgMusic7: TImage;
     imgMusic8: TImage;
     imgCancel: TImage;
+    imgMusic9: TImage;
     lbMusic: TLabel;
     lbMusic1: TLabel;
     lbMusic2: TLabel;
@@ -72,8 +73,8 @@ end;
 
 constructor TfrmSourcePicker.Create(TheOwner: TComponent; Sources: TSourceArray);
 var
-  Buttons: array [0..8] of TImage;
-  Labels: array [0..8] of TLabel;
+  Buttons: array [0..10] of TImage;
+  Labels: array [0..10] of TLabel;
   i: integer;
 begin
   inherited Create(TheOwner);
