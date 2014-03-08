@@ -44,7 +44,6 @@ type
     imgDisplay: TImage;
     imgPlay: TImage;
     imgReminders: TImage;
-    imgWeather: TImage;
     imgVolUp: TImage;
     imgVolDown: TImage;
     imgNext: TImage;
@@ -63,7 +62,6 @@ type
     lbPrevious: TLabel;
     lbPlay: TLabel;
     lbReminders: TLabel;
-    lbWeather: TLabel;
     lbSleep: TLabel;
     lbVolUp: TLabel;
     lbVolDown: TLabel;
@@ -157,7 +155,6 @@ type
     function XErrorHandler(para1: PDisplay; para2: PXErrorEvent): cint; cdecl;
 {$ENDIF}
 
-    procedure Shutdown(Reboot: boolean);
     procedure UpdateSettings;
     procedure UpdateReminders;
 
@@ -742,8 +739,8 @@ begin
   if Assigned(FConnectionHealth) then
     FreeAndNil(FConnectionHealth);
 
-//  if Assigned(FMetOffice) then
-//    FreeAndNil(FMetOffice);
+  if Assigned(FBlackForm) then
+    FreeAndNil(FBlackForm);
 
   FAlarm.Free;
   FReminderAlarm.Free;
@@ -1084,22 +1081,23 @@ end;
 
 procedure TfrmClockMain.lbDisplayClick(Sender: TObject);
 begin
-  imgDisplay.Picture.Assign(imgOff.Picture);
   if FBlackForm = nil then
   begin
-    Application.ProcessMessages;
-
     BacklightOff;
     FBlackForm := TfrmBlack.Create(Self);
+    FBlackForm.OnClick := lbDisplayClick;
+    ShowForm(FBlackForm);
+  end
+  else if not FBlackForm.CanFocus then
+  begin
+    BacklightOff;
     ShowForm(FBlackForm);
   end
   else
   begin
     BacklightOn;
     HideForm(FBlackForm);
-    FreeAndNil(FBlackForm);
   end;
-  imgDisplay.Picture.Assign(imgOn.Picture);
 end;
 
 procedure TfrmClockMain.imgRadioClick(Sender: TObject);
@@ -1296,16 +1294,17 @@ begin
   SetCursorType(MyForm);
   MyForm.Show;
 
-  if frmSettings.cbxForceFullscreen.Checked then
-    gdk_window_fullscreen(PGtkWidget(Handle)^.window);
+//  if frmSettings.cbxForceFullscreen.Checked then
+//    gdk_window_fullscreen(PGtkWidget(Handle)^.window);
 end;
 
 procedure TfrmClockMain.HideForm(MyForm: TForm);
 begin
   MyForm.Hide;
+  MyForm.Close;
 
-  if frmSettings.cbxForceFullscreen.Checked then
-    gdk_window_fullscreen(PGtkWidget(Handle)^.window);
+//  if frmSettings.cbxForceFullscreen.Checked then
+//    gdk_window_fullscreen(PGtkWidget(Handle)^.window);
 end;
 
 procedure TfrmClockMain.lbSettingsClick(Sender: TObject);
@@ -1520,41 +1519,6 @@ begin
 
   FReminderAlarm.AlarmTime := Date + EncodeTime(frmSettings.edtRemHour.Value,
     frmSettings.edtRemMinute.Value, 0, 0);
-end;
-
-procedure TfrmClockMain.Shutdown(Reboot: boolean);
-var
-  Process: TProcess;
-begin
-  tmrWeather.Enabled := False;
-  tmrTime.Enabled := False;
-  tmrMinute.Enabled := False;
-
-  Self.KeyPreview := False;
-
-  if Reboot then lblTime.Caption := 'Rebooting ...'
-  else lblTime.Caption := 'Powering Down ...';
-
-  Application.ProcessMessages;
-
-  PauseMusic;
-
-  Process := TProcess.Create(nil);
-
-  try
-    if Reboot then Process.CommandLine := 'sudo /sbin/reboot'
-    else Process.CommandLine := 'sudo /sbin/shutdown -h now';
-
-    Process.Options := Process.Options + [poWaitOnExit];
-    Process.Execute;
-   except
-    on E: Exception do
-    begin
-      DebugLn(Self.ClassName + #9#9 + E.Message);
-    end;
-  end;
-
-  Process.Free;
 end;
 
 procedure TfrmClockMain.PlayAlbums;

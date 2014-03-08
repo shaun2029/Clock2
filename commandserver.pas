@@ -158,6 +158,7 @@ begin
     end;
   until Terminated;
 
+  ListenerSocket.CloseSocket;
   ListenerSocket.Free;
   ConnectionSocket.Free;
 end;
