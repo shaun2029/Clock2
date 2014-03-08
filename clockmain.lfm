@@ -19,7 +19,7 @@ object frmClockMain: TfrmClockMain
   OnKeyPress = FormKeyPress
   OnShow = FormShow
   Position = poDesktopCenter
-  LCLVersion = '1.0.4.0'
+  LCLVersion = '1.2.0.3'
   object imgPlayAlbums: TImage
     Cursor = crNone
     Left = 14
@@ -2636,453 +2636,13 @@ object frmClockMain: TfrmClockMain
   object lblTime: TLabel
     Cursor = crNone
     Left = 326
-    Height = 31
+    Height = 47
     Top = 9
-    Width = 300
+    Width = 458
     AutoSize = False
     Caption = 'lblTime'
     Font.Color = clWhite
-    Font.Height = -21
-    Font.Name = 'Sans'
-    ParentColor = False
-    ParentFont = False
-    OnClick = lblTimeClick
-  end
-  object Image1: TImage
-    Cursor = crNone
-    Left = 640
-    Height = 48
-    Top = 13
-    Width = 48
-    OnClick = lblTimeClick
-    Picture.Data = {
-      0954474946496D6167651902000047494638396128002800D53F00B9B9B91616
-      16E5E5E5F9F9F97575757A7A7AD8D8D8CDCDCD343434B2B2B2F1F1F1A9A9A92B
-      2B2B868686000000CBCBCB8E8E8E5858584747479797978B8B8BBCBCBC252525
-      0B0B0B919191AFAFAF818181FEFEFEFFFFFFD7D7D7A5A5A5838383FDFDFDABAB
-      ABD3D3D3F2F2F2A3A3A3FCFCFC989898A4A4A4828282EBEBEBBFBFBFECECECA7
-      A7A7949494E0E0E0939393D5D5D5D6D5D59E9E9EC8C8C8DBDBDBF5F5F5DCDCDC
-      FBFBFBB5B5B5E8E8E8C1C1C1303030D6D6D6EFEFEFE3E3E300000021F9040100
-      003F002C00000000280028000006FFC09F70482C1A8FC8A472C96C3A9FD0A874
-      4AAD5AAFD8AC76CBED7ABFE0A5631CB0042EE3EE780739A40602034992CE3A2E
-      AD01675F52653A030B685877157B1B881B20311426230F83506393630B1C8989
-      7B02141423130E920E110B071504058798990F1A323516A04D632C1C0A002A2B
-      A9AA881C03261A342468B14963047B233C210D1525BB981C0905381C2E0B3BC4
-      45641229977B1C3A053397CF1B1C061306D5360A0CD9420E010B0ABAE6372FB4
-      E5BC257B3D183019DEFD70D0E29BC16F39721D5C68F0C4840E178C5C10800884
-      C58B16F760DC8811910F082F44442C72A14308121E52AA5CC9B2A5CA13185024
-      0020D08189070D507CD8C9B3A7CF379F3B51343891828E9178214418E8C0B4A9
-      D3A750991A1031238240780E2C20D8CAB5ABD7AF5DDD5D0D43B6ACD9B368D3AA
-      5DCBB62D952000
-    }
-    Stretch = True
-  end
-  object Label1: TLabel
-    Cursor = crNone
-    Left = 690
-    Height = 20
-    Top = 9
-    Width = 54
-    Caption = 'Label1'
-    Font.Color = clWhite
-    Font.Height = -16
-    Font.Name = 'Sans'
-    ParentColor = False
-    ParentFont = False
-    OnClick = lblTimeClick
-  end
-  object Label2: TLabel
-    Cursor = crNone
-    Left = 690
-    Height = 20
-    Top = 26
-    Width = 54
-    Caption = 'Label1'
-    Font.Color = clWhite
-    Font.Height = -16
-    Font.Name = 'Sans'
-    ParentColor = False
-    ParentFont = False
-    OnClick = lblTimeClick
-  end
-  object Image2: TImage
-    Cursor = crNone
-    Left = 640
-    Height = 48
-    Top = 68
-    Width = 48
-    OnClick = lblTimeClick
-    Picture.Data = {
-      0954474946496D6167651902000047494638396128002800D53F00B9B9B91616
-      16E5E5E5F9F9F97575757A7A7AD8D8D8CDCDCD343434B2B2B2F1F1F1A9A9A92B
-      2B2B868686000000CBCBCB8E8E8E5858584747479797978B8B8BBCBCBC252525
-      0B0B0B919191AFAFAF818181FEFEFEFFFFFFD7D7D7A5A5A5838383FDFDFDABAB
-      ABD3D3D3F2F2F2A3A3A3FCFCFC989898A4A4A4828282EBEBEBBFBFBFECECECA7
-      A7A7949494E0E0E0939393D5D5D5D6D5D59E9E9EC8C8C8DBDBDBF5F5F5DCDCDC
-      FBFBFBB5B5B5E8E8E8C1C1C1303030D6D6D6EFEFEFE3E3E300000021F9040100
-      003F002C00000000280028000006FFC09F70482C1A8FC8A472C96C3A9FD0A874
-      4AAD5AAFD8AC76CBED7ABFE0A5631CB0042EE3EE780739A40602034992CE3A2E
-      AD01675F52653A030B685877157B1B881B20311426230F83506393630B1C8989
-      7B02141423130E920E110B071504058798990F1A323516A04D632C1C0A002A2B
-      A9AA881C03261A342468B14963047B233C210D1525BB981C0905381C2E0B3BC4
-      45641229977B1C3A053397CF1B1C061306D5360A0CD9420E010B0ABAE6372FB4
-      E5BC257B3D183019DEFD70D0E29BC16F39721D5C68F0C4840E178C5C10800884
-      C58B16F760DC8811910F082F44442C72A14308121E52AA5CC9B2A5CA13185024
-      0020D08189070D507CD8C9B3A7CF379F3B51343891828E9178214418E8C0B4A9
-      D3A750991A1031238240780E2C20D8CAB5ABD7AF5DDD5D0D43B6ACD9B368D3AA
-      5DCBB62D952000
-    }
-    Stretch = True
-  end
-  object Label3: TLabel
-    Cursor = crNone
-    Left = 690
-    Height = 20
-    Top = 66
-    Width = 54
-    Caption = 'Label1'
-    Font.Color = clWhite
-    Font.Height = -16
-    Font.Name = 'Sans'
-    ParentColor = False
-    ParentFont = False
-    OnClick = lblTimeClick
-  end
-  object Label4: TLabel
-    Cursor = crNone
-    Left = 690
-    Height = 20
-    Top = 82
-    Width = 54
-    Caption = 'Label1'
-    Font.Color = clWhite
-    Font.Height = -16
-    Font.Name = 'Sans'
-    ParentColor = False
-    ParentFont = False
-    OnClick = lblTimeClick
-  end
-  object Image3: TImage
-    Cursor = crNone
-    Left = 640
-    Height = 48
-    Top = 123
-    Width = 48
-    OnClick = lblTimeClick
-    Picture.Data = {
-      0954474946496D6167651902000047494638396128002800D53F00B9B9B91616
-      16E5E5E5F9F9F97575757A7A7AD8D8D8CDCDCD343434B2B2B2F1F1F1A9A9A92B
-      2B2B868686000000CBCBCB8E8E8E5858584747479797978B8B8BBCBCBC252525
-      0B0B0B919191AFAFAF818181FEFEFEFFFFFFD7D7D7A5A5A5838383FDFDFDABAB
-      ABD3D3D3F2F2F2A3A3A3FCFCFC989898A4A4A4828282EBEBEBBFBFBFECECECA7
-      A7A7949494E0E0E0939393D5D5D5D6D5D59E9E9EC8C8C8DBDBDBF5F5F5DCDCDC
-      FBFBFBB5B5B5E8E8E8C1C1C1303030D6D6D6EFEFEFE3E3E300000021F9040100
-      003F002C00000000280028000006FFC09F70482C1A8FC8A472C96C3A9FD0A874
-      4AAD5AAFD8AC76CBED7ABFE0A5631CB0042EE3EE780739A40602034992CE3A2E
-      AD01675F52653A030B685877157B1B881B20311426230F83506393630B1C8989
-      7B02141423130E920E110B071504058798990F1A323516A04D632C1C0A002A2B
-      A9AA881C03261A342468B14963047B233C210D1525BB981C0905381C2E0B3BC4
-      45641229977B1C3A053397CF1B1C061306D5360A0CD9420E010B0ABAE6372FB4
-      E5BC257B3D183019DEFD70D0E29BC16F39721D5C68F0C4840E178C5C10800884
-      C58B16F760DC8811910F082F44442C72A14308121E52AA5CC9B2A5CA13185024
-      0020D08189070D507CD8C9B3A7CF379F3B51343891828E9178214418E8C0B4A9
-      D3A750991A1031238240780E2C20D8CAB5ABD7AF5DDD5D0D43B6ACD9B368D3AA
-      5DCBB62D952000
-    }
-    Stretch = True
-  end
-  object Label5: TLabel
-    Cursor = crNone
-    Left = 690
-    Height = 20
-    Top = 121
-    Width = 54
-    Caption = 'Label1'
-    Font.Color = clWhite
-    Font.Height = -16
-    Font.Name = 'Sans'
-    ParentColor = False
-    ParentFont = False
-    OnClick = lblTimeClick
-  end
-  object Label6: TLabel
-    Cursor = crNone
-    Left = 690
-    Height = 20
-    Top = 137
-    Width = 54
-    Caption = 'Label1'
-    Font.Color = clWhite
-    Font.Height = -16
-    Font.Name = 'Sans'
-    ParentColor = False
-    ParentFont = False
-    OnClick = lblTimeClick
-  end
-  object Image4: TImage
-    Cursor = crNone
-    Left = 640
-    Height = 48
-    Top = 178
-    Width = 48
-    OnClick = lblTimeClick
-    Picture.Data = {
-      0954474946496D6167651902000047494638396128002800D53F00B9B9B91616
-      16E5E5E5F9F9F97575757A7A7AD8D8D8CDCDCD343434B2B2B2F1F1F1A9A9A92B
-      2B2B868686000000CBCBCB8E8E8E5858584747479797978B8B8BBCBCBC252525
-      0B0B0B919191AFAFAF818181FEFEFEFFFFFFD7D7D7A5A5A5838383FDFDFDABAB
-      ABD3D3D3F2F2F2A3A3A3FCFCFC989898A4A4A4828282EBEBEBBFBFBFECECECA7
-      A7A7949494E0E0E0939393D5D5D5D6D5D59E9E9EC8C8C8DBDBDBF5F5F5DCDCDC
-      FBFBFBB5B5B5E8E8E8C1C1C1303030D6D6D6EFEFEFE3E3E300000021F9040100
-      003F002C00000000280028000006FFC09F70482C1A8FC8A472C96C3A9FD0A874
-      4AAD5AAFD8AC76CBED7ABFE0A5631CB0042EE3EE780739A40602034992CE3A2E
-      AD01675F52653A030B685877157B1B881B20311426230F83506393630B1C8989
-      7B02141423130E920E110B071504058798990F1A323516A04D632C1C0A002A2B
-      A9AA881C03261A342468B14963047B233C210D1525BB981C0905381C2E0B3BC4
-      45641229977B1C3A053397CF1B1C061306D5360A0CD9420E010B0ABAE6372FB4
-      E5BC257B3D183019DEFD70D0E29BC16F39721D5C68F0C4840E178C5C10800884
-      C58B16F760DC8811910F082F44442C72A14308121E52AA5CC9B2A5CA13185024
-      0020D08189070D507CD8C9B3A7CF379F3B51343891828E9178214418E8C0B4A9
-      D3A750991A1031238240780E2C20D8CAB5ABD7AF5DDD5D0D43B6ACD9B368D3AA
-      5DCBB62D952000
-    }
-    Stretch = True
-  end
-  object Label7: TLabel
-    Cursor = crNone
-    Left = 689
-    Height = 20
-    Top = 176
-    Width = 54
-    Caption = 'Label1'
-    Font.Color = clWhite
-    Font.Height = -16
-    Font.Name = 'Sans'
-    ParentColor = False
-    ParentFont = False
-    OnClick = lblTimeClick
-  end
-  object Label8: TLabel
-    Cursor = crNone
-    Left = 689
-    Height = 20
-    Top = 192
-    Width = 54
-    Caption = 'Label1'
-    Font.Color = clWhite
-    Font.Height = -16
-    Font.Name = 'Sans'
-    ParentColor = False
-    ParentFont = False
-    OnClick = lblTimeClick
-  end
-  object Image5: TImage
-    Cursor = crNone
-    Left = 640
-    Height = 48
-    Top = 233
-    Width = 48
-    OnClick = lblTimeClick
-    Picture.Data = {
-      0954474946496D6167651902000047494638396128002800D53F00B9B9B91616
-      16E5E5E5F9F9F97575757A7A7AD8D8D8CDCDCD343434B2B2B2F1F1F1A9A9A92B
-      2B2B868686000000CBCBCB8E8E8E5858584747479797978B8B8BBCBCBC252525
-      0B0B0B919191AFAFAF818181FEFEFEFFFFFFD7D7D7A5A5A5838383FDFDFDABAB
-      ABD3D3D3F2F2F2A3A3A3FCFCFC989898A4A4A4828282EBEBEBBFBFBFECECECA7
-      A7A7949494E0E0E0939393D5D5D5D6D5D59E9E9EC8C8C8DBDBDBF5F5F5DCDCDC
-      FBFBFBB5B5B5E8E8E8C1C1C1303030D6D6D6EFEFEFE3E3E300000021F9040100
-      003F002C00000000280028000006FFC09F70482C1A8FC8A472C96C3A9FD0A874
-      4AAD5AAFD8AC76CBED7ABFE0A5631CB0042EE3EE780739A40602034992CE3A2E
-      AD01675F52653A030B685877157B1B881B20311426230F83506393630B1C8989
-      7B02141423130E920E110B071504058798990F1A323516A04D632C1C0A002A2B
-      A9AA881C03261A342468B14963047B233C210D1525BB981C0905381C2E0B3BC4
-      45641229977B1C3A053397CF1B1C061306D5360A0CD9420E010B0ABAE6372FB4
-      E5BC257B3D183019DEFD70D0E29BC16F39721D5C68F0C4840E178C5C10800884
-      C58B16F760DC8811910F082F44442C72A14308121E52AA5CC9B2A5CA13185024
-      0020D08189070D507CD8C9B3A7CF379F3B51343891828E9178214418E8C0B4A9
-      D3A750991A1031238240780E2C20D8CAB5ABD7AF5DDD5D0D43B6ACD9B368D3AA
-      5DCBB62D952000
-    }
-    Stretch = True
-  end
-  object Label9: TLabel
-    Cursor = crNone
-    Left = 690
-    Height = 20
-    Top = 231
-    Width = 54
-    Caption = 'Label1'
-    Font.Color = clWhite
-    Font.Height = -16
-    Font.Name = 'Sans'
-    ParentColor = False
-    ParentFont = False
-    OnClick = lblTimeClick
-  end
-  object Label10: TLabel
-    Cursor = crNone
-    Left = 690
-    Height = 20
-    Top = 246
-    Width = 54
-    Caption = 'Label1'
-    Font.Color = clWhite
-    Font.Height = -16
-    Font.Name = 'Sans'
-    ParentColor = False
-    ParentFont = False
-    OnClick = lblTimeClick
-  end
-  object labLocation: TLabel
-    Cursor = crNone
-    Left = 326
-    Height = 23
-    Top = 37
-    Width = 300
-    AutoSize = False
-    Caption = 'Updating ...'
-    Font.Color = clWhite
-    Font.Height = -17
-    Font.Name = 'Sans'
-    ParentColor = False
-    ParentFont = False
-    OnClick = lblTimeClick
-  end
-  object Label11: TLabel
-    Cursor = crNone
-    Left = 640
-    Height = 15
-    Top = 10
-    Width = 45
-    Caption = 'Label11'
-    Font.Color = clWhite
-    Font.Height = -11
-    Font.Name = 'Sans'
-    ParentColor = False
-    ParentFont = False
-    OnClick = lblTimeClick
-  end
-  object Label12: TLabel
-    Cursor = crNone
-    Left = 640
-    Height = 15
-    Top = 65
-    Width = 45
-    Caption = 'Label11'
-    Font.Color = clWhite
-    Font.Height = -11
-    Font.Name = 'Sans'
-    ParentColor = False
-    ParentFont = False
-    OnClick = lblTimeClick
-  end
-  object Label13: TLabel
-    Cursor = crNone
-    Left = 640
-    Height = 15
-    Top = 123
-    Width = 45
-    Caption = 'Label11'
-    Font.Color = clWhite
-    Font.Height = -11
-    Font.Name = 'Sans'
-    ParentColor = False
-    ParentFont = False
-    OnClick = lblTimeClick
-  end
-  object Label14: TLabel
-    Cursor = crNone
-    Left = 640
-    Height = 15
-    Top = 178
-    Width = 45
-    Caption = 'Label11'
-    Font.Color = clWhite
-    Font.Height = -11
-    Font.Name = 'Sans'
-    ParentColor = False
-    ParentFont = False
-    OnClick = lblTimeClick
-  end
-  object Label15: TLabel
-    Cursor = crNone
-    Left = 640
-    Height = 15
-    Top = 233
-    Width = 45
-    Caption = 'Label11'
-    Font.Color = clWhite
-    Font.Height = -11
-    Font.Name = 'Sans'
-    ParentColor = False
-    ParentFont = False
-    OnClick = lblTimeClick
-  end
-  object Label16: TLabel
-    Cursor = crNone
-    Left = 690
-    Height = 20
-    Top = 43
-    Width = 54
-    Caption = 'Label1'
-    Font.Color = clWhite
-    Font.Height = -16
-    Font.Name = 'Sans'
-    ParentColor = False
-    ParentFont = False
-    OnClick = lblTimeClick
-  end
-  object Label17: TLabel
-    Cursor = crNone
-    Left = 690
-    Height = 20
-    Top = 98
-    Width = 54
-    Caption = 'Label1'
-    Font.Color = clWhite
-    Font.Height = -16
-    Font.Name = 'Sans'
-    ParentColor = False
-    ParentFont = False
-    OnClick = lblTimeClick
-  end
-  object Label18: TLabel
-    Cursor = crNone
-    Left = 690
-    Height = 20
-    Top = 152
-    Width = 54
-    Caption = 'Label1'
-    Font.Color = clWhite
-    Font.Height = -16
-    Font.Name = 'Sans'
-    ParentColor = False
-    ParentFont = False
-    OnClick = lblTimeClick
-  end
-  object Label19: TLabel
-    Cursor = crNone
-    Left = 689
-    Height = 20
-    Top = 207
-    Width = 54
-    Caption = 'Label1'
-    Font.Color = clWhite
-    Font.Height = -16
-    Font.Name = 'Sans'
-    ParentColor = False
-    ParentFont = False
-    OnClick = lblTimeClick
-  end
-  object Label20: TLabel
-    Cursor = crNone
-    Left = 690
-    Height = 20
-    Top = 264
-    Width = 54
-    Caption = 'Label1'
-    Font.Color = clWhite
-    Font.Height = -16
+    Font.Height = -37
     Font.Name = 'Sans'
     ParentColor = False
     ParentFont = False
@@ -3093,11 +2653,11 @@ object frmClockMain: TfrmClockMain
     Left = 326
     Height = 58
     Top = 222
-    Width = 300
+    Width = 460
     AutoSize = False
     Caption = 'Song Title'
     Font.Color = clWhite
-    Font.Height = -15
+    Font.Height = -19
     Font.Name = 'Sans'
     ParentColor = False
     ParentFont = False
@@ -12463,7 +12023,6 @@ object frmClockMain: TfrmClockMain
     Height = 88
     Top = 285
     Width = 144
-    OnClick = imgWeatherClick
     Picture.Data = {
       1754506F727461626C654E6574776F726B47726170686963456B000089504E47
       0D0A1A0A0000000D49484452000001CC000001DA08060000008D547900000000
@@ -13343,7 +12902,6 @@ object frmClockMain: TfrmClockMain
     ParentColor = False
     ParentFont = False
     WordWrap = True
-    OnClick = imgWeatherClick
   end
   object imgUpdateMusic: TImage
     Cursor = crNone
@@ -16030,10 +15588,10 @@ object frmClockMain: TfrmClockMain
     Left = 326
     Height = 146
     Top = 64
-    Width = 300
+    Width = 453
     AutoSize = False
     Font.Color = clWhite
-    Font.Height = -15
+    Font.Height = -19
     Font.Name = 'Sans'
     ParentColor = False
     ParentFont = False

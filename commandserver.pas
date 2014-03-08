@@ -17,7 +17,8 @@ uses
 
 type
 
-  TRemoteCommand = (rcomNone, rcomNext, rcomMusic, rcomSleep, rcomMeditation, rcomPause, rcomVolumeUp, rcomVolumeDown);
+  TRemoteCommand = (rcomNone, rcomNext, rcomMusic, rcomSleep, rcomMeditation, rcomPause, rcomVolumeUp,
+    rcomVolumeDown, rcomDisplayToggle, rcomRadioToggle);
 
   { TCOMServerThread }
 
@@ -33,7 +34,6 @@ type
     procedure AttendConnection(Socket: TTCPBlockSocket);
     procedure Log(Message: string);
     procedure SetPlaying(const AValue: string);
-    procedure SetWeatherReport(const AValue: string);
   protected
     FCommand: TRemoteCommand;
     FCritical: TCriticalSection;
@@ -43,13 +43,11 @@ type
     function GetCommnd: TRemoteCommand;
 
     procedure SetImageURLs(URLs: array of string);
-    procedure SetWeatherReports(Reports: array of string);
 
     constructor Create(Port: integer);
     destructor Destroy; override;
   published
     property Playing: string write SetPlaying;
-    property WeatherReport: string write SetWeatherReport;
     property OnCommand: TThreadMethod read FOnCommand write FOnCommand;
   end;
 
@@ -58,17 +56,14 @@ type
     FCOMServerThread: TCOMServerThread;
     procedure SetOnCommand(AValue: TThreadMethod);
     procedure SetPlaying(const AValue: string);
-    procedure SetWeatherReport(const AValue: string);
   public
     function GetCommand: TRemoteCommand;
     procedure SetImageURLs(URLs: array of string);
-    procedure SetWeatherReports(Reports: array of string);
 
     constructor Create(Port: integer);
     destructor Destroy; override;
   published
     property Playing: string write SetPlaying;
-    property WeatherReport: string write SetWeatherReport;
     property OnCommand: TThreadMethod write SetOnCommand;
   end;
 
@@ -86,11 +81,6 @@ begin
   FCOMServerThread.OnCommand := AValue;
 end;
 
-procedure TCOMServer.SetWeatherReport(const AValue: string);
-begin
-  FCOMServerThread.WeatherReport := AValue;
-end;
-
 function TCOMServer.GetCommand: TRemoteCommand;
 begin
   Result := FCOMServerThread.GetCommnd;
@@ -99,11 +89,6 @@ end;
 procedure TCOMServer.SetImageURLs(URLs: array of string);
 begin
   FCOMServerThread.SetImageURLs(URLs);
-end;
-
-procedure TCOMServer.SetWeatherReports(Reports: array of string);
-begin
-  FCOMServerThread.SetWeatherReports(Reports);
 end;
 
 constructor TCOMServer.Create(Port: integer);
@@ -132,13 +117,6 @@ begin
   FCritical.Leave;
 end;
 
-procedure TCOMServerThread.SetWeatherReport(const AValue: string);
-begin
-  FCritical.Enter;
-  FWeatherReport := AValue;
-  FCritical.Leave;
-end;
-
 procedure TCOMServerThread.SetImageURLs(URLs: array of string);
 var
   i: Integer;
@@ -149,21 +127,6 @@ begin
   begin
     if i <= High(FImageURLs) then
       FImageURLs[i] := URLs[i];
-  end;
-
-  FCritical.Leave;
-end;
-
-procedure TCOMServerThread.SetWeatherReports(Reports: array of string);
-var
-  i: Integer;
-begin
-  FCritical.Enter;
-
-  for i := 0 to High(Reports) do
-  begin
-    if i <= High(FWeatherReports) then
-      FWeatherReports[i] := Reports[i];
   end;
 
   FCritical.Leave;
@@ -242,6 +205,22 @@ begin
       if Assigned(FOnCommand) then Self.Synchronize(FOnCommand);
       Socket.SendString(':OK' + #10);
     end
+    else if Buffer = 'CLOCK:DISPLAY:TOGGLE' then
+    begin
+      FCritical.Enter;
+      FCommand := rcomDisplayToggle;
+      FCritical.Leave;
+      if Assigned(FOnCommand) then Self.Synchronize(FOnCommand);
+      Socket.SendString(':OK' + #10);
+    end
+    else if Pos('CLOCK:RADIO:', Buffer) > 0 then
+    begin
+      FCritical.Enter;
+      FCommand := rcomRadioToggle;
+      FCritical.Leave;
+      if Assigned(FOnCommand) then Self.Synchronize(FOnCommand);
+      Socket.SendString(':OK' + #10);
+    end
     else if Buffer = 'CLOCK:PAUSE' then
     begin
       FCritical.Enter;
@@ -270,29 +249,6 @@ begin
     begin
       FCritical.Enter;
       Socket.SendString(FPlaying + #10);
-      FCritical.Leave;
-      Socket.SendString(':OK' + #10);
-    end
-    else if Buffer = 'CLOCK:WEATHER' then
-    begin
-      FCritical.Enter;
-      Socket.SendString(FWeatherReport + #10);
-      FCritical.Leave;
-      Socket.SendString(':OK' + #10);
-    end
-    else if (Pos('CLOCK:WEATHER:', Buffer) = 1)
-      and (Length(Buffer) = 15) then
-    begin
-      FCritical.Enter;
-      Socket.SendString(FWeatherReports[StrToIntDef(Buffer[15], 0)] + #10);
-      FCritical.Leave;
-      Socket.SendString(':OK' + #10);
-    end
-    else if (Pos('CLOCK:WEATHERIMAGE:', Buffer) = 1)
-      and (Length(Buffer) = 20) then
-    begin
-      FCritical.Enter;
-      Socket.SendString(FImageURLs[StrToIntDef(Buffer[20], 0)] + #10);
       FCritical.Leave;
       Socket.SendString(':OK' + #10);
     end;

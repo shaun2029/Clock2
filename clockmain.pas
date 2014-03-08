@@ -26,7 +26,7 @@ uses
   ConnectionHealth;
 
 const
-  VERSION = '2.2.0';
+  VERSION = '2.2.1';
 
 type
   TMusicState = (msOff, msPlaying, msPaused);
@@ -36,7 +36,6 @@ type
   { TfrmClockMain }
 
   TfrmClockMain = class(TForm)
-    Image1: TImage;
     imgExit: TImage;
     imgPlayAlbums: TImage;
     imgPrevious: TImage;
@@ -49,28 +48,12 @@ type
     imgVolUp: TImage;
     imgVolDown: TImage;
     imgNext: TImage;
-    Image2: TImage;
-    Image3: TImage;
-    Image4: TImage;
-    Image5: TImage;
     imgMusic: TImage;
     imgRadio: TImage;
     ImgSleep: TImage;
     imgPictures: TImage;
     imgUpdateMusic: TImage;
     imgSettings: TImage;
-    Label1: TLabel;
-    Label10: TLabel;
-    Label11: TLabel;
-    Label12: TLabel;
-    Label13: TLabel;
-    Label14: TLabel;
-    Label15: TLabel;
-    Label16: TLabel;
-    Label17: TLabel;
-    Label18: TLabel;
-    Label19: TLabel;
-    Label20: TLabel;
     Label22: TLabel;
     lbPlayAlbums: TLabel;
     lbWeatherSummary: TLabel;
@@ -87,15 +70,6 @@ type
     lbNext: TLabel;
     lbPictures: TLabel;
     lbDisplay: TLabel;
-    labLocation: TLabel;
-    Label2: TLabel;
-    Label3: TLabel;
-    Label4: TLabel;
-    Label5: TLabel;
-    Label6: TLabel;
-    Label7: TLabel;
-    Label8: TLabel;
-    Label9: TLabel;
     labSong: TLabel;
     lblTime: TLabel;
     UpdateMusic: TLabel;
@@ -117,7 +91,6 @@ type
     procedure imgVolDownClick(Sender: TObject);
     procedure imgVolUpClick(Sender: TObject);
     procedure imgUpdateMusicClick(Sender: TObject);
-    procedure imgWeatherClick(Sender: TObject);
     procedure lbDisplayClick(Sender: TObject);
     procedure lblTimeClick(Sender: TObject);
     procedure lbNextClick(Sender: TObject);
@@ -143,16 +116,10 @@ type
     FAfterAlarmResumeMusic: boolean;
     FLinuxDateTime: TLinuxDateTime;
     FConnectionHealth: TConnectionHealth;
+    FBlackForm: TfrmBlack;
+    FRadioStation: integer;
 
     FConfigFilename: string;
-
-    Images: array [0..4] of TImage;
-    ImageURLs: array [0..4] of string;
-    Labels: array [0..9] of TLabel;
-    DayLabels: array[0..4] of TLabel;
-    WindLabels: array[0..4] of TLabel;
-    Locations: array[0..3] of string;
-    FCurrentLocation: integer;
 
     FMusicPlayer, FSleepPlayer, FMeditationPlayer, FRadioPlayer: TPlayer;
  	  FMusicState: TMusicState;
@@ -171,6 +138,7 @@ type
     function DayOfWeekStr(Date: TDateTime): string;
     procedure Execute(Command: string);
     function FormShowModal(MyForm: TForm): integer;
+    procedure HideForm(MyForm: TForm);
     procedure Log(Message: string);
     procedure PauseMusic;
     procedure PlayAlbums;
@@ -178,6 +146,7 @@ type
     procedure PlayPreviousMusic;
     procedure SetCursorType(MyForm: TForm);
     procedure SetMusicSource(Source: TMusicSource);
+    procedure ShowForm(MyForm: TForm);
     procedure UpdatingMusic(Player: TPlayer);
     procedure ComServerCallback;
 
@@ -190,7 +159,6 @@ type
 
     procedure Shutdown(Reboot: boolean);
     procedure UpdateSettings;
-    procedure UpdateWeather;
     procedure UpdateReminders;
 
     procedure BeforeAlarm;
@@ -542,9 +510,6 @@ begin
     if Assigned(FCOMServer) then
     begin
       FCOMServer.Playing := LabSong.Caption;
-      FCOMServer.WeatherReport := FWeatherReport;
-      FCOMServer.SetImageURLs(ImageURLs);
-      FCOMServer.SetWeatherReports(FWeatherReports);
     end;
 
     tmrTime.Tag := 0;
@@ -562,6 +527,7 @@ begin
         case FMusicSource of
           msrcSleep: Key := 's';
           msrcMeditation: Key := 'd';
+          msrcRadio: Key := 'n';
           else Key := 'm';
         end;
 
@@ -574,7 +540,6 @@ end;
 procedure TfrmClockMain.tmrWeatherTimer(Sender: TObject);
 begin
   tmrWeather.Enabled := False;
-  UpdateWeather;
   // Every 60 Minutes
   tmrWeather.Interval := 60 * 60 * 1000;
   tmrWeather.Enabled := True;
@@ -676,68 +641,6 @@ begin
  AProcess.Free;
 end;
 
-procedure TfrmClockMain.UpdateWeather;
-{var
-  Forecast: TWeatherReport;
-  i: Integer;
-}
-begin
-  tmrWeather.Enabled := False;
-{
-
-  if not Assigned(FMetOffice) then
-    FMetOffice := TMetOffice.Create;
-
-  lbWeatherSummary.Font.Color := clWhite;
-
-  FWeatherReport := '';
-
-  for i := 0 to 4 do
-  begin
-    try
-      if FMetOffice.GetForecast('http://www.metoffice.gov.uk/mobile/',
-        '5dayforecastdetail?forecastid=' + Trim(Locations[FCurrentLocation]),
-        i, Forecast, Images, ImageURLs) then
-      begin
-        if i = 0 then
-        begin
-          labLocation.Caption := Forecast.Title;
-          lbWeatherSummary.Caption := Forecast.Report;
-        end;
-
-        DayLabels[i].Caption := Forecast.Day;
-        Labels[i*2].Caption := IntToStr(Forecast.TempDay) + '°C';
-        Labels[(i*2) + 1].Caption := IntToStr(Forecast.TempNight) + '°C';
-        WindLabels[i].Caption := IntToStr(Forecast.WindSpeedDay) + 'mph';
-
-        FWeatherReports[i] := Format('%s %d°C (%d°C) %dmph',
-          [Forecast.Day, Forecast.TempDay, Forecast.TempNight, Forecast.WindSpeedDay]);
-      end
-      else
-      begin
-        lbWeatherSummary.Caption := 'Failed to update weather' + LineEnding + 'Press W to configure Wifi.';
-        tmrWeather.Enabled := True;
-        Exit;
-      end;
-    except
-      on E: exception do
-      begin
-        lbWeatherSummary.Caption := 'Exception updating weather' + LineEnding + 'Press W to configure Wifi.';
-        DebugLn('Unhandled Exception: Failure during weather update.');
-        DebugLn('Exception: ' + E.Message);
-        tmrWeather.Enabled := True;
-        Exit;
-      end;
-    end;
-
-    Application.ProcessMessages;
-  end;
-
-  FWeatherReport := labLocation.Caption + LineEnding + lbWeatherSummary.Caption;
-  tmrWeather.Enabled := True;
-}
-end;
-
 procedure TfrmClockMain.FormCreate(Sender: TObject);
 var
   i: Integer;
@@ -749,44 +652,6 @@ begin
 //  FMetOffice := nil;
 
   labSong.Caption := '';
-
-  Labels[0] := Label1;
-  Labels[1] := Label2;
-  Labels[2] := Label3;
-  Labels[3] := Label4;
-  Labels[4] := Label5;
-  Labels[5] := Label6;
-  Labels[6] := Label7;
-  Labels[7] := Label8;
-  Labels[8] := Label9;
-  Labels[9] := Label10;
-
-  DayLabels[0] := Label11;
-  DayLabels[1] := Label12;
-  DayLabels[2] := Label13;
-  DayLabels[3] := Label14;
-  DayLabels[4] := Label15;
-
-  WindLabels[0] := Label16;
-  WindLabels[1] := Label17;
-  WindLabels[2] := Label18;
-  WindLabels[3] := Label19;
-  WindLabels[4] := Label20;
-
-  Images[0] := Image1;
-  Images[1] := Image2;
-  Images[2] := Image3;
-  Images[3] := Image4;
-  Images[4] := Image5;
-
-  for i := 0 to High(Labels) do
-    Labels[i].Caption := '';
-
-  for i := 0 to High(DayLabels) do
-    DayLabels[i].Caption := '';
-
-  for i := 0 to High(WindLabels) do
-    WindLabels[i].Caption := '';
 
   FMPGPlayer := TMusicPlayer.Create;
 
@@ -807,8 +672,6 @@ begin
   FReminderAlarm.OnAfterAlarm := AfterAlarm;
   FTimer.OnAfterAlarm := AfterAlarm;
 
-  FCurrentLocation := 0;
-
   FMusicPlayer := nil;
   FSleepPlayer := nil;
   FMeditationPlayer := nil;
@@ -828,6 +691,9 @@ begin
   FWeatherReport := '';
 
   FLinuxDateTime := TLinuxDateTime.Create;
+
+  FBlackForm := nil;
+  FRadioStation := 0;
 
 {$IFDEF GRABXKEYS}
   GrabMediaKeys;
@@ -955,9 +821,7 @@ begin
   else if (Key = 'r') or (Key = 'R') then frmReminderList.Show
   else if (Key = 'n') or (Key = 'N') then
   begin
-    Inc(FCurrentLocation);
-    if FCurrentLocation > High(Locations) then FCurrentLocation := 0;
-    UpdateWeather;
+    imgRadioClick(nil);
   end
   else if (Key = 'm') or (Key = 'M') then
   begin
@@ -980,6 +844,10 @@ begin
     if not FAlarmActive then PlayMusic
     else PauseMusic;
   end
+  else if (Key = 't') or (Key = 'T') then
+  begin
+    lbDisplayClick(Self);
+  end
   else if (Key = 'p') or (Key = 'P') then
   begin
     case FMusicState of
@@ -993,6 +861,7 @@ begin
       msrcSleep: Player := FSleepPlayer;
       msrcMeditation: Player := FMeditationPlayer;
       msrcMusic: Player := FMusicPlayer;
+      msrcRadio: Player := FRadioPlayer;
       else Player := nil;
     end;
 
@@ -1014,11 +883,6 @@ begin
     begin
       FMPGPlayer.VolumeDown;
     end;
-  end
-  else if ((Key = ' ') or (Key = 'w') or (Key = 'W'))
-    and (lbWeatherSummary.Font.Color = clYellow) then
-  begin
-    UpdateWeather;
   end;
 
   tmrMinute.Enabled := True;
@@ -1141,10 +1005,6 @@ begin
     FTimer.ResetAlarm;
     FReminderAlarm.ResetAlarm;
   end
-  else if lbWeatherSummary.Font.Color = clYellow then
-  begin
-    UpdateWeather;
-  end
   else
   begin
     FormShowModal(frmReminderList);
@@ -1222,30 +1082,23 @@ begin
   imgUpdateMusic.Picture.Assign(imgOn.Picture);
 end;
 
-procedure TfrmClockMain.imgWeatherClick(Sender: TObject);
-begin
-  imgWeather.Picture.Assign(imgOff.Picture);
-  Application.ProcessMessages;
-
-  Inc(FCurrentLocation);
-  if FCurrentLocation > High(Locations) then FCurrentLocation := 0;
-  UpdateWeather;
-
-  imgWeather.Picture.Assign(imgOn.Picture);
-end;
-
 procedure TfrmClockMain.lbDisplayClick(Sender: TObject);
-var
-  Form: TfrmBlack;
 begin
   imgDisplay.Picture.Assign(imgOff.Picture);
-  Application.ProcessMessages;
+  if FBlackForm = nil then
+  begin
+    Application.ProcessMessages;
 
-  BacklightOff;
-  Form := TfrmBlack.Create(Self);
-  FormShowModal(Form);
-  BacklightOn;
-  Form.Free;
+    BacklightOff;
+    FBlackForm := TfrmBlack.Create(Self);
+    ShowForm(FBlackForm);
+  end
+  else
+  begin
+    BacklightOn;
+    HideForm(FBlackForm);
+    FreeAndNil(FBlackForm);
+  end;
   imgDisplay.Picture.Assign(imgOn.Picture);
 end;
 
@@ -1257,7 +1110,7 @@ begin
   imgRadio.Picture.Assign(imgOff.Picture);
   Application.ProcessMessages;
 
-  SetLength(Sources, 12);
+  SetLength(Sources, 9);
 
   Sources[0].Title := 'BBC Radio 1';
   Sources[0].Resource := 'http://www.bbc.co.uk/radio/listen/live/r1_heaacv2.pls';
@@ -1290,35 +1143,50 @@ begin
   Sources[8].Title := 'Radio 2000';
   Sources[8].Resource := 'http://216.246.37.51/pbs-radio2000-live';
 
-
-
-
-
-
-  Picker := TfrmSourcePicker.Create(Self, Sources);
-
-  if frmSettings.cbxForceFullscreen.Checked then
+  if Sender = nil then
   begin
-    Picker.BorderStyle := bsNone;
-  end
-  else
-  begin
-    Picker.BorderStyle := bsSingle;
-  end;
+    if FMusicSource = msrcRadio then
+    begin
+      Inc(FRadioStation);
+      if FRadioStation > High(Sources) then
+        FRadioStation := 0;
+    end;
 
-  SetCursorType(Picker);
-
-  if Picker.ShowModal = mrOK then
-  begin
     SetMusicSource(msrcRadio);
-    FRadioPlayer.StreamTitle := Sources[Picker.ItemIndex].Title;
-    FRadioPlayer.StreamURL := Sources[Picker.ItemIndex].Resource;
+    FRadioPlayer.StreamTitle := Sources[FRadioStation].Title;
+    FRadioPlayer.StreamURL := Sources[FRadioStation].Resource;
 
     if not FAlarmActive then PlayMusic
     else PauseMusic;
+  end
+  else
+  begin
+    Picker := TfrmSourcePicker.Create(Self, Sources);
+
+    if frmSettings.cbxForceFullscreen.Checked then
+    begin
+      Picker.BorderStyle := bsNone;
+    end
+    else
+    begin
+      Picker.BorderStyle := bsSingle;
+    end;
+
+    SetCursorType(Picker);
+
+    if Picker.ShowModal = mrOK then
+    begin
+      SetMusicSource(msrcRadio);
+      FRadioPlayer.StreamTitle := Sources[Picker.ItemIndex].Title;
+      FRadioPlayer.StreamURL := Sources[Picker.ItemIndex].Resource;
+
+      if not FAlarmActive then PlayMusic
+      else PauseMusic;
+    end;
+
+    Picker.Free;
   end;
 
-  Picker.Free;
   imgRadio.Picture.Assign(imgOn.Picture);
 end;
 
@@ -1348,6 +1216,7 @@ begin
         case FMusicSource of
           msrcSleep: Key := 's';
           msrcMeditation: Key := 'd';
+          msrcRadio: Key := 'n';
           else Key := 'm';
         end;
 
@@ -1366,6 +1235,16 @@ begin
     rcomMeditation:
       begin
         Key := 'd';
+        FormKeyPress(Self, Key);
+      end;
+    rcomDisplayToggle:
+      begin
+        Key := 't';
+        FormKeyPress(Self, Key);
+      end;
+    rcomRadioToggle:
+      begin
+        Key := 'n';
         FormKeyPress(Self, Key);
       end;
     rcomPause:
@@ -1405,6 +1284,25 @@ begin
 
   SetCursorType(MyForm);
   Result := MyForm.ShowModal;
+
+  if frmSettings.cbxForceFullscreen.Checked then
+    gdk_window_fullscreen(PGtkWidget(Handle)^.window);
+end;
+
+procedure TfrmClockMain.ShowForm(MyForm: TForm);
+begin
+  gdk_window_unfullscreen(PGtkWidget(Handle)^.window);
+
+  SetCursorType(MyForm);
+  MyForm.Show;
+
+  if frmSettings.cbxForceFullscreen.Checked then
+    gdk_window_fullscreen(PGtkWidget(Handle)^.window);
+end;
+
+procedure TfrmClockMain.HideForm(MyForm: TForm);
+begin
+  MyForm.Hide;
 
   if frmSettings.cbxForceFullscreen.Checked then
     gdk_window_fullscreen(PGtkWidget(Handle)^.window);
@@ -1483,10 +1381,6 @@ begin
     FAlarm.ResetAlarm;
     FTimer.ResetAlarm;
     FReminderAlarm.ResetAlarm;
-  end
-  else if lbWeatherSummary.Font.Color = clYellow then
-  begin
-    UpdateWeather;
   end;
 end;
 
@@ -1497,11 +1391,6 @@ var
   Hours: Integer;
   Player: TPlayer;
 begin
-  Locations[0] := frmSettings.edtLocation.Text;
-  Locations[1] := frmSettings.edtLocation1.Text;
-  Locations[2] := frmSettings.edtLocation2.Text;
-  Locations[3] := frmSettings.edtLocation3.Text;
-
   FAlarm.Days[1] := frmSettings.cbxSun.Checked;
   FAlarm.Days[2] := frmSettings.cbxMon.Checked;
   FAlarm.Days[3] := frmSettings.cbxTue.Checked;

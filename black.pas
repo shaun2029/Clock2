@@ -35,7 +35,7 @@ end;
 
 procedure TfrmBlack.FormClick(Sender: TObject);
 begin
-  ModalResult := mrOk;
+  Close;
 end;
 
 initialization
