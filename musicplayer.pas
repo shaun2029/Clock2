@@ -10,7 +10,7 @@ unit MusicPlayer;
 interface
 
 uses
-  Classes, SysUtils, Process, ID3v1Library, ID3v2Library, LCLProc;
+  Classes, SysUtils, Process, ID3v1Library, ID3v2Library, LCLProc, unix;
 
 type
 
@@ -29,7 +29,12 @@ type
     FID3v1: TID3v1Tag;
     FID3v2: TID3v2Tag;
 
+    FRadioTitle: string;
+    FRadioTitleTime: TDateTime;
+    FRadioPlaying: boolean;
+
     procedure DestroyPlayProcess;
+    function GetRadioTitle: string;
     function GetState: TMusicPlayerState;
     procedure PlaySong(Song: string);
     procedure SetVolume(Volume: integer);
@@ -47,6 +52,7 @@ type
     property SongArtist: string read FSongArtist;
     property SongTitle: string read FSongTitle;
     property State: TMusicPlayerState read GetState;
+    property RadioTitle: string read GetRadioTitle;
   end;
 
 implementation
@@ -58,6 +64,7 @@ begin
 
   FSongTitle := '';
   FSongArtist := '';
+  FRadioTitle := '';
 
   if FileExists(Song) then
   begin
@@ -117,6 +124,9 @@ begin
   Process := TProcess.Create(nil);
   Process.Options := Process.Options;
 
+  FRadioPlaying := False;
+  FRadioTitleTime := Now;
+
   { If the file does not exist then it could be a URL of a stream.
     Use mplayer to play streams. Prefer MPG123 for MP3 files as it
     supports replaygain. }
@@ -124,7 +134,17 @@ begin
   if not FileExists(Song) or not FileExists('/usr/bin/mpg123')
     or not (LowerCase(ExtractFileExt(Song)) = '.mp3') then
   begin
-    Process.CommandLine := 'mplayer -cache 256 -cache-min 50 "' + Song + '"'
+    if not FileExists(Song) then
+    begin
+      FRadioPlaying := True;
+
+      Process.CommandLine := 'bash -c ''mplayer -cache 256 -cache-min 50 "' + Song + '" '
+        + '| grep --line-buffered "StreamTitle" > /tmp/radio-song-titles.txt'''
+    end
+    else
+    begin
+      Process.CommandLine := 'mplayer -cache 256 -cache-min 50 "' + Song + '"'
+    end;
   end
   else
   begin
@@ -163,18 +183,78 @@ begin
 
     if FPlayProcess.Running then
     begin
+      // Kill mplayer running in bash shell
+      if FRadioPlaying then Shell('killall mplayer');
       FPlayProcess.Terminate(1);
     end;
 
+    FRadioPlaying := False;
     FreeAndNil(FPlayProcess);
   end;
+end;
+
+function TMusicPlayer.GetRadioTitle: string;
+var
+  Title: string;
+  TitleList: TStringList;
+  p, Len, i: integer;
+begin
+  // ICY Info: StreamTitle='Enos McLeod - Jericho';StreamUrl='';
+
+  if FRadioTitleTime < Now then
+  begin
+    TitleList := TStringList.Create;
+    Title := '';
+
+    try
+      if FileExists('/tmp/radio-song-titles.txt') then
+      begin
+        TitleList.LoadFromFile('/tmp/radio-song-titles.txt');
+
+         // Delete unwanted strings
+         for i := TitleList.Count - 1 downto 0 do
+         begin
+           if Pos('StreamTitle=''SKY.FM', TitleList.Strings[i]) > 0 then TitleList.Delete(i);
+         end;
+
+         if TitleList.Count > 0 then
+         begin
+           Title := TitleList.Strings[TitleList.Count-1];
+
+           // Remove unwanted beginning
+           p := Pos('''', Title);
+           Len :=  Length(Title);
+           if (p > 0) and (p < Length(Title)) then
+             Title := Copy(Title, p + 1, Len);
+
+           // Remove unwanted end
+           p := Pos('''', Title);
+           if (p > 1) then
+             Title := Copy(Title, 1, p-1);
+
+           FRadioTitle := Title;
+
+           FRadioTitleTime := Now + EncodeTime(0, 0, 5, 0);
+
+           // Do not let the file grow
+           TitleList.Clear;
+           TitleList.Add(Title);
+           TitleList.SaveToFile('/tmp/radio-song-titles.txt');
+         end;
+       end;
+    finally
+       TitleList.Free;
+    end;
+  end;
+
+  Result := FRadioTitle;
 end;
 
 constructor TMusicPlayer.Create;
 begin
   FPlayProcess := nil;
   FVolume := 50;
-  SetVolume(FVolume);
+//  SetVolume(FVolume);
 
   FID3v1 := TID3v1Tag.Create;
   FID3v2 := TID3v2Tag.Create;

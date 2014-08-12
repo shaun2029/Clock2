@@ -9,7 +9,7 @@ uses
   gtk2, gdk2, glib2,
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
   ExtCtrls, StdCtrls, IniFiles, Process, simpleipc, FindPicsThread,
-  Settings;
+  Settings, Unix;
 
 type
 
@@ -172,6 +172,7 @@ var
   Dest: string;
 begin
   Result := False;
+  Shell('xdotool click 4');
 
   if FPictureIndex < 0 then FPictureIndex := FPictureList.Count -1;
   if FPictureIndex >= FPictureList.Count then FPictureIndex := 0;

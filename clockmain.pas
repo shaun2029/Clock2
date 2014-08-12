@@ -23,10 +23,10 @@ uses
   ExtCtrls, {MetOffice,} Alarm, Settings, Reminders, ReminderList, LCLProc,
   Music, Sync, Process, MusicPlayer, PlaylistCreator, commandserver,
   X, Xlib, CTypes, Black, WaitForMedia, Pictures, DateTime, SourcePicker,
-  ConnectionHealth;
+  ConnectionHealth, Unix;
 
 const
-  VERSION = '2.2.1';
+  VERSION = '2.3.0';
 
 type
   TMusicState = (msOff, msPlaying, msPaused);
@@ -54,6 +54,7 @@ type
     imgUpdateMusic: TImage;
     imgSettings: TImage;
     Label22: TLabel;
+    labSongPrev: TLabel;
     lbPlayAlbums: TLabel;
     lbWeatherSummary: TLabel;
     lbExit: TLabel;
@@ -134,7 +135,6 @@ type
     procedure BacklightOn;
 
     function DayOfWeekStr(Date: TDateTime): string;
-    procedure Execute(Command: string);
     function FormShowModal(MyForm: TForm): integer;
     procedure HideForm(MyForm: TForm);
     procedure Log(Message: string);
@@ -502,7 +502,10 @@ begin
     end;
 
     if labSong.Caption <> Song then
+    begin
+      labSongPrev.Caption := labSong.Caption;
       labSong.Caption := Song;
+    end;
 
     if Assigned(FCOMServer) then
     begin
@@ -597,8 +600,10 @@ end;
 procedure TfrmClockMain.BacklightOn;
 begin
   try
-    Execute('xset dpms force on');
-    Execute('backlight-on');
+    if FileExists('/sys/class/backlight/openframe-bl/brightness') then
+      Shell('sudo sh -c "echo 32 > /sys/class/backlight/openframe-bl/brightness"')
+    else
+      Shell('xset dpms force on');
   except
   end;
 end;
@@ -606,36 +611,12 @@ end;
 procedure TfrmClockMain.BacklightOff;
 begin
   try
-    Execute('xset dpms force off');
-    Execute('backlight-off');
+    if FileExists('/sys/class/backlight/openframe-bl/brightness') then
+      Shell('sudo sh -c "echo 0 > /sys/class/backlight/openframe-bl/brightness"')
+    else
+      Shell('xset dpms force off');
   except
   end;
-end;
-
-procedure TfrmClockMain.Execute(Command: string);
-var
- AProcess: TProcess;
-begin
- // Now we will create the TProcess object, and
- // assign it to the var AProcess.
- AProcess := TProcess.Create(nil);
-
- // Tell the new AProcess what the command to execute is.
- // Let's use the FreePascal compiler
- AProcess.CommandLine := Command;
-
- // We will define an option for when the program
- // is run. This option will make sure that our program
- // does not continue until the program we will launch
- // has stopped running.                vvvvvvvvvvvvvv
- AProcess.Options := AProcess.Options + [poWaitOnExit];
-
- // Now that AProcess knows what the commandline is
- // we will run it.
- AProcess.Execute;
-
- // This is not reached until ppc386 stops running.
- AProcess.Free;
 end;
 
 procedure TfrmClockMain.FormCreate(Sender: TObject);
@@ -649,6 +630,8 @@ begin
 //  FMetOffice := nil;
 
   labSong.Caption := '';
+  labSongPrev.Caption := '';
+
 
   FMPGPlayer := TMusicPlayer.Create;
 
@@ -1108,11 +1091,44 @@ begin
   imgRadio.Picture.Assign(imgOff.Picture);
   Application.ProcessMessages;
 
-  SetLength(Sources, 9);
+  SetLength(Sources, 15);
 
+  Sources[0].Title := '60''s Rock';
+  Sources[0].Resource := 'http://pub1.sky.fm/sky_60srock';
+  Sources[1].Title := '60''s Hits';
+  Sources[1].Resource := 'http://pub1.sky.fm/sky_hit60s';
+  Sources[2].Title := '80''s Rock';
+  Sources[2].Resource := 'http://pub1.sky.fm/sky_80srock';
+  Sources[3].Title := '80''s Hits';
+  Sources[3].Resource := 'http://pub1.sky.fm/sky_the80s';
+  Sources[4].Title := '80''s Dance';
+  Sources[4].Resource := 'http://pub1.sky.fm/sky_80sdance';
+  Sources[5].Title := 'Soft Rock';
+  Sources[5].Resource := 'http://pub1.sky.fm/sky_softrock';
+  Sources[6].Title := 'Modern Rock';
+  Sources[6].Resource := 'http://pub1.sky.fm/sky_modernrock';
+  Sources[7].Title := 'Alt Rock';
+  Sources[7].Resource := 'http://pub1.sky.fm/sky_altrock';
+  Sources[8].Title := 'Hard Rock';
+  Sources[8].Resource := 'http://pub1.sky.fm/sky_hardrock';
+  Sources[8].Title := 'Roots Reggae';
+  Sources[8].Resource := 'http://pub8.sky.fm/sky_rootsreggae';
+  Sources[9].Title := 'Roots Legacy Reggae';
+  Sources[9].Resource := 'http://88.191.164.141:443/stream/1/';
+  Sources[10].Title := 'Dreamscapes';
+  Sources[10].Resource := 'http://pub7.sky.fm/sky_dreamscapes';
+  Sources[11].Title := 'Relaxation';
+  Sources[11].Resource := 'http://pub6.sky.fm/sky_relaxation';
+  Sources[12].Title := 'Nature';
+  Sources[12].Resource := 'http://pub1.sky.fm/sky_nature';
+  Sources[13].Title := 'BBC Radio 5 live Sports Extra';
+  Sources[13].Resource := 'http://www.bbc.co.uk/radio/listen/live/r5lsp_heaacv2.pls';
+  Sources[14].Title := 'Radio 2000';
+  Sources[14].Resource := 'http://216.246.37.51/pbs-radio2000-live';
+
+{
   Sources[0].Title := 'BBC Radio 1';
   Sources[0].Resource := 'http://www.bbc.co.uk/radio/listen/live/r1_heaacv2.pls';
-{
   Sources[1].Title := 'BBC Radio 1Xtra';
   Sources[1].Resource := 'http://www.bbc.co.uk/radio/listen/live/r1x_heaacv2.pls';
   Sources[2].Title := 'BBC Radio 2';
@@ -1121,7 +1137,8 @@ begin
   Sources[3].Resource := 'http://www.bbc.co.uk/radio/listen/live/r3_heaacv2.pls';
   Sources[4].Title := 'BBC Radio 4';
   Sources[4].Resource := 'http://www.bbc.co.uk/radio/listen/live/r4_heaacv2.pls';
-}
+  Sources[6].Title := 'BBC Radio 5 live';
+  Sources[6].Resource := 'http://www.bbc.co.uk/radio/listen/live/r5l_heaacv2.pls';
   Sources[1].Title := 'Roots Reggae';
   Sources[1].Resource := 'http://pub8.sky.fm/sky_rootsreggae';
   Sources[2].Title := 'Roots Legacy Reggae';
@@ -1136,11 +1153,11 @@ begin
   Sources[6].Resource := 'http://www.bbc.co.uk/radio/listen/live/r5l_heaacv2.pls';
   Sources[7].Title := 'BBC Radio 5 live Sports Extra';
   Sources[7].Resource := 'http://www.bbc.co.uk/radio/listen/live/r5lsp_heaacv2.pls';
-//  Sources[7].Title := 'BBC Radio 6 Music';
-//  Sources[7].Resource := 'http://www.bbc.co.uk/radio/listen/live/r6_heaacv2.pls';
+  Sources[7].Title := 'BBC Radio 6 Music';
+  Sources[7].Resource := 'http://www.bbc.co.uk/radio/listen/live/r6_heaacv2.pls';
   Sources[8].Title := 'Radio 2000';
   Sources[8].Resource := 'http://216.246.37.51/pbs-radio2000-live';
-
+}
   if Sender = nil then
   begin
     if FMusicSource = msrcRadio then

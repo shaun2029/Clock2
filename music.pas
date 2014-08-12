@@ -354,13 +354,13 @@ end;
 
 function TPlayer.GetSongArtist: string;
 begin
-  if FStreamURL <> '' then Result := ''
+  if FStreamURL <> '' then Result := StreamTitle
   else Result := FMusicPlayer.SongArtist;
 end;
 
 function TPlayer.GetSongTitle: string;
 begin
-  if FStreamURL <> '' then Result := StreamTitle
+  if FStreamURL <> '' then Result := FMusicPlayer.RadioTitle
   else Result := FMusicPlayer.SongTitle;
 end;
 

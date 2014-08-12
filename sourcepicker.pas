@@ -22,6 +22,11 @@ type
   TfrmSourcePicker = class(TForm)
     imgMusic: TImage;
     imgMusic1: TImage;
+    imgMusic10: TImage;
+    imgMusic11: TImage;
+    imgMusic12: TImage;
+    imgMusic13: TImage;
+    imgMusic14: TImage;
     imgMusic2: TImage;
     imgMusic3: TImage;
     imgMusic4: TImage;
@@ -33,6 +38,11 @@ type
     imgMusic9: TImage;
     lbMusic: TLabel;
     lbMusic1: TLabel;
+    lbMusic10: TLabel;
+    lbMusic11: TLabel;
+    lbMusic12: TLabel;
+    lbMusic13: TLabel;
+    lbMusic14: TLabel;
     lbMusic2: TLabel;
     lbMusic3: TLabel;
     lbMusic4: TLabel;
@@ -41,6 +51,7 @@ type
     lbMusic7: TLabel;
     lbMusic8: TLabel;
     lbCancel: TLabel;
+    lbMusic9: TLabel;
     procedure lbCancelClick(Sender: TObject);
     procedure lbMusicClick(Sender: TObject);
   private
@@ -73,8 +84,8 @@ end;
 
 constructor TfrmSourcePicker.Create(TheOwner: TComponent; Sources: TSourceArray);
 var
-  Buttons: array [0..10] of TImage;
-  Labels: array [0..10] of TLabel;
+  Buttons: array [0..14] of TImage;
+  Labels: array [0..14] of TLabel;
   i: integer;
 begin
   inherited Create(TheOwner);
@@ -90,6 +101,12 @@ begin
   Buttons[6] := imgMusic6;
   Buttons[7] := imgMusic7;
   Buttons[8] := imgMusic8;
+  Buttons[9] := imgMusic9;
+  Buttons[10] := imgMusic10;
+  Buttons[11] := imgMusic11;
+  Buttons[12] := imgMusic12;
+  Buttons[13] := imgMusic13;
+  Buttons[14] := imgMusic14;
 
   Labels[0] := lbMusic;
   Labels[1] := lbMusic1;
@@ -100,8 +117,14 @@ begin
   Labels[6] := lbMusic6;
   Labels[7] := lbMusic7;
   Labels[8] := lbMusic8;
+  Labels[9] := lbMusic9;
+  Labels[10] := lbMusic10;
+  Labels[11] := lbMusic11;
+  Labels[12] := lbMusic12;
+  Labels[13] := lbMusic13;
+  Labels[14] := lbMusic14;
 
-  for i := 0 to 8 do
+  for i := 0 to 14 do
   begin
     if i > High(Sources) then break;
 
@@ -111,8 +134,8 @@ begin
     Labels[i].OnClick := lbMusicClick;
     Labels[i].Caption := Sources[i].Title;
 
-    if Labels[i].Canvas.TextExtent(Labels[i].Caption).cx < Labels[i].Width then
-      Labels[i].Top := Labels[i].Top + (Labels[i].Canvas.TextExtent('X').cy div 2);
+//    if Labels[i].Canvas.TextExtent(Labels[i].Caption).cx < Labels[i].Width then
+//      Labels[i].Top := Labels[i].Top + (Labels[i].Canvas.TextExtent('X').cy div 2);
 
     Buttons[i].Visible := True;
     Labels[i].Visible := True;

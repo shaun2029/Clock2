@@ -19,7 +19,7 @@ object frmClockMain: TfrmClockMain
   OnKeyPress = FormKeyPress
   OnShow = FormShow
   Position = poDesktopCenter
-  LCLVersion = '1.2.0.3'
+  LCLVersion = '1.0.10.0'
   object imgPlayAlbums: TImage
     Cursor = crNone
     Left = 14
@@ -14700,12 +14700,12 @@ object frmClockMain: TfrmClockMain
   object lbWeatherSummary: TLabel
     Cursor = crNone
     Left = 326
-    Height = 146
+    Height = 112
     Top = 64
     Width = 453
     AutoSize = False
     Font.Color = clWhite
-    Font.Height = -19
+    Font.Height = -16
     Font.Name = 'Sans'
     ParentColor = False
     ParentFont = False
@@ -14727,6 +14727,21 @@ object frmClockMain: TfrmClockMain
     ParentColor = False
     ParentFont = False
     OnClick = lbPlayAlbumsClick
+  end
+  object labSongPrev: TLabel
+    Cursor = crNone
+    Left = 326
+    Height = 34
+    Top = 184
+    Width = 460
+    AutoSize = False
+    Caption = 'Song Title'
+    Font.Color = clWhite
+    Font.Height = -13
+    Font.Name = 'Sans'
+    ParentColor = False
+    ParentFont = False
+    WordWrap = True
   end
   object tmrTime: TTimer
     OnTimer = tmrTimeTimer
