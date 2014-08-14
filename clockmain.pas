@@ -26,7 +26,7 @@ uses
   ConnectionHealth, Unix;
 
 const
-  VERSION = '2.3.0';
+  VERSION = '2.3.1';
 
 type
   TMusicState = (msOff, msPlaying, msPaused);
@@ -131,11 +131,12 @@ type
     FDisplay: PDisplay;
     FAlarmActive: boolean;
 
-    procedure BacklightOff;
-    procedure BacklightOn;
+    procedure BacklightBright;
+    procedure BacklightDim;
 
     function DayOfWeekStr(Date: TDateTime): string;
     function FormShowModal(MyForm: TForm): integer;
+    function GetMonitorState: boolean;
     procedure HideForm(MyForm: TForm);
     procedure Log(Message: string);
     procedure PauseMusic;
@@ -143,6 +144,7 @@ type
     procedure PlayMusic;
     procedure PlayPreviousMusic;
     procedure SetCursorType(MyForm: TForm);
+    procedure SetMonitorState(State: boolean);
     procedure SetMusicSource(Source: TMusicSource);
     procedure ShowForm(MyForm: TForm);
     procedure UpdatingMusic(Player: TPlayer);
@@ -597,24 +599,49 @@ begin
   tmrMinute.Enabled := True;
 end;
 
-procedure TfrmClockMain.BacklightOn;
+// True = Monitor On
+function TfrmClockMain.GetMonitorState: boolean;
+var
+  Output: string;
+  Commands: array [0..0] of string;
+begin
+  Result := False;
+  Commands[0] := 'q';
+
+  if RunCommand('xset', Commands, Output) then
+  begin
+    Result := (Pos('monitor is on', Lowercase(Output)) > 0);
+  end;
+end;
+
+// True = Monitor On
+procedure TfrmClockMain.SetMonitorState(State: boolean);
+begin
+  if State then
+  begin
+    Shell('xset -dpms');
+    Shell('xdotool mousemove 1 1');
+    Shell('xdotool mousemove 100 100');
+    Shell('xset +dpms');
+  end
+  else
+  begin
+    Shell('xset dpms force off');
+  end;
+end;
+
+procedure TfrmClockMain.BacklightDim;
 begin
   try
-    if FileExists('/sys/class/backlight/openframe-bl/brightness') then
-      Shell('sudo sh -c "echo 32 > /sys/class/backlight/openframe-bl/brightness"')
-    else
-      Shell('xset dpms force on');
+    Shell('sudo sh -c "echo 4 > /sys/class/backlight/openframe-bl/brightness"');
   except
   end;
 end;
 
-procedure TfrmClockMain.BacklightOff;
+procedure TfrmClockMain.BacklightBright;
 begin
   try
-    if FileExists('/sys/class/backlight/openframe-bl/brightness') then
-      Shell('sudo sh -c "echo 0 > /sys/class/backlight/openframe-bl/brightness"')
-    else
-      Shell('xset dpms force off');
+    Shell('sudo sh -c "echo 32 > /sys/class/backlight/openframe-bl/brightness"');
   except
   end;
 end;
@@ -1066,19 +1093,19 @@ procedure TfrmClockMain.lbDisplayClick(Sender: TObject);
 begin
   if FBlackForm = nil then
   begin
-    BacklightOff;
+    SetMonitorState(False);
     FBlackForm := TfrmBlack.Create(Self);
     FBlackForm.OnClick := lbDisplayClick;
     ShowForm(FBlackForm);
   end
   else if not FBlackForm.CanFocus then
   begin
-    BacklightOff;
+    SetMonitorState(False);
     ShowForm(FBlackForm);
   end
   else
   begin
-    BacklightOn;
+    SetMonitorState(True);
     HideForm(FBlackForm);
   end;
 end;

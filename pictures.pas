@@ -172,16 +172,18 @@ var
   Dest: string;
 begin
   Result := False;
-  Shell('xdotool click 4');
+  Shell('xdotool mousemove 1 1');
+  Shell('xdotool mousemove 100 100');
 
   if FPictureIndex < 0 then FPictureIndex := FPictureList.Count -1;
   if FPictureIndex >= FPictureList.Count then FPictureIndex := 0;
 
   try
     if FileExists(FPictureList.Strings[FPictureIndex]) then
+    begin
       imgDisplay.Picture.LoadFromFile(FPictureList.Strings[FPictureIndex]);
-
-    Result := True;
+      Result := True;
+    end;
   except
     on E: Exception do
     begin
