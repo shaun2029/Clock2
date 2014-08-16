@@ -36,6 +36,7 @@ type
     procedure DestroyPlayProcess;
     function GetRadioTitle: string;
     function GetState: TMusicPlayerState;
+    function GetVolume: integer;
     procedure PlaySong(Song: string);
     procedure SetVolume(Volume: integer);
     procedure StartPlayProcess(Song: string; out Process: TProcess);
@@ -253,8 +254,7 @@ end;
 constructor TMusicPlayer.Create;
 begin
   FPlayProcess := nil;
-  FVolume := 50;
-//  SetVolume(FVolume);
+  FVolume := GetVolume;
 
   FID3v1 := TID3v1Tag.Create;
   FID3v2 := TID3v2Tag.Create;
@@ -308,6 +308,28 @@ begin
     on E: Exception do
     begin
       DebugLn(Self.ClassName + #9#9 + E.Message);
+    end;
+  end;
+end;
+
+function TMusicPlayer.GetVolume: integer;
+var
+  Output: string;
+  CommandLine: string;
+  PStart, PEnd: Integer;
+begin
+  Result := 50;
+
+  CommandLine := 'amixer get Master';// | grep % | head -n1';
+
+  if RunCommand(CommandLine, Output) then
+  begin
+    PStart := Pos('[', Output) + 1;
+    PEnd := Pos('%', Output);
+    if (PEnd > PStart) and (PStart > 1) then
+    begin
+      Output := Copy(Output, PStart, PEnd - PStart);
+      Result := StrToIntDef(Output, 50);
     end;
   end;
 end;
