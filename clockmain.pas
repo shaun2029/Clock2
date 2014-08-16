@@ -501,7 +501,12 @@ begin
       else
       begin
         if Player.State = psPlaying then
-          Song := Player.SongArtist + ' - ' + Player.SongTitle;
+        begin
+          if FMusicSource = msrcRadio then
+            Song := Player.SongArtist + ': ' + Player.SongTitle
+          else
+            Song := Player.SongArtist + ' - ' + Player.SongTitle;
+        end;
       end;
     end;
 
@@ -684,6 +689,7 @@ begin
   FMusicPlayer := nil;
   FSleepPlayer := nil;
   FMeditationPlayer := nil;
+
   FRadioPlayer := nil;
   FSyncServer := nil;
   FSyncClient := nil;
@@ -1228,7 +1234,7 @@ begin
     end;
 
     SetMusicSource(msrcRadio);
-    FRadioPlayer.StreamTitle := '[' + FSources[FRadioStation].Title + ']';
+    FRadioPlayer.StreamTitle := FSources[FRadioStation].Title;
     FRadioPlayer.StreamURL := FSources[FRadioStation].Resource;
 
     if not FAlarmActive then PlayMusic
