@@ -1185,11 +1185,11 @@ begin
   FSources[30].Resource := 'http://pub1.sky.fm/sky_solopiano';
   FSources[31].Title := 'Country';
   FSources[31].Resource := 'http://pub1.sky.fm/sky_country';
-  FSources[32].Title := 'Date Tempo Lounge';
+  FSources[32].Title := 'Lounge';
   FSources[32].Resource := 'http://pub1.sky.fm/sky_datempolounge';
-  FSources[33].Title := '90''s R&B';
+  FSources[33].Title := '90''s R&&B';
   FSources[33].Resource := 'http://pub1.sky.fm/sky_90srnb';
-  FSources[34].Title := '00''s R&B';
+  FSources[34].Title := '00''s R&&B';
   FSources[34].Resource := 'http://pub1.sky.fm/sky_00srnb';
   FSources[35].Title := 'Hip-Hop';
   FSources[35].Resource := 'http://pub1.sky.fm/sky_classicrap';
@@ -1199,7 +1199,7 @@ begin
   FSources[37].Resource := 'http://pub1.sky.fm/sky_jazzclassics';
   FSources[38].Title := 'Smooth Jazz';
   FSources[38].Resource := 'http://pub1.sky.fm/sky_davekoz';
-  FSources[39].Title := 'Uptempo Smooth Jazz';
+  FSources[39].Title := 'Uptempo Jazz';
   FSources[39].Resource := 'http://pub1.sky.fm/uptemposmoothjazz';
   FSources[40].Title := 'BBC Radio 5 live Sports Extra';
   FSources[40].Resource := 'http://www.bbc.co.uk/radio/listen/live/r5lsp_heaacv2.pls';
@@ -1228,7 +1228,7 @@ begin
     end;
 
     SetMusicSource(msrcRadio);
-    FRadioPlayer.StreamTitle := FSources[FRadioStation].Title;
+    FRadioPlayer.StreamTitle := '[' + FSources[FRadioStation].Title + ']';
     FRadioPlayer.StreamURL := FSources[FRadioStation].Resource;
 
     if not FAlarmActive then PlayMusic
