@@ -26,7 +26,7 @@ uses
   ConnectionHealth, Unix;
 
 const
-  VERSION = '2.3.1';
+  VERSION = '2.3.2';
 
 type
   TMusicState = (msOff, msPlaying, msPaused);
@@ -123,6 +123,8 @@ type
     FMusicPlayer, FSleepPlayer, FMeditationPlayer, FRadioPlayer: TPlayer;
  	  FMusicState: TMusicState;
     FMusicSource: TMusicSource;
+
+    FSources: TSourceArray;
 
     FCOMServer: TCOMServer;
     FWeatherReport: string;
@@ -1113,97 +1115,128 @@ end;
 procedure TfrmClockMain.imgRadioClick(Sender: TObject);
 var
   Picker: TfrmSourcePicker;
-  Sources: TSourceArray;
 begin
   imgRadio.Picture.Assign(imgOff.Picture);
   Application.ProcessMessages;
 
-  SetLength(Sources, 15);
+  SetLength(FSources, 48);
 
-  Sources[0].Title := '60''s Rock';
-  Sources[0].Resource := 'http://pub1.sky.fm/sky_60srock';
-  Sources[1].Title := '60''s Hits';
-  Sources[1].Resource := 'http://pub1.sky.fm/sky_hit60s';
-  Sources[2].Title := '80''s Rock';
-  Sources[2].Resource := 'http://pub1.sky.fm/sky_80srock';
-  Sources[3].Title := '80''s Hits';
-  Sources[3].Resource := 'http://pub1.sky.fm/sky_the80s';
-  Sources[4].Title := '80''s Dance';
-  Sources[4].Resource := 'http://pub1.sky.fm/sky_80sdance';
-  Sources[5].Title := 'Soft Rock';
-  Sources[5].Resource := 'http://pub1.sky.fm/sky_softrock';
-  Sources[6].Title := 'Modern Rock';
-  Sources[6].Resource := 'http://pub1.sky.fm/sky_modernrock';
-  Sources[7].Title := 'Alt Rock';
-  Sources[7].Resource := 'http://pub1.sky.fm/sky_altrock';
-  Sources[8].Title := 'Hard Rock';
-  Sources[8].Resource := 'http://pub1.sky.fm/sky_hardrock';
-  Sources[8].Title := 'Roots Reggae';
-  Sources[8].Resource := 'http://pub8.sky.fm/sky_rootsreggae';
-  Sources[9].Title := 'Roots Legacy Reggae';
-  Sources[9].Resource := 'http://88.191.164.141:443/stream/1/';
-  Sources[10].Title := 'Dreamscapes';
-  Sources[10].Resource := 'http://pub7.sky.fm/sky_dreamscapes';
-  Sources[11].Title := 'Relaxation';
-  Sources[11].Resource := 'http://pub6.sky.fm/sky_relaxation';
-  Sources[12].Title := 'Nature';
-  Sources[12].Resource := 'http://pub1.sky.fm/sky_nature';
-  Sources[13].Title := 'BBC Radio 5 live Sports Extra';
-  Sources[13].Resource := 'http://www.bbc.co.uk/radio/listen/live/r5lsp_heaacv2.pls';
-  Sources[14].Title := 'Radio 2000';
-  Sources[14].Resource := 'http://216.246.37.51/pbs-radio2000-live';
+  FSources[0].Title := 'Oldies';
+  FSources[0].Resource := 'http://pub1.sky.fm/sky_oldies';
+  FSources[1].Title := '60''s Rock';
+  FSources[1].Resource := 'http://pub1.sky.fm/sky_60srock';
+  FSources[2].Title := '60''s Hits';
+  FSources[2].Resource := 'http://pub1.sky.fm/sky_hit60s';
+  FSources[3].Title := '80''s Rock';
+  FSources[3].Resource := 'http://pub1.sky.fm/sky_80srock';
+  FSources[4].Title := '80''s Hits';
+  FSources[4].Resource := 'http://pub1.sky.fm/sky_the80s';
+  FSources[5].Title := '80''s Dance';
+  FSources[5].Resource := 'http://pub1.sky.fm/sky_80sdance';
+  FSources[6].Title := '90''s Hits';
+  FSources[6].Resource := 'http://pub1.sky.fm/sky_hit90s';
+  FSources[7].Title := 'Soft Rock';
+  FSources[7].Resource := 'http://pub1.sky.fm/sky_softrock';
+  FSources[8].Title := 'Classic Rock';
+  FSources[8].Resource := 'http://pub1.sky.fm/sky_classicrock';
+  FSources[9].Title := 'Modern Rock';
+  FSources[9].Resource := 'http://pub1.sky.fm/sky_modernrock';
+  FSources[10].Title := 'Indie Rock';
+  FSources[10].Resource := 'http://pub1.sky.fm/sky_indierock';
+  FSources[11].Title := 'Alt Rock';
+  FSources[11].Resource := 'http://pub1.sky.fm/sky_altrock';
+  FSources[12].Title := 'Hard Rock';
+  FSources[12].Resource := 'http://pub1.sky.fm/sky_hardrock';
+  FSources[13].Title := 'Metal';
+  FSources[13].Resource := 'http://pub1.sky.fm/sky_metal';
+  FSources[14].Title := 'Pop Punk';
+  FSources[14].Resource := 'http://pub1.sky.fm/sky_poppunk';
+  FSources[15].Title := 'Pop Rock';
+  FSources[15].Resource := 'http://pub1.sky.fm/sky_poprock';
+  FSources[16].Title := 'Roots Reggae';
+  FSources[16].Resource := 'http://pub8.sky.fm/sky_rootsreggae';
+  FSources[17].Title := 'Roots Legacy Reggae';
+  FSources[17].Resource := 'http://88.191.164.141:443/stream/1/';
+  FSources[18].Title := 'Ska';
+  FSources[18].Resource := 'http://pub7.sky.fm/sky_ska';
+  FSources[19].Title := 'New Age';
+  FSources[19].Resource := 'http://pub1.sky.fm/sky_newage';
+  FSources[20].Title := 'Vocal New Age';
+  FSources[20].Resource := 'http://pub1.sky.fm/sky_vocalnewage';
+  FSources[21].Title := 'Dreamscapes';
+  FSources[21].Resource := 'http://pub7.sky.fm/sky_dreamscapes';
+  FSources[22].Title := 'Relaxation';
+  FSources[22].Resource := 'http://pub6.sky.fm/sky_relaxation';
+  FSources[23].Title := 'Nature';
+  FSources[23].Resource := 'http://pub1.sky.fm/sky_nature';
+  FSources[24].Title := 'Salsa';
+  FSources[24].Resource := 'http://pub1.sky.fm/sky_salsa';
+  FSources[25].Title := 'Bossa Nova';
+  FSources[25].Resource := 'http://pub1.sky.fm/sky_bossanova';
+  FSources[26].Title := 'Smooth Bossa Nova';
+  FSources[26].Resource := 'http://pub1.sky.fm/sky_smoothbossanova';
+  FSources[27].Title := 'American Songs';
+  FSources[27].Resource := 'http://pub1.sky.fm/sky_americansongbook';
+  FSources[28].Title := 'Classical Guitar';
+  FSources[28].Resource := 'http://pub1.sky.fm/sky_guitar';
+  FSources[29].Title := 'Classical Piano';
+  FSources[29].Resource := 'http://pub1.sky.fm/sky_classicalpianotrios';
+  FSources[30].Title := 'Solo Piano';
+  FSources[30].Resource := 'http://pub1.sky.fm/sky_solopiano';
+  FSources[31].Title := 'Country';
+  FSources[31].Resource := 'http://pub1.sky.fm/sky_country';
+  FSources[32].Title := 'Date Tempo Lounge';
+  FSources[32].Resource := 'http://pub1.sky.fm/sky_datempolounge';
+  FSources[33].Title := '90''s R&B';
+  FSources[33].Resource := 'http://pub1.sky.fm/sky_90srnb';
+  FSources[34].Title := '00''s R&B';
+  FSources[34].Resource := 'http://pub1.sky.fm/sky_00srnb';
+  FSources[35].Title := 'Hip-Hop';
+  FSources[35].Resource := 'http://pub1.sky.fm/sky_classicrap';
+  FSources[36].Title := 'Motown';
+  FSources[36].Resource := 'http://pub1.sky.fm/sky_classicmotown';
+  FSources[37].Title := 'Jazz Clasics';
+  FSources[37].Resource := 'http://pub1.sky.fm/sky_jazzclassics';
+  FSources[38].Title := 'Smooth Jazz';
+  FSources[38].Resource := 'http://pub1.sky.fm/sky_davekoz';
+  FSources[39].Title := 'Uptempo Smooth Jazz';
+  FSources[39].Resource := 'http://pub1.sky.fm/uptemposmoothjazz';
+  FSources[40].Title := 'BBC Radio 5 live Sports Extra';
+  FSources[40].Resource := 'http://www.bbc.co.uk/radio/listen/live/r5lsp_heaacv2.pls';
+  FSources[41].Title := 'Radio 2000';
+  FSources[41].Resource := 'http://216.246.37.51/pbs-radio2000-live';
+  FSources[42].Title := 'BBC Radio 1';
+  FSources[42].Resource := 'http://www.bbc.co.uk/radio/listen/live/r1_heaacv2.pls';
+  FSources[43].Title := 'BBC Radio 1Xtra';
+  FSources[43].Resource := 'http://www.bbc.co.uk/radio/listen/live/r1x_heaacv2.pls';
+  FSources[44].Title := 'BBC Radio 2';
+  FSources[44].Resource := 'http://www.bbc.co.uk/radio/listen/live/r2_heaacv2.pls';
+  FSources[45].Title := 'BBC Radio 3';
+  FSources[45].Resource := 'http://www.bbc.co.uk/radio/listen/live/r3_heaacv2.pls';
+  FSources[46].Title := 'BBC Radio 4';
+  FSources[46].Resource := 'http://www.bbc.co.uk/radio/listen/live/r4_heaacv2.pls';
+  FSources[47].Title := 'BBC Radio 5 live';
+  FSources[47].Resource := 'http://www.bbc.co.uk/radio/listen/live/r5l_heaacv2.pls';
 
-{
-  Sources[0].Title := 'BBC Radio 1';
-  Sources[0].Resource := 'http://www.bbc.co.uk/radio/listen/live/r1_heaacv2.pls';
-  Sources[1].Title := 'BBC Radio 1Xtra';
-  Sources[1].Resource := 'http://www.bbc.co.uk/radio/listen/live/r1x_heaacv2.pls';
-  Sources[2].Title := 'BBC Radio 2';
-  Sources[2].Resource := 'http://www.bbc.co.uk/radio/listen/live/r2_heaacv2.pls';
-  Sources[3].Title := 'BBC Radio 3';
-  Sources[3].Resource := 'http://www.bbc.co.uk/radio/listen/live/r3_heaacv2.pls';
-  Sources[4].Title := 'BBC Radio 4';
-  Sources[4].Resource := 'http://www.bbc.co.uk/radio/listen/live/r4_heaacv2.pls';
-  Sources[6].Title := 'BBC Radio 5 live';
-  Sources[6].Resource := 'http://www.bbc.co.uk/radio/listen/live/r5l_heaacv2.pls';
-  Sources[1].Title := 'Roots Reggae';
-  Sources[1].Resource := 'http://pub8.sky.fm/sky_rootsreggae';
-  Sources[2].Title := 'Roots Legacy Reggae';
-  Sources[2].Resource := 'http://88.191.164.141:443/stream/1/';
-  Sources[3].Title := 'Dreamscapes';
-  Sources[3].Resource := 'http://pub7.sky.fm/sky_dreamscapes';
-  Sources[4].Title := 'Relaxation';
-  Sources[4].Resource := 'http://pub6.sky.fm/sky_relaxation';
-  Sources[5].Title := 'Nature';
-  Sources[5].Resource := 'http://pub1.sky.fm/sky_nature';
-  Sources[6].Title := 'BBC Radio 5 live';
-  Sources[6].Resource := 'http://www.bbc.co.uk/radio/listen/live/r5l_heaacv2.pls';
-  Sources[7].Title := 'BBC Radio 5 live Sports Extra';
-  Sources[7].Resource := 'http://www.bbc.co.uk/radio/listen/live/r5lsp_heaacv2.pls';
-  Sources[7].Title := 'BBC Radio 6 Music';
-  Sources[7].Resource := 'http://www.bbc.co.uk/radio/listen/live/r6_heaacv2.pls';
-  Sources[8].Title := 'Radio 2000';
-  Sources[8].Resource := 'http://216.246.37.51/pbs-radio2000-live';
-}
   if Sender = nil then
   begin
     if FMusicSource = msrcRadio then
     begin
       Inc(FRadioStation);
-      if FRadioStation > High(Sources) then
+      if FRadioStation > High(FSources) then
         FRadioStation := 0;
     end;
 
     SetMusicSource(msrcRadio);
-    FRadioPlayer.StreamTitle := Sources[FRadioStation].Title;
-    FRadioPlayer.StreamURL := Sources[FRadioStation].Resource;
+    FRadioPlayer.StreamTitle := FSources[FRadioStation].Title;
+    FRadioPlayer.StreamURL := FSources[FRadioStation].Resource;
 
     if not FAlarmActive then PlayMusic
     else PauseMusic;
   end
   else
   begin
-    Picker := TfrmSourcePicker.Create(Self, Sources);
+    Picker := TfrmSourcePicker.Create(Self, FSources);
 
     if frmSettings.cbxForceFullscreen.Checked then
     begin
@@ -1219,8 +1252,8 @@ begin
     if Picker.ShowModal = mrOK then
     begin
       SetMusicSource(msrcRadio);
-      FRadioPlayer.StreamTitle := Sources[Picker.ItemIndex].Title;
-      FRadioPlayer.StreamURL := Sources[Picker.ItemIndex].Resource;
+      FRadioPlayer.StreamTitle := FSources[Picker.ItemIndex].Title;
+      FRadioPlayer.StreamURL := FSources[Picker.ItemIndex].Resource;
 
       if not FAlarmActive then PlayMusic
       else PauseMusic;

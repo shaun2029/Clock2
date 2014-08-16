@@ -8,6 +8,9 @@ uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
   StdCtrls, ExtCtrls;
 
+const
+  BUTTONCOUNT = 12;
+
 type
 
   TSourceOption = record
@@ -24,9 +27,8 @@ type
     imgMusic1: TImage;
     imgMusic10: TImage;
     imgMusic11: TImage;
-    imgMusic12: TImage;
-    imgMusic13: TImage;
-    imgMusic14: TImage;
+    imgNext: TImage;
+    imgPrevious: TImage;
     imgMusic2: TImage;
     imgMusic3: TImage;
     imgMusic4: TImage;
@@ -40,9 +42,8 @@ type
     lbMusic1: TLabel;
     lbMusic10: TLabel;
     lbMusic11: TLabel;
-    lbMusic12: TLabel;
-    lbMusic13: TLabel;
-    lbMusic14: TLabel;
+    lbNext: TLabel;
+    lbPrevious: TLabel;
     lbMusic2: TLabel;
     lbMusic3: TLabel;
     lbMusic4: TLabel;
@@ -54,9 +55,17 @@ type
     lbMusic9: TLabel;
     procedure lbCancelClick(Sender: TObject);
     procedure lbMusicClick(Sender: TObject);
+    procedure lbNextClick(Sender: TObject);
+    procedure lbPreviousClick(Sender: TObject);
   private
     { private declarations }
     FItemIndex: integer;
+    FPage, FPageCount: integer;
+    FSources: TSourceArray;
+    FButtons: array [0..BUTTONCOUNT-1] of TImage;
+    FLabels: array [0..BUTTONCOUNT-1] of TLabel;
+
+    procedure PopulateSelections(Page: integer; Sources: TSourceArray);
   public
     { public declarations }
     constructor Create(TheOwner: TComponent; Sources: TSourceArray);
@@ -82,64 +91,110 @@ begin
   ModalResult := mrOk;
 end;
 
+procedure TfrmSourcePicker.lbNextClick(Sender: TObject);
+begin
+  Inc(FPage);
+  PopulateSelections(FPage, FSources);
+end;
+
+procedure TfrmSourcePicker.lbPreviousClick(Sender: TObject);
+begin
+  Dec(FPage);
+  PopulateSelections(FPage, FSources);
+end;
+
+procedure TfrmSourcePicker.PopulateSelections(Page: integer; Sources: TSourceArray);
+var
+  i, Offset: integer;
+begin
+  if Page < 1 then
+  begin
+    lbPrevious.Visible := False;
+    imgPrevious.Visible := False;
+  end
+  else
+  begin
+    lbPrevious.Visible := True;
+    imgPrevious.Visible := True;
+  end;
+
+  if Page >= FPageCount -1 then
+  begin
+    lbNext.Visible := False;
+    imgNext.Visible := False;
+  end
+  else
+  begin
+    lbNext.Visible := True;
+    imgNext.Visible := True;
+  end;
+
+  FItemIndex := -1;
+
+  Offset := BUTTONCOUNT * Page;
+
+  for i := 0 to BUTTONCOUNT - 1 do
+  begin
+    if i + Offset > High(Sources) then
+    begin
+      FButtons[i].Visible := False;
+      FLabels[i].Visible := False;
+    end
+    else
+    begin
+      FButtons[i].Tag := i + Offset;
+      FButtons[i].OnClick := lbMusicClick;
+      FLabels[i].Tag := i + Offset;
+      FLabels[i].OnClick := lbMusicClick;
+      FLabels[i].Caption := Sources[i+ Offset].Title;
+
+      FButtons[i].Visible := True;
+      FLabels[i].Visible := True;
+    end;
+  end;
+end;
+
+
 constructor TfrmSourcePicker.Create(TheOwner: TComponent; Sources: TSourceArray);
 var
-  Buttons: array [0..14] of TImage;
-  Labels: array [0..14] of TLabel;
   i: integer;
 begin
   inherited Create(TheOwner);
 
   FItemIndex := -1;
 
-  Buttons[0] := imgMusic;
-  Buttons[1] := imgMusic1;
-  Buttons[2] := imgMusic2;
-  Buttons[3] := imgMusic3;
-  Buttons[4] := imgMusic4;
-  Buttons[5] := imgMusic5;
-  Buttons[6] := imgMusic6;
-  Buttons[7] := imgMusic7;
-  Buttons[8] := imgMusic8;
-  Buttons[9] := imgMusic9;
-  Buttons[10] := imgMusic10;
-  Buttons[11] := imgMusic11;
-  Buttons[12] := imgMusic12;
-  Buttons[13] := imgMusic13;
-  Buttons[14] := imgMusic14;
+  FPage := 0;
+  FPageCount := (High(Sources) div BUTTONCOUNT) + 1;
 
-  Labels[0] := lbMusic;
-  Labels[1] := lbMusic1;
-  Labels[2] := lbMusic2;
-  Labels[3] := lbMusic3;
-  Labels[4] := lbMusic4;
-  Labels[5] := lbMusic5;
-  Labels[6] := lbMusic6;
-  Labels[7] := lbMusic7;
-  Labels[8] := lbMusic8;
-  Labels[9] := lbMusic9;
-  Labels[10] := lbMusic10;
-  Labels[11] := lbMusic11;
-  Labels[12] := lbMusic12;
-  Labels[13] := lbMusic13;
-  Labels[14] := lbMusic14;
+  FSources := Sources;
 
-  for i := 0 to 14 do
-  begin
-    if i > High(Sources) then break;
+  FButtons[0] := imgMusic;
+  FButtons[1] := imgMusic1;
+  FButtons[2] := imgMusic2;
+  FButtons[3] := imgMusic3;
+  FButtons[4] := imgMusic4;
+  FButtons[5] := imgMusic5;
+  FButtons[6] := imgMusic6;
+  FButtons[7] := imgMusic7;
+  FButtons[8] := imgMusic8;
+  FButtons[9] := imgMusic9;
+  FButtons[10] := imgMusic10;
+  FButtons[11] := imgMusic11;
 
-    Buttons[i].Tag := i;
-    Buttons[i].OnClick := lbMusicClick;
-    Labels[i].Tag := i;
-    Labels[i].OnClick := lbMusicClick;
-    Labels[i].Caption := Sources[i].Title;
+  FLabels[0] := lbMusic;
+  FLabels[1] := lbMusic1;
+  FLabels[2] := lbMusic2;
+  FLabels[3] := lbMusic3;
+  FLabels[4] := lbMusic4;
+  FLabels[5] := lbMusic5;
+  FLabels[6] := lbMusic6;
+  FLabels[7] := lbMusic7;
+  FLabels[8] := lbMusic8;
+  FLabels[9] := lbMusic9;
+  FLabels[10] := lbMusic10;
+  FLabels[11] := lbMusic11;
 
-//    if Labels[i].Canvas.TextExtent(Labels[i].Caption).cx < Labels[i].Width then
-//      Labels[i].Top := Labels[i].Top + (Labels[i].Canvas.TextExtent('X').cy div 2);
-
-    Buttons[i].Visible := True;
-    Labels[i].Visible := True;
-  end;
+  PopulateSelections(FPage, FSources);
 end;
 
 
