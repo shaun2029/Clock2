@@ -223,7 +223,7 @@ begin
     FAnnouncement := True;
 
     // Set the end time for a time after the start
-    FAnnouncementStop := Now + EncodeTime(0, 0, 10, 0);
+    FAnnouncementStop := Now + EncodeTime(0, 0, 5, 0);
   end;
 
   // If announcement in progress look for stop
@@ -243,35 +243,47 @@ end;
 // Turns down the volume during an announcement
 procedure TMusicPlayer.StartAnnouncement;
 var
-  v: integer;
+  v, Vol, StepSize: integer;
 begin
   FAnnouncementVol := GetVolume;
+  Vol := FAnnouncementVol div 10;
 
-  // Turn down volume
-  for v := FAnnouncementVol downto (FAnnouncementVol div 10) do
+  StepSize := (FAnnouncementVol - Vol) div 10;
+  if StepSize < 1 then StepSize := 1;
+
+  // Turn up volume
+  for v := FAnnouncementVol downto Vol do
   begin
-    if v mod 5 = 0 then
+    if v mod StepSize = 0 then
     begin
       SetVolume(v);
       Sleep(200);
     end;
   end;
 
-  SetVolume(FAnnouncementVol div 10);
+  SetVolume(Vol);
 end;
 
 // Turns up the volume during an announcement
 procedure TMusicPlayer.StopAnnouncement;
 var
-  v: integer;
+  v, Vol, StepSize: integer;
 begin
-  // Turn up volume
-  for v := GetVolume to FAnnouncementVol do
+  Vol := GetVolume;
+
+  if FAnnouncementVol > Vol then
   begin
-    if v mod 5 = 0 then
+    StepSize := (FAnnouncementVol - Vol) div 10;
+    if StepSize < 1 then StepSize := 1;
+
+    // Turn up volume
+    for v := GetVolume to FAnnouncementVol do
     begin
-      SetVolume(v);
-      Sleep(200);
+      if v mod StepSize = 0 then
+      begin
+        SetVolume(v);
+        Sleep(200);
+      end;
     end;
   end;
   SetVolume(FAnnouncementVol);
@@ -282,8 +294,9 @@ var
   Title: string;
   TitleList: TStringList;
   p, Len, i, v: integer;
-  Announcement: integer;
+  Announcement, StreamTitle: integer;
   AnnouncmentInProgress: boolean;
+  H, M, S, MS: word;
 begin
   // ICY Info: StreamTitle='Enos McLeod - Jericho';StreamUrl='';
 
@@ -302,16 +315,21 @@ begin
          // Detect announcments (Adverts)
          for i := TitleList.Count - 1 downto 0 do
          begin
-           // Advert detection
-           Announcement := Pos('StreamTitle=''SKY.FM', TitleList.Strings[i]);
+           // Advert detection  needs a stream tile and a SKY.FM
+           StreamTitle := Pos('StreamTitle=', TitleList.Strings[i]);
+           if StreamTitle > 0 then
+             Announcement := Pos('SKY.FM', TitleList.Strings[i]);
 
-           if (Announcement > 0) then
+           // Is there a stream title?
+           if (StreamTitle > 0) then
            begin
-             // Is there a current an announcement?
+             // Is this a current message (latest on the list)?
              if (i = TitleList.Count - 1) then
              begin
-               // Is an announcement known about and sheduled?
-               if not FAnnouncement and (FAnnouncementStart <= 0) then
+               AnnouncmentInProgress := Announcement > 0;
+
+               // Is an announcement, and is it known about and sheduled?
+               if (Announcement > 0) and not FAnnouncement and (FAnnouncementStart <= 0) then
                begin
                  // Set announcment start time in the future
                  FAnnouncementStart := Now + EncodeTime(0, 0, 10, 0);
@@ -320,16 +338,23 @@ begin
                begin
                  // Update the end time
                  FAnnouncementStop := Now + EncodeTime(0, 0, 10, 0);
-               end;
 
-               AnnouncmentInProgress := True;
-               Break;
-             end
-             else
-             begin
-               // If ad not current delete it.
-               TitleList.Delete(i);
+                 // Is this a real announcement or false positive?
+                 // Cancel it if it has not started, and is not and announcement,
+                 // and an anouncement start time has been triggered.
+                 if not FAnnouncement and (Announcement <= 0)
+                   and (FAnnouncementStart > 0 )
+                   and (FAnnouncementStop > FAnnouncementStart) then
+                 begin
+                   DecodeTime(FAnnouncementStop - FAnnouncementStart, H, M, S, MS);
+
+                   // If the length of the announcement is less than 5 seconds cancel it.
+                   if (H + M <= 0) and (S < 5) then FAnnouncementStart := 0;
+                 end;
+               end;
              end;
+
+             Break;
            end;
          end;
 
@@ -418,7 +443,7 @@ begin
   if Volume > 100 then Volume := 100
   else if Volume < 0 then Volume := 0;
 
-  CommandLine := 'amixer set Master ' + IntToStr(Volume) + '%';
+  CommandLine := 'amixer -D pulse sset Master ' + IntToStr(Volume) + '%';
   RunCommand(CommandLine, Output);
 end;
 
@@ -430,7 +455,7 @@ var
 begin
   Result := 50;
 
-  CommandLine := 'amixer get Master';// | grep % | head -n1';
+  CommandLine := 'amixer -D pulse sget Master';
 
   if RunCommand(CommandLine, Output) then
   begin
