@@ -139,7 +139,7 @@ begin
   // If announcement in progress stop it.
   if FAnnouncement then
   begin
-    StopAnnouncement;
+    SetVolume(FAnnouncementVol);
     FAnnouncement := False;
   end;
 
