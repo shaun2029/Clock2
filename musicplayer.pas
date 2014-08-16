@@ -420,9 +420,6 @@ begin
 
   CommandLine := 'amixer set Master ' + IntToStr(Volume) + '%';
   RunCommand(CommandLine, Output);
-
-  CommandLine := 'amixer -D pulse sset Master ' + IntToStr(Volume) + '%';
-  RunCommand(CommandLine, Output);
 end;
 
 function TMusicPlayer.GetVolume: integer;
