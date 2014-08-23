@@ -41,7 +41,6 @@ type
     procedure DestroyPlayProcess;
     function GetRadioTitle: string;
     function GetState: TMusicPlayerState;
-    function GetVolume: integer;
     procedure PlaySong(Song: string);
     procedure ProcessAnnouncement;
     procedure SetVolume(Volume: integer);
@@ -57,6 +56,8 @@ type
     procedure VolumeUp;
     procedure VolumeDown;
     procedure Stop;
+
+    function GetVolume: integer;
   published
     property SongArtist: string read FSongArtist;
     property SongTitle: string read FSongTitle;
@@ -332,12 +333,12 @@ begin
                if (Announcement > 0) and not FAnnouncement and (FAnnouncementStart <= 0) then
                begin
                  // Set announcment start time in the future
-                 FAnnouncementStart := Now + EncodeTime(0, 0, 10, 0);
+                 FAnnouncementStart := Now + EncodeTime(0, 0, 6, 0);
                end
                else
                begin
                  // Update the end time
-                 FAnnouncementStop := Now + EncodeTime(0, 0, 10, 0);
+                 FAnnouncementStop := Now + EncodeTime(0, 0, 8, 0);
 
                  // Is this a real announcement or false positive?
                  // Cancel it if it has not started, and is not and announcement,

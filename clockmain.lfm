@@ -2650,10 +2650,10 @@ object frmClockMain: TfrmClockMain
   end
   object labSong: TLabel
     Cursor = crNone
-    Left = 326
+    Left = 336
     Height = 58
     Top = 222
-    Width = 460
+    Width = 448
     AutoSize = False
     Caption = 'Song Title'
     Font.Color = clWhite
@@ -11132,10 +11132,10 @@ object frmClockMain: TfrmClockMain
   end
   object imgReminders: TImage
     Cursor = crNone
-    Left = 326
+    Left = 312
     Height = 88
     Top = 284
-    Width = 300
+    Width = 326
     OnClick = imgRemindersClick
     Picture.Data = {
       1754506F727461626C654E6574776F726B47726170686963456B000089504E47
@@ -14728,16 +14728,31 @@ object frmClockMain: TfrmClockMain
     ParentFont = False
     OnClick = lbPlayAlbumsClick
   end
-  object labSongPrev: TLabel
+  object labSongPrev2: TLabel
     Cursor = crNone
-    Left = 326
-    Height = 34
-    Top = 184
+    Left = 324
+    Height = 18
+    Top = 178
     Width = 460
     AutoSize = False
     Caption = 'Song Title'
     Font.Color = clWhite
-    Font.Height = -13
+    Font.Height = -12
+    Font.Name = 'Sans'
+    ParentColor = False
+    ParentFont = False
+    WordWrap = True
+  end
+  object labSongPrev1: TLabel
+    Cursor = crNone
+    Left = 328
+    Height = 18
+    Top = 199
+    Width = 460
+    AutoSize = False
+    Caption = 'Song Title'
+    Font.Color = clWhite
+    Font.Height = -15
     Font.Name = 'Sans'
     ParentColor = False
     ParentFont = False

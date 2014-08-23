@@ -26,7 +26,7 @@ uses
   ConnectionHealth, Unix;
 
 const
-  VERSION = '2.3.2';
+  VERSION = '2.3.5';
 
 type
   TMusicState = (msOff, msPlaying, msPaused);
@@ -54,7 +54,8 @@ type
     imgUpdateMusic: TImage;
     imgSettings: TImage;
     Label22: TLabel;
-    labSongPrev: TLabel;
+    labSongPrev2: TLabel;
+    labSongPrev1: TLabel;
     lbPlayAlbums: TLabel;
     lbWeatherSummary: TLabel;
     lbExit: TLabel;
@@ -137,6 +138,7 @@ type
     procedure BacklightDim;
 
     function DayOfWeekStr(Date: TDateTime): string;
+    procedure DisplayVolume;
     function FormShowModal(MyForm: TForm): integer;
     function GetMonitorState: boolean;
     procedure HideForm(MyForm: TForm);
@@ -180,6 +182,17 @@ implementation
 {$R *.lfm}
 
 { TfrmClockMain }
+
+procedure TfrmClockMain.DisplayVolume;
+begin
+  if Assigned(FMPGPlayer) then
+  begin
+    tmrTime.Enabled := False;
+    lblTime.Caption := 'VOL: ' + IntToStr(FMPGPlayer.GetVolume) + ' %';
+    tmrTime.Interval := 3000;
+    tmrTime.Enabled := True;
+  end;
+end;
 
 procedure TfrmClockMain.PauseMusic;
 begin
@@ -403,6 +416,7 @@ var
   Day, Month, Year: word;
   Hour, Min, Sec, MSec: word;
 begin
+  tmrTime.Interval := 1000;
   Current := FLinuxDateTime.GetLocalTime;
 
   DayStr := Copy(DayOfWeekStr(Current), 1, 3);
@@ -512,7 +526,8 @@ begin
 
     if labSong.Caption <> Song then
     begin
-      labSongPrev.Caption := labSong.Caption;
+      labSongPrev2.Caption := labSongPrev1.Caption;
+      labSongPrev1.Caption := labSong.Caption;
       labSong.Caption := Song;
     end;
 
@@ -664,10 +679,12 @@ begin
 //  FMetOffice := nil;
 
   labSong.Caption := '';
-  labSongPrev.Caption := '';
+  labSongPrev1.Caption := '';
+  labSongPrev2.Caption := '';
 
 
   FMPGPlayer := TMusicPlayer.Create;
+  DisplayVolume;
 
   FAlarm := TAlarm.Create(FMPGPlayer);
   FAlarm.Path := ExtractFilePath(Application.ExeName);
@@ -1036,6 +1053,7 @@ begin
   if Assigned(FMPGPlayer) then
   begin
     FMPGPlayer.VolumeDown;
+    DisplayVolume;
   end;
 
   imgVolDown.Picture.Assign(imgOn.Picture);
@@ -1049,6 +1067,7 @@ begin
   if Assigned(FMPGPlayer) then
   begin
     FMPGPlayer.VolumeUp;
+    DisplayVolume;
   end;
 
   imgVolUp.Picture.Assign(imgOn.Picture);
