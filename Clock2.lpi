@@ -14,7 +14,7 @@
       <CharSet Value=""/>
       <StringTable ProductVersion=""/>
     </VersionInfo>
-    <BuildModes Count="3" Active="i386">
+    <BuildModes Count="3" Active="x64">
       <Item1 Name="debug" Default="True"/>
       <Item2 Name="i386">
         <CompilerOptions>
@@ -60,7 +60,7 @@
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
             <OtherUnitFiles Value="synapse/source/lib"/>
-            <UnitOutputDirectory Value="build"/>
+            <UnitOutputDirectory Value="buildx64"/>
           </SearchPaths>
           <Parsing>
             <SyntaxOptions>
