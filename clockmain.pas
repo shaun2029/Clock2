@@ -22,11 +22,11 @@ uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
   ExtCtrls, {MetOffice,} Alarm, Settings, Reminders, ReminderList, LCLProc,
   Music, Sync, Process, MusicPlayer, PlaylistCreator, commandserver,
-  X, Xlib, CTypes, Black, WaitForMedia, Pictures, DateTime, SourcePicker,
+  X, Xlib, CTypes, WaitForMedia, Pictures, DateTime, SourcePicker,
   ConnectionHealth, Unix;
 
 const
-  VERSION = '2.3.5';
+  VERSION = '2.3.6';
 
 type
   TMusicState = (msOff, msPlaying, msPaused);
@@ -116,7 +116,6 @@ type
     FAfterAlarmResumeMusic: boolean;
     FLinuxDateTime: TLinuxDateTime;
     FConnectionHealth: TConnectionHealth;
-    FBlackForm: TfrmBlack;
     FRadioStation: integer;
 
     FConfigFilename: string;
@@ -724,7 +723,6 @@ begin
 
   FLinuxDateTime := TLinuxDateTime.Create;
 
-  FBlackForm := nil;
   FRadioStation := 0;
 
 {$IFDEF GRABXKEYS}
@@ -773,9 +771,6 @@ begin
 
   if Assigned(FConnectionHealth) then
     FreeAndNil(FConnectionHealth);
-
-  if Assigned(FBlackForm) then
-    FreeAndNil(FBlackForm);
 
   FAlarm.Free;
   FReminderAlarm.Free;
@@ -1118,23 +1113,7 @@ end;
 
 procedure TfrmClockMain.lbDisplayClick(Sender: TObject);
 begin
-  if FBlackForm = nil then
-  begin
-    SetMonitorState(False);
-    FBlackForm := TfrmBlack.Create(Self);
-    FBlackForm.OnClick := lbDisplayClick;
-    ShowForm(FBlackForm);
-  end
-  else if not FBlackForm.CanFocus then
-  begin
-    SetMonitorState(False);
-    ShowForm(FBlackForm);
-  end
-  else
-  begin
-    SetMonitorState(True);
-    HideForm(FBlackForm);
-  end;
+  SetMonitorState(False);
 end;
 
 procedure TfrmClockMain.imgRadioClick(Sender: TObject);
@@ -1411,6 +1390,7 @@ end;
 
 procedure TfrmClockMain.lbSettingsClick(Sender: TObject);
 begin
+  Self.Hide;
   imgSettings.Picture.Assign(imgOff.Picture);
   Application.ProcessMessages;
 
@@ -1419,6 +1399,7 @@ begin
   UpdateSettings;
 
   imgSettings.Picture.Assign(imgOn.Picture);
+  Self.Show;
 end;
 
 procedure TfrmClockMain.lbNextClick(Sender: TObject);

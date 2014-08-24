@@ -333,12 +333,12 @@ begin
                if (Announcement > 0) and not FAnnouncement and (FAnnouncementStart <= 0) then
                begin
                  // Set announcment start time in the future
-                 FAnnouncementStart := Now + EncodeTime(0, 0, 6, 0);
+                 FAnnouncementStart := Now + EncodeTime(0, 0, 4, 0);
                end
                else
                begin
                  // Update the end time
-                 FAnnouncementStop := Now + EncodeTime(0, 0, 8, 0);
+                 FAnnouncementStop := Now + EncodeTime(0, 0, 6, 0);
 
                  // Is this a real announcement or false positive?
                  // Cancel it if it has not started, and is not and announcement,
