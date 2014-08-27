@@ -399,6 +399,9 @@ end;
 constructor TMusicPlayer.Create;
 begin
   FPlayProcess := nil;
+
+  // Force getvolume to read the volume.
+  FVolume := -1;
   FVolume := GetVolume;
 
   FID3v1 := TID3v1Tag.Create;
@@ -454,18 +457,23 @@ var
   CommandLine: string;
   PStart, PEnd: Integer;
 begin
-  Result := 50;
-
-  CommandLine := 'amixer -D pulse sget Master';
-
-  if RunCommand(CommandLine, Output) then
+  // Only get the volume once.
+  if FVolume > 0 then Result := FVolume
+  else
   begin
-    PStart := Pos('[', Output) + 1;
-    PEnd := Pos('%', Output);
-    if (PEnd > PStart) and (PStart > 1) then
+    Result := 50;
+
+    CommandLine := 'amixer -D pulse sget Master';
+
+    if RunCommand(CommandLine, Output) then
     begin
-      Output := Copy(Output, PStart, PEnd - PStart);
-      Result := StrToIntDef(Output, 50);
+      PStart := Pos('[', Output) + 1;
+      PEnd := Pos('%', Output);
+      if (PEnd > PStart) and (PStart > 1) then
+      begin
+        Output := Copy(Output, PStart, PEnd - PStart);
+        Result := StrToIntDef(Output, 50);
+      end;
     end;
   end;
 end;
