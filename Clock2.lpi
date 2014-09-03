@@ -160,12 +160,14 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Settings"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="3"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="232"/>
-        <CursorPos X="30" Y="200"/>
+        <TopLine Value="255"/>
+        <CursorPos X="52" Y="269"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit3>
       <Unit4>
@@ -424,7 +426,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="9"/>
         <CursorPos X="36" Y="21"/>
-        <UsageCount Value="166"/>
+        <UsageCount Value="170"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit27>
@@ -494,7 +496,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="32" Y="8"/>
-        <UsageCount Value="111"/>
+        <UsageCount Value="115"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit35>
@@ -543,12 +545,11 @@
         <Filename Value="email.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="Email"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="4"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="96"/>
-        <CursorPos X="50" Y="112"/>
-        <UsageCount Value="32"/>
+        <TopLine Value="100"/>
+        <CursorPos X="68" Y="102"/>
+        <UsageCount Value="36"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit41>
@@ -606,130 +607,130 @@
         <WindowIndex Value="0"/>
         <TopLine Value="27"/>
         <CursorPos X="74" Y="39"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="12"/>
         <Loaded Value="True"/>
       </Unit48>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="email.pas"/>
-        <Caret Line="99" Column="42" TopLine="90"/>
+        <Filename Value="settings.pas"/>
+        <Caret Line="165" Column="36" TopLine="148"/>
       </Position1>
       <Position2>
-        <Filename Value="email.pas"/>
-        <Caret Line="97" Column="26" TopLine="85"/>
+        <Filename Value="settings.pas"/>
+        <Caret Line="163" Column="49" TopLine="147"/>
       </Position2>
       <Position3>
-        <Filename Value="email.pas"/>
-        <Caret Line="119" Column="3" TopLine="100"/>
+        <Filename Value="settings.pas"/>
+        <Caret Line="165" Column="57" TopLine="148"/>
       </Position3>
       <Position4>
-        <Filename Value="email.pas"/>
-        <Caret Line="99" Column="75" TopLine="96"/>
+        <Filename Value="settings.pas"/>
+        <Caret Line="196" Column="75" TopLine="180"/>
       </Position4>
       <Position5>
-        <Filename Value="email.pas"/>
-        <Caret Line="169" Column="1" TopLine="157"/>
+        <Filename Value="settings.pas"/>
+        <Caret Line="213" Column="73" TopLine="197"/>
       </Position5>
       <Position6>
-        <Filename Value="email.pas"/>
-        <Caret Line="181" Column="1" TopLine="161"/>
+        <Filename Value="settings.pas"/>
+        <Caret Line="155" Column="1" TopLine="181"/>
       </Position6>
       <Position7>
-        <Filename Value="email.pas"/>
-        <Caret Line="161" Column="1" TopLine="149"/>
+        <Filename Value="settings.pas"/>
+        <Caret Line="150" Column="64" TopLine="139"/>
       </Position7>
       <Position8>
-        <Filename Value="email.pas"/>
-        <Caret Line="181" Column="1" TopLine="169"/>
+        <Filename Value="settings.pas"/>
+        <Caret Line="15" Column="77" TopLine="1"/>
       </Position8>
       <Position9>
-        <Filename Value="email.pas"/>
-        <Caret Line="182" Column="1" TopLine="169"/>
+        <Filename Value="settings.pas"/>
+        <Caret Line="149" Column="1" TopLine="133"/>
       </Position9>
       <Position10>
-        <Filename Value="email.pas"/>
-        <Caret Line="181" Column="1" TopLine="169"/>
+        <Filename Value="settings.pas"/>
+        <Caret Line="150" Column="1" TopLine="133"/>
       </Position10>
       <Position11>
-        <Filename Value="email.pas"/>
-        <Caret Line="99" Column="1" TopLine="87"/>
+        <Filename Value="settings.pas"/>
+        <Caret Line="151" Column="1" TopLine="133"/>
       </Position11>
       <Position12>
-        <Filename Value="email.pas"/>
-        <Caret Line="120" Column="1" TopLine="109"/>
+        <Filename Value="settings.pas"/>
+        <Caret Line="153" Column="1" TopLine="133"/>
       </Position12>
       <Position13>
-        <Filename Value="email.pas"/>
-        <Caret Line="181" Column="1" TopLine="168"/>
+        <Filename Value="settings.pas"/>
+        <Caret Line="156" Column="1" TopLine="133"/>
       </Position13>
       <Position14>
-        <Filename Value="email.pas"/>
-        <Caret Line="99" Column="1" TopLine="87"/>
+        <Filename Value="settings.pas"/>
+        <Caret Line="158" Column="1" TopLine="133"/>
       </Position14>
       <Position15>
-        <Filename Value="email.pas"/>
-        <Caret Line="120" Column="1" TopLine="109"/>
+        <Filename Value="settings.pas"/>
+        <Caret Line="169" Column="1" TopLine="153"/>
       </Position15>
       <Position16>
-        <Filename Value="email.pas"/>
-        <Caret Line="181" Column="1" TopLine="168"/>
+        <Filename Value="settings.pas"/>
+        <Caret Line="171" Column="1" TopLine="153"/>
       </Position16>
       <Position17>
-        <Filename Value="email.pas"/>
-        <Caret Line="99" Column="1" TopLine="87"/>
+        <Filename Value="settings.pas"/>
+        <Caret Line="172" Column="1" TopLine="153"/>
       </Position17>
       <Position18>
-        <Filename Value="email.pas"/>
-        <Caret Line="120" Column="1" TopLine="109"/>
+        <Filename Value="settings.pas"/>
+        <Caret Line="174" Column="1" TopLine="153"/>
       </Position18>
       <Position19>
-        <Filename Value="email.pas"/>
-        <Caret Line="181" Column="1" TopLine="168"/>
+        <Filename Value="settings.pas"/>
+        <Caret Line="175" Column="1" TopLine="153"/>
       </Position19>
       <Position20>
-        <Filename Value="email.pas"/>
-        <Caret Line="99" Column="1" TopLine="87"/>
+        <Filename Value="settings.pas"/>
+        <Caret Line="177" Column="1" TopLine="153"/>
       </Position20>
       <Position21>
-        <Filename Value="email.pas"/>
-        <Caret Line="120" Column="1" TopLine="109"/>
+        <Filename Value="settings.pas"/>
+        <Caret Line="178" Column="1" TopLine="147"/>
       </Position21>
       <Position22>
-        <Filename Value="email.pas"/>
-        <Caret Line="168" Column="82" TopLine="168"/>
+        <Filename Value="settings.pas"/>
+        <Caret Line="186" Column="30" TopLine="149"/>
       </Position22>
       <Position23>
-        <Filename Value="email.pas"/>
-        <Caret Line="169" Column="1" TopLine="164"/>
+        <Filename Value="settings.pas"/>
+        <Caret Line="153" Column="35" TopLine="136"/>
       </Position23>
       <Position24>
-        <Filename Value="email.pas"/>
-        <Caret Line="181" Column="1" TopLine="164"/>
+        <Filename Value="settings.pas"/>
+        <Caret Line="186" Column="1" TopLine="170"/>
       </Position24>
       <Position25>
-        <Filename Value="email.pas"/>
-        <Caret Line="161" Column="1" TopLine="149"/>
+        <Filename Value="settings.pas"/>
+        <Caret Line="187" Column="1" TopLine="170"/>
       </Position25>
       <Position26>
-        <Filename Value="email.pas"/>
-        <Caret Line="181" Column="1" TopLine="169"/>
+        <Filename Value="settings.pas"/>
+        <Caret Line="150" Column="1" TopLine="134"/>
       </Position26>
       <Position27>
-        <Filename Value="email.pas"/>
-        <Caret Line="182" Column="1" TopLine="169"/>
+        <Filename Value="settings.pas"/>
+        <Caret Line="151" Column="1" TopLine="134"/>
       </Position27>
       <Position28>
-        <Filename Value="email.pas"/>
-        <Caret Line="181" Column="50" TopLine="169"/>
+        <Filename Value="settings.pas"/>
+        <Caret Line="153" Column="1" TopLine="134"/>
       </Position28>
       <Position29>
-        <Filename Value="email.pas"/>
-        <Caret Line="161" Column="1" TopLine="149"/>
+        <Filename Value="settings.pas"/>
+        <Caret Line="155" Column="1" TopLine="134"/>
       </Position29>
       <Position30>
-        <Filename Value="email.pas"/>
-        <Caret Line="99" Column="1" TopLine="87"/>
+        <Filename Value="settings.pas"/>
+        <Caret Line="186" Column="1" TopLine="170"/>
       </Position30>
     </JumpHistory>
   </ProjectOptions>

@@ -12,7 +12,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  Spin, XMLPropStorage, ComCtrls, ExtCtrls, Buttons, Email;
+  Spin, XMLPropStorage, ComCtrls, ExtCtrls, Buttons, Email, BlowFish, base64;
 
 type
 
@@ -91,15 +91,22 @@ type
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormKeyPress(Sender: TObject; var Key: char);
     procedure tmrSettingsTimer(Sender: TObject);
+    procedure XMLPropStorage1RestoreProperties(Sender: TObject);
+    procedure XMLPropStorage1SaveProperties(Sender: TObject);
   private
     { private declarations }
     FTimerActive: boolean;
+    function DecryptString(Key, Value: string): string;
+    function EncryptString(Key, Value: string): string;
   public
     { public declarations }
     function SendFavorites(var Error: string): boolean;
   published
     property TimerActive: boolean read FTimerActive write FTimerActive;
   end;
+
+const
+  ENCRYPTKEY = '732rbnfiuHJGUTgb9yf98714hclk2ejs9867';
 
 var
   frmSettings: TfrmSettings;
@@ -131,6 +138,86 @@ begin
     if btnStartTimer.Caption <> 'Start Timer' then
       btnStartTimer.Caption := 'Start Timer';
   end;
+end;
+
+function TfrmSettings.EncryptString(Key, Value: string): string;
+var
+  en: TBlowFishEncryptStream;
+  s1: TStringStream;
+  temp: String;
+  i, Len: integer;
+begin
+  Value := Trim(Value);
+  Len := Length(Value);
+  Len := 16 - (Len mod 16) + Len;
+
+  for i := Length(Value) to Len do
+  begin
+    Value := Value + ' ';
+  end;
+
+  s1 := TStringStream.Create('');
+  en := TBlowFishEncryptStream.Create(key,s1);
+  en.Write(value[1],Length(value));
+
+  Result := s1.DataString;
+
+  // Make string from encoded data
+  Result := EncodeStringBase64(Result);
+
+  en.Free;
+  s1.Free;
+end;
+
+function TfrmSettings.DecryptString(Key, Value: string): string;
+var
+  de: TBlowFishDeCryptStream;
+  s2: TStringStream;
+  temp: String;
+begin
+  // Make encoded data from string
+  Value := DecodeStringBase64(Value);
+
+  s2 := TStringStream.Create(Value);
+  de := TBlowFishDeCryptStream.Create(key,s2);
+
+  SetLength(temp,s2.Size);
+  de.Read(temp[1],s2.Size);
+
+  Result := Trim(PChar(temp));
+  de.Free;
+  s2.Free;
+end;
+
+procedure TfrmSettings.XMLPropStorage1RestoreProperties(Sender: TObject);
+var
+  Pass: TStringList;
+begin
+  Pass := TStringList.Create;
+
+  try
+    Pass.LoadFromFile(ChangeFileExt(GetAppConfigFile(False), '_data.txt'));
+    if Pass.Count > 0 then
+      edtSMTPPassword.Text := DecryptString(ENCRYPTKEY, Pass.Strings[0]);
+  except
+  end;
+
+  Pass.Free;
+end;
+
+procedure TfrmSettings.XMLPropStorage1SaveProperties(Sender: TObject);
+var
+  Pass: TStringList;
+begin
+  Pass := TStringList.Create;
+
+  try
+    Pass.Add(EncryptString(ENCRYPTKEY, edtSMTPPassword.Text));
+    Pass.SaveToFile(ChangeFileExt(GetAppConfigFile(False), '_data.txt'));
+  except
+  end;
+
+  Pass.Free;
 end;
 
 procedure TfrmSettings.btnStartTimerClick(Sender: TObject);
@@ -181,7 +268,7 @@ begin
 
     if Titles.Count > 0 then
     begin
-      if Mail.Send('clock2utility@gmail', edtEmailAddress.Text, 'Favorite Songs', Titles.Text) then
+      if Mail.Send(Trim(edtSMTPAccount.Text), Trim(edtEmailAddress.Text), 'Clock2 Favorite Songs', Titles.Text) then
       begin
         Titles.Clear;
         Titles.SaveToFile(FavFile);

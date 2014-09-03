@@ -12,16 +12,16 @@ object frmSettings: TfrmSettings
   OnKeyDown = FormKeyDown
   OnKeyPress = FormKeyPress
   Position = poMainFormCenter
-  SessionProperties = 'cbxEnableReminders.Checked;cbxFavoritesAuto.Checked;cbxForceFullscreen.Checked;cbxFri.Checked;cbxGetReminders.Checked;cbxMon.Checked;cbxMonitorConnection.Checked;cbxPlayMusic.Checked;cbxRandomPictures.Checked;cbxSat.Checked;cbxSilentAlarm.Checked;cbxSun.Checked;cbxThu.Checked;cbxTouchScreen.Checked;cbxTue.Checked;cbxWed.Checked;edtConnectionResetComand.Text;edtConnectionTimeout.Value;edtEmailAddress.Text;edtHour.Value;edtLocation1.Text;edtLocation2.Text;edtLocation3.Text;edtLocation.Text;edtMeditationPath.Text;edtMinute.Value;edtMusicPath.Text;edtPicturePath.Text;edtRemHour.Value;edtRemMinute.Value;edtServerAddress.Text;edtServerPort.Text;edtSleepPath.Text;edtTestHost.Text;seDelay.Value;edtSMTPAccount.Text;edtSMTPPassword.Text'
+  SessionProperties = 'cbxEnableReminders.Checked;cbxFavoritesAuto.Checked;cbxForceFullscreen.Checked;cbxFri.Checked;cbxGetReminders.Checked;cbxMon.Checked;cbxMonitorConnection.Checked;cbxPlayMusic.Checked;cbxRandomPictures.Checked;cbxSat.Checked;cbxSilentAlarm.Checked;cbxSun.Checked;cbxThu.Checked;cbxTouchScreen.Checked;cbxTue.Checked;cbxWed.Checked;edtConnectionResetComand.Text;edtConnectionTimeout.Value;edtEmailAddress.Text;edtHour.Value;edtLocation1.Text;edtLocation2.Text;edtLocation3.Text;edtLocation.Text;edtMeditationPath.Text;edtMinute.Value;edtMusicPath.Text;edtPicturePath.Text;edtRemHour.Value;edtRemMinute.Value;edtServerAddress.Text;edtServerPort.Text;edtSleepPath.Text;edtSMTPAccount.Text;edtTestHost.Text;seDelay.Value'
   LCLVersion = '1.0.10.0'
   object PageControl1: TPageControl
     Left = 8
     Height = 216
     Top = 8
     Width = 488
-    ActivePage = TabSheet3
+    ActivePage = TabSheet2
     ParentFont = False
-    TabIndex = 6
+    TabIndex = 0
     TabOrder = 0
     Options = [nboKeyboardTabSwitch]
     object TabSheet2: TTabSheet
@@ -266,14 +266,14 @@ object frmSettings: TfrmSettings
         Width = 40
         Caption = '..'
         OnClick = btnPicturePathClick
-        TabOrder = 0
+        TabOrder = 1
       end
       object edtPicturePath: TEdit
         Left = 115
         Height = 33
         Top = 31
         Width = 293
-        TabOrder = 1
+        TabOrder = 0
       end
       object Label14: TLabel
         Left = 14
@@ -339,7 +339,7 @@ object frmSettings: TfrmSettings
         Height = 33
         Top = 63
         Width = 272
-        TabOrder = 1
+        TabOrder = 2
         Text = '/home/user/Sleep'
       end
       object Label10: TLabel
@@ -358,14 +358,14 @@ object frmSettings: TfrmSettings
         Top = 143
         Width = 169
         Caption = 'Play music after alarm'
-        TabOrder = 3
+        TabOrder = 6
       end
       object edtMeditationPath: TEdit
         Left = 142
         Height = 33
         Top = 107
         Width = 272
-        TabOrder = 2
+        TabOrder = 4
         Text = '/home/user/Meditation'
       end
       object Label11: TLabel
@@ -385,7 +385,7 @@ object frmSettings: TfrmSettings
         Width = 40
         Caption = '..'
         OnClick = btnSelectMusicClick
-        TabOrder = 4
+        TabOrder = 1
       end
       object btnSelectSleep: TButton
         Left = 430
@@ -394,7 +394,7 @@ object frmSettings: TfrmSettings
         Width = 40
         Caption = '..'
         OnClick = btnSelectSleepClick
-        TabOrder = 5
+        TabOrder = 3
       end
       object btnSelectMeditation: TButton
         Left = 430
@@ -403,7 +403,7 @@ object frmSettings: TfrmSettings
         Width = 40
         Caption = '..'
         OnClick = btnSelectMeditationClick
-        TabOrder = 6
+        TabOrder = 5
       end
     end
     object TabSheet7: TTabSheet
@@ -438,14 +438,14 @@ object frmSettings: TfrmSettings
         Width = 192
         Caption = 'Send Favorites'
         OnClick = btnSendFavoritesClick
-        TabOrder = 0
+        TabOrder = 4
       end
       object edtEmailAddress: TEdit
         Left = 14
         Height = 33
         Top = 31
         Width = 456
-        TabOrder = 1
+        TabOrder = 0
       end
       object Label1: TLabel
         Left = 14
@@ -461,14 +461,14 @@ object frmSettings: TfrmSettings
         Top = 143
         Width = 140
         Caption = 'Send Every Week'
-        TabOrder = 2
+        TabOrder = 3
       end
       object edtSMTPAccount: TEdit
         Left = 14
         Height = 33
         Top = 95
-        Width = 256
-        TabOrder = 3
+        Width = 221
+        TabOrder = 1
       end
       object Label4: TLabel
         Left = 14
@@ -479,13 +479,13 @@ object frmSettings: TfrmSettings
         ParentColor = False
       end
       object edtSMTPPassword: TEdit
-        Left = 278
+        Left = 249
         Height = 33
         Top = 95
-        Width = 192
+        Width = 221
         EchoMode = emPassword
         PasswordChar = '*'
-        TabOrder = 4
+        TabOrder = 2
       end
       object Label6: TLabel
         Left = 278
@@ -510,6 +510,8 @@ object frmSettings: TfrmSettings
   end
   object XMLPropStorage1: TXMLPropStorage
     StoredValues = <>
+    OnSaveProperties = XMLPropStorage1SaveProperties
+    OnRestoreProperties = XMLPropStorage1RestoreProperties
     left = 208
     top = 187
   end
