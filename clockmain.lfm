@@ -2651,8 +2651,8 @@ object frmClockMain: TfrmClockMain
   object labSong: TLabel
     Cursor = crNone
     Left = 336
-    Height = 58
-    Top = 222
+    Height = 50
+    Top = 230
     Width = 448
     AutoSize = False
     Caption = 'Song Title'
@@ -2662,6 +2662,7 @@ object frmClockMain: TfrmClockMain
     ParentColor = False
     ParentFont = False
     WordWrap = True
+    OnClick = labSongClick
   end
   object imgMusic: TImage
     Cursor = crNone
@@ -14742,11 +14743,12 @@ object frmClockMain: TfrmClockMain
     ParentColor = False
     ParentFont = False
     WordWrap = True
+    OnClick = labSongClick
   end
   object labSongPrev1: TLabel
     Cursor = crNone
     Left = 328
-    Height = 18
+    Height = 33
     Top = 199
     Width = 460
     AutoSize = False
@@ -14757,6 +14759,7 @@ object frmClockMain: TfrmClockMain
     ParentColor = False
     ParentFont = False
     WordWrap = True
+    OnClick = labSongClick
   end
   object tmrTime: TTimer
     OnTimer = tmrTimeTimer

@@ -7,10 +7,10 @@ uses
   cthreads,
   {$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, Pictures, FindThread, alarm, ClockMain, Settings, {MetOffice,} Reminders,
-  ReminderList, FindPicsThread, udpserver, sync, udpclient,
-  music, commandserver, MusicPlayer, WaitForMedia, PlaylistCreator,
-  TouchList, UniqueInstanceRaw, DateTime, SourcePicker, ConnectionHealth;
+  Forms, Pictures, FindThread, alarm, ClockMain, Settings, Reminders,
+  ReminderList, FindPicsThread, udpserver, sync, udpclient, music,
+  commandserver, MusicPlayer, WaitForMedia, PlaylistCreator, TouchList,
+  UniqueInstanceRaw, DateTime, SourcePicker, ConnectionHealth, Email, lnetbase;
 
 {$IFDEF WINDOWS}{$R picshow.rc}{$ENDIF}
 

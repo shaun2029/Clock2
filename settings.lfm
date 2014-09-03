@@ -19,9 +19,9 @@ object frmSettings: TfrmSettings
     Height = 216
     Top = 8
     Width = 416
-    ActivePage = TabSheet4
+    ActivePage = TabSheet3
     ParentFont = False
-    TabIndex = 2
+    TabIndex = 6
     TabOrder = 0
     Options = [nboKeyboardTabSwitch]
     object TabSheet2: TTabSheet
@@ -425,6 +425,35 @@ object frmSettings: TfrmSettings
         Width = 170
         Caption = 'Touch Screen Support'
         TabOrder = 1
+      end
+    end
+    object TabSheet3: TTabSheet
+      Caption = 'Favourites'
+      ClientHeight = 181
+      ClientWidth = 406
+      object btnSendFavorites: TButton
+        Left = 243
+        Height = 49
+        Top = 119
+        Width = 155
+        Caption = 'Send Favorites'
+        OnClick = btnSendFavoritesClick
+        TabOrder = 0
+      end
+      object edtEmailAddress: TEdit
+        Left = 14
+        Height = 33
+        Top = 31
+        Width = 384
+        TabOrder = 1
+      end
+      object Label1: TLabel
+        Left = 14
+        Height = 22
+        Top = 9
+        Width = 95
+        Caption = 'Email Address:'
+        ParentColor = False
       end
     end
   end

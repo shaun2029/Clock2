@@ -26,7 +26,7 @@ uses
   ConnectionHealth, Unix;
 
 const
-  VERSION = '2.3.7';
+  VERSION = '2.4.0';
 
 type
   TMusicState = (msOff, msPlaying, msPaused);
@@ -91,6 +91,7 @@ type
     procedure imgVolDownClick(Sender: TObject);
     procedure imgVolUpClick(Sender: TObject);
     procedure imgUpdateMusicClick(Sender: TObject);
+    procedure labSongClick(Sender: TObject);
     procedure lbDisplayClick(Sender: TObject);
     procedure lblTimeClick(Sender: TObject);
     procedure lbNextClick(Sender: TObject);
@@ -1225,6 +1226,27 @@ begin
 
   Self.Enabled := True;
   imgUpdateMusic.Picture.Assign(imgOn.Picture);
+end;
+
+procedure TfrmClockMain.labSongClick(Sender: TObject);
+var
+  Titles: TStringList;
+  FavFile: string;
+begin
+  FavFile := ChangeFileExt(FConfigFilename, '_favorites.txt');
+  Titles := TStringList.Create;
+
+  try
+    Titles.LoadFromFile(FavFile);
+    Titles.Insert(0, LabSong.Caption);
+    Titles.SaveToFile(FavFile);
+  except
+    on E: Exception do
+    begin
+    end;
+  end;
+
+  Titles.Free;
 end;
 
 procedure TfrmClockMain.lbDisplayClick(Sender: TObject);

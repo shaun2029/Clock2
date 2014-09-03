@@ -7,7 +7,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  Spin, XMLPropStorage, ComCtrls, ExtCtrls, Buttons;
+  Spin, XMLPropStorage, ComCtrls, ExtCtrls, Buttons, Email;
 
 type
 
@@ -20,6 +20,7 @@ type
     btnSelectSleep: TButton;
     btnSelectMeditation: TButton;
     btnPicturePath: TButton;
+    btnSendFavorites: TButton;
     cbxFri: TCheckBox;
     cbxMon: TCheckBox;
     cbxSat: TCheckBox;
@@ -34,6 +35,7 @@ type
     cbxRandomPictures: TCheckBox;
     cbxForceFullscreen: TCheckBox;
     cbxTouchScreen: TCheckBox;
+    edtEmailAddress: TEdit;
     edtPicturePath: TEdit;
     edtServerPort: TEdit;
     edtServerAddress: TEdit;
@@ -44,6 +46,7 @@ type
     edtSleepPath: TEdit;
     edtRemHour: TSpinEdit;
     edtRemMinute: TSpinEdit;
+    Label1: TLabel;
     Label10: TLabel;
     Label11: TLabel;
     Label12: TLabel;
@@ -60,6 +63,7 @@ type
     stxtTimer: TStaticText;
     TabSheet1: TTabSheet;
     TabSheet2: TTabSheet;
+    TabSheet3: TTabSheet;
     TabSheet4: TTabSheet;
     TabSheet5: TTabSheet;
     TabSheet6: TTabSheet;
@@ -71,6 +75,7 @@ type
     procedure btnSelectMeditationClick(Sender: TObject);
     procedure btnSelectMusicClick(Sender: TObject);
     procedure btnSelectSleepClick(Sender: TObject);
+    procedure btnSendFavoritesClick(Sender: TObject);
     procedure btnStartTimerClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -145,6 +150,24 @@ procedure TfrmSettings.btnSelectSleepClick(Sender: TObject);
 begin
   if dlgSelectDirectoryDialog.Execute then
      edtSleepPath.Text := dlgSelectDirectoryDialog.Filename;
+end;
+
+procedure TfrmSettings.btnSendFavoritesClick(Sender: TObject);
+var
+  Mail: TEmail;
+  Timeout: TDateTime;
+begin
+  Mail := TEmail.Create;
+  Mail.Send('clock2utility@gmail', 'shaun@saintsi.co.uk', 'Test', 'Test');
+
+  Timeout := Now + EncodeTime(0, 5, 30, 0);
+
+  while (Timeout > Now) do
+  begin
+    Application.ProcessMessages;
+  end;
+
+  Mail.Free;
 end;
 
 procedure TfrmSettings.FormCreate(Sender: TObject);

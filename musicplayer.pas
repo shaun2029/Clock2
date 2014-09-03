@@ -9,8 +9,17 @@ unit MusicPlayer;
 
 interface
 
+// Code to support older Lazarus/FPC
+//{$define LEGACY}
+
 uses
-  Classes, SysUtils, Process, ID3v1Library, ID3v2Library, LCLProc, unix;
+  Process,
+  {$ifndef LEGACY}
+  LCLProc,
+  {$else}
+  process_legacy,
+  {$endif}
+  Classes, SysUtils, ID3v1Library, ID3v2Library, unix, Math;
 
 type
 
@@ -30,6 +39,8 @@ type
     FID3v2: TID3v2Tag;
 
     FRadioTitle: string;
+    FNewRadioTitle: string;
+    FTitleUpdateTime: TDateTime;
     FRadioTitleTime: TDateTime;
     FRadioPlaying: boolean;
 
@@ -38,6 +49,7 @@ type
     FAnnouncementStart: TDateTime;
     FAnnouncementStop: TDateTime;
 
+    function DBToVolume(DB: single): integer;
     procedure DestroyPlayProcess;
     function GetRadioTitle: string;
     function GetState: TMusicPlayerState;
@@ -48,6 +60,7 @@ type
     procedure StartPlayProcess(Song: string; out Process: TProcess);
     procedure StopAnnouncement;
     procedure StopSong;
+    function VolumeToDB(Volume: integer): single;
   public
     constructor Create;
     destructor Destroy; override;
@@ -75,6 +88,7 @@ begin
   FSongTitle := '';
   FSongArtist := '';
   FRadioTitle := '';
+  FNewRadioTitle := '';
 
   if FileExists(Song) then
   begin
@@ -98,9 +112,11 @@ begin
     except
       on E: Exception do
       begin
+        {$ifndef LEGACY}
         DebugLn(Self.ClassName + #9#9 + 'Failed to get ID3 Tags for "'
           + ExtractFilename(Song) + '"');
         DebugLn(Self.ClassName + #9#9 + E.Message);
+        {$endif}
       end;
     end;
   end
@@ -124,7 +140,9 @@ begin
   except
     on E: Exception do
     begin
+      {$ifndef LEGACY}
       DebugLn(Self.ClassName + #9#9 + E.Message);
+      {$endif}
     end;
   end;
 end;
@@ -132,10 +150,9 @@ end;
 procedure TMusicPlayer.StartPlayProcess(Song: string; out Process: TProcess);
 begin
   Process := TProcess.Create(nil);
-  Process.Options := Process.Options;
 
   FRadioPlaying := False;
-  FRadioTitleTime := Now;
+  FTitleUpdateTime := Now;
 
   // If announcement in progress stop it.
   if FAnnouncement then
@@ -234,7 +251,7 @@ begin
     FAnnouncement := False;
   end;
 
-  // Override the sing title
+  // Override the song title
   if FAnnouncement then
   begin
     FRadioTitle := 'MUTING ADVERT ...'
@@ -301,7 +318,7 @@ var
 begin
   // ICY Info: StreamTitle='Enos McLeod - Jericho';StreamUrl='';
 
-  if FRadioTitleTime < Now then
+  if FTitleUpdateTime < Now then
   begin
     TitleList := TStringList.Create;
     Title := '';
@@ -375,14 +392,14 @@ begin
            if (p > 1) then
              Title := Copy(Title, 1, p-1);
 
-           FRadioTitle := Title;
+           FNewRadioTitle := Title;
+           FRadioTitleTime := Now + EncodeTime(0, 0, 6, 0);
 
            // Update every second
-           FRadioTitleTime := Now + EncodeTime(0, 0, 1, 0);
+           FTitleUpdateTime := Now + EncodeTime(0, 0, 1, 0);
 
            // Do not let the file grow
            TitleList.Clear;
-           TitleList.Add(Title);
            TitleList.SaveToFile('/tmp/radio-song-titles.txt');
          end;
 
@@ -392,6 +409,11 @@ begin
        TitleList.Free;
     end;
   end;
+
+  // Only update title after delay. This prevents showing the new song
+  // before the old song has ended (due to buffering).
+  if FRadioTitleTime < Now then
+    FRadioTitle := FNewRadioTitle;
 
   Result := FRadioTitle;
 end;
@@ -439,6 +461,26 @@ begin
   SetVolume(FVolume);
 end;
 
+function TMusicPlayer.VolumeToDB(Volume: integer): single;
+begin
+  // 4DB max
+  if Volume > 0 then
+  begin
+    Result := 40 * log10(Volume/100);
+  end
+  else Result := -60;
+end;
+
+function TMusicPlayer.DBToVolume(DB: single): integer;
+begin
+  // 4DB max
+  if DB < 0 then
+  begin
+    Result := Round(100 * Power(10, (DB/40)));
+  end
+  else Result := 100;
+end;
+
 procedure TMusicPlayer.SetVolume(Volume: integer);
 var
   Output: string;
@@ -447,7 +489,12 @@ begin
   if Volume > 100 then Volume := 100
   else if Volume < 0 then Volume := 0;
 
+  {$ifdef LEGACY}
+  CommandLine := 'amixer -- sset PCM playback ' + FloatToStr(VolumeToDB(Volume)) + 'dB';
+  {$else}
   CommandLine := 'amixer -D pulse sset Master ' + IntToStr(Volume) + '%';
+  {$endif}
+
   RunCommand(CommandLine, Output);
 end;
 
@@ -463,10 +510,28 @@ begin
   begin
     Result := 50;
 
+    {$ifdef LEGACY}
+    CommandLine := 'amixer -- sget PCM playback';
+    {$else}
     CommandLine := 'amixer -D pulse sget Master';
+    {$endif}
 
     if RunCommand(CommandLine, Output) then
     begin
+      {$ifdef LEGACY}
+      PStart := Pos('[', Output) + 1;
+      if PStart > 0 then
+      begin
+        Output := Copy(Output, PStart + 1, Length(Output));
+        PStart := Pos('[', Output) + 1;
+        PEnd := Pos('dB', Output);
+        if (PEnd > PStart) and (PStart > 1) then
+        begin
+          Output := Copy(Output, PStart, PEnd - PStart);
+          Result := DBToVolume(StrToFloatDef(Output, -20));
+        end;
+      end;
+      {$else}
       PStart := Pos('[', Output) + 1;
       PEnd := Pos('%', Output);
       if (PEnd > PStart) and (PStart > 1) then
@@ -474,6 +539,7 @@ begin
         Output := Copy(Output, PStart, PEnd - PStart);
         Result := StrToIntDef(Output, 50);
       end;
+      {$endif}
     end;
   end;
 end;
