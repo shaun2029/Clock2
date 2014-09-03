@@ -1,3 +1,9 @@
+//
+// Copyright 2012 Shaun Simpson
+// shauns2029@gmail.com
+//
+// Email sending via Gmail SMTP
+// Uses lNet components
 
 unit Email;
 
@@ -10,7 +16,8 @@ uses
 
 type
 
-  { TForm1 }
+  TAppProcessMessage = procedure of object;
+  TSMTPState = (smConnecting, smConnected, smAuthenticating, smAuthenticated, smSuccess, smError);
 
   { TEmail }
 
@@ -20,6 +27,8 @@ type
     SSL: TLSSLSessionComponent;
     SMTP: TLSMTPClientComponent;
     FFrom, FRecipients, FSubject, FMsg: string;
+    FState: TSMTPState;
+    FProcessMessages: TAppProcessMessage;
 
     procedure Authenticate;
     procedure SMTPConnect(aSocket: TLSocket);
@@ -32,6 +41,9 @@ type
     { public declarations }
     Error: string;
     Success: Boolean;
+
+    constructor Create(ProcessMessages: TAppProcessMessage);
+
     function Send(From, Recipients, Subject, Msg: string): boolean;
   end;
 
@@ -40,8 +52,10 @@ implementation
 { TEmail }
 
 function TEmail.Send(From, Recipients, Subject, Msg: string): boolean;
+var
+  Timeout: TDateTime;
 begin
-  Success := False;
+  Result := False;
   Error := '';
   FFrom := From;
   FRecipients := Recipients;
@@ -58,8 +72,22 @@ begin
   SMTP.OnError := @SMTPError;
   SMTP.OnFailure := @SMTPFailure;
   SMTP.OnSuccess := @SMTPSuccess;
+  FState := smConnecting;
   Result := SMTP.Connect('smtp.gmail.com', 465);
-  //SMTP.StartTLS;
+
+  Timeout := Now + EncodeTime(0, 0, 30, 0);
+
+  while (Timeout > Now) do
+  begin
+    FProcessMessages;
+    if (FState = smError) or (FState = smSuccess) then
+      break;
+  end;
+
+  Result := (FState = smSuccess);
+
+  SMTP.Free;
+  SSL.Free;
 end;
 
 procedure TEmail.SMTPFailure(aSocket: TLSocket;
@@ -67,12 +95,16 @@ procedure TEmail.SMTPFailure(aSocket: TLSocket;
 begin
   case aStatus of
     ssCon,
-    ssEhlo: Authenticate;
+    ssEhlo,
     ssData: begin
               SMTP.Rset;
             end;
     ssQuit: begin
               SMTP.Disconnect;
+            end;
+    ssRcpt: begin
+              Error := 'Recipient address error "' + FRecipients + '".';
+              FState := smError
             end;
   end;
 end;
@@ -80,38 +112,50 @@ end;
 procedure TEmail.SMTPError(const msg: string; aSocket: TLSocket);
 begin
   Error := msg;
+  FState := smError;
 end;
 
 procedure TEmail.SMTPSuccess(aSocket: TLSocket; const aStatus: TLSMTPStatus);
 begin
-case aStatus of
-  ssCon : begin
-            if SMTP.HasFeature('EHLO') then // check for EHLO support
-              SMTP.Ehlo('smtp.gmail.com')
-            else
-              SMTP.Helo('smtp.gmail.com');
-          end;
-  ssEhlo: Authenticate;
-  ssAuthLogin,
-  ssAuthPlain : Authenticate;
-  ssData: Success := True;
-  ssQuit: begin
-            SMTP.Disconnect;
-          end;
-end;
+  case aStatus of
+    ssCon : begin
+              if SMTP.HasFeature('EHLO') then // check for EHLO support
+                SMTP.Ehlo('smtp.gmail.com')
+              else
+                SMTP.Helo('smtp.gmail.com');
+            end;
+    ssEhlo:
+      begin
+        Authenticate;
+      end;
+    ssData: begin
+              if FState = smAuthenticated then
+                FState := smSuccess;
+            end;
+
+    ssQuit: begin
+              SMTP.Disconnect;
+            end;
+  end;
 end;
 
 procedure TEmail.Authenticate;
 begin
-  if SMTP.HasFeature('AUTH LOGIN') then // use login if possible
-    SMTP.AuthLogin('clock2utility', 'jtQdjd1v17648977frwnbmFs')
-  else if SMTP.HasFeature('AUTH PLAIN') then // fall back to plain if possible
-    SMTP.AuthPlain('clock2utility', 'jtQdjd1v17648977frwnbmFs');
+  if FState = smConnected then
+  begin
+    if SMTP.HasFeature('AUTH LOGIN') then // use login if possible
+      SMTP.AuthLogin('clock2utility', 'jtQdjd1v17648977frwnbmFs')
+    else if SMTP.HasFeature('AUTH PLAIN') then // fall back to plain if possible
+      SMTP.AuthPlain('clock2utility', 'jtQdjd1v17648977frwnbmFs');
+    FState := smAuthenticating;
+  end;
 end;
 
 procedure TEmail.SMTPConnect(aSocket: TLSocket);
 begin
+//  SMTP.StartTLS;
   SMTP.SendMail(FFrom, FRecipients, FSubject, FMsg);
+  FState := smConnected;
 end;
 
 procedure TEmail.SMTPReceive(aSocket: TLSocket);
@@ -122,13 +166,20 @@ begin
   begin
     st := StringReplace(s, #13, '', [rfReplaceAll]);
     st := StringReplace(st, #10, '', [rfReplaceAll]);
-    Error := st;
+
+    if (FState = smAuthenticating) and (Pos ('250', st) = 1) then
+      FState := smAuthenticated;
   end;
 end;
 
 procedure TEmail.SSLSSLConnect(aSocket: TLSocket);
 begin
   SMTP.Ehlo;
+end;
+
+constructor TEmail.Create(ProcessMessages: TAppProcessMessage);
+begin
+  FProcessMessages := ProcessMessages;
 end;
 
 

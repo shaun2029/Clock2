@@ -12,7 +12,7 @@ object frmSettings: TfrmSettings
   OnKeyDown = FormKeyDown
   OnKeyPress = FormKeyPress
   Position = poMainFormCenter
-  SessionProperties = 'cbxEnableReminders.Checked;cbxForceFullscreen.Checked;cbxFri.Checked;cbxGetReminders.Checked;cbxMon.Checked;cbxPlayMusic.Checked;cbxRandomPictures.Checked;cbxSat.Checked;cbxSilentAlarm.Checked;cbxSun.Checked;cbxThu.Checked;cbxTouchScreen.Checked;cbxTue.Checked;cbxWed.Checked;edtConnectionTimeout.Value;edtHour.Value;edtLocation1.Text;edtLocation2.Text;edtLocation3.Text;edtLocation.Text;edtMeditationPath.Text;edtMinute.Value;edtMusicPath.Text;edtPicturePath.Text;edtRemHour.Value;edtRemMinute.Value;edtServerAddress.Text;edtServerPort.Text;edtSleepPath.Text;seDelay.Value;cbxMonitorConnection.Checked;edtConnectionResetComand.Text;edtTestHost.Text'
+  SessionProperties = 'cbxEnableReminders.Checked;cbxForceFullscreen.Checked;cbxFri.Checked;cbxGetReminders.Checked;cbxMon.Checked;cbxMonitorConnection.Checked;cbxPlayMusic.Checked;cbxRandomPictures.Checked;cbxSat.Checked;cbxSilentAlarm.Checked;cbxSun.Checked;cbxThu.Checked;cbxTouchScreen.Checked;cbxTue.Checked;cbxWed.Checked;edtConnectionResetComand.Text;edtConnectionTimeout.Value;edtEmailAddress.Text;edtHour.Value;edtLocation1.Text;edtLocation2.Text;edtLocation3.Text;edtLocation.Text;edtMeditationPath.Text;edtMinute.Value;edtMusicPath.Text;edtPicturePath.Text;edtRemHour.Value;edtRemMinute.Value;edtServerAddress.Text;edtServerPort.Text;edtSleepPath.Text;edtTestHost.Text;seDelay.Value;cbxFavoritesAuto.Checked'
   LCLVersion = '1.0.10.0'
   object PageControl1: TPageControl
     Left = 8
@@ -454,6 +454,14 @@ object frmSettings: TfrmSettings
         Width = 95
         Caption = 'Email Address:'
         ParentColor = False
+      end
+      object cbxFavoritesAuto: TCheckBox
+        Left = 14
+        Height = 25
+        Top = 71
+        Width = 140
+        Caption = 'Send Every Week'
+        TabOrder = 2
       end
     end
   end

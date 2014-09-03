@@ -133,6 +133,8 @@ type
     FDisplay: PDisplay;
     FAlarmActive: boolean;
 
+    FFavoritesAuto: boolean;
+
     procedure BacklightBright;
     procedure BacklightDim;
 
@@ -526,6 +528,7 @@ begin
 
     if labSong.Caption <> Song then
     begin
+      labSong.Font.Color := clWhite;
       labSongPrev2.Caption := labSongPrev1.Caption;
       labSongPrev1.Caption := labSong.Caption;
       labSong.Caption := Song;
@@ -573,8 +576,17 @@ procedure TfrmClockMain.tmrMinuteTimer(Sender: TObject);
 var
   Rems: string;
   CurrentList: TStringList;
+  H, M, S, Ms: word;
+  Error: String;
 begin
   tmrMinute.Enabled := False;
+
+
+  DecodeTime(Now, H, M, S, Ms);
+
+  // Try and send favorites every week for 1 munute.
+  if FFavoritesAuto and (DayOfWeek(Now) = 7) and ((H * 10) + M < 2) then
+    frmSettings.SendFavorites(Error);
 
   // Reminders every two minutes
   if tmrMinute.Tag >= 1 then
@@ -1231,18 +1243,25 @@ end;
 procedure TfrmClockMain.labSongClick(Sender: TObject);
 var
   Titles: TStringList;
-  FavFile: string;
+  FavFile, TimeStr: string;
 begin
+  if labSong.Font.Color = clYellow then Exit;
+  // Signal that the favorite has been added.
+  labSong.Font.Color := clYellow;
+
   FavFile := ChangeFileExt(FConfigFilename, '_favorites.txt');
   Titles := TStringList.Create;
 
   try
-    Titles.LoadFromFile(FavFile);
-    Titles.Insert(0, LabSong.Caption);
+    DateTimeToString(TimeStr, 'yyyy/mm/dd hh:nn:ss :- ', Now);
+    if FileExists(FavFile) then
+      Titles.LoadFromFile(FavFile);
+    Titles.Insert(0, TimeStr + LabSong.Caption);
     Titles.SaveToFile(FavFile);
   except
     on E: Exception do
     begin
+      ShowMessage('Exception: ' + E.Message);
     end;
   end;
 
@@ -1512,6 +1531,8 @@ var
   Hours: Integer;
   Player: TPlayer;
 begin
+  FFavoritesAuto := frmSettings.cbxFavoritesAuto.Checked;
+
   FAlarm.Days[1] := frmSettings.cbxSun.Checked;
   FAlarm.Days[2] := frmSettings.cbxMon.Checked;
   FAlarm.Days[3] := frmSettings.cbxTue.Checked;

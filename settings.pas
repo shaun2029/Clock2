@@ -1,3 +1,8 @@
+//
+// Copyright 2012 Shaun Simpson
+// shauns2029@gmail.com
+//
+
 unit Settings;
 
 {$mode objfpc}{$H+}
@@ -35,6 +40,7 @@ type
     cbxRandomPictures: TCheckBox;
     cbxForceFullscreen: TCheckBox;
     cbxTouchScreen: TCheckBox;
+    cbxFavoritesAuto: TCheckBox;
     edtEmailAddress: TEdit;
     edtPicturePath: TEdit;
     edtServerPort: TEdit;
@@ -86,6 +92,7 @@ type
     FTimerActive: boolean;
   public
     { public declarations }
+    function SendFavorites(var Error: string): boolean;
   published
     property TimerActive: boolean read FTimerActive write FTimerActive;
   end;
@@ -152,22 +159,73 @@ begin
      edtSleepPath.Text := dlgSelectDirectoryDialog.Filename;
 end;
 
-procedure TfrmSettings.btnSendFavoritesClick(Sender: TObject);
+function TfrmSettings.SendFavorites(var Error: string): boolean;
 var
   Mail: TEmail;
-  Timeout: TDateTime;
+  Titles: TStringList;
+  FavFile: string;
 begin
-  Mail := TEmail.Create;
-  Mail.Send('clock2utility@gmail', 'shaun@saintsi.co.uk', 'Test', 'Test');
+  Result := False;
+  Error := '';
 
-  Timeout := Now + EncodeTime(0, 5, 30, 0);
+  Mail := TEmail.Create(@Application.ProcessMessages);
+  FavFile := ChangeFileExt(GetAppConfigFile(False), '_favorites.txt');
+  Titles := TStringList.Create;
 
-  while (Timeout > Now) do
-  begin
-    Application.ProcessMessages;
+  try
+    Titles.LoadFromFile(FavFile);
+
+    if Titles.Count > 0 then
+    begin
+      if Mail.Send('clock2utility@gmail', edtEmailAddress.Text, 'Favorite Songs', Titles.Text) then
+      begin
+        Titles.Clear;
+        Titles.SaveToFile(FavFile);
+        Result := True;
+      end
+      else Error := Mail.Error;
+    end;
+  except
+    on E: Exception do
+    begin
+    end;
   end;
 
+  Titles.Free;
   Mail.Free;
+end;
+
+procedure TfrmSettings.btnSendFavoritesClick(Sender: TObject);
+var
+  Titles: TStringList;
+  FavFile, Error: string;
+begin
+  FavFile := ChangeFileExt(GetAppConfigFile(False), '_favorites.txt');
+  Titles := TStringList.Create;
+
+  try
+    if FileExists(FavFile) then
+    begin
+      Titles.LoadFromFile(FavFile);
+
+      if Titles.Count > 0 then
+      begin
+        if SendFavorites(Error) then
+          ShowMessage('Successfully sent ' + IntToStr(Titles.Count) + ' favorites.')
+        else
+          ShowMessage('Error sending favorites.' + LineEnding + 'ERROR: ' + Error);
+      end
+      else ShowMessage('Noting to send, select a favorite title.');
+    end
+    else ShowMessage('Noting to send, select a favorite title.');
+  except
+    on E: Exception do
+    begin
+      ShowMessage('Exception: ' + E.Message);
+    end;
+  end;
+
+  Titles.Free;
 end;
 
 procedure TfrmSettings.FormCreate(Sender: TObject);
