@@ -137,19 +137,23 @@ begin
   begin
     if i + Offset > High(Sources) then
     begin
-      FButtons[i].Visible := False;
-      FLabels[i].Visible := False;
+      if FButtons[i].Visible <> False then
+      begin
+        FButtons[i].Visible := False;
+        FLabels[i].Visible := False;
+      end;
     end
     else
     begin
       FButtons[i].Tag := i + Offset;
-      FButtons[i].OnClick := lbMusicClick;
       FLabels[i].Tag := i + Offset;
-      FLabels[i].OnClick := lbMusicClick;
       FLabels[i].Caption := Sources[i+ Offset].Title;
 
-      FButtons[i].Visible := True;
-      FLabels[i].Visible := True;
+      if FButtons[i].Visible <> True then
+      begin
+        FButtons[i].Visible := True;
+        FLabels[i].Visible := True;
+      end;
     end;
   end;
 end;
@@ -193,6 +197,12 @@ begin
   FLabels[9] := lbMusic9;
   FLabels[10] := lbMusic10;
   FLabels[11] := lbMusic11;
+
+  for i := 0 to BUTTONCOUNT - 1 do
+  begin
+    FButtons[i].OnClick := lbMusicClick;
+    FLabels[i].OnClick := lbMusicClick;
+  end;
 
   PopulateSelections(FPage, FSources);
 end;

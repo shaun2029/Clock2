@@ -129,10 +129,14 @@ type
     FDisplay: PDisplay;
     FAlarmActive: boolean;
 
+    FRadioPicker: TfrmSourcePicker;
+    FMusicPicker: TfrmSourcePicker;
+
     FFavoritesAuto: boolean;
 
     procedure BacklightBright;
     procedure BacklightDim;
+    procedure CreateMusicPicker;
 
     function DayOfWeekStr(Date: TDateTime): string;
     procedure DisplayVolume;
@@ -203,9 +207,8 @@ begin
           msrcMeditation: FMeditationPlayer.Stop;
           msrcRadio: FRadioPlayer.Stop;
         end;
-
-	      FMusicState := msPaused;
-	    end;
+      FMusicState := msPaused;
+    end;
   end;
 end;
 
@@ -819,6 +822,8 @@ begin
 
   FRadioStation := 0;
   LoadRadioStations;
+  FRadioPicker := TfrmSourcePicker.Create(Self, FSources);
+  CreateMusicPicker;
 
 {$IFDEF GRABXKEYS}
   GrabMediaKeys;
@@ -834,6 +839,8 @@ begin
 {$IFDEF GRABXKEYS}
   ReleaseMediaKeys;
 {$ENDIF}
+  FRadioPicker.Free;
+  FMusicPicker.Free;
 end;
 
 procedure TfrmClockMain.FormActivate(Sender: TObject);
@@ -1064,14 +1071,10 @@ begin
   Close;
 end;
 
-procedure TfrmClockMain.imgMusicClick(Sender: TObject);
+procedure TfrmClockMain.CreateMusicPicker;
 var
-  Picker: TfrmSourcePicker;
   Sources: TSourceArray;
 begin
-  imgMusic.Picture.Assign(imgOff.Picture);
-  Application.ProcessMessages;
-
   SetLength(Sources, 3);
   Sources[0].Title := 'Music';
   Sources[1].Title := 'Meditation';
@@ -1080,22 +1083,32 @@ begin
   Sources[1].Resource := '';
   Sources[2].Resource := '';
 
-  Picker := TfrmSourcePicker.Create(Self, Sources);
+  FMusicPicker := TfrmSourcePicker.Create(Self, Sources);
+end;
+
+procedure TfrmClockMain.imgMusicClick(Sender: TObject);
+var
+  Sources: TSourceArray;
+begin
+  imgMusic.Picture.Assign(imgOff.Picture);
+  Application.ProcessMessages;
 
   if frmSettings.cbxForceFullscreen.Checked then
   begin
-    Picker.BorderStyle := bsNone;
+    if FMusicPicker.BorderStyle <> bsNone then
+      FMusicPicker.BorderStyle := bsNone;
   end
   else
   begin
-    Picker.BorderStyle := bsSingle;
+    if FMusicPicker.BorderStyle <> bsSingle then
+      FMusicPicker.BorderStyle := bsSingle;
   end;
 
-  SetCursorType(Picker);
+  SetCursorType(FMusicPicker);
 
-  if Picker.ShowModal = mrOK then
+  if FMusicPicker.ShowModal = mrOK then
   begin
-    case Picker.ItemIndex of
+    case FMusicPicker.ItemIndex of
       0:   SetMusicSource(msrcMusic);
       1:   SetMusicSource(msrcMeditation);
       2:   SetMusicSource(msrcSleep);
@@ -1104,8 +1117,6 @@ begin
     if not FAlarmActive then PlayMusic
     else PauseMusic;
   end;
-
-  Picker.Free;
 
   imgMusic.Picture.Assign(imgOn.Picture);
 end;
@@ -1236,8 +1247,6 @@ begin
 end;
 
 procedure TfrmClockMain.imgRadioClick(Sender: TObject);
-var
-  Picker: TfrmSourcePicker;
 begin
   imgRadio.Picture.Assign(imgOff.Picture);
   Application.ProcessMessages;
@@ -1260,30 +1269,28 @@ begin
   end
   else
   begin
-    Picker := TfrmSourcePicker.Create(Self, FSources);
-
     if frmSettings.cbxForceFullscreen.Checked then
     begin
-      Picker.BorderStyle := bsNone;
+      if FRadioPicker.BorderStyle <> bsNone then
+        FRadioPicker.BorderStyle := bsNone;
     end
     else
     begin
-      Picker.BorderStyle := bsSingle;
+      if FRadioPicker.BorderStyle <> bsSingle then
+        FRadioPicker.BorderStyle := bsSingle;
     end;
 
-    SetCursorType(Picker);
+    SetCursorType(FRadioPicker);
 
-    if Picker.ShowModal = mrOK then
+    if FRadioPicker.ShowModal = mrOK then
     begin
       SetMusicSource(msrcRadio);
-      FRadioPlayer.StreamTitle := FSources[Picker.ItemIndex].Title;
-      FRadioPlayer.StreamURL := FSources[Picker.ItemIndex].Resource;
+      FRadioPlayer.StreamTitle := FSources[FRadioPicker.ItemIndex].Title;
+      FRadioPlayer.StreamURL := FSources[FRadioPicker.ItemIndex].Resource;
 
       if not FAlarmActive then PlayMusic
       else PauseMusic;
     end;
-
-    Picker.Free;
   end;
 
   imgRadio.Picture.Assign(imgOn.Picture);

@@ -291,6 +291,7 @@ var
   Titles: TStringList;
   FavFile, Error: string;
 begin
+  Self.Enabled := False;
   FavFile := ChangeFileExt(GetAppConfigFile(False), '_favorites.txt');
   Titles := TStringList.Create;
 
@@ -317,6 +318,7 @@ begin
   end;
 
   Titles.Free;
+  Self.Enabled := True;
 end;
 
 procedure TfrmSettings.FormCreate(Sender: TObject);
