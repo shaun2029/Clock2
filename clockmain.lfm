@@ -14698,7 +14698,7 @@ object frmClockMain: TfrmClockMain
     ParentFont = False
     OnClick = lbPreviousClick
   end
-  object lbWeatherSummary: TLabel
+  object lbReminderSummary: TLabel
     Cursor = crNone
     Left = 326
     Height = 112
@@ -14765,12 +14765,6 @@ object frmClockMain: TfrmClockMain
     OnTimer = tmrTimeTimer
     left = 450
     top = 128
-  end
-  object tmrWeather: TTimer
-    Interval = 15000
-    OnTimer = tmrWeatherTimer
-    left = 450
-    top = 80
   end
   object tmrMinute: TTimer
     Interval = 60000

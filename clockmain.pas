@@ -57,7 +57,7 @@ type
     labSongPrev2: TLabel;
     labSongPrev1: TLabel;
     lbPlayAlbums: TLabel;
-    lbWeatherSummary: TLabel;
+    lbReminderSummary: TLabel;
     lbExit: TLabel;
     lbMusic: TLabel;
     Radio: TLabel;
@@ -75,7 +75,6 @@ type
     UpdateMusic: TLabel;
     lbSettings: TLabel;
     tmrMinute: TTimer;
-    tmrWeather: TTimer;
     tmrTime: TTimer;
     procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
@@ -102,7 +101,6 @@ type
     procedure lbSettingsClick(Sender: TObject);
     procedure lbSleepClick(Sender: TObject);
     procedure tmrTimeTimer(Sender: TObject);
-    procedure tmrWeatherTimer(Sender: TObject);
     procedure tmrMinuteTimer(Sender: TObject);
   private
     { private declarations }
@@ -127,8 +125,6 @@ type
     FSources: TSourceArray;
 
     FCOMServer: TCOMServer;
-    FWeatherReport: string;
-    FWeatherReports: array [0..4] of string;
 
     FDisplay: PDisplay;
     FAlarmActive: boolean;
@@ -433,28 +429,6 @@ begin
 
   if tmrTime.Tag >= 1 then
   begin
-    tmrWeather.Enabled := True;
-
-    // Disable weather update around alarm times
-    if (Current > FAlarm.AlarmTime - EncodeTime(0, 5, 0, 0))
-      and (Current < FAlarm.AlarmTime + EncodeTime(0, 5, 0, 0)) then
-    begin
-      tmrWeather.Enabled := False;
-    end;
-
-    // Disable weather when reminder alarm about to be activated
-    if (Length(FCurrentReminders) > 0) and (Current > FReminderAlarm.AlarmTime - EncodeTime(0, 2, 0, 0))
-      and (Current < FReminderAlarm.AlarmTime + EncodeTime(0, 0, 10, 0)) then
-    begin
-      tmrWeather.Enabled := False;
-    end;
-
-    // Do not update weather if reminder is displayed
-    if (lbWeatherSummary.Font.Color = clYellow) then
-    begin
-      tmrWeather.Enabled := False;
-    end;
-
     // Turn off timer
     if Current > FTimer.AlarmTime + EncodeTime(0, 5, 0, 0) then
     begin
@@ -473,13 +447,12 @@ begin
 
     if (FReminderAlarm.State = asActive) and (ReminderState <> asActive) then
     begin
-      lbWeatherSummary.Font.Color := clYellow;
+      lbReminderSummary.Font.Color := clYellow;
       ReminderList := TStringList.Create;
       frmReminders.SortReminders(FCurrentReminders);
       frmReminders.PopulateList(FCurrentReminders, ReminderList);
-      lbWeatherSummary.Caption := ReminderList.Text;
+      lbReminderSummary.Caption := ReminderList.Text;
       ReminderList.Free;
-      tmrWeather.Enabled := False;
     end;
 
     case FMusicSource of
@@ -562,14 +535,6 @@ begin
       end;
   end;
 {$ENDIF}
-end;
-
-procedure TfrmClockMain.tmrWeatherTimer(Sender: TObject);
-begin
-  tmrWeather.Enabled := False;
-  // Every 60 Minutes
-  tmrWeather.Interval := 60 * 60 * 1000;
-  tmrWeather.Enabled := True;
 end;
 
 procedure TfrmClockMain.tmrMinuteTimer(Sender: TObject);
@@ -850,8 +815,6 @@ begin
   FCOMServer := TCOMServer.Create(44558);
   FCOMServer.OnCommand := ComServerCallback;
 
-  FWeatherReport := '';
-
   FLinuxDateTime := TLinuxDateTime.Create;
 
   FRadioStation := 0;
@@ -925,7 +888,6 @@ begin
       'S - Play sleep music / skip song' + LineEnding +
       'P - Stop music' + LineEnding +
       'U - Update music' + LineEnding + LineEnding +
-      'N - Next weather location' + LineEnding +
       'R - Reminders'  + LineEnding + LineEnding +
       'Smiley :-) - Exit');
   end
