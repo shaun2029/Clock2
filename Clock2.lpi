@@ -117,7 +117,7 @@
         <PackageName Value="LCL"/>
       </Item3>
     </RequiredPackages>
-    <Units Count="48">
+    <Units Count="49">
       <Unit0>
         <Filename Value="Clock2.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -135,7 +135,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Pictures"/>
-        <EditorIndex Value="10"/>
+        <EditorIndex Value="7"/>
         <WindowIndex Value="0"/>
         <TopLine Value="168"/>
         <CursorPos X="79" Y="170"/>
@@ -162,8 +162,8 @@
         <UnitName Value="Settings"/>
         <EditorIndex Value="3"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="41" Y="223"/>
+        <TopLine Value="232"/>
+        <CursorPos X="30" Y="200"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -185,11 +185,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ClockMain"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1231"/>
-        <CursorPos X="22" Y="1250"/>
+        <TopLine Value="1246"/>
+        <CursorPos X="38" Y="1242"/>
         <UsageCount Value="207"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -421,11 +420,11 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="SourcePicker"/>
-        <EditorIndex Value="11"/>
+        <EditorIndex Value="8"/>
         <WindowIndex Value="0"/>
         <TopLine Value="9"/>
         <CursorPos X="36" Y="21"/>
-        <UsageCount Value="164"/>
+        <UsageCount Value="166"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit27>
@@ -491,11 +490,11 @@
         <Filename Value="connectionhealth.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="ConnectionHealth"/>
-        <EditorIndex Value="9"/>
+        <EditorIndex Value="6"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="32" Y="8"/>
-        <UsageCount Value="109"/>
+        <UsageCount Value="111"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit35>
@@ -544,53 +543,46 @@
         <Filename Value="email.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="Email"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="4"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="83"/>
-        <CursorPos X="1" Y="96"/>
-        <UsageCount Value="30"/>
+        <TopLine Value="96"/>
+        <CursorPos X="50" Y="112"/>
+        <UsageCount Value="32"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit41>
       <Unit42>
-        <Filename Value="/home/shaun/Lazarus/lnet/lib/lnetssl.pp"/>
+        <Filename Value="/Lazarus/lnet/lib/lnetssl.pp"/>
         <UnitName Value="lNetSSL"/>
-        <EditorIndex Value="8"/>
         <WindowIndex Value="0"/>
         <TopLine Value="573"/>
         <CursorPos X="1" Y="585"/>
         <UsageCount Value="14"/>
-        <Loaded Value="True"/>
       </Unit42>
       <Unit43>
-        <Filename Value="/home/shaun/Lazarus/lnet/lib/lnet.pp"/>
+        <Filename Value="/Lazarus/lnet/lib/lnet.pp"/>
         <UnitName Value="lNet"/>
-        <EditorIndex Value="7"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1485"/>
         <CursorPos X="1" Y="1701"/>
         <UsageCount Value="14"/>
-        <Loaded Value="True"/>
       </Unit43>
       <Unit44>
-        <Filename Value="/home/shaun/Lazarus/lnet/lib/lsmtp.pp"/>
+        <Filename Value="/Lazarus/lnet/lib/lsmtp.pp"/>
         <UnitName Value="lsmtp"/>
-        <EditorIndex Value="6"/>
         <WindowIndex Value="0"/>
         <TopLine Value="31"/>
         <CursorPos X="39" Y="40"/>
         <UsageCount Value="13"/>
-        <Loaded Value="True"/>
       </Unit44>
       <Unit45>
-        <Filename Value="/home/shaun/Lazarus/lnet/lazaruspackage/lnetcomponents.pas"/>
+        <Filename Value="/Lazarus/lnet/lazaruspackage/lnetcomponents.pas"/>
         <UnitName Value="lNetComponents"/>
-        <EditorIndex Value="5"/>
         <WindowIndex Value="0"/>
         <TopLine Value="100"/>
         <CursorPos X="18" Y="118"/>
         <UsageCount Value="13"/>
-        <Loaded Value="True"/>
       </Unit45>
       <Unit46>
         <Filename Value="/usr/lib/lazarus/1.0.10/lcl/forms.pp"/>
@@ -607,127 +599,137 @@
         <CursorPos X="23" Y="192"/>
         <UsageCount Value="10"/>
       </Unit47>
+      <Unit48>
+        <Filename Value="/home/shaun/Lazarus/lnet/lib/lsmtp.pp"/>
+        <UnitName Value="lsmtp"/>
+        <EditorIndex Value="5"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="27"/>
+        <CursorPos X="74" Y="39"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit48>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="settings.pas"/>
-        <Caret Line="1" Column="40" TopLine="1"/>
+        <Filename Value="email.pas"/>
+        <Caret Line="99" Column="42" TopLine="90"/>
       </Position1>
       <Position2>
-        <Filename Value="settings.pas"/>
-        <Caret Line="28" Column="21" TopLine="8"/>
+        <Filename Value="email.pas"/>
+        <Caret Line="97" Column="26" TopLine="85"/>
       </Position2>
       <Position3>
-        <Filename Value="settings.pas"/>
-        <Caret Line="84" Column="31" TopLine="64"/>
+        <Filename Value="email.pas"/>
+        <Caret Line="119" Column="3" TopLine="100"/>
       </Position3>
       <Position4>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="588" Column="29" TopLine="577"/>
+        <Filename Value="email.pas"/>
+        <Caret Line="99" Column="75" TopLine="96"/>
       </Position4>
       <Position5>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="email.pas"/>
+        <Caret Line="169" Column="1" TopLine="157"/>
       </Position5>
       <Position6>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="517" Column="24" TopLine="460"/>
+        <Filename Value="email.pas"/>
+        <Caret Line="181" Column="1" TopLine="161"/>
       </Position6>
       <Position7>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="email.pas"/>
+        <Caret Line="161" Column="1" TopLine="149"/>
       </Position7>
       <Position8>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="531" Column="19" TopLine="511"/>
+        <Filename Value="email.pas"/>
+        <Caret Line="181" Column="1" TopLine="169"/>
       </Position8>
       <Position9>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1248" Column="1" TopLine="1243"/>
+        <Filename Value="email.pas"/>
+        <Caret Line="182" Column="1" TopLine="169"/>
       </Position9>
       <Position10>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1250" Column="1" TopLine="1243"/>
+        <Filename Value="email.pas"/>
+        <Caret Line="181" Column="1" TopLine="169"/>
       </Position10>
       <Position11>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1252" Column="1" TopLine="1243"/>
+        <Filename Value="email.pas"/>
+        <Caret Line="99" Column="1" TopLine="87"/>
       </Position11>
       <Position12>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1253" Column="1" TopLine="1243"/>
+        <Filename Value="email.pas"/>
+        <Caret Line="120" Column="1" TopLine="109"/>
       </Position12>
       <Position13>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1255" Column="1" TopLine="1243"/>
+        <Filename Value="email.pas"/>
+        <Caret Line="181" Column="1" TopLine="168"/>
       </Position13>
       <Position14>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1256" Column="1" TopLine="1243"/>
+        <Filename Value="email.pas"/>
+        <Caret Line="99" Column="1" TopLine="87"/>
       </Position14>
       <Position15>
         <Filename Value="email.pas"/>
-        <Caret Line="125" Column="34" TopLine="111"/>
+        <Caret Line="120" Column="1" TopLine="109"/>
       </Position15>
       <Position16>
         <Filename Value="email.pas"/>
-        <Caret Line="116" Column="1" TopLine="111"/>
+        <Caret Line="181" Column="1" TopLine="168"/>
       </Position16>
       <Position17>
         <Filename Value="email.pas"/>
-        <Caret Line="118" Column="1" TopLine="111"/>
+        <Caret Line="99" Column="1" TopLine="87"/>
       </Position17>
       <Position18>
         <Filename Value="email.pas"/>
-        <Caret Line="119" Column="1" TopLine="111"/>
+        <Caret Line="120" Column="1" TopLine="109"/>
       </Position18>
       <Position19>
         <Filename Value="email.pas"/>
-        <Caret Line="136" Column="1" TopLine="125"/>
+        <Caret Line="181" Column="1" TopLine="168"/>
       </Position19>
       <Position20>
         <Filename Value="email.pas"/>
-        <Caret Line="116" Column="1" TopLine="109"/>
+        <Caret Line="99" Column="1" TopLine="87"/>
       </Position20>
       <Position21>
         <Filename Value="email.pas"/>
-        <Caret Line="118" Column="1" TopLine="109"/>
+        <Caret Line="120" Column="1" TopLine="109"/>
       </Position21>
       <Position22>
         <Filename Value="email.pas"/>
-        <Caret Line="116" Column="1" TopLine="142"/>
+        <Caret Line="168" Column="82" TopLine="168"/>
       </Position22>
       <Position23>
         <Filename Value="email.pas"/>
-        <Caret Line="153" Column="1" TopLine="142"/>
+        <Caret Line="169" Column="1" TopLine="164"/>
       </Position23>
       <Position24>
         <Filename Value="email.pas"/>
-        <Caret Line="116" Column="1" TopLine="104"/>
+        <Caret Line="181" Column="1" TopLine="164"/>
       </Position24>
       <Position25>
         <Filename Value="email.pas"/>
-        <Caret Line="96" Column="1" TopLine="84"/>
+        <Caret Line="161" Column="1" TopLine="149"/>
       </Position25>
       <Position26>
         <Filename Value="email.pas"/>
-        <Caret Line="116" Column="1" TopLine="104"/>
+        <Caret Line="181" Column="1" TopLine="169"/>
       </Position26>
       <Position27>
         <Filename Value="email.pas"/>
-        <Caret Line="78" Column="38" TopLine="78"/>
+        <Caret Line="182" Column="1" TopLine="169"/>
       </Position27>
       <Position28>
         <Filename Value="email.pas"/>
-        <Caret Line="88" Column="10" TopLine="85"/>
+        <Caret Line="181" Column="50" TopLine="169"/>
       </Position28>
       <Position29>
         <Filename Value="email.pas"/>
-        <Caret Line="105" Column="11" TopLine="93"/>
+        <Caret Line="161" Column="1" TopLine="149"/>
       </Position29>
       <Position30>
         <Filename Value="email.pas"/>
-        <Caret Line="106" Column="65" TopLine="100"/>
+        <Caret Line="99" Column="1" TopLine="87"/>
       </Position30>
     </JumpHistory>
   </ProjectOptions>
@@ -763,15 +765,6 @@
     </Other>
   </CompilerOptions>
   <Debugging>
-    <BreakPoints Count="1">
-      <Item1>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="email.pas"/>
-        <Line Value="115"/>
-      </Item1>
-    </BreakPoints>
     <Exceptions Count="6">
       <Item1>
         <Name Value="EAbort"/>

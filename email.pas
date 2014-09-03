@@ -29,6 +29,8 @@ type
     FFrom, FRecipients, FSubject, FMsg: string;
     FState: TSMTPState;
     FProcessMessages: TAppProcessMessage;
+    FSMTPAccount: string;
+    FSMTPPassword: string;
 
     procedure Authenticate;
     procedure SMTPConnect(aSocket: TLSocket);
@@ -42,7 +44,7 @@ type
     Error: string;
     Success: Boolean;
 
-    constructor Create(ProcessMessages: TAppProcessMessage);
+    constructor Create(SMTPAccount, SMTPPassword: string; ProcessMessages: TAppProcessMessage);
 
     function Send(From, Recipients, Subject, Msg: string): boolean;
   end;
@@ -79,6 +81,7 @@ begin
 
   while (Timeout > Now) do
   begin
+    Sleep(100);
     FProcessMessages;
     if (FState = smError) or (FState = smSuccess) then
       break;
@@ -93,6 +96,9 @@ end;
 procedure TEmail.SMTPFailure(aSocket: TLSocket;
   const aStatus: TLSMTPStatus);
 begin
+  if (FState = smAuthenticating) or (aStatus = ssAuthPlain) or (aStatus = ssAuthLogin) then
+    Error := 'Authentication error for account "' + FSMTPAccount + '".';
+
   case aStatus of
     ssCon,
     ssEhlo,
@@ -103,10 +109,15 @@ begin
               SMTP.Disconnect;
             end;
     ssRcpt: begin
-              Error := 'Recipient address error "' + FRecipients + '".';
-              FState := smError
+              if Error = '' then
+                Error := 'Recipient address error "' + FRecipients + '".';
             end;
   end;
+
+  if Error = '' then
+    Error := 'Unknown error.';
+
+  FState := smError
 end;
 
 procedure TEmail.SMTPError(const msg: string; aSocket: TLSocket);
@@ -144,9 +155,9 @@ begin
   if FState = smConnected then
   begin
     if SMTP.HasFeature('AUTH LOGIN') then // use login if possible
-      SMTP.AuthLogin('clock2utility', 'jtQdjd1v17648977frwnbmFs')
+      SMTP.AuthLogin(FSMTPAccount, FSMTPPassword)
     else if SMTP.HasFeature('AUTH PLAIN') then // fall back to plain if possible
-      SMTP.AuthPlain('clock2utility', 'jtQdjd1v17648977frwnbmFs');
+      SMTP.AuthPlain(FSMTPAccount, FSMTPPassword);
     FState := smAuthenticating;
   end;
 end;
@@ -167,7 +178,7 @@ begin
     st := StringReplace(s, #13, '', [rfReplaceAll]);
     st := StringReplace(st, #10, '', [rfReplaceAll]);
 
-    if (FState = smAuthenticating) and (Pos ('250', st) = 1) then
+    if (FState = smAuthenticating) and (Pos ('235', st) = 1) then
       FState := smAuthenticated;
   end;
 end;
@@ -177,8 +188,11 @@ begin
   SMTP.Ehlo;
 end;
 
-constructor TEmail.Create(ProcessMessages: TAppProcessMessage);
+constructor TEmail.Create(SMTPAccount, SMTPPassword: string;
+  ProcessMessages: TAppProcessMessage);
 begin
+  FSMTPAccount := SMTPAccount;
+  FSMTPPassword := SMTPPassword;
   FProcessMessages := ProcessMessages;
 end;
 

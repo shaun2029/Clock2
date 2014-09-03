@@ -41,7 +41,9 @@ type
     cbxForceFullscreen: TCheckBox;
     cbxTouchScreen: TCheckBox;
     cbxFavoritesAuto: TCheckBox;
+    edtSMTPPassword: TEdit;
     edtEmailAddress: TEdit;
+    edtSMTPAccount: TEdit;
     edtPicturePath: TEdit;
     edtServerPort: TEdit;
     edtServerAddress: TEdit;
@@ -61,7 +63,9 @@ type
     Label15: TLabel;
     Label2: TLabel;
     Label3: TLabel;
+    Label4: TLabel;
     Label5: TLabel;
+    Label6: TLabel;
     Label9: TLabel;
     PageControl1: TPageControl;
     dlgSelectDirectoryDialog: TSelectDirectoryDialog;
@@ -168,7 +172,7 @@ begin
   Result := False;
   Error := '';
 
-  Mail := TEmail.Create(@Application.ProcessMessages);
+  Mail := TEmail.Create(edtSMTPAccount.Text, edtSMTPPassword.Text, @Application.ProcessMessages);
   FavFile := ChangeFileExt(GetAppConfigFile(False), '_favorites.txt');
   Titles := TStringList.Create;
 
@@ -215,9 +219,9 @@ begin
         else
           ShowMessage('Error sending favorites.' + LineEnding + 'ERROR: ' + Error);
       end
-      else ShowMessage('Noting to send, select a favorite title.');
+      else ShowMessage('Nothing to send, select a favorite title.');
     end
-    else ShowMessage('Noting to send, select a favorite title.');
+    else ShowMessage('Nothing to send, select a favorite title.');
   except
     on E: Exception do
     begin
