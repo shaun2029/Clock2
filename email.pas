@@ -12,11 +12,10 @@ unit Email;
 interface
 
 uses
-  Classes, SysUtils, lSMTP, lNet, lNetSSL, lNetComponents;
+  Classes, SysUtils, lSMTP, lNet, lNetSSL;
 
 type
 
-  TAppProcessMessage = procedure of object;
   TSMTPState = (smConnecting, smConnected, smAuthenticating, smAuthenticated, smSuccess, smError);
 
   { TEmail }
@@ -24,11 +23,10 @@ type
   TEmail = class
   private
     { private declarations }
-    SSL: TLSSLSessionComponent;
-    SMTP: TLSMTPClientComponent;
+    SSL: TLSSLSession;
+    SMTP: TLSMTPClient;
     FFrom, FRecipients, FSubject, FMsg: string;
     FState: TSMTPState;
-    FProcessMessages: TAppProcessMessage;
     FSMTPAccount: string;
     FSMTPPassword: string;
 
@@ -44,7 +42,7 @@ type
     Error: string;
     Success: Boolean;
 
-    constructor Create(SMTPAccount, SMTPPassword: string; ProcessMessages: TAppProcessMessage);
+    constructor Create(SMTPAccount, SMTPPassword: string);
 
     function Send(From, Recipients, Subject, Msg: string): boolean;
   end;
@@ -64,8 +62,8 @@ begin
   FSubject := Subject;
   FMsg := Msg;
 
-  SMTP := TLSMTPClientComponent.Create(nil);
-  SSL := TLSSLSessionComponent.Create(nil);
+  SMTP := TLSMTPClient.Create(nil);
+  SSL := TLSSLSession.Create(nil);
   SMTP.Session := SSL;
   SSL.SSLActive := True;
   SSL.OnSSLConnect := @SSLSSLConnect;
@@ -82,7 +80,8 @@ begin
   while (Timeout > Now) do
   begin
     Sleep(100);
-    FProcessMessages;
+    SMTP.CallAction;
+
     if (FState = smError) or (FState = smSuccess) then
       break;
   end;
@@ -188,12 +187,10 @@ begin
   SMTP.Ehlo;
 end;
 
-constructor TEmail.Create(SMTPAccount, SMTPPassword: string;
-  ProcessMessages: TAppProcessMessage);
+constructor TEmail.Create(SMTPAccount, SMTPPassword: string);
 begin
   FSMTPAccount := SMTPAccount;
   FSMTPPassword := SMTPPassword;
-  FProcessMessages := ProcessMessages;
 end;
 
 

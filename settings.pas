@@ -259,7 +259,7 @@ begin
   Result := False;
   Error := '';
 
-  Mail := TEmail.Create(edtSMTPAccount.Text, edtSMTPPassword.Text, @Application.ProcessMessages);
+  Mail := TEmail.Create(edtSMTPAccount.Text, edtSMTPPassword.Text);
   FavFile := ChangeFileExt(GetAppConfigFile(False), '_favorites.txt');
   Titles := TStringList.Create;
 

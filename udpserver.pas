@@ -22,6 +22,7 @@ type
 
   TUDPServerThread = class(TThread)
   protected
+    FSocket: TUDPBlockSocket;
     FData: TStringList;
 
     procedure Execute; override;
@@ -100,7 +101,6 @@ end;
 
 procedure TUDPServerThread.Execute;
 var
-  Socket: TUDPBlockSocket;
   Buffer: string;
   DataBuff: string;
   Pos: integer;
@@ -109,13 +109,12 @@ var
 begin
   {$IFDEF DEBUG} Log('UPDSRV: Running ...'); {$ENDIF}
 
-  Socket := TUDPBlockSocket.Create;
   try
-    Socket.Bind('0.0.0.0', '44559');
+    FSocket.Bind('0.0.0.0', '44559');
 
-    if Socket.LastError <> 0 then
+    if FSocket.LastError <> 0 then
     begin
-      Log(Format('Bind failed with error code %d', [Socket.LastError]));
+      Log(Format('Bind failed with error code %d', [FSocket.LastError]));
       while not Terminated do Sleep(100);
     end
     else
@@ -124,9 +123,9 @@ begin
         while not Terminated do
         begin
           // wait one second for new packet
-          Buffer := Socket.RecvPacket(1000);
+          Buffer := FSocket.RecvPacket(1000);
 
-          if Socket.LastError = 0 then
+          if FSocket.LastError = 0 then
           begin
             if Buffer = 'REQUEST REMINDERS' then
             begin
@@ -138,7 +137,7 @@ begin
               Critical.Leave;
 
               // Send packet with reminder total
-              Socket.SendString('REMINDERS:' + IntToStr(Total));
+              FSocket.SendString('REMINDERS:' + IntToStr(Total));
 
               Pos := 1;
               PakNo := 1;
@@ -148,7 +147,7 @@ begin
               begin
                 Buffer := 'REMPAK:' + IntToStr(PakNo) + ';' + Copy(DataBuff, Pos, 500);
 
-                Socket.SendString(Buffer);
+                FSocket.SendString(Buffer);
                 Inc(Pos, 500);
                 Inc(PakNo);
               end;
@@ -158,11 +157,10 @@ begin
           end;
         end;
       finally
-        Socket.CloseSocket;
+        FSocket.CloseSocket;
       end;
     end;
   finally
-    Socket.Free;
   end;
 
   {$IFDEF DEBUG} Log('UPDSRV: Stopped ...'); {$ENDIF}
@@ -171,6 +169,8 @@ end;
 constructor TUDPServerThread.Create(Data: string);
 begin
   inherited Create(False);
+
+  FSocket := TUDPBlockSocket.Create;
 
   Critical := TCriticalSection.Create;
   FData := TStringList.Create;
@@ -181,6 +181,8 @@ destructor TUDPServerThread.Destroy;
 begin
   FData.Free;
   Critical.Free;
+  FSocket.CloseSocket;
+  FSocket.Free;
 
   inherited Destroy;
 end;
