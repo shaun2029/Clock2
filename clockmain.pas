@@ -26,7 +26,7 @@ uses
   ConnectionHealth, Unix;
 
 const
-  VERSION = '2.4.1';
+  VERSION = '2.4.2';
 
 type
   TMusicState = (msOff, msPlaying, msPaused);
@@ -236,8 +236,11 @@ begin
         msPlaying:
           begin
             Player.Next; // if playing play next track
-	        end;
+	  end;
       end;
+
+      // Display volume when play back is started.
+      DisplayVolume;
 
       FMusicState := msPlaying;
     end;
