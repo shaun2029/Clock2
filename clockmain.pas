@@ -23,10 +23,10 @@ uses
   ExtCtrls, {MetOffice,} Alarm, Settings, Reminders, ReminderList, LCLProc,
   Music, Sync, Process, MusicPlayer, PlaylistCreator, commandserver,
   X, Xlib, CTypes, WaitForMedia, Pictures, DateTime, SourcePicker,
-  ConnectionHealth, Unix;
+  ConnectionHealth, Unix, Email;
 
 const
-  VERSION = '2.4.2';
+  VERSION = '2.4.3';
 
 type
   TMusicState = (msOff, msPlaying, msPaused);
@@ -115,6 +115,7 @@ type
     FAfterAlarmResumeMusic: boolean;
     FLinuxDateTime: TLinuxDateTime;
     FRadioStation: integer;
+    FEmailReminders: boolean;
 
     FConfigFilename: string;
 
@@ -149,6 +150,7 @@ type
     procedure PlayAlbums;
     procedure PlayMusic;
     procedure PlayPreviousMusic;
+    procedure SendReminders(Reminders: String);
     procedure SetCursorType(MyForm: TForm);
     procedure SetMonitorState(State: boolean);
     procedure SetMusicSource(Source: TMusicSource);
@@ -406,6 +408,33 @@ begin
   end;
 end;
 
+procedure TfrmClockMain.SendReminders(Reminders: String);
+var
+  Mail: TEmail;
+  Titles: TStringList;
+begin
+  Mail := TEmail.Create(frmSettings.edtSMTPAccount.Text, frmSettings.edtSMTPPassword.Text);
+  Titles := TStringList.Create;
+
+  try
+    Titles.Text := Reminders;
+
+    if Titles.Count > 0 then
+    begin
+      // ToDo: Errors
+      Mail.Send(Trim(frmSettings.edtSMTPAccount.Text), Trim(frmSettings.edtEmailAddress.Text),
+        'Clock2 Reminders', Titles.Text);
+    end;
+  except
+    on E: Exception do
+    begin
+    end;
+  end;
+
+  Titles.Free;
+  Mail.Free;
+end;
+
 procedure TfrmClockMain.tmrTimeTimer(Sender: TObject);
 var
   Current: TDateTime;
@@ -458,6 +487,12 @@ begin
       frmReminders.SortReminders(FCurrentReminders);
       frmReminders.PopulateList(FCurrentReminders, ReminderList);
       lbReminderSummary.Caption := ReminderList.Text;
+
+      if FEmailReminders then
+      begin
+        SendReminders(ReminderList.Text);
+      end;
+
       ReminderList.Free;
     end;
 
@@ -1517,6 +1552,8 @@ begin
     frmSettings.edtMinute.Value, 0, 0);
 
   FAlarm.Silent := frmSettings.cbxSilentAlarm.Checked;
+
+  FEmailReminders := frmSettings.cbxEmailReminders.Checked;
 
   if frmSettings.TimerActive then
   begin

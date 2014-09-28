@@ -41,6 +41,7 @@ type
     cbxForceFullscreen: TCheckBox;
     cbxTouchScreen: TCheckBox;
     cbxFavoritesAuto: TCheckBox;
+    cbxEmailReminders: TCheckBox;
     edtSMTPPassword: TEdit;
     edtEmailAddress: TEdit;
     edtSMTPAccount: TEdit;
