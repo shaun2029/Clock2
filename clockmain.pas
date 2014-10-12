@@ -995,7 +995,11 @@ begin
   else if (Key = 'r') or (Key = 'R') then frmReminderList.Show
   else if (Key = 'n') or (Key = 'N') then
   begin
-    imgRadioClick(nil);
+    //imgRadioClick(nil);
+    SetMusicSource(msrcRadio);
+
+    if not FAlarmActive then PlayMusic
+    else PauseMusic;
   end
   else if (Key = 'm') or (Key = 'M') then
   begin
