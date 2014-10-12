@@ -2650,14 +2650,14 @@ object frmClockMain: TfrmClockMain
   end
   object labSong: TLabel
     Cursor = crNone
-    Left = 336
-    Height = 50
-    Top = 230
-    Width = 448
+    Left = 340
+    Height = 42
+    Top = 239
+    Width = 444
     AutoSize = False
     Caption = 'Song Title'
     Font.Color = clWhite
-    Font.Height = -19
+    Font.Height = -16
     Font.Name = 'Sans'
     ParentColor = False
     ParentFont = False
@@ -14732,13 +14732,13 @@ object frmClockMain: TfrmClockMain
   object labSongPrev2: TLabel
     Cursor = crNone
     Left = 324
-    Height = 18
-    Top = 178
+    Height = 21
+    Top = 176
     Width = 460
     AutoSize = False
     Caption = 'Song Title'
     Font.Color = clWhite
-    Font.Height = -12
+    Font.Height = -11
     Font.Name = 'Sans'
     ParentColor = False
     ParentFont = False
@@ -14747,14 +14747,14 @@ object frmClockMain: TfrmClockMain
   end
   object labSongPrev1: TLabel
     Cursor = crNone
-    Left = 328
+    Left = 331
     Height = 33
-    Top = 199
-    Width = 460
+    Top = 200
+    Width = 453
     AutoSize = False
     Caption = 'Song Title'
     Font.Color = clWhite
-    Font.Height = -15
+    Font.Height = -13
     Font.Name = 'Sans'
     ParentColor = False
     ParentFont = False
