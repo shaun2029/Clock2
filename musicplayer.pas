@@ -312,7 +312,7 @@ var
   Title: string;
   TitleList: TStringList;
   p, Len, i, v: integer;
-  Announcement, StreamTitle: integer;
+  Announcement: integer;
   AnnouncmentInProgress: boolean;
   H, M, S, MS: word;
 begin
@@ -331,48 +331,43 @@ begin
         TitleList.LoadFromFile('/tmp/radio-song-titles.txt');
 
          // Detect announcments (Adverts)
-         for i := TitleList.Count - 1 downto 0 do
+         i := TitleList.Count - 1;
+         if (i >= 0) then
          begin
-           // Advert detection  needs a stream tile and a SKY.FM
-           StreamTitle := Pos('StreamTitle=', TitleList.Strings[i]);
-           if StreamTitle > 0 then
-             Announcement := Pos('SKY.FM', TitleList.Strings[i]);
+           // Advert detection search for SKY.FM
+           Announcement := Pos('SKY.FM', UpperCase(TitleList.Strings[i]));
+           if (Announcement = 0) then
+             Announcement := Pos('adw_ad=''true''', TitleList.Strings[i]);
 
-           // Is there a stream title?
-           if (StreamTitle > 0) then
+           // Is there an announcement?
+           if (Announcement > 0) then
            begin
-             // Is this a current message (latest on the list)?
-             if (i = TitleList.Count - 1) then
+             AnnouncmentInProgress := True;
+
+             // Is an announcement, and is it known about and sheduled?
+             if (Announcement > 0) and not FAnnouncement and (FAnnouncementStart <= 0) then
              begin
-               AnnouncmentInProgress := Announcement > 0;
+               // Set announcment start time in the future
+               FAnnouncementStart := Now + EncodeTime(0, 0, 4, 0);
+             end
+             else
+             begin
+               // Update the end time
+               FAnnouncementStop := Now + EncodeTime(0, 0, 6, 0);
 
-               // Is an announcement, and is it known about and sheduled?
-               if (Announcement > 0) and not FAnnouncement and (FAnnouncementStart <= 0) then
+               // Is this a real announcement or false positive?
+               // Cancel it if it has not started, and is not and announcement,
+               // and an anouncement start time has been triggered.
+               if not FAnnouncement and (Announcement <= 0)
+                 and (FAnnouncementStart > 0 )
+                 and (FAnnouncementStop > FAnnouncementStart) then
                begin
-                 // Set announcment start time in the future
-                 FAnnouncementStart := Now + EncodeTime(0, 0, 4, 0);
-               end
-               else
-               begin
-                 // Update the end time
-                 FAnnouncementStop := Now + EncodeTime(0, 0, 6, 0);
+                 DecodeTime(FAnnouncementStop - FAnnouncementStart, H, M, S, MS);
 
-                 // Is this a real announcement or false positive?
-                 // Cancel it if it has not started, and is not and announcement,
-                 // and an anouncement start time has been triggered.
-                 if not FAnnouncement and (Announcement <= 0)
-                   and (FAnnouncementStart > 0 )
-                   and (FAnnouncementStop > FAnnouncementStart) then
-                 begin
-                   DecodeTime(FAnnouncementStop - FAnnouncementStart, H, M, S, MS);
-
-                   // If the length of the announcement is less than 5 seconds cancel it.
-                   if (H + M <= 0) and (S < 5) then FAnnouncementStart := 0;
-                 end;
+                 // If the length of the announcement is less than 5 seconds cancel it.
+                 if (H + M <= 0) and (S < 5) then FAnnouncementStart := 0;
                end;
              end;
-
-             Break;
            end;
          end;
 

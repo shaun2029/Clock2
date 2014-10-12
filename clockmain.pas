@@ -26,7 +26,7 @@ uses
   ConnectionHealth, Unix, Email;
 
 const
-  VERSION = '2.4.3';
+  VERSION = '2.4.4';
 
 type
   TMusicState = (msOff, msPlaying, msPaused);
