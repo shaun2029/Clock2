@@ -29,6 +29,8 @@ type
 
   TMusicPlayer  = class
   private
+    FUsePulseVol, FVolAttenuation: boolean;
+    FMixerControl: string;
     FVolume: integer;
     FPlayProcess: TProcess;
     FPlayTimeout: TDateTime;
@@ -62,7 +64,7 @@ type
     procedure StopSong;
     function VolumeToDB(Volume: integer): single;
   public
-    constructor Create;
+    constructor Create(MixerControl : string; UsePulseVol: boolean);
     destructor Destroy; override;
 
     procedure Play(Filename: string);
@@ -76,6 +78,7 @@ type
     property SongTitle: string read FSongTitle;
     property State: TMusicPlayerState read GetState;
     property RadioTitle: string read GetRadioTitle;
+    property VolAttenuation: boolean read FVolAttenuation write FVolAttenuation;
   end;
 
 implementation
@@ -169,18 +172,30 @@ begin
     supports replaygain. }
 
   if not FileExists(Song) or not FileExists('/usr/bin/mpg123')
-    or not (LowerCase(ExtractFileExt(Song)) = '.mp3') then
+    or not (LowerCase(ExtractFileExt(Song)) = '.mp3') or FVolAttenuation then
   begin
     if not FileExists(Song) then
     begin
       FRadioPlaying := True;
 
-      Process.CommandLine := 'bash -c ''mplayer -cache 256 -cache-min 50 "' + Song + '" '
+      Process.CommandLine := 'bash -c ''mplayer -cache 1024 ';
+
+      // Lower the volume if required.
+      // Attenuation will attenuate the playback volume level by 18dB to compensate for headphone amp.
+      if FVolAttenuation then
+         Process.CommandLine := Process.CommandLine + '-af volume=-18:0 ';
+
+      Process.CommandLine := Process.CommandLine + '"' + Song + '" '
         + '| grep --line-buffered "StreamTitle" > /tmp/radio-song-titles.txt'''
     end
     else
     begin
-      Process.CommandLine := 'mplayer -cache 256 -cache-min 50 "' + Song + '"'
+      Process.CommandLine := 'mplayer -cache 1024 ';
+
+      if FVolAttenuation then
+         Process.CommandLine := Process.CommandLine + '-af volume=-18:0 ';
+
+      Process.CommandLine := Process.CommandLine + '"' + Song + '"';
     end;
   end
   else
@@ -353,7 +368,7 @@ begin
              else
              begin
                // Update the end time
-               FAnnouncementStop := Now + EncodeTime(0, 0, 6, 0);
+               FAnnouncementStop := Now + EncodeTime(0, 0, 4, 0);
 
                // Is this a real announcement or false positive?
                // Cancel it if it has not started, and is not and announcement,
@@ -388,7 +403,7 @@ begin
              Title := Copy(Title, 1, p-1);
 
            FNewRadioTitle := Title;
-           FRadioTitleTime := Now + EncodeTime(0, 0, 6, 0);
+           FRadioTitleTime := Now + EncodeTime(0, 0, 4, 0);
 
            // Update every second
            FTitleUpdateTime := Now + EncodeTime(0, 0, 1, 0);
@@ -413,8 +428,12 @@ begin
   Result := FRadioTitle;
 end;
 
-constructor TMusicPlayer.Create;
+constructor TMusicPlayer.Create(MixerControl : string; UsePulseVol: boolean);
 begin
+  FMixerControl := MixerControl;
+  FUsePulseVol := UsePulseVol;
+  FVolAttenuation := False;
+
   FPlayProcess := nil;
 
   // Force getvolume to read the volume.
@@ -484,11 +503,12 @@ begin
   if Volume > 100 then Volume := 100
   else if Volume < 0 then Volume := 0;
 
-  {$ifdef LEGACY}
-  CommandLine := 'amixer -- sset PCM playback ' + FloatToStr(VolumeToDB(Volume)) + 'dB';
-  {$else}
-  CommandLine := 'amixer -D pulse sset Master ' + IntToStr(Volume) + '%';
-  {$endif}
+  if FUsePulseVol then
+    CommandLine := 'amixer -D pulse sset ''' + FMixerControl + ''' '
+  else
+    CommandLine := 'amixer -- sset ''' + FMixerControl + ''' playback ';
+
+  CommandLine := CommandLine + IntToStr(Volume) + '%';
 
   RunCommand(CommandLine, Output);
 end;
@@ -505,28 +525,13 @@ begin
   begin
     Result := 50;
 
-    {$ifdef LEGACY}
-    CommandLine := 'amixer -- sget PCM playback';
-    {$else}
-    CommandLine := 'amixer -D pulse sget Master';
-    {$endif}
+    if FUsePulseVol then
+      CommandLine := 'amixer -D pulse sget ''' + FMixerControl
+    else
+      CommandLine := 'amixer -- sget ''' + FMixerControl + ''' playback';
 
     if RunCommand(CommandLine, Output) then
     begin
-      {$ifdef LEGACY}
-      PStart := Pos('[', Output) + 1;
-      if PStart > 0 then
-      begin
-        Output := Copy(Output, PStart + 1, Length(Output));
-        PStart := Pos('[', Output) + 1;
-        PEnd := Pos('dB', Output);
-        if (PEnd > PStart) and (PStart > 1) then
-        begin
-          Output := Copy(Output, PStart, PEnd - PStart);
-          Result := DBToVolume(StrToFloatDef(Output, -20));
-        end;
-      end;
-      {$else}
       PStart := Pos('[', Output) + 1;
       PEnd := Pos('%', Output);
       if (PEnd > PStart) and (PStart > 1) then
@@ -534,7 +539,6 @@ begin
         Output := Copy(Output, PStart, PEnd - PStart);
         Result := StrToIntDef(Output, 50);
       end;
-      {$endif}
     end;
   end;
 end;
