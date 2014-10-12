@@ -10,7 +10,8 @@ uses
   Forms, Pictures, FindThread, alarm, ClockMain, Settings, Reminders,
   ReminderList, FindPicsThread, udpserver, sync, udpclient, music,
   commandserver, MusicPlayer, WaitForMedia, PlaylistCreator, TouchList,
-  UniqueInstanceRaw, DateTime, SourcePicker, ConnectionHealth, Email, lnetbase;
+  UniqueInstanceRaw, DateTime, SourcePicker, ConnectionHealth, Email,
+  SignalHandler, lnetbase;
 
 {$IFDEF WINDOWS}{$R picshow.rc}{$ENDIF}
 
@@ -26,6 +27,9 @@ begin
     Application.CreateForm(TfrmReminders, frmReminders);
     Application.CreateForm(TfrmReminderList, frmReminderList);
     Application.CreateForm(TfrmSourcePicker, frmSourcePicker);
+
+    InitSignalHandlers;
+    OnSignal := @frmClockMain.SignalCallback;
     Application.Run;
   end;
 end.
