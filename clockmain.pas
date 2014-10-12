@@ -23,10 +23,10 @@ uses
   ExtCtrls, {MetOffice,} Alarm, Settings, Reminders, ReminderList, LCLProc,
   Music, Sync, Process, MusicPlayer, PlaylistCreator, commandserver,
   X, Xlib, CTypes, WaitForMedia, Pictures, DateTime, SourcePicker,
-  ConnectionHealth, Unix, Email;
+  ConnectionHealth, Unix, Email, IniFiles, SignalHandler;
 
 const
-  VERSION = '2.4.4';
+  VERSION = '2.5.0';
 
 type
   TMusicState = (msOff, msPlaying, msPaused);
@@ -150,6 +150,7 @@ type
     procedure PlayAlbums;
     procedure PlayMusic;
     procedure PlayPreviousMusic;
+    procedure ProcessCommand(Command: TRemoteCommand);
     procedure SendReminders(Reminders: String);
     procedure SetCursorType(MyForm: TForm);
     procedure SetMonitorState(State: boolean);
@@ -174,7 +175,7 @@ type
     { public declarations }
     HTTPBuffer: string;
     function WaitForMedia(Path: string): boolean;
-
+    procedure SignalCallback(Command: TRemoteCommand);
   published
   end;
 
@@ -809,19 +810,30 @@ end;
 procedure TfrmClockMain.FormCreate(Sender: TObject);
 var
   i: Integer;
+  MixerControl : string;
+  UsePulseVol: boolean;
+  IniFile: TIniFile;
 begin
-  FConfigFilename := GetAppConfigFile(False);
-
   Self.Color := clBlack;
-
-//  FMetOffice := nil;
 
   labSong.Caption := '';
   labSongPrev1.Caption := '';
   labSongPrev2.Caption := '';
 
+  FConfigFilename := GetAppConfigFile(False);
+  UsePulseVol := True;
+  MixerControl := 'Master';
 
-  FMPGPlayer := TMusicPlayer.Create;
+  IniFile := TIniFile.Create(FConfigFilename);
+
+  try
+    UsePulseVol := IniFile.ReadBool('Volume', 'UsePulse', UsePulseVol);
+    MixerControl := IniFile.ReadString('Volume', 'MixerControl', MixerControl);
+  finally
+    IniFile.Free;
+  end;
+
+  FMPGPlayer := TMusicPlayer.Create(MixerControl, UsePulseVol);
   DisplayVolume;
 
   FAlarm := TAlarm.Create(FMPGPlayer);
@@ -862,7 +874,6 @@ begin
   LoadRadioStations;
   FRadioPicker := TfrmSourcePicker.Create(Self, FSources);
   CreateMusicPicker;
-
 {$IFDEF GRABXKEYS}
   GrabMediaKeys;
 {$ENDIF}
@@ -1350,10 +1361,19 @@ end;
 procedure TfrmClockMain.ComServerCallback;
 var
   Command: TRemoteCommand;
+begin
+  ProcessCommand(FComServer.GetCommand);
+end;
+
+procedure TfrmClockMain.SignalCallback(Command: TRemoteCommand);
+begin
+  ProcessCommand(Command);
+end;
+
+procedure TfrmClockMain.ProcessCommand(Command: TRemoteCommand);
+var
   Key: Char;
 begin
-  Command := FComServer.GetCommand;
-
   case Command of
     rcomNext:
       begin
