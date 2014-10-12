@@ -742,7 +742,7 @@ begin
     FSources[16].Title := 'Roots Reggae';
     FSources[16].Resource := 'http://pub8.sky.fm/radiotunes_rootsreggae';
     FSources[17].Title := 'Roots Legacy Reggae';
-    FSources[17].Resource := 'http://88.191.164.141:443/stream/1/';
+    FSources[17].Resource := 'http://rootslegacy.fr:8080/listen.pls?sid=1';
     FSources[18].Title := 'Ska';
     FSources[18].Resource := 'http://pub7.sky.fm/radiotunes_ska';
     FSources[19].Title := 'New Age';
