@@ -29,8 +29,8 @@ const
   VERSION = '2.5.0';
 
 type
-  TMusicState = (msOff, msPlaying, msPaused);
-  TMusicSource = (msrcNone, msrcSleep, msrcMusic, msrcMeditation, msrcRadio);
+  TMusicState = (msPlaying, msPaused);
+  TMusicSource = (msrcSleep, msrcMusic, msrcMeditation, msrcRadio);
   TMediaKey = (mkNone, mkAudioPlay, mkAudioNext);
 
   { TfrmClockMain }
@@ -119,7 +119,7 @@ type
 
     FConfigFilename: string;
 
-    FMusicPlayer, FSleepPlayer, FMeditationPlayer, FRadioPlayer: TPlayer;
+    FPlayer: TPlayer;
  	  FMusicState: TMusicState;
     FMusicSource: TMusicSource;
 
@@ -190,86 +190,41 @@ implementation
 
 procedure TfrmClockMain.DisplayVolume;
 begin
-  if Assigned(FMPGPlayer) then
-  begin
-    tmrTime.Enabled := False;
-    lblTime.Caption := 'VOL: ' + IntToStr(FMPGPlayer.GetVolume) + ' %';
-    tmrTime.Interval := 3000;
-    tmrTime.Enabled := True;
-  end;
+  tmrTime.Enabled := False;
+  lblTime.Caption := 'VOL: ' + IntToStr(FMPGPlayer.GetVolume) + ' %';
+  tmrTime.Interval := 3000;
+  tmrTime.Enabled := True;
 end;
 
 procedure TfrmClockMain.PauseMusic;
 begin
-  case FMusicState of
-    msPlaying:
-      begin
-        case FMusicSource of
-          msrcSleep: FSleepPlayer.Stop;
-          msrcMusic: FMusicPlayer.Stop;
-          msrcMeditation: FMeditationPlayer.Stop;
-          msrcRadio: FRadioPlayer.Stop;
-        end;
-      FMusicState := msPaused;
-    end;
-  end;
+  FPlayer.Stop;
+  FMusicState := msPaused;
 end;
 
 procedure TfrmClockMain.PlayMusic;
-var
-  Player: TPlayer;
 begin
-  case FMusicSource of
-    msrcSleep: Player := FSleepPlayer;
-    msrcMeditation: Player := FMeditationPlayer;
-    msrcMusic: Player := FMusicPlayer;
-    msrcRadio: Player := FRadioPlayer;
-    else Player := nil;
-  end;
-
-  if Assigned(Player) then
-  begin
-    case FMusicState of
-      msOff, msPaused:
-        begin
-          Player.Play;
-        end;
-      msPlaying:
-        begin
-          Player.Next; // if playing play next track
-	      end;
+  case FMusicState of
+    msPlaying:
+      begin
+        FPlayer.Next; // if playing play next track
+	    end;
+    else
+    begin
+      FPlayer.Play;
     end;
-
-    // Display volume when play back is started.
-    DisplayVolume;
-
-    FMusicState := msPlaying;
   end;
+
+  // Display volume when play back is started.
+  DisplayVolume;
+
+  FMusicState := msPlaying;
 end;
 
 procedure TfrmClockMain.PlayPreviousMusic;
-var
-  Player: TPlayer;
 begin
-  case FMusicSource of
-    msrcSleep: Player := FSleepPlayer;
-    msrcMeditation: Player := FMeditationPlayer;
-    msrcMusic: Player := FMusicPlayer;
-    msrcRadio: Player := FRadioPlayer;
-    else Player := nil;
-  end;
-
-  if Assigned(Player) then
-  begin
-    case FMusicState of
-      msOff, msPaused, msPlaying:
-        begin
-          Player.Previous;
-	      end;
-    end;
-
-    FMusicState := msPlaying;
-  end;
+  FPlayer.Previous;
+  FMusicState := msPlaying;
 end;
 
 function TfrmClockMain.WaitForMedia(Path: string): boolean;
@@ -291,69 +246,34 @@ begin
 end;
 
 procedure TfrmClockMain.SetMusicSource(Source: TMusicSource);
-var
-  Player: TPlayer;
-  PlayerPath: String;
 begin
+  if Assigned(FPlayer) then FreeAndNil(FPlayer);
+
+  //Create new source
   case Source of
     msrcSleep:
       begin
-        Player := FSleepPlayer;
-        PlayerPath := frmSettings.edtSleepPath.Text;
-      end;
-    msrcMeditation:
-      begin
-        Player := FMeditationPlayer;
-        PlayerPath := frmSettings.edtMeditationPath.Text;
+        FPlayer := TPlayer.Create(FMPGPlayer,
+          ChangeFileExt(FConfigFilename, '_sleep.cfg'), frmSettings.edtSleepPath.Text);
       end;
     msrcMusic:
       begin
-        Player := FMusicPlayer;
-        PlayerPath := frmSettings.edtMusicPath.Text;
+        FPlayer := TPlayer.Create(FMPGPlayer,
+          ChangeFileExt(FConfigFilename, '_music.cfg'), frmSettings.edtMusicPath.Text);
       end;
-    msrcRadio:
+    msrcMeditation:
       begin
-        Player := FRadioPlayer;
-        PlayerPath := '';
-      end
+        FPlayer := TPlayer.Create(FMPGPlayer,
+          ChangeFileExt(FConfigFilename, '_meditation.cfg'), frmSettings.edtMeditationPath.Text);
+      end;
     else
-      begin
-        Player := nil;
-        PlayerPath := '';
-      end;
-  end;
-
-  // Test is the search path has changed
-  if (Assigned(Player) and (PlayerPath <> Player.SearchPath)) then
-    FreeAndNil(Player);
-
-  if not Assigned(Player) then
-  begin
-    //Create new source
-    case Source of
-      msrcSleep:
-        begin
-          FSleepPlayer := TPlayer.Create(FMPGPlayer,
-            ChangeFileExt(FConfigFilename, '_sleep.cfg'), frmSettings.edtSleepPath.Text);
-        end;
-      msrcMusic:
-        begin
-          FMusicPlayer := TPlayer.Create(FMPGPlayer,
-            ChangeFileExt(FConfigFilename, '_music.cfg'), frmSettings.edtMusicPath.Text);
-        end;
-      msrcMeditation:
-        begin
-          FMeditationPlayer := TPlayer.Create(FMPGPlayer,
-            ChangeFileExt(FConfigFilename, '_meditation.cfg'), frmSettings.edtMeditationPath.Text);
-        end;
-      msrcRadio:
-        begin
-          FRadioPlayer := TPlayer.Create(FMPGPlayer, '', '');
-        end;
+    begin
+      FPlayer := TPlayer.Create(FMPGPlayer, '', '');
+      Source := msrcRadio;
     end;
-
-    FMusicSource := Source;
   end;
+
+  FMusicSource := Source;
 end;
 
 procedure TfrmClockMain.BeforeAlarm;
@@ -368,19 +288,7 @@ begin
   // Possibly start music after alarm
   if frmSettings.cbxPlayMusic.Checked or FAfterAlarmResumeMusic then
   begin
-    case FMusicSource of
-      msrcSleep: FSleepPlayer.Play;
-      msrcMusic: FMusicPlayer.Play;
-      msrcMeditation: FMeditationPlayer.Play;
-      msrcRadio: FRadioPlayer.Play;
-      else
-      begin
-        SetMusicSource(msrcMusic);
-        FMusicPlayer.Play;
-      end;
-    end;
-
-    FMusicState := msPlaying;
+    PlayMusic;
   end;
 
   FAlarmActive := False;
@@ -438,7 +346,6 @@ var
   ReminderList: TStringList;
   i: Integer;
   Key: Char;
-  Player: TPlayer;
   PlayerName, Song: string;
   ReminderState: TAlarmState;
   Day, Month, Year: word;
@@ -494,43 +401,39 @@ begin
     case FMusicSource of
       msrcSleep:
         begin
-          Player := FSleepPlayer;
           PlayerName := 'sleep';
         end;
       msrcMeditation:
         begin
-          Player := FMeditationPlayer;
           PlayerName := 'meditation';
         end;
       msrcMusic:
         begin
-          Player := FMusicPlayer;
           PlayerName := 'music';
         end;
       msrcRadio:
         begin
-          Player := FRadioPlayer;
           PlayerName := 'radio';
         end;
-      else Player := nil;
+      else PlayerName := '';
     end;
 
     Song := 'Shaun''s Clock Version: ' + VERSION;
 
-    if Assigned(Player) then
+    if (PlayerName <> '') then
     begin
-      i := Player.Tick;
+      i := FPlayer.Tick;
 
       if i >= 0  then
         Song := Format('Updating %s list ... %d', [PlayerName, i])
       else
       begin
-        if Player.State = psPlaying then
+        if FPlayer.State = psPlaying then
         begin
           if FMusicSource = msrcRadio then
-            Song := Player.SongArtist + ': ' + Player.SongTitle
+            Song := FPlayer.SongArtist + ': ' + FPlayer.SongTitle
           else
-            Song := Player.SongArtist + ' - ' + Player.SongTitle;
+            Song := FPlayer.SongArtist + ' - ' + FPlayer.SongTitle;
         end;
       end;
     end;
@@ -847,17 +750,10 @@ begin
   FReminderAlarm.OnAfterAlarm := AfterAlarm;
   FTimer.OnAfterAlarm := AfterAlarm;
 
-  FMusicPlayer := nil;
-  FSleepPlayer := nil;
-  FMeditationPlayer := nil;
+  FAlarmActive := False;
 
-  FRadioPlayer := nil;
   FSyncServer := nil;
   FSyncClient := nil;
-
-  FMusicState := msOff;
-  FMusicSource := msrcNone;
-  FAlarmActive := False;
 
   FCOMServer := TCOMServer.Create(44558);
   FCOMServer.OnCommand := ComServerCallback;
@@ -868,6 +764,15 @@ begin
   LoadRadioStations;
   FRadioPicker := TfrmSourcePicker.Create(Self, FSources);
   CreateMusicPicker;
+
+  FPlayer := nil;
+  FMusicState := msPaused;
+  FMusicSource := msrcRadio;
+
+  SetMusicSource(msrcRadio);
+
+  FPlayer.StreamTitle := FSources[0].Title;
+  FPlayer.StreamURL := FSources[0].Resource;
 {$IFDEF GRABXKEYS}
   GrabMediaKeys;
 {$ENDIF}
@@ -894,17 +799,7 @@ end;
 
 procedure TfrmClockMain.FormDestroy(Sender: TObject);
 begin
-  if Assigned(FMusicPlayer) then
-    FMusicPlayer.Free;
-
-  if Assigned(FSleepPlayer) then
-    FSleepPlayer.Free;
-
-  if Assigned(FMeditationPlayer) then
-    FMeditationPlayer.Free;
-
-  if Assigned(FRadioPlayer) then
-    FRadioPlayer.Free;
+  if Assigned(FPlayer) then FPlayer.Free;
 
   FMPGPlayer.Free;
 
@@ -967,8 +862,6 @@ begin
 end;
 
 procedure TfrmClockMain.FormKeyPress(Sender: TObject; var Key: char);
-var
-  Player: TPlayer;
 begin
   tmrMinute.Enabled := False;
 
@@ -998,8 +891,8 @@ begin
 
     SetMusicSource(msrcRadio);
 
-    FRadioPlayer.StreamTitle := FSources[FRadioStation].Title;
-    FRadioPlayer.StreamURL := FSources[FRadioStation].Resource;
+    FPlayer.StreamTitle := FSources[FRadioStation].Title;
+    FPlayer.StreamURL := FSources[FRadioStation].Resource;
 
     if not FAlarmActive then PlayMusic
     else PauseMusic;
@@ -1038,32 +931,18 @@ begin
   end
   else if (Key = 'u') or (Key = 'U') then
   begin
-    case FMusicSource of
-      msrcSleep: Player := FSleepPlayer;
-      msrcMeditation: Player := FMeditationPlayer;
-      msrcMusic: Player := FMusicPlayer;
-      msrcRadio: Player := FRadioPlayer;
-      else Player := nil;
-    end;
-
-    if Assigned(Player) then
+    if (FMusicSource <> msrcRadio) then
     begin
-      Player.RescanSearchPath;
+      FPlayer.RescanSearchPath;
     end;
   end
   else if (Key = '.') then
   begin
-    if Assigned(FMPGPlayer) then
-    begin
-      FMPGPlayer.VolumeUp;
-    end;
+    FMPGPlayer.VolumeUp;
   end
   else if (Key = ',') then
   begin
-    if Assigned(FMPGPlayer) then
-    begin
-      FMPGPlayer.VolumeDown;
-    end;
+    FMPGPlayer.VolumeDown;
   end;
 
   tmrMinute.Enabled := True;
@@ -1107,15 +986,6 @@ begin
 
   UpdateSettings;
   frmReminderList.FReminders := frmReminders;
-
-  // Do only once
-  if FMusicSource = msrcNone then
-  begin
-    // Initialise music sources
-    SetMusicSource(msrcSleep);
-    SetMusicSource(msrcMeditation);
-    SetMusicSource(msrcMusic);
-  end;
 
   tmrMinute.Enabled := True;
 end;
@@ -1203,11 +1073,8 @@ begin
   imgVolDown.Picture.Assign(imgOff.Picture);
   Application.ProcessMessages;
 
-  if Assigned(FMPGPlayer) then
-  begin
-    FMPGPlayer.VolumeDown;
-    DisplayVolume;
-  end;
+  FMPGPlayer.VolumeDown;
+  DisplayVolume;
 
   imgVolDown.Picture.Assign(imgOn.Picture);
 end;
@@ -1217,11 +1084,8 @@ begin
   imgVolUp.Picture.Assign(imgOff.Picture);
   Application.ProcessMessages;
 
-  if Assigned(FMPGPlayer) then
-  begin
-    FMPGPlayer.VolumeUp;
-    DisplayVolume;
-  end;
+  FMPGPlayer.VolumeUp;
+  DisplayVolume;
 
   imgVolUp.Picture.Assign(imgOn.Picture);
 end;
@@ -1247,22 +1111,10 @@ begin
 
   Application.ProcessMessages;
 
-  if Assigned(FSleepPlayer) then
+  if (FPlayer.SearchPath <> '') then
   begin
-    FSleepPlayer.RescanSearchPath;
-    UpdatingMusic(FSleepPlayer);
-  end;
-
-  if Assigned(FMeditationPlayer) then
-  begin
-    FMeditationPlayer.RescanSearchPath;
-    UpdatingMusic(FMeditationPlayer);
-  end;
-
-  if Assigned(FMusicPlayer) then
-  begin
-    FMusicPlayer.RescanSearchPath;
-    UpdatingMusic(FMusicPlayer);
+    FPlayer.RescanSearchPath;
+    UpdatingMusic(FPlayer);
   end;
 
   Self.Enabled := True;
@@ -1323,8 +1175,8 @@ begin
   if FRadioPicker.ShowModal = mrOK then
   begin
     SetMusicSource(msrcRadio);
-    FRadioPlayer.StreamTitle := FSources[FRadioPicker.ItemIndex].Title;
-    FRadioPlayer.StreamURL := FSources[FRadioPicker.ItemIndex].Resource;
+    FPlayer.StreamTitle := FSources[FRadioPicker.ItemIndex].Title;
+    FPlayer.StreamURL := FSources[FRadioPicker.ItemIndex].Resource;
 
     if not FAlarmActive then PlayMusic
     else PauseMusic;
@@ -1544,7 +1396,6 @@ var
   i: Integer;
   Minutes: LongInt;
   Hours: Integer;
-  Player: TPlayer;
 begin
   FFavoritesAuto := frmSettings.cbxFavoritesAuto.Checked;
 
@@ -1608,31 +1459,9 @@ begin
     end;
   end;
 
-  case FMusicSource of
-    msrcSleep:
-      begin
-        Player := FSleepPlayer;
-      end;
-    msrcMeditation:
-      begin
-        Player := FMeditationPlayer;
-      end;
-    msrcMusic:
-      begin
-        Player := FMusicPlayer;
-      end;
-    msrcRadio:
-      begin
-        Player := FRadioPlayer;
-      end
-    else Player := nil;
-  end;
-
-  // Update search path if needed
-  if Assigned(Player) then
-  begin
+  // Update search path if needed by forcing reset
+  if FPlayer.SearchPath <> '' then
     SetMusicSource(FMusicSource);
-  end;
 
   FServerAddress := frmSettings.edtServerAddress.Text;
   FServerPort := frmSettings.edtServerPort.Text;
@@ -1668,24 +1497,20 @@ end;
 
 procedure TfrmClockMain.PlayAlbums;
 var
-  Player: TPlayer;
   SongFile: String;
 begin
   // Test is the search path has changed
   case FMusicSource of
     msrcSleep:
       begin
-        Player := FSleepPlayer;
         SongFile := ChangeFileExt(FConfigFilename, '_sleep.cfg');
       end;
     msrcMeditation:
       begin
-        Player := FMeditationPlayer;
         SongFile := ChangeFileExt(FConfigFilename, '_meditation.cfg');
       end;
     msrcMusic:
       begin
-        Player := FMusicPlayer;
         SongFile := ChangeFileExt(FConfigFilename, '_music.cfg');
       end
     else
@@ -1696,11 +1521,11 @@ begin
 
   frmPlaylist := TfrmPlaylist.Create(Self);
 
-  frmPlaylist.LoadSongs(SongFile, Player.SearchPath);
+  frmPlaylist.LoadSongs(SongFile, FPlayer.SearchPath);
 
   if FormShowModal(frmPlaylist) = mrOk then
   begin
-    Player.PlaySelection(frmPlaylist.lstSelected.Items.Text, frmPlaylist.Random);
+    FPlayer.PlaySelection(frmPlaylist.lstSelected.Items.Text, frmPlaylist.Random);
   end;
 
   frmPlaylist.Free;
