@@ -227,26 +227,23 @@ begin
     else Player := nil;
   end;
 
-  if WaitForMedia(Player.SearchPath) then
+  if Assigned(Player) then
   begin
-    if Assigned(Player) then
-    begin
-      case FMusicState of
-        msOff, msPaused:
-          begin
-            Player.Play;
-          end;
-        msPlaying:
-          begin
-            Player.Next; // if playing play next track
-	  end;
-      end;
-
-      // Display volume when play back is started.
-      DisplayVolume;
-
-      FMusicState := msPlaying;
+    case FMusicState of
+      msOff, msPaused:
+        begin
+          Player.Play;
+        end;
+      msPlaying:
+        begin
+          Player.Next; // if playing play next track
+	      end;
     end;
+
+    // Display volume when play back is started.
+    DisplayVolume;
+
+    FMusicState := msPlaying;
   end;
 end;
 
@@ -262,19 +259,16 @@ begin
     else Player := nil;
   end;
 
-  if WaitForMedia(Player.SearchPath) then
+  if Assigned(Player) then
   begin
-    if Assigned(Player) then
-    begin
-      case FMusicState of
-        msOff, msPaused, msPlaying:
-          begin
-            Player.Previous;
-	        end;
-      end;
-
-      FMusicState := msPlaying;
+    case FMusicState of
+      msOff, msPaused, msPlaying:
+        begin
+          Player.Previous;
+	      end;
     end;
+
+    FMusicState := msPlaying;
   end;
 end;
 
@@ -357,9 +351,9 @@ begin
           FRadioPlayer := TPlayer.Create(FMPGPlayer, '', '');
         end;
     end;
-  end;
 
-  FMusicSource := Source;
+    FMusicSource := Source;
+  end;
 end;
 
 procedure TfrmClockMain.BeforeAlarm;
@@ -995,8 +989,17 @@ begin
   else if (Key = 'r') or (Key = 'R') then frmReminderList.Show
   else if (Key = 'n') or (Key = 'N') then
   begin
-    //imgRadioClick(nil);
+    if FMusicSource = msrcRadio then
+    begin
+      Inc(FRadioStation);
+      if FRadioStation > High(FSources) then
+        FRadioStation := 0;
+    end;
+
     SetMusicSource(msrcRadio);
+
+    FRadioPlayer.StreamTitle := FSources[FRadioStation].Title;
+    FRadioPlayer.StreamURL := FSources[FRadioStation].Resource;
 
     if not FAlarmActive then PlayMusic
     else PauseMusic;
@@ -1304,46 +1307,27 @@ begin
   imgRadio.Picture.Assign(imgOff.Picture);
   Application.ProcessMessages;
 
-  if Sender = nil then
+  if frmSettings.cbxForceFullscreen.Checked then
   begin
-    if FMusicSource = msrcRadio then
-    begin
-      Inc(FRadioStation);
-      if FRadioStation > High(FSources) then
-        FRadioStation := 0;
-    end;
-
-    SetMusicSource(msrcRadio);
-    FRadioPlayer.StreamTitle := FSources[FRadioStation].Title;
-    FRadioPlayer.StreamURL := FSources[FRadioStation].Resource;
-
-    if not FAlarmActive then PlayMusic
-    else PauseMusic;
+    if FRadioPicker.BorderStyle <> bsNone then
+      FRadioPicker.BorderStyle := bsNone;
   end
   else
   begin
-    if frmSettings.cbxForceFullscreen.Checked then
-    begin
-      if FRadioPicker.BorderStyle <> bsNone then
-        FRadioPicker.BorderStyle := bsNone;
-    end
-    else
-    begin
-      if FRadioPicker.BorderStyle <> bsSingle then
-        FRadioPicker.BorderStyle := bsSingle;
-    end;
+    if FRadioPicker.BorderStyle <> bsSingle then
+      FRadioPicker.BorderStyle := bsSingle;
+  end;
 
-    SetCursorType(FRadioPicker);
+  SetCursorType(FRadioPicker);
 
-    if FRadioPicker.ShowModal = mrOK then
-    begin
-      SetMusicSource(msrcRadio);
-      FRadioPlayer.StreamTitle := FSources[FRadioPicker.ItemIndex].Title;
-      FRadioPlayer.StreamURL := FSources[FRadioPicker.ItemIndex].Resource;
+  if FRadioPicker.ShowModal = mrOK then
+  begin
+    SetMusicSource(msrcRadio);
+    FRadioPlayer.StreamTitle := FSources[FRadioPicker.ItemIndex].Title;
+    FRadioPlayer.StreamURL := FSources[FRadioPicker.ItemIndex].Resource;
 
-      if not FAlarmActive then PlayMusic
-      else PauseMusic;
-    end;
+    if not FAlarmActive then PlayMusic
+    else PauseMusic;
   end;
 
   imgRadio.Picture.Assign(imgOn.Picture);
