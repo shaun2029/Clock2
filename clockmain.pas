@@ -605,44 +605,44 @@ begin
   begin
     SetLength(FSources, 48);
 
-    FSources[0].Title := 'Oldies';
-    FSources[0].Resource := 'http://pub1.sky.fm/radiotunes_oldies';
-    FSources[1].Title := '60''s Rock';
-    FSources[1].Resource := 'http://pub1.sky.fm/radiotunes_60srock';
-    FSources[2].Title := '60''s Hits';
-    FSources[2].Resource := 'http://pub1.sky.fm/radiotunes_hit60s';
-    FSources[3].Title := '80''s Rock';
-    FSources[3].Resource := 'http://pub1.sky.fm/radiotunes_80srock';
-    FSources[4].Title := '80''s Hits';
-    FSources[4].Resource := 'http://pub1.sky.fm/radiotunes_the80s';
-    FSources[5].Title := '80''s Dance';
-    FSources[5].Resource := 'http://pub1.sky.fm/radiotunes_80sdance';
-    FSources[6].Title := '90''s Hits';
-    FSources[6].Resource := 'http://pub1.sky.fm/radiotunes_hit90s';
-    FSources[7].Title := 'Soft Rock';
-    FSources[7].Resource := 'http://pub1.sky.fm/radiotunes_softrock';
-    FSources[8].Title := 'Classic Rock';
-    FSources[8].Resource := 'http://pub1.sky.fm/radiotunes_classicrock';
-    FSources[9].Title := 'Modern Rock';
-    FSources[9].Resource := 'http://pub1.sky.fm/radiotunes_modernrock';
-    FSources[10].Title := 'Indie Rock';
-    FSources[10].Resource := 'http://pub1.sky.fm/radiotunes_indierock';
-    FSources[11].Title := 'Alt Rock';
-    FSources[11].Resource := 'http://pub1.sky.fm/radiotunes_altrock';
-    FSources[12].Title := 'Hard Rock';
-    FSources[12].Resource := 'http://pub1.sky.fm/radiotunes_hardrock';
-    FSources[13].Title := 'Metal';
-    FSources[13].Resource := 'http://pub1.sky.fm/radiotunes_metal';
-    FSources[14].Title := 'Pop Punk';
-    FSources[14].Resource := 'http://pub1.sky.fm/radiotunes_poppunk';
-    FSources[15].Title := 'Pop Rock';
-    FSources[15].Resource := 'http://pub1.sky.fm/radiotunes_poprock';
-    FSources[16].Title := 'Roots Reggae';
-    FSources[16].Resource := 'http://pub8.sky.fm/radiotunes_rootsreggae';
-    FSources[17].Title := 'Roots Legacy Reggae';
-    FSources[17].Resource := 'http://rootslegacy.fr:8080/listen.pls?sid=1';
-    FSources[18].Title := 'Ska';
-    FSources[18].Resource := 'http://pub7.sky.fm/radiotunes_ska';
+    FSources[0].Title := 'Indie Rock';
+    FSources[0].Resource := 'http://pub1.sky.fm/radiotunes_indierock';
+    FSources[1].Title := 'Alt Rock';
+    FSources[1].Resource := 'http://pub1.sky.fm/radiotunes_altrock';
+    FSources[2].Title := 'Roots Legacy Reggae';
+    FSources[2].Resource := 'http://rootslegacy.fr:8080/listen.pls?sid=1';
+    FSources[3].Title := 'Roots Reggae';
+    FSources[3].Resource := 'http://pub8.sky.fm/radiotunes_rootsreggae';
+    FSources[4].Title := 'Ska';
+    FSources[4].Resource := 'http://pub7.sky.fm/radiotunes_ska';
+    FSources[5].Title := 'Modern Rock';
+    FSources[5].Resource := 'http://pub1.sky.fm/radiotunes_modernrock';
+    FSources[6].Title := 'Hard Rock';
+    FSources[6].Resource := 'http://pub1.sky.fm/radiotunes_hardrock';
+    FSources[7].Title := 'Metal';
+    FSources[7].Resource := 'http://pub1.sky.fm/radiotunes_metal';
+    FSources[8].Title := 'Pop Punk';
+    FSources[8].Resource := 'http://pub1.sky.fm/radiotunes_poppunk';
+    FSources[9].Title := 'Pop Rock';
+    FSources[9].Resource := 'http://pub1.sky.fm/radiotunes_poprock';
+    FSources[10].Title := 'Oldies';
+    FSources[10].Resource := 'http://pub1.sky.fm/radiotunes_oldies';
+    FSources[11].Title := '60''s Rock';
+    FSources[11].Resource := 'http://pub1.sky.fm/radiotunes_60srock';
+    FSources[12].Title := '60''s Hits';
+    FSources[12].Resource := 'http://pub1.sky.fm/radiotunes_hit60s';
+    FSources[13].Title := '80''s Rock';
+    FSources[13].Resource := 'http://pub1.sky.fm/radiotunes_80srock';
+    FSources[14].Title := '80''s Hits';
+    FSources[14].Resource := 'http://pub1.sky.fm/radiotunes_the80s';
+    FSources[15].Title := '80''s Dance';
+    FSources[15].Resource := 'http://pub1.sky.fm/radiotunes_80sdance';
+    FSources[16].Title := '90''s Hits';
+    FSources[16].Resource := 'http://pub1.sky.fm/radiotunes_hit90s';
+    FSources[17].Title := 'Soft Rock';
+    FSources[17].Resource := 'http://pub1.sky.fm/radiotunes_softrock';
+    FSources[18].Title := 'Classic Rock';
+    FSources[18].Resource := 'http://pub1.sky.fm/radiotunes_classicrock';
     FSources[19].Title := 'New Age';
     FSources[19].Resource := 'http://pub1.sky.fm/radiotunes_newage';
     FSources[20].Title := 'Vocal New Age';
@@ -760,7 +760,6 @@ begin
 
   FLinuxDateTime := TLinuxDateTime.Create;
 
-  FRadioStation := 0;
   LoadRadioStations;
   FRadioPicker := TfrmSourcePicker.Create(Self, FSources);
   CreateMusicPicker;
@@ -771,8 +770,9 @@ begin
 
   SetMusicSource(msrcRadio);
 
-  FPlayer.StreamTitle := FSources[0].Title;
-  FPlayer.StreamURL := FSources[0].Resource;
+  FRadioStation := 0;
+  FPlayer.StreamTitle := FSources[FRadioStation].Title;
+  FPlayer.StreamURL := FSources[FRadioStation].Resource;
 {$IFDEF GRABXKEYS}
   GrabMediaKeys;
 {$ENDIF}
@@ -882,10 +882,12 @@ begin
   else if (Key = 'r') or (Key = 'R') then frmReminderList.Show
   else if (Key = 'n') or (Key = 'N') then
   begin
+// Increment radio station, limit to first 6 stations
+// ToDo: Replace with favorites
     if FMusicSource = msrcRadio then
     begin
       Inc(FRadioStation);
-      if FRadioStation > High(FSources) then
+      if (FRadioStation > High(FSources)) or (FRadioStation > 5) then
         FRadioStation := 0;
     end;
 
@@ -1534,6 +1536,7 @@ end;
 procedure TfrmClockMain.Log(Message: string);
 begin
 {$IFDEF LOGGING}
+  end;
   DebugLn(Self.ClassName + #9#9 + Message);
 {$ENDIF}
 end;
