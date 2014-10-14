@@ -105,6 +105,8 @@ end;
 
 destructor TPlayer.Destroy;
 begin
+  FMusicPlayer.Stop;
+
   if Assigned(FFindFiles) then
   begin
     FFindFiles.Terminate;
