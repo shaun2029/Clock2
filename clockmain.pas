@@ -23,10 +23,10 @@ uses
   ExtCtrls, {MetOffice,} Alarm, Settings, Reminders, ReminderList, LCLProc,
   Music, Sync, Process, MusicPlayer, PlaylistCreator, commandserver,
   X, Xlib, CTypes, WaitForMedia, Pictures, DateTime, SourcePicker,
-  ConnectionHealth, Unix, Email, IniFiles, SignalHandler;
+  ConnectionHealth, Unix, Email, IniFiles, SignalHandler, Equaliser;
 
 const
-  VERSION = '2.5.0';
+  VERSION = '2.5.1';
 
 type
   TMusicState = (msPlaying, msPaused);
@@ -36,6 +36,7 @@ type
   { TfrmClockMain }
 
   TfrmClockMain = class(TForm)
+    imgEqualiser: TImage;
     imgExit: TImage;
     imgPlayAlbums: TImage;
     imgPrevious: TImage;
@@ -92,6 +93,7 @@ type
     procedure imgUpdateMusicClick(Sender: TObject);
     procedure labSongClick(Sender: TObject);
     procedure lbDisplayClick(Sender: TObject);
+    procedure lbEqualiserClick(Sender: TObject);
     procedure lblTimeClick(Sender: TObject);
     procedure lbNextClick(Sender: TObject);
     procedure lbPlayAlbumsClick(Sender: TObject);
@@ -116,6 +118,7 @@ type
     FLinuxDateTime: TLinuxDateTime;
     FRadioStation: integer;
     FEmailReminders: boolean;
+    FFormShown: boolean;
 
     FConfigFilename: string;
 
@@ -362,96 +365,89 @@ begin
   if TimeCaption <> lblTime.Caption then
     lblTime.Caption := TimeCaption;
 
-  tmrTime.Tag := tmrTime.Tag + 1;
-
-  if tmrTime.Tag >= 1 then
+  // Turn off timer
+  if Current > FTimer.AlarmTime + EncodeTime(0, 5, 0, 0) then
   begin
-    // Turn off timer
-    if Current > FTimer.AlarmTime + EncodeTime(0, 5, 0, 0) then
+    for i := 0 to High(FTimer.Days) do
     begin
-      for i := 0 to High(FTimer.Days) do
+      if FTimer.Days[i] <> False then
+        FTimer.Days[i] := False;
+    end;
+  end;
+
+  ReminderState := FReminderAlarm.State;
+
+  FAlarm.Tick(Current);
+  FReminderAlarm.Tick(Current);
+  FTimer.Tick(Current);
+
+  if (FReminderAlarm.State = asActive) and (ReminderState <> asActive) then
+  begin
+    lbReminderSummary.Font.Color := clYellow;
+    ReminderList := TStringList.Create;
+    frmReminders.SortReminders(FCurrentReminders);
+    frmReminders.PopulateList(FCurrentReminders, ReminderList);
+    lbReminderSummary.Caption := ReminderList.Text;
+
+    if FEmailReminders then
+    begin
+      SendReminders(ReminderList.Text);
+    end;
+
+    ReminderList.Free;
+  end;
+
+  case FMusicSource of
+    msrcSleep:
       begin
-        if FTimer.Days[i] <> False then
-          FTimer.Days[i] := False;
+        PlayerName := 'sleep';
+      end;
+    msrcMeditation:
+      begin
+        PlayerName := 'meditation';
+      end;
+    msrcMusic:
+      begin
+        PlayerName := 'music';
+      end;
+    msrcRadio:
+      begin
+        PlayerName := 'radio';
+      end;
+    else PlayerName := '';
+  end;
+
+  Song := 'Shaun''s Clock Version: ' + VERSION;
+
+  if (PlayerName <> '') then
+  begin
+    i := FPlayer.Tick;
+
+    if i >= 0  then
+      Song := Format('Updating %s list ... %d', [PlayerName, i])
+    else
+    begin
+      if FPlayer.State = psPlaying then
+      begin
+        if FMusicSource = msrcRadio then
+          Song := FPlayer.SongArtist + ': ' + FPlayer.SongTitle
+        else
+          Song := FPlayer.SongArtist + ' - ' + FPlayer.SongTitle;
       end;
     end;
+  end;
 
-    ReminderState := FReminderAlarm.State;
+  if labSong.Caption <> Song then
+  begin
+    labSong.Font.Color := clWhite;
+    labSongPrev2.Caption := labSongPrev1.Caption;
+    labSongPrev1.Caption := labSong.Caption;
+    labSong.Caption := Song;
+  end;
 
-    FAlarm.Tick(Current);
-    FReminderAlarm.Tick(Current);
-    FTimer.Tick(Current);
-
-    if (FReminderAlarm.State = asActive) and (ReminderState <> asActive) then
-    begin
-      lbReminderSummary.Font.Color := clYellow;
-      ReminderList := TStringList.Create;
-      frmReminders.SortReminders(FCurrentReminders);
-      frmReminders.PopulateList(FCurrentReminders, ReminderList);
-      lbReminderSummary.Caption := ReminderList.Text;
-
-      if FEmailReminders then
-      begin
-        SendReminders(ReminderList.Text);
-      end;
-
-      ReminderList.Free;
-    end;
-
-    case FMusicSource of
-      msrcSleep:
-        begin
-          PlayerName := 'sleep';
-        end;
-      msrcMeditation:
-        begin
-          PlayerName := 'meditation';
-        end;
-      msrcMusic:
-        begin
-          PlayerName := 'music';
-        end;
-      msrcRadio:
-        begin
-          PlayerName := 'radio';
-        end;
-      else PlayerName := '';
-    end;
-
-    Song := 'Shaun''s Clock Version: ' + VERSION;
-
-    if (PlayerName <> '') then
-    begin
-      i := FPlayer.Tick;
-
-      if i >= 0  then
-        Song := Format('Updating %s list ... %d', [PlayerName, i])
-      else
-      begin
-        if FPlayer.State = psPlaying then
-        begin
-          if FMusicSource = msrcRadio then
-            Song := FPlayer.SongArtist + ': ' + FPlayer.SongTitle
-          else
-            Song := FPlayer.SongArtist + ' - ' + FPlayer.SongTitle;
-        end;
-      end;
-    end;
-
-    if labSong.Caption <> Song then
-    begin
-      labSong.Font.Color := clWhite;
-      labSongPrev2.Caption := labSongPrev1.Caption;
-      labSongPrev1.Caption := labSong.Caption;
-      labSong.Caption := Song;
-    end;
-
-    if Assigned(FCOMServer) then
-    begin
-      FCOMServer.Playing := LabSong.Caption;
-    end;
-
-    tmrTime.Tag := 0;
+  if Assigned(FCOMServer) then
+  begin
+    FCOMServer.Playing := LabSong.Caption;
   end;
 
 {$IFDEF GRABXKEYS}
@@ -711,6 +707,7 @@ var
   UsePulseVol: boolean;
   IniFile: TIniFile;
 begin
+  FFormShown := False;
   Self.Color := clBlack;
 
   labSong.Caption := '';
@@ -973,23 +970,27 @@ end;
 
 procedure TfrmClockMain.FormShow(Sender: TObject);
 begin
-  if not FileExists('/usr/bin/mpg123') and not FileExists('/usr/bin/mpg321') then
-    ShowMessage('Alarm Not Working' + LineEnding
-    + 'The package mpg123 was not found on this system.' + LineEnding
-    + 'Please install mpg123 to enable the alarm by running the command:' + LineEnding
-    + 'sudo apt-get install mpg123');
+  if not FFormShown then
+  begin
+    if not FileExists('/usr/bin/mpg123') and not FileExists('/usr/bin/mpg321') then
+      ShowMessage('Alarm Not Working' + LineEnding
+      + 'The package mpg123 was not found on this system.' + LineEnding
+      + 'Please install mpg123 to enable the alarm by running the command:' + LineEnding
+      + 'sudo apt-get install mpg123');
 
-  if not FileExists(ExtractFilePath(Application.ExeName) + 'alarm.mp3')
-    and not FileExists('/usr/share/clock/alarm.mp3') then
-    ShowMessage('Alarm Not Working' + LineEnding
-    + 'The mp3 file "alarm.mp3" can not be found.' + LineEnding
-    + 'Please copy the file "alarm.mp3" to the location:' + LineEnding
-    + '/usr/share/clock/alarm.mp3');
+    if not FileExists(ExtractFilePath(Application.ExeName) + 'alarm.mp3')
+      and not FileExists('/usr/share/clock/alarm.mp3') then
+      ShowMessage('Alarm Not Working' + LineEnding
+      + 'The mp3 file "alarm.mp3" can not be found.' + LineEnding
+      + 'Please copy the file "alarm.mp3" to the location:' + LineEnding
+      + '/usr/share/clock/alarm.mp3');
 
-  UpdateSettings;
-  frmReminderList.FReminders := frmReminders;
+    UpdateSettings;
+    frmReminderList.FReminders := frmReminders;
 
-  tmrMinute.Enabled := True;
+    tmrMinute.Enabled := True;
+    FFormShown := True;
+  end;
 end;
 
 procedure TfrmClockMain.imgExitClick(Sender: TObject);
@@ -1156,6 +1157,22 @@ begin
   SetMonitorState(False);
 end;
 
+procedure TfrmClockMain.lbEqualiserClick(Sender: TObject);
+var
+  frmEqualiser: TfrmEqualiser;
+begin
+  imgEqualiser.Picture.Assign(imgOff.Picture);
+  Application.ProcessMessages;
+  Self.Hide;
+
+  frmEqualiser := TfrmEqualiser.Create(Self);
+  FormShowModal(frmEqualiser);
+  frmEqualiser.Free;
+
+  Self.Show;
+  imgEqualiser.Picture.Assign(imgOn.Picture);
+end;
+
 procedure TfrmClockMain.imgRadioClick(Sender: TObject);
 begin
   imgRadio.Picture.Assign(imgOff.Picture);
@@ -1317,16 +1334,16 @@ end;
 
 procedure TfrmClockMain.lbSettingsClick(Sender: TObject);
 begin
-  Self.Hide;
   imgSettings.Picture.Assign(imgOff.Picture);
   Application.ProcessMessages;
+  Self.Hide;
 
   FormShowModal(frmSettings);
 
   UpdateSettings;
 
-  imgSettings.Picture.Assign(imgOn.Picture);
   Self.Show;
+  imgSettings.Picture.Assign(imgOn.Picture);
 end;
 
 procedure TfrmClockMain.lbNextClick(Sender: TObject);
