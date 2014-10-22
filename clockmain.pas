@@ -57,14 +57,16 @@ type
     Label22: TLabel;
     labSongPrev2: TLabel;
     labSongPrev1: TLabel;
+    lbEqualiser: TLabel;
     lbPlayAlbums: TLabel;
+    lbReminders: TLabel;
     lbReminderSummary: TLabel;
     lbExit: TLabel;
     lbMusic: TLabel;
+    lbSettings1: TLabel;
     Radio: TLabel;
     lbPrevious: TLabel;
     lbPlay: TLabel;
-    lbReminders: TLabel;
     lbSleep: TLabel;
     lbVolUp: TLabel;
     lbVolDown: TLabel;
