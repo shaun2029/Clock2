@@ -18,6 +18,7 @@ type
     BtnDown1: TBitBtn;
     BtnDown4: TBitBtn;
     BtnDown5: TBitBtn;
+    btnClose: TSpeedButton;
     btnUp2: TBitBtn;
     btnUp3: TBitBtn;
     btnUp1: TBitBtn;
@@ -33,6 +34,7 @@ type
     tbarSetting4: TTrackBar;
     tbarSetting5: TTrackBar;
     procedure BtnDown1Click(Sender: TObject);
+    procedure btnCloseClick(Sender: TObject);
     procedure btnUp1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnResetClick(Sender: TObject);
@@ -82,6 +84,11 @@ begin
   if Value = 0 then Value := 5;
 
   Setting[TBitBtn(Sender).Tag].Position := Setting[TBitBtn(Sender).Tag].Position - Value;
+end;
+
+procedure TfrmEqualiser.btnCloseClick(Sender: TObject);
+begin
+  Close;
 end;
 
 procedure TfrmEqualiser.FormCreate(Sender: TObject);

@@ -1,8 +1,9 @@
 object frmEqualiser: TfrmEqualiser
-  Left = 407
+  Left = 494
   Height = 389
-  Top = 144
+  Top = 169
   Width = 409
+  BorderIcons = []
   BorderStyle = bsSingle
   Caption = 'Simple Equaliser for Alsaequal'
   ClientHeight = 389
@@ -123,10 +124,10 @@ object frmEqualiser: TfrmEqualiser
     ParentColor = False
   end
   object btnReset: TSpeedButton
-    Left = 104
+    Left = 24
     Height = 40
     Top = 336
-    Width = 203
+    Width = 162
     Caption = 'Reset'
     NumGlyphs = 0
     OnClick = btnResetClick
@@ -219,5 +220,14 @@ object frmEqualiser: TfrmEqualiser
     Width = 43
     Caption = 'Treble'
     ParentColor = False
+  end
+  object btnClose: TSpeedButton
+    Left = 224
+    Height = 40
+    Top = 336
+    Width = 162
+    Caption = 'Close'
+    NumGlyphs = 0
+    OnClick = btnCloseClick
   end
 end
