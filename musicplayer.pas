@@ -261,50 +261,14 @@ end;
 
 // Turns down the volume during an announcement
 procedure TMusicPlayer.StartAnnouncement;
-var
-  v, Vol, StepSize: integer;
 begin
   FAnnouncementVol := GetVolume;
-  Vol := FAnnouncementVol div 10;
-
-  StepSize := (FAnnouncementVol - Vol) div 5;
-  if StepSize < 1 then StepSize := 1;
-
-  // Turn up volume
-  for v := FAnnouncementVol downto Vol do
-  begin
-    if v mod StepSize = 0 then
-    begin
-      SetVolume(v);
-      Sleep(100);
-    end;
-  end;
-
-  SetVolume(Vol);
+  SetVolume(FAnnouncementVol div 10);
 end;
 
 // Turns up the volume during an announcement
 procedure TMusicPlayer.StopAnnouncement;
-var
-  v, Vol, StepSize: integer;
 begin
-  Vol := GetVolume;
-
-  if FAnnouncementVol > Vol then
-  begin
-    StepSize := (FAnnouncementVol - Vol) div 5;
-    if StepSize < 1 then StepSize := 1;
-
-    // Turn up volume
-    for v := GetVolume to FAnnouncementVol do
-    begin
-      if v mod StepSize = 0 then
-      begin
-        SetVolume(v);
-        Sleep(100);
-      end;
-    end;
-  end;
   SetVolume(FAnnouncementVol);
 end;
 
