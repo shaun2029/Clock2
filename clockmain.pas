@@ -197,6 +197,7 @@ procedure TfrmClockMain.DisplayVolume;
 begin
   tmrTime.Enabled := False;
   lblTime.Caption := 'VOL: ' + IntToStr(FMPGPlayer.GetVolume) + ' %';
+  FCOMServer.Playing := lblTime.Caption;
   tmrTime.Interval := 3000;
   tmrTime.Enabled := True;
 end;
@@ -708,6 +709,7 @@ var
   MixerControl : string;
   UsePulseVol: boolean;
   IniFile: TIniFile;
+  RadioStations: String;
 begin
   FFormShown := False;
   Self.Color := clBlack;
@@ -730,7 +732,6 @@ begin
   end;
 
   FMPGPlayer := TMusicPlayer.Create(MixerControl, UsePulseVol);
-  DisplayVolume;
 
   FAlarm := TAlarm.Create(FMPGPlayer);
   FAlarm.Path := ExtractFilePath(Application.ExeName);
@@ -760,6 +761,15 @@ begin
   FLinuxDateTime := TLinuxDateTime.Create;
 
   LoadRadioStations;
+
+  // Load stations into Command Server
+  RadioStations := '';
+  for i := 0 to High(FSources) do
+  begin
+    RadioStations := RadioStations + FSources[i].Title + ';';
+  end;
+  FComServer.RadioStations := RadioStations;
+
   FRadioPicker := TfrmSourcePicker.Create(Self, FSources);
   CreateMusicPicker;
 
@@ -881,12 +891,9 @@ begin
   else if (Key = 'r') or (Key = 'R') then frmReminderList.Show
   else if (Key = 'n') or (Key = 'N') then
   begin
-// Increment radio station, limit to first 6 stations
-// ToDo: Replace with favorites
     if FMusicSource = msrcRadio then
     begin
-      Inc(FRadioStation);
-      if (FRadioStation > High(FSources)) or (FRadioStation > 5) then
+      if (FRadioStation > High(FSources)) then
         FRadioStation := 0;
     end;
 
@@ -940,10 +947,12 @@ begin
   else if (Key = '.') then
   begin
     FMPGPlayer.VolumeUp;
+    DisplayVolume;
   end
   else if (Key = ',') then
   begin
     FMPGPlayer.VolumeDown;
+    DisplayVolume;
   end;
 
   tmrMinute.Enabled := True;
@@ -1223,7 +1232,7 @@ procedure TfrmClockMain.ComServerCallback;
 var
   Command: TRemoteCommand;
 begin
-  ProcessCommand(FComServer.GetCommand);
+  ProcessCommand(FComServer.Command);
 end;
 
 procedure TfrmClockMain.SignalCallback(Command: TRemoteCommand);
@@ -1267,8 +1276,14 @@ begin
         Key := 't';
         FormKeyPress(Self, Key);
       end;
-    rcomRadioToggle:
+    rcomRadio:
       begin
+        Key := 'n';
+        FormKeyPress(Self, Key);
+      end;
+    rcomSetRadioStation:
+      begin
+        FRadioStation := FComServer.RadioStation;
         Key := 'n';
         FormKeyPress(Self, Key);
       end;

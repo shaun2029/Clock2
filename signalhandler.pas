@@ -45,7 +45,7 @@ begin
   case sig of
     SIGUSR1: if Assigned(OnSignal) then OnSignal(rcomNext);       // Signal 10
     SIGUNUSED: if Assigned(OnSignal) then OnSignal(rcomMusic);    // Signal 31
-    SIGHUP: if Assigned(OnSignal) then OnSignal(rcomRadioToggle); // Signal  1
+      SIGHUP: if Assigned(OnSignal) then OnSignal(rcomRadio);     // Signal  1
     SIGTERM: if Assigned(OnSignal) then OnSignal(rcomPause);      // Signal 15
     SIGIO: if Assigned(OnSignal) then OnSignal(rcomVolumeUp);     // Signal 29
     SIGALRM: if Assigned(OnSignal) then OnSignal(rcomVolumeDown); // Signal 14

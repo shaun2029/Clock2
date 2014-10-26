@@ -18,7 +18,7 @@ uses
 type
 
   TRemoteCommand = (rcomNone, rcomNext, rcomMusic, rcomSleep, rcomMeditation, rcomPause, rcomVolumeUp,
-    rcomVolumeDown, rcomDisplayToggle, rcomRadioToggle);
+    rcomVolumeDown, rcomDisplayToggle, rcomSetRadioStation, rcomRadio);
 
   { TCOMServerThread }
 
@@ -26,45 +26,48 @@ type
   private
     FOnCommand: TThreadMethod;
     FPort: integer;
-    FPlaying: string;
-    FWeatherReport: string;
-    FWeatherReports: array [0..4] of string;
-    FImageURLs: array [0..4] of string;
+    FPlaying, FRadioStations: string;
+    FRadioStation: integer;
 
     procedure AttendConnection(Socket: TTCPBlockSocket);
+    function GetRadioStation: integer;
+    function GetCommand: TRemoteCommand;
     procedure Log(Message: string);
     procedure SetPlaying(const AValue: string);
+    procedure SetRadioStations(const AValue: string);
   protected
     FCommand: TRemoteCommand;
     FCritical: TCriticalSection;
 
     procedure Execute; override;
   public
-    function GetCommnd: TRemoteCommand;
-
-    procedure SetImageURLs(URLs: array of string);
-
     constructor Create(Port: integer);
     destructor Destroy; override;
   published
     property Playing: string write SetPlaying;
     property OnCommand: TThreadMethod read FOnCommand write FOnCommand;
+    property RadioStation: integer read GetRadioStation;
+    property RadioStations: string write SetRadioStations;
+    property Command: TRemoteCommand read GetCommand;
   end;
 
   TCOMServer = class
   private
     FCOMServerThread: TCOMServerThread;
+    function GetRadioStation: integer;
     procedure SetOnCommand(AValue: TThreadMethod);
     procedure SetPlaying(const AValue: string);
-  public
     function GetCommand: TRemoteCommand;
-    procedure SetImageURLs(URLs: array of string);
-
+    procedure SetRadioStations(AValue: string);
+  public
     constructor Create(Port: integer);
     destructor Destroy; override;
   published
     property Playing: string write SetPlaying;
     property OnCommand: TThreadMethod write SetOnCommand;
+    property RadioStation: integer read GetRadioStation;
+    property Command: TRemoteCommand read GetCommand;
+    property RadioStations: string write SetRadioStations;
   end;
 
 implementation
@@ -81,14 +84,19 @@ begin
   FCOMServerThread.OnCommand := AValue;
 end;
 
-function TCOMServer.GetCommand: TRemoteCommand;
+function TCOMServer.GetRadioStation: integer;
 begin
-  Result := FCOMServerThread.GetCommnd;
+  Result := FCOMServerThread.RadioStation;
 end;
 
-procedure TCOMServer.SetImageURLs(URLs: array of string);
+function TCOMServer.GetCommand: TRemoteCommand;
 begin
-  FCOMServerThread.SetImageURLs(URLs);
+  Result := FCOMServerThread.GetCommand;
+end;
+
+procedure TCOMServer.SetRadioStations(AValue: string);
+begin
+  FCOMServerThread.RadioStations := AValue;
 end;
 
 constructor TCOMServer.Create(Port: integer);
@@ -117,18 +125,10 @@ begin
   FCritical.Leave;
 end;
 
-procedure TCOMServerThread.SetImageURLs(URLs: array of string);
-var
-  i: Integer;
+procedure TCOMServerThread.SetRadioStations(const AValue: string);
 begin
   FCritical.Enter;
-
-  for i := 0 to High(URLs) do
-  begin
-    if i <= High(FImageURLs) then
-      FImageURLs[i] := URLs[i];
-  end;
-
+  FRadioStations := AValue;
   FCritical.Leave;
 end;
 
@@ -214,12 +214,31 @@ begin
       if Assigned(FOnCommand) then Self.Synchronize(FOnCommand);
       Socket.SendString(':OK' + #10);
     end
-    else if Pos('CLOCK:RADIO:', Buffer) > 0 then
+    else if Pos('CLOCK:RADIO', Buffer) > 0 then
     begin
       FCritical.Enter;
-      FCommand := rcomRadioToggle;
+      FCommand := rcomRadio;
       FCritical.Leave;
       if Assigned(FOnCommand) then Self.Synchronize(FOnCommand);
+      Socket.SendString(':OK' + #10);
+    end
+    else if Pos('CLOCK:SET:RADIOSTATION:', Buffer) > 0 then
+    begin
+      FCritical.Enter;
+      Buffer := Copy(Buffer, Length('CLOCK:SET:RADIOSTATION:') + 1, Length(Buffer));
+      Buffer := StringReplace(Buffer, #10, '', [rfReplaceAll]);
+      Buffer := StringReplace(Buffer, #13, '', [rfReplaceAll]);
+      FRadioStation := StrToIntDef(Buffer, 0);
+      FCommand := rcomSetRadioStation;
+      FCritical.Leave;
+      if Assigned(FOnCommand) then Self.Synchronize(FOnCommand);
+      Socket.SendString(':OK' + #10);
+    end
+    else if Pos('CLOCK:GET:RADIOSTATIONS', Buffer) > 0 then
+    begin
+      FCritical.Enter;
+      Socket.SendString(FRadioStations + #10);
+      FCritical.Leave;
       Socket.SendString(':OK' + #10);
     end
     else if Buffer = 'CLOCK:PAUSE' then
@@ -252,11 +271,19 @@ begin
       Socket.SendString(FPlaying + #10);
       FCritical.Leave;
       Socket.SendString(':OK' + #10);
-    end;
+    end
+    else Socket.SendString(':BAD' + #10);
   end;
 end;
 
-function TCOMServerThread.GetCommnd: TRemoteCommand;
+function TCOMServerThread.GetRadioStation: integer;
+begin
+  FCritical.Enter;
+  Result := FRadioStation;
+  FCritical.Leave;
+end;
+
+function TCOMServerThread.GetCommand: TRemoteCommand;
 begin
   FCritical.Enter;
   Result := FCommand;
@@ -271,7 +298,7 @@ begin
   FCritical := TCriticalSection.Create;
   FCommand := rcomNone;
   FPlaying := '--------';
-  FWeatherReport := '';
+  FRadioStations := '';
   FPort := Port;
   FOnCommand := nil;
 end;
