@@ -10,7 +10,7 @@ unit commandserver;
 interface
 
 uses
-  Classes, SysUtils, LCLProc, SyncObjs,
+  Classes, SysUtils, SyncObjs,
 
   // synapse
   blcksock;
@@ -32,7 +32,6 @@ type
     procedure AttendConnection(Socket: TTCPBlockSocket);
     function GetRadioStation: integer;
     function GetCommand: TRemoteCommand;
-    procedure Log(Message: string);
     procedure SetPlaying(const AValue: string);
     procedure SetRadioStations(const AValue: string);
   protected
@@ -169,7 +168,7 @@ var
   LastError: integer;
 begin
   // wait one second for new packet
-  Buffer := Socket.RecvString(15000);
+  Buffer := Socket.RecvString(1000);
   LastError := Socket.LastError;
 
   if LastError = 0 then
@@ -272,6 +271,10 @@ begin
       FCritical.Leave;
       Socket.SendString(':OK' + #10);
     end
+    else if Buffer = 'CLOCK:DISCOVER' then
+    begin
+      Socket.SendString('192.168.0.72' + #10);//GetEnvironmentVariable('HostName') + #10);
+    end
     else Socket.SendString(':BAD' + #10);
   end;
 end;
@@ -308,11 +311,6 @@ begin
   FCritical.Free;
 
   inherited Destroy;
-end;
-
-procedure TCOMServerThread.Log(Message: string);
-begin
-  DebugLn(Self.ClassName + #9#9 + Message);
 end;
 
 end.

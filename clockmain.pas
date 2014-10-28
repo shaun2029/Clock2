@@ -26,7 +26,7 @@ uses
   ConnectionHealth, Unix, Email, IniFiles, SignalHandler, Equaliser;
 
 const
-  VERSION = '2.5.2';
+  VERSION = '2.6.0';
 
 type
   TMusicState = (msPlaying, msPaused);
@@ -581,17 +581,21 @@ end;
 procedure TfrmClockMain.LoadRadioStations;
 var
   Stations: TStringList;
-  i: Integer;
+  ConfigFile: string;
+  i, t: Integer;
 begin
-  if FileExists(ChangeFileExt(FConfigFilename, '_radio.cfg')) then
+  ConfigFile := ChangeFileExt(FConfigFilename, '_radio.cfg');
+
+  if FileExists(ConfigFile) then
   begin
     Stations := TStringList.Create;
     try
-      Stations.LoadFromFile(ChangeFileExt(FConfigFilename, '_radio.cfg'));
+      Stations.LoadFromFile(ConfigFile);
 
-      SetLength(FSources, Stations.Count div 2);
+      t := Stations.Count div 2;
+      SetLength(FSources, t);
 
-      for i := 0 to Stations.Count div 2 do
+      for i := 0 to t - 1 do
       begin
         FSources[i].Title := Stations.Strings[i*2];
         FSources[i].Resource := Stations.Strings[(i*2)+1];
@@ -700,6 +704,19 @@ begin
     FSources[46].Resource := 'http://www.bbc.co.uk/radio/listen/live/r4_heaacv2.pls';
     FSources[47].Title := 'BBC Radio 5 live';
     FSources[47].Resource := 'http://www.bbc.co.uk/radio/listen/live/r5l_heaacv2.pls';
+
+    Stations := TStringList.Create;
+    try
+      for i := 0 to High(FSources) do
+      begin
+        Stations.Add(FSources[i].Title);
+        Stations.Add(FSources[i].Resource);
+      end;
+
+      Stations.SaveToFile(ConfigFile);
+    except
+    end;
+    Stations.Free;
   end;
 end;
 
