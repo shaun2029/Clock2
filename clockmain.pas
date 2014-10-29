@@ -23,7 +23,7 @@ uses
   ExtCtrls, {MetOffice,} Alarm, Settings, Reminders, ReminderList, LCLProc,
   Music, Sync, Process, MusicPlayer, PlaylistCreator, commandserver,
   X, Xlib, CTypes, WaitForMedia, Pictures, DateTime, SourcePicker,
-  ConnectionHealth, Unix, Email, IniFiles, SignalHandler, Equaliser;
+  ConnectionHealth, Unix, Email, IniFiles, SignalHandler, Equaliser, DiscoverServer;
 
 const
   VERSION = '2.6.0';
@@ -116,6 +116,8 @@ type
     FSyncServer: TSyncServer;
     FSyncClient: TSyncClient;
     FServerAddress, FServerPort: String;
+    FDiscoverServer: TDiscoverServerThread;
+
     FAfterAlarmResumeMusic: boolean;
     FLinuxDateTime: TLinuxDateTime;
     FRadioStation: integer;
@@ -730,6 +732,9 @@ var
 begin
   FFormShown := False;
   Self.Color := clBlack;
+
+  // Gets created when settings are updated
+  FDiscoverServer := nil;
 
   labSong.Caption := '';
   labSongPrev1.Caption := '';
@@ -1449,6 +1454,7 @@ var
   i: Integer;
   Minutes: LongInt;
   Hours: Integer;
+  ClockName: String;
 begin
   FFavoritesAuto := frmSettings.cbxFavoritesAuto.Checked;
 
@@ -1521,6 +1527,19 @@ begin
 
   UpdateReminders;
   SetCursorType(Self);
+
+  // Update discover server with Clock name
+  if Assigned(FDiscoverServer) then
+    FreeAndNil(FDiscoverServer);
+
+  ClockName := Trim(frmSettings.edtClockName.Text);
+  if LowerCase(ClockName) = 'hostname' then
+    ClockName := Trim(GetHostName);
+
+  if ClockName = '' then
+    ClockName := 'no-name-set';
+
+  FDiscoverServer := TDiscoverServerThread.Create(44557, ClockName);
 
   if frmSettings.cbxForceFullscreen.Checked then
   begin

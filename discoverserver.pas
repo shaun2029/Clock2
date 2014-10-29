@@ -74,7 +74,7 @@ var
   Total: integer;
   PakNo: integer;
 begin
-  {$IFDEF DEBUG} Log('UPDSRV: Running ...'); {$ENDIF}
+  {$IFDEF DEBUG} Log('Discover Server: Running ...'); {$ENDIF}
 
   try
     FSocket.Bind('0.0.0.0', IntToStr(FPort));
@@ -96,12 +96,12 @@ begin
           begin
             if Buffer = 'REQUEST:CLOCKNAME' then
             begin
-              {$IFDEF DEBUG} Log('UPDSRV: Received REQUEST:CLOCKNAME ...'); {$ENDIF}
+              {$IFDEF DEBUG} Log('Discover Server: Received REQUEST:CLOCKNAME ...'); {$ENDIF}
 
               // Send packet with reminder total
-              FSocket.SendString('REMINDERS:'+ FClockName);
+              FSocket.SendString('CLOCKNAME:'+ FClockName);
 
-              {$IFDEF DEBUG} Log('UPDSRV: Sent REMINDERS ...'); {$ENDIF}
+              {$IFDEF DEBUG} Log('Discover Server: Sent REMINDERS ...'); {$ENDIF}
             end;
           end;
         end;
@@ -112,7 +112,7 @@ begin
   finally
   end;
 
-  {$IFDEF DEBUG} Log('UPDSRV: Stopped ...'); {$ENDIF}
+  {$IFDEF DEBUG} Log('Discover Server: Stopped ...'); {$ENDIF}
 end;
 
 constructor TDiscoverServerThread.Create(Port: Integer; ClockName: string);

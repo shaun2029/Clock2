@@ -14,7 +14,7 @@
       <CharSet Value=""/>
       <StringTable ProductVersion=""/>
     </VersionInfo>
-    <BuildModes Count="3" Active="debug">
+    <BuildModes Count="3" Active="i386">
       <Item1 Name="debug" Default="True"/>
       <Item2 Name="i386">
         <CompilerOptions>
@@ -118,7 +118,7 @@
         <PackageName Value="LCL"/>
       </Item3>
     </RequiredPackages>
-    <Units Count="52">
+    <Units Count="53">
       <Unit0>
         <Filename Value="Clock2.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -159,10 +159,12 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Settings"/>
+        <EditorIndex Value="4"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="98"/>
-        <CursorPos X="29" Y="113"/>
+        <TopLine Value="17"/>
+        <CursorPos X="17" Y="45"/>
         <UsageCount Value="200"/>
+        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit3>
       <Unit4>
@@ -182,11 +184,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ClockMain"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="578"/>
-        <CursorPos X="29" Y="589"/>
+        <TopLine Value="1524"/>
+        <CursorPos X="1" Y="1542"/>
         <UsageCount Value="207"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -229,10 +230,12 @@
         <Filename Value="udpserver.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="udpserver"/>
+        <EditorIndex Value="3"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="151"/>
-        <CursorPos X="23" Y="184"/>
+        <TopLine Value="121"/>
+        <CursorPos X="13" Y="129"/>
         <UsageCount Value="213"/>
+        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit9>
       <Unit10>
@@ -262,24 +265,20 @@
         <Filename Value="commandserver.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="commandserver"/>
-        <EditorIndex Value="3"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="136"/>
+        <TopLine Value="244"/>
         <CursorPos X="45" Y="276"/>
         <UsageCount Value="212"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit12>
       <Unit13>
         <Filename Value="music.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="music"/>
-        <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
         <TopLine Value="188"/>
         <CursorPos X="1" Y="205"/>
         <UsageCount Value="212"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit13>
       <Unit14>
@@ -299,8 +298,8 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="sync"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="45"/>
-        <CursorPos X="48" Y="46"/>
+        <TopLine Value="1"/>
+        <CursorPos X="36" Y="86"/>
         <UsageCount Value="212"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit15>
@@ -460,10 +459,12 @@
       <Unit32>
         <Filename Value="synapse/source/lib/blcksock.pas"/>
         <UnitName Value="blcksock"/>
+        <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1454"/>
-        <CursorPos X="14" Y="1480"/>
+        <TopLine Value="2618"/>
+        <CursorPos X="50" Y="2623"/>
         <UsageCount Value="68"/>
+        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit32>
       <Unit33>
@@ -517,7 +518,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="22" Y="15"/>
-        <UsageCount Value="136"/>
+        <UsageCount Value="138"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit38>
       <Unit39>
@@ -587,12 +588,10 @@
         <Filename Value="signalhandler.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="SignalHandler"/>
-        <EditorIndex Value="4"/>
         <WindowIndex Value="0"/>
         <TopLine Value="31"/>
         <CursorPos X="67" Y="48"/>
-        <UsageCount Value="108"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="110"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit47>
       <Unit48>
@@ -624,132 +623,147 @@
       <Unit51>
         <Filename Value="../RadioGaga/radiogaga.lpr"/>
         <UnitName Value="radiogaga"/>
-        <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
         <TopLine Value="109"/>
         <CursorPos X="1" Y="119"/>
-        <UsageCount Value="10"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="11"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit51>
+      <Unit52>
+        <Filename Value="discoverserver.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="DiscoverServer"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="2"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="93"/>
+        <CursorPos X="1" Y="109"/>
+        <UsageCount Value="22"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit52>
     </Units>
-    <JumpHistory Count="29" HistoryIndex="28">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="600" Column="1" TopLine="574"/>
+        <Caret Line="1540" Column="27" TopLine="1518"/>
       </Position1>
       <Position2>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="597" Column="1" TopLine="574"/>
+        <Caret Line="1537" Column="1" TopLine="1518"/>
       </Position2>
       <Position3>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="599" Column="1" TopLine="574"/>
+        <Caret Line="1539" Column="1" TopLine="1518"/>
       </Position3>
       <Position4>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="600" Column="1" TopLine="574"/>
+        <Caret Line="1542" Column="1" TopLine="1524"/>
       </Position4>
       <Position5>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="597" Column="1" TopLine="574"/>
+        <Filename Value="discoverserver.pas"/>
+        <Caret Line="119" Column="1" TopLine="102"/>
       </Position5>
       <Position6>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="599" Column="1" TopLine="574"/>
+        <Filename Value="discoverserver.pas"/>
+        <Caret Line="126" Column="1" TopLine="102"/>
       </Position6>
       <Position7>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="600" Column="1" TopLine="574"/>
+        <Filename Value="discoverserver.pas"/>
+        <Caret Line="119" Column="1" TopLine="102"/>
       </Position7>
       <Position8>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="597" Column="1" TopLine="574"/>
+        <Filename Value="discoverserver.pas"/>
+        <Caret Line="120" Column="1" TopLine="102"/>
       </Position8>
       <Position9>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="599" Column="1" TopLine="574"/>
+        <Filename Value="discoverserver.pas"/>
+        <Caret Line="122" Column="1" TopLine="102"/>
       </Position9>
       <Position10>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="600" Column="1" TopLine="574"/>
+        <Filename Value="discoverserver.pas"/>
+        <Caret Line="124" Column="1" TopLine="102"/>
       </Position10>
       <Position11>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="582" Column="75" TopLine="574"/>
+        <Filename Value="discoverserver.pas"/>
+        <Caret Line="125" Column="1" TopLine="63"/>
       </Position11>
       <Position12>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="591" Column="1" TopLine="574"/>
+        <Filename Value="discoverserver.pas"/>
+        <Caret Line="80" Column="1" TopLine="63"/>
       </Position12>
       <Position13>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="592" Column="1" TopLine="574"/>
+        <Filename Value="discoverserver.pas"/>
+        <Caret Line="82" Column="1" TopLine="63"/>
       </Position13>
       <Position14>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="593" Column="1" TopLine="574"/>
+        <Filename Value="discoverserver.pas"/>
+        <Caret Line="89" Column="1" TopLine="73"/>
       </Position14>
       <Position15>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="595" Column="1" TopLine="574"/>
+        <Filename Value="discoverserver.pas"/>
+        <Caret Line="90" Column="59" TopLine="79"/>
       </Position15>
       <Position16>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="597" Column="1" TopLine="574"/>
+        <Filename Value="discoverserver.pas"/>
+        <Caret Line="91" Column="37" TopLine="79"/>
       </Position16>
       <Position17>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="600" Column="3" TopLine="580"/>
+        <Filename Value="discoverserver.pas"/>
+        <Caret Line="90" Column="1" TopLine="79"/>
       </Position17>
       <Position18>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="599" Column="50" TopLine="580"/>
+        <Filename Value="discoverserver.pas"/>
+        <Caret Line="93" Column="1" TopLine="79"/>
       </Position18>
       <Position19>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="593" Column="1" TopLine="580"/>
+        <Filename Value="discoverserver.pas"/>
+        <Caret Line="80" Column="1" TopLine="105"/>
       </Position19>
       <Position20>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="603" Column="1" TopLine="580"/>
+        <Filename Value="discoverserver.pas"/>
+        <Caret Line="124" Column="1" TopLine="69"/>
       </Position20>
       <Position21>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="595" Column="25" TopLine="580"/>
+        <Filename Value="discoverserver.pas"/>
+        <Caret Line="80" Column="1" TopLine="69"/>
       </Position21>
       <Position22>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="600" Column="17" TopLine="584"/>
+        <Filename Value="discoverserver.pas"/>
+        <Caret Line="82" Column="1" TopLine="69"/>
       </Position22>
       <Position23>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="713" Column="19" TopLine="692"/>
+        <Filename Value="discoverserver.pas"/>
+        <Caret Line="89" Column="1" TopLine="79"/>
       </Position23>
       <Position24>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="783" Column="30" TopLine="768"/>
+        <Filename Value="discoverserver.pas"/>
+        <Caret Line="91" Column="38" TopLine="79"/>
       </Position24>
       <Position25>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="593" Column="1" TopLine="576"/>
+        <Filename Value="discoverserver.pas"/>
+        <Caret Line="93" Column="1" TopLine="79"/>
       </Position25>
       <Position26>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="603" Column="1" TopLine="576"/>
+        <Filename Value="discoverserver.pas"/>
+        <Caret Line="95" Column="1" TopLine="79"/>
       </Position26>
       <Position27>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="589" Column="10" TopLine="579"/>
+        <Filename Value="discoverserver.pas"/>
+        <Caret Line="90" Column="52" TopLine="79"/>
       </Position27>
       <Position28>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="273" Column="9" TopLine="175"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="1542" Column="1" TopLine="1524"/>
       </Position28>
       <Position29>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="176" Column="1" TopLine="170"/>
+        <Filename Value="discoverserver.pas"/>
+        <Caret Line="124" Column="1" TopLine="105"/>
       </Position29>
+      <Position30>
+        <Filename Value="discoverserver.pas"/>
+        <Caret Line="80" Column="1" TopLine="63"/>
+      </Position30>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

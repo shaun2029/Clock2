@@ -19,9 +19,9 @@ object frmSettings: TfrmSettings
     Height = 216
     Top = 8
     Width = 488
-    ActivePage = TabSheet4
+    ActivePage = TabSheet7
     ParentFont = False
-    TabIndex = 2
+    TabIndex = 3
     TabOrder = 0
     Options = [nboKeyboardTabSwitch]
     object TabSheet2: TTabSheet
@@ -259,6 +259,44 @@ object frmSettings: TfrmSettings
         TabOrder = 6
       end
     end
+    object TabSheet7: TTabSheet
+      Caption = 'General'
+      ClientHeight = 185
+      ClientWidth = 484
+      object cbxForceFullscreen: TCheckBox
+        Left = 14
+        Height = 24
+        Top = 19
+        Width = 135
+        Caption = 'Force Fullscreen'
+        TabOrder = 0
+      end
+      object cbxTouchScreen: TCheckBox
+        Left = 14
+        Height = 24
+        Top = 51
+        Width = 171
+        Caption = 'Touch Screen Support'
+        TabOrder = 1
+      end
+      object Label7: TLabel
+        Left = 14
+        Height = 18
+        Top = 99
+        Width = 85
+        Caption = 'Clock Name:'
+        ParentColor = False
+      end
+      object edtClockName: TEdit
+        Left = 110
+        Height = 27
+        Top = 99
+        Width = 160
+        MaxLength = 12
+        TabOrder = 2
+        Text = 'hostname'
+      end
+    end
     object TabSheet6: TTabSheet
       Caption = 'Pictures'
       ClientHeight = 185
@@ -410,27 +448,6 @@ object frmSettings: TfrmSettings
         TabOrder = 5
       end
     end
-    object TabSheet7: TTabSheet
-      Caption = 'GUI'
-      ClientHeight = 185
-      ClientWidth = 484
-      object cbxForceFullscreen: TCheckBox
-        Left = 14
-        Height = 24
-        Top = 19
-        Width = 135
-        Caption = 'Force Fullscreen'
-        TabOrder = 0
-      end
-      object cbxTouchScreen: TCheckBox
-        Left = 14
-        Height = 24
-        Top = 51
-        Width = 171
-        Caption = 'Touch Screen Support'
-        TabOrder = 1
-      end
-    end
     object TabSheet3: TTabSheet
       Caption = 'Email'
       ClientHeight = 185
@@ -440,7 +457,7 @@ object frmSettings: TfrmSettings
         Height = 41
         Top = 135
         Width = 192
-        Caption = 'Send Favorites'
+        Caption = 'Send Song Favorites'
         OnClick = btnSendFavoritesClick
         TabOrder = 4
       end
@@ -463,8 +480,8 @@ object frmSettings: TfrmSettings
         Left = 14
         Height = 24
         Top = 143
-        Width = 176
-        Caption = 'Send Favorites Weekly'
+        Width = 212
+        Caption = 'Send Song Favorites Weekly'
         TabOrder = 3
       end
       object edtSMTPAccount: TEdit

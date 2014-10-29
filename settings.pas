@@ -42,6 +42,7 @@ type
     cbxTouchScreen: TCheckBox;
     cbxFavoritesAuto: TCheckBox;
     cbxEmailReminders: TCheckBox;
+    edtClockName: TEdit;
     edtSMTPPassword: TEdit;
     edtEmailAddress: TEdit;
     edtSMTPAccount: TEdit;
@@ -67,6 +68,7 @@ type
     Label4: TLabel;
     Label5: TLabel;
     Label6: TLabel;
+    Label7: TLabel;
     Label9: TLabel;
     PageControl1: TPageControl;
     dlgSelectDirectoryDialog: TSelectDirectoryDialog;
