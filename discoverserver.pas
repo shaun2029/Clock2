@@ -6,7 +6,7 @@ unit DiscoverServer;
 //
 
 {$mode objfpc}{$H+}
-// {$DEFINE DEBUG}
+//{$DEFINE DEBUG}
 
 interface
 
@@ -94,14 +94,17 @@ begin
 
           if FSocket.LastError = 0 then
           begin
+            {$IFDEF DEBUG} Log('Discover Server: Received packet ...'); {$ENDIF}
+            {$IFDEF DEBUG} Log('Discover Server: "' + buffer + '"'); {$ENDIF}
+
             if Buffer = 'REQUEST:CLOCKNAME' then
             begin
               {$IFDEF DEBUG} Log('Discover Server: Received REQUEST:CLOCKNAME ...'); {$ENDIF}
 
-              // Send packet with reminder total
-              FSocket.SendString('CLOCKNAME:'+ FClockName);
+              // Send packet clock name
+              FSocket.SendString('CLOCKNAME:' + FClockName + #0);
 
-              {$IFDEF DEBUG} Log('Discover Server: Sent REMINDERS ...'); {$ENDIF}
+              {$IFDEF DEBUG} Log('Discover Server: Sent "' + FClockName + '"'); {$ENDIF}
             end;
           end;
         end;
