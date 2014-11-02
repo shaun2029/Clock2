@@ -259,17 +259,16 @@ begin
   end;
 end;
 
-// Turns down the volume during an announcement
+// Mute the volume during an announcement
 procedure TMusicPlayer.StartAnnouncement;
 begin
-  FAnnouncementVol := GetVolume;
-  SetVolume(FAnnouncementVol div 10);
+  SetVolume(0);
 end;
 
-// Turns up the volume during an announcement
+// Restores the volume after the announcement
 procedure TMusicPlayer.StopAnnouncement;
 begin
-  SetVolume(FAnnouncementVol);
+  SetVolume(FVolume);
 end;
 
 function TMusicPlayer.GetRadioTitle: string;
