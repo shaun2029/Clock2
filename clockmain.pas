@@ -26,7 +26,7 @@ uses
   ConnectionHealth, Unix, Email, IniFiles, SignalHandler, Equaliser, DiscoverServer;
 
 const
-  VERSION = '2.6.1';
+  VERSION = '2.6.3';
 
 type
   TMusicState = (msPlaying, msPaused);
@@ -109,7 +109,6 @@ type
   private
     { private declarations }
     FMPGPlayer: TMusicPlayer;
-//    FMetOffice: TMetOffice;
     FAlarm, FReminderAlarm: TAlarm;
     FCurrentReminders: TReminders;
     FTimer: TAlarm;
@@ -608,7 +607,7 @@ begin
   end
   else
   begin
-    SetLength(FSources, 48);
+    SetLength(FSources, 49);
 
     FSources[0].Title := 'Indie Rock';
     FSources[0].Resource := 'http://pub1.sky.fm/radiotunes_indierock';
@@ -689,23 +688,25 @@ begin
     FSources[38].Title := 'Smooth Jazz';
     FSources[38].Resource := 'http://pub1.sky.fm/radiotunes_davekoz';
     FSources[39].Title := 'Uptempo Jazz';
-    FSources[39].Resource := 'http://pub1.sky.fm/uptemposmoothjazz';
-    FSources[40].Title := 'BBC Radio 5 live Sports Extra';
-    FSources[40].Resource := 'http://www.bbc.co.uk/radio/listen/live/r5lsp_heaacv2.pls';
+    FSources[39].Resource := 'http://pub1.sky.fm/radiotunes_uptemposmoothjazz';
+    FSources[40].Title := 'Top Hits';
+    FSources[40].Resource := 'http://pub1.sky.fm/radiotunes_tophits';
     FSources[41].Title := 'Radio 2000';
     FSources[41].Resource := 'http://216.246.37.51/pbs-radio2000-live';
-    FSources[42].Title := 'BBC Radio 1';
-    FSources[42].Resource := 'http://www.bbc.co.uk/radio/listen/live/r1_heaacv2.pls';
-    FSources[43].Title := 'BBC Radio 1Xtra';
-    FSources[43].Resource := 'http://www.bbc.co.uk/radio/listen/live/r1x_heaacv2.pls';
-    FSources[44].Title := 'BBC Radio 2';
-    FSources[44].Resource := 'http://www.bbc.co.uk/radio/listen/live/r2_heaacv2.pls';
-    FSources[45].Title := 'BBC Radio 3';
-    FSources[45].Resource := 'http://www.bbc.co.uk/radio/listen/live/r3_heaacv2.pls';
-    FSources[46].Title := 'BBC Radio 4';
-    FSources[46].Resource := 'http://www.bbc.co.uk/radio/listen/live/r4_heaacv2.pls';
-    FSources[47].Title := 'BBC Radio 5 live';
-    FSources[47].Resource := 'http://www.bbc.co.uk/radio/listen/live/r5l_heaacv2.pls';
+    FSources[42].Title := 'BBC 1';
+    FSources[42].Resource := 'http://www.bbc.co.uk/radio/listen/live/r1_aaclca.pls';
+    FSources[43].Title := 'BBC 1Xtra';
+    FSources[43].Resource := 'http://www.bbc.co.uk/radio/listen/live/r1x_aaclca.pls';
+    FSources[44].Title := 'BBC 2';
+    FSources[44].Resource := 'http://www.bbc.co.uk/radio/listen/live/r2_aaclca.pls';
+    FSources[45].Title := 'BBC 3';
+    FSources[45].Resource := 'http://www.bbc.co.uk/radio/listen/live/r3_aaclca.pls';
+    FSources[46].Title := 'BBC 4';
+    FSources[46].Resource := 'http://www.bbc.co.uk/radio/listen/live/r4_aaclca.pls';
+    FSources[47].Title := 'BBC 5 Live';
+    FSources[47].Resource := 'http://bbc.co.uk/radio/listen/live/r5l_aaclca.pls';
+    FSources[48].Title := 'BBC 5 Sports';
+    FSources[48].Resource := 'http://bbc.co.uk/radio/listen/live/r5lsp_aaclca.pls';
 
     Stations := TStringList.Create;
     try
@@ -1005,24 +1006,24 @@ procedure TfrmClockMain.FormShow(Sender: TObject);
 begin
   if not FFormShown then
   begin
-    if not FileExists('/usr/bin/mpg123') and not FileExists('/usr/bin/mpg321') then
-      ShowMessage('Alarm Not Working' + LineEnding
-      + 'The package mpg123 was not found on this system.' + LineEnding
-      + 'Please install mpg123 to enable the alarm by running the command:' + LineEnding
-      + 'sudo apt-get install mpg123');
+    FFormShown := True;
 
     if not FileExists(ExtractFilePath(Application.ExeName) + 'alarm.mp3')
       and not FileExists('/usr/share/clock/alarm.mp3') then
       ShowMessage('Alarm Not Working' + LineEnding
       + 'The mp3 file "alarm.mp3" can not be found.' + LineEnding
       + 'Please copy the file "alarm.mp3" to the location:' + LineEnding
-      + '/usr/share/clock/alarm.mp3');
+      + '/usr/share/clock/alarm.mp3')
+    else if not FileExists('/usr/bin/mpg123') and not FileExists('/usr/bin/mpg321') then
+      ShowMessage('Alarm Not Working' + LineEnding
+      + 'The package mpg123 was not found on this system.' + LineEnding
+      + 'Please install mpg123 to enable the alarm by running the command:' + LineEnding
+      + 'sudo apt-get install mpg123');
 
     UpdateSettings;
     frmReminderList.FReminders := frmReminders;
 
     tmrMinute.Enabled := True;
-    FFormShown := True;
   end;
 end;
 
@@ -1525,7 +1526,6 @@ begin
   FServerAddress := frmSettings.edtServerAddress.Text;
   FServerPort := frmSettings.edtServerPort.Text;
 
-  UpdateReminders;
   SetCursorType(Self);
 
   // Update discover server with Clock name
@@ -1539,6 +1539,7 @@ begin
   if ClockName = '' then
     ClockName := 'no-name-set';
 
+  // Crashes debug
   FDiscoverServer := TDiscoverServerThread.Create(44557, ClockName);
 
   if frmSettings.cbxForceFullscreen.Checked then
