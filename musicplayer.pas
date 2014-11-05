@@ -19,7 +19,7 @@ uses
   {$else}
   process_legacy,
   {$endif}
-  Classes, SysUtils, ID3v1Library, ID3v2Library, unix, Math;
+  Classes, SysUtils, ID3v1Library, ID3v2Library, unix, Pipes;
 
 type
 
@@ -34,6 +34,7 @@ type
     FVolume: integer;
     FPlayProcess: TProcess;
     FPlayTimeout: TDateTime;
+    FPlayProcessList: string;
     FSongArtist: string;
     FSongTitle: string;
     FState: TMusicPlayerState;
@@ -153,15 +154,6 @@ begin
 
   FRadioPlaying := False;
 
-  // If announcement in progress stop it.
-  if FAnnouncement then
-  begin
-    SetVolume(FAnnouncementVol);
-    FAnnouncement := False;
-  end;
-
-  FAnnouncementStart := 0;
-
   { If the file does not exist then it could be a URL of a stream.
     Use mplayer to play streams. Prefer MPG123 for MP3 files as it
     supports replaygain. }
@@ -173,19 +165,26 @@ begin
     begin
       FRadioPlaying := True;
 
-      Process.CommandLine := 'bash -c ''mplayer -cache 256 ';
+      if FUsePulseVol then
+      begin
+        Process.CommandLine := 'mplayer -msglevel all=4 -volume 100 -cache 256 '
+      end
+      else
+      begin
+        // Requires softvol
+        Process.CommandLine := 'mplayer -msglevel all=4 -softvol -volume 100 -cache 256 ';
+      end;
 
       // Lower the volume if required.
       // Attenuation will attenuate the playback volume level by 18dB to compensate for headphone amp.
       if FVolAttenuation then
-         Process.CommandLine := Process.CommandLine + '-af volume=-18:0 ';
+         Process.CommandLine := Process.CommandLine + '-af volume=-9:0 ';
 
-      Process.CommandLine := Process.CommandLine + '"' + Song + '" '
-        + '| grep --line-buffered "StreamTitle" > /tmp/radio-song-titles.txt'''
+      Process.CommandLine := Process.CommandLine + '"' + Song + '"';
     end
     else
     begin
-      Process.CommandLine := 'mplayer -cache 256 ';
+      Process.CommandLine := 'mplayer -volume 100 -cache 256 ';
 
       if FVolAttenuation then
          Process.CommandLine := Process.CommandLine + '-af volume=-18:0 ';
@@ -198,6 +197,7 @@ begin
     Process.CommandLine := 'mpg123 --rva-mix "' + Song + '"';
   end;
 
+  Process.Options := Process.Options + [poUsePipes, poStderrToOutPut];
   Process.Execute;
 end;
 
@@ -226,6 +226,15 @@ procedure TMusicPlayer.DestroyPlayProcess;
 begin
   if Assigned(FPlayProcess) then
   begin
+    // If announcement in progress stop it.
+    if FAnnouncement then
+    begin
+      StopAnnouncement;
+      FAnnouncement := False;
+    end;
+
+    FAnnouncementStart := 0;
+
     FState := mpsStopped;
 
     if FPlayProcess.Running then
@@ -237,6 +246,7 @@ begin
 
     FRadioPlaying := False;
     FreeAndNil(FPlayProcess);
+    FPlayProcessList := '';
   end;
 end;
 
@@ -261,19 +271,23 @@ end;
 
 // Mute the volume during an announcement
 procedure TMusicPlayer.StartAnnouncement;
+var
+  Input: TOutputPipeStream;
 begin
-  SetVolume(0);
+  if Assigned(FPlayProcess) then
+    FPlayProcess.Input.WriteAnsiString('m');
 end;
 
 // Restores the volume after the announcement
 procedure TMusicPlayer.StopAnnouncement;
 begin
-  SetVolume(FVolume);
+  if Assigned(FPlayProcess) then
+    FPlayProcess.Input.WriteAnsiString('m');
 end;
 
 function TMusicPlayer.GetRadioTitle: string;
 var
-  Title: string;
+  Title, Output: string;
   TitleList: TStringList;
   p, Len, i, v: integer;
   Announcement: integer;
@@ -288,78 +302,81 @@ begin
   AnnouncmentInProgress := False;
 
   try
-    if FileExists('/tmp/radio-song-titles.txt') then
+    if Assigned(FPlayProcess) then
     begin
-      TitleList.LoadFromFile('/tmp/radio-song-titles.txt');
+      if (FPlayProcess.Output.NumBytesAvailable > 0) then
+      begin
+        Len := FPlayProcess.Output.NumBytesAvailable;
+        SetLength(Output, Len);
+        FPlayProcess.Output.Read(PChar(Output)^, Len);
+        FPlayProcessList := FPlayProcessList + Output;
+        TitleList.Text := FPlayProcessList;
+      end
+      else
+      begin
+        TitleList.Text := FPlayProcessList;
+      end;
 
-       // Detect announcments (Adverts)
-       i := TitleList.Count - 1;
-       if (i >= 0) then
-       begin
-         // Advert detection search for SKY.FM
-         Announcement := Pos('SKY.FM', UpperCase(TitleList.Strings[i]));
-         if (Announcement = 0) then
-           Announcement := Pos('adw_ad=''true''', TitleList.Strings[i]);
+      // Grep StreamTitle
+      for i := TitleList.Count-1 downto 0 do
+      begin
+        if Pos('StreamTitle', TitleList.Strings[i]) = 0 then
+          TitleList.Delete(i);
+      end;
 
-         // Is there an announcement?
-         if (Announcement > 0) then
-         begin
-           AnnouncmentInProgress := True;
+      // Detect announcments (Adverts)
+      i := TitleList.Count - 1;
+      if (i >= 0) then
+      begin
+        // Advert detection search for SKY.FM
+        Announcement := Pos('SKY.FM', UpperCase(TitleList.Strings[i]));
+        if (Announcement = 0) then
+          Announcement := Pos('adw_ad=''true''', TitleList.Strings[i]);
 
-           // Is an announcement, and is it known about and sheduled?
-           if not FAnnouncement and (FAnnouncementStart = 0) then
-           begin
-             // Set announcment start time in the future
-             FAnnouncementStart := Now + EncodeTime(0, 0, 2, 0);
-             FAnnouncementStop := Now + EncodeTime(0, 0, 10, 0);
-           end
-           else
-           begin
-             // Update the end time
-             FAnnouncementStop := Now + EncodeTime(0, 0, 8, 0);
-{
-             // Is this a real announcement or false positive?
-             // Cancel it if it has not started, and is not and announcement,
-             // and an anouncement start time has been triggered.
-             if not FAnnouncement and (Announcement <= 0)
-               and (FAnnouncementStart > 0 )
-               and (FAnnouncementStop > FAnnouncementStart) then
-             begin
-               DecodeTime(FAnnouncementStop - FAnnouncementStart, H, M, S, MS);
+        // Is there an announcement?
+        if (Announcement > 0) then
+        begin
+          AnnouncmentInProgress := True;
 
-               // If the length of the announcement is less than 5 seconds cancel it.
-               if (H + M <= 0) and (S < 5) then FAnnouncementStart := 0;
-             end;
-}
-           end;
-         end;
-       end;
+          // Is an announcement, and is it known about and sheduled?
+          if not FAnnouncement and (FAnnouncementStart = 0) then
+          begin
+            // Set announcment start time in the future
+            FAnnouncementStart := Now + EncodeTime(0, 0, 6, 0);
+            FAnnouncementStop := Now + EncodeTime(0, 0, 10, 0);
+          end
+          else
+          begin
+            // Update the end time
+            FAnnouncementStop := Now + EncodeTime(0, 0, 8, 0);
+          end;
+        end;
+      end;
 
-       if not AnnouncmentInProgress and (TitleList.Count > 0) then
-       begin
-         Title := TitleList.Strings[TitleList.Count-1];
+      if not AnnouncmentInProgress and not FAnnouncement
+        and (TitleList.Count > 0) then
+      begin
+        Title := TitleList.Strings[TitleList.Count-1];
 
-         // Remove unwanted beginning
-         p := Pos('''', Title);
-         Len :=  Length(Title);
-         if (p > 0) and (p < Length(Title)) then
-           Title := Copy(Title, p + 1, Len);
+        // Remove unwanted beginning
+        p := Pos('''', Title);
+        Len :=  Length(Title);
+        if (p > 0) and (p < Length(Title)) then
+         Title := Copy(Title, p + 1, Len);
 
-         // Remove unwanted end
-         p := Pos(';', Title);
-         if (p > 1) then
-           Title := Copy(Title, 1, p-2);
+        // Remove unwanted end
+        p := Pos(';', Title);
+        if (p > 1) then
+         Title := Copy(Title, 1, p-2);
 
-         FNewRadioTitle := Title;
-         FRadioTitleTime := Now + EncodeTime(0, 0, 4, 0);
+        FNewRadioTitle := Title;
+        FRadioTitleTime := Now + EncodeTime(0, 0, 10, 0);
 
-         // Do not let the file grow
-         TitleList.Clear;
-         TitleList.SaveToFile('/tmp/radio-song-titles.txt');
-       end;
-
-       ProcessAnnouncement;
-     end;
+        // Do not let the list grow
+        FPlayProcessList := '';
+      end;
+      ProcessAnnouncement;
+    end;
   finally
      TitleList.Free;
   end;
@@ -384,6 +401,7 @@ begin
   FVolAttenuation := False;
 
   FPlayProcess := nil;
+  FPlayProcessList := '';
 
   // Force getvolume to read the volume.
   FVolume := -1;
@@ -412,11 +430,18 @@ procedure TMusicPlayer.VolumeUp;
 var
   Value: Integer;
 begin
-  Value := 5 - (FVolume mod 5);
-  if Value = 0 then Value := 5;
+  case FVolume of
+    0..2: Inc(FVolume); // for better low volume control
+    3..4: FVolume := 5;
+    5..100:
+      begin
+        Value := 5 - (FVolume mod 5);
+        if Value = 0 then Value := 5;
 
-  FVolume := FVolume + Value;
-  if FVolume > 100 then FVolume := 100;
+        FVolume := FVolume + Value;
+        if FVolume > 100 then FVolume := 100;
+      end;
+  end;
 
   SetVolume(FVolume);
 end;
@@ -425,11 +450,18 @@ procedure TMusicPlayer.VolumeDown;
 var
   Value: Integer;
 begin
-  Value := FVolume mod 5;
-  if Value = 0 then Value := 5;
+  case FVolume of
+    1..3: Dec(FVolume); // for better low volume control
+    4..5: FVolume := 2;
+    6..100:
+      begin
+        Value := FVolume mod 5;
+        if Value = 0 then Value := 5;
 
-  FVolume := FVolume - Value;
-  if FVolume < 0 then FVolume := 0;
+        FVolume := FVolume - Value;
+        if FVolume < 0 then FVolume := 0;
+      end;
+  end;
 
   SetVolume(FVolume);
 end;
