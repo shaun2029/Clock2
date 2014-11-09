@@ -115,7 +115,7 @@ type
     FSyncServer: TSyncServer;
     FSyncClient: TSyncClient;
     FServerAddress, FServerPort: String;
-    FDiscoverServer: TDiscoverServerThread;
+    FDiscoverServer: TDiscoverServer;
 
     FAfterAlarmResumeMusic: boolean;
     FLinuxDateTime: TLinuxDateTime;
@@ -1540,7 +1540,7 @@ begin
     ClockName := 'no-name-set';
 
   // Crashes debug
-  FDiscoverServer := TDiscoverServerThread.Create(44557, ClockName);
+  FDiscoverServer := TDiscoverServer.Create(44557, ClockName);
 
   if frmSettings.cbxForceFullscreen.Checked then
   begin
