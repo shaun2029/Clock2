@@ -76,43 +76,36 @@ var
 begin
   {$IFDEF DEBUG} Log('Discover Server: Running ...'); {$ENDIF}
 
-  try
-    FSocket.Bind('0.0.0.0', IntToStr(FPort));
+  FSocket.Bind('0.0.0.0', IntToStr(FPort));
 
-    if FSocket.LastError <> 0 then
+  if FSocket.LastError <> 0 then
+  begin
+    Log(Format('Bind failed with error code %d', [FSocket.LastError]));
+    while not Terminated do Sleep(100);
+  end
+  else
+  begin
+    while not Terminated do
     begin
-      Log(Format('Bind failed with error code %d', [FSocket.LastError]));
-      while not Terminated do Sleep(100);
-    end
-    else
-    begin
-      try
-        while not Terminated do
+      // wait one second for new packet
+      Buffer := FSocket.RecvPacket(1000);
+
+      if FSocket.LastError = 0 then
+      begin
+        {$IFDEF DEBUG} Log('Discover Server: Received packet ...'); {$ENDIF}
+        {$IFDEF DEBUG} Log('Discover Server: "' + buffer + '"'); {$ENDIF}
+
+        if Buffer = 'REQUEST:CLOCKNAME' then
         begin
-          // wait one second for new packet
-          Buffer := FSocket.RecvPacket(1000);
+          {$IFDEF DEBUG} Log('Discover Server: Received REQUEST:CLOCKNAME ...'); {$ENDIF}
 
-          if FSocket.LastError = 0 then
-          begin
-            {$IFDEF DEBUG} Log('Discover Server: Received packet ...'); {$ENDIF}
-            {$IFDEF DEBUG} Log('Discover Server: "' + buffer + '"'); {$ENDIF}
+          // Send packet clock name
+          FSocket.SendString('CLOCKNAME:' + FClockName + #0);
 
-            if Buffer = 'REQUEST:CLOCKNAME' then
-            begin
-              {$IFDEF DEBUG} Log('Discover Server: Received REQUEST:CLOCKNAME ...'); {$ENDIF}
-
-              // Send packet clock name
-              FSocket.SendString('CLOCKNAME:' + FClockName + #0);
-
-              {$IFDEF DEBUG} Log('Discover Server: Sent "' + FClockName + '"'); {$ENDIF}
-            end;
-          end;
+          {$IFDEF DEBUG} Log('Discover Server: Sent "' + FClockName + '"'); {$ENDIF}
         end;
-      finally
-        FSocket.CloseSocket;
       end;
     end;
-  finally
   end;
 
   {$IFDEF DEBUG} Log('Discover Server: Stopped ...'); {$ENDIF}
@@ -130,7 +123,6 @@ end;
 
 destructor TDiscoverServerThread.Destroy;
 begin
-  FSocket.CloseSocket;
   FSocket.Free;
 
   inherited Destroy;
