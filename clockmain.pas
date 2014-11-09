@@ -26,7 +26,7 @@ uses
   ConnectionHealth, Unix, Email, IniFiles, SignalHandler, Equaliser, DiscoverServer;
 
 const
-  VERSION = '2.6.3';
+  VERSION = '2.6.4';
 
 type
   TMusicState = (msPlaying, msPaused);
@@ -1088,6 +1088,7 @@ procedure TfrmClockMain.imgRemindersClick(Sender: TObject);
 begin
   imgReminders.Picture.Assign(imgOff.Picture);
   Application.ProcessMessages;
+  Self.Hide;
 
   if (FAlarm.State = asActive)
     or (FTimer.State = asActive)
@@ -1102,6 +1103,7 @@ begin
     FormShowModal(frmReminderList);
   end;
 
+  Self.Show;
   imgReminders.Picture.Assign(imgOn.Picture);
 end;
 
@@ -1539,8 +1541,9 @@ begin
   if ClockName = '' then
     ClockName := 'no-name-set';
 
-  // Crashes debug
   FDiscoverServer := TDiscoverServer.Create(44557, ClockName);
+
+  UpdateReminders;
 
   if frmSettings.cbxForceFullscreen.Checked then
   begin
