@@ -86,45 +86,42 @@ begin
     end
     else
     begin
-      try
-        while not Terminated do
+      while not Terminated do
+      begin
+        // wait two second for new packet
+        Buffer := FSocket.RecvPacket(2000);
+
+        if FSocket.LastError = 0 then
         begin
-          // wait two second for new packet
-          Buffer := FSocket.RecvPacket(2000);
+          {$IFDEF DEBUG} Log('Discover Server: Received packet ...'); {$ENDIF}
+          {$IFDEF DEBUG} Log('Discover Server: "' + buffer + '"'); {$ENDIF}
 
-          if FSocket.LastError = 0 then
+          if Buffer = 'REQUEST:CLOCKNAME' then
           begin
-            {$IFDEF DEBUG} Log('Discover Server: Received packet ...'); {$ENDIF}
-            {$IFDEF DEBUG} Log('Discover Server: "' + buffer + '"'); {$ENDIF}
+            {$IFDEF DEBUG} Log('Discover Server: Received REQUEST:CLOCKNAME ...'); {$ENDIF}
 
-            if Buffer = 'REQUEST:CLOCKNAME' then
+            // Send packet clock name
+            FSocket.SendString('CLOCKNAME:' + FClockName + #0);
+
+            {$IFDEF DEBUG} Log('Discover Server: Sent "' + FClockName + '"'); {$ENDIF}
+          end
+          else if FSocket.LastError <> WSAETIMEDOUT then
+          begin
+            Log(Format('Discover Server: RecvPacket failed with error code %d', [FSocket.LastError]));
+            Log('Discover Server: Rebinding socket ...');
+
+            FSocket.CloseSocket;
+            FSocket.Bind('0.0.0.0', IntToStr(FPort));
+
+            if FSocket.LastError <> 0 then
             begin
-              {$IFDEF DEBUG} Log('Discover Server: Received REQUEST:CLOCKNAME ...'); {$ENDIF}
-
-              // Send packet clock name
-              FSocket.SendString('CLOCKNAME:' + FClockName + #0);
-
-              {$IFDEF DEBUG} Log('Discover Server: Sent "' + FClockName + '"'); {$ENDIF}
-            end
-            else if FSocket.LastError <> WSAETIMEDOUT then
-            begin
-              Log(Format('Discover Server: RecvPacket failed with error code %d', [FSocket.LastError]));
-              Log('Discover Server: Rebinding socket ...');
-
-              FSocket.CloseSocket;
-              FSocket.Bind('0.0.0.0', IntToStr(FPort));
-
-              if FSocket.LastError <> 0 then
-              begin
-                Log(Format('Discover Server: Bind failed with error code %d', [FSocket.LastError]));
-                while not Terminated do Sleep(1000);
-              end;
-
-              Log('Discover Server: Restarted.');
+              Log(Format('Discover Server: Bind failed with error code %d', [FSocket.LastError]));
+              while not Terminated do Sleep(1000);
             end;
+
+            Log('Discover Server: Restarted.');
           end;
         end;
-      finally
       end;
     end;
   except
