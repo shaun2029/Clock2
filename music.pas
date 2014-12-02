@@ -10,7 +10,11 @@ unit music;
 interface
 
 uses
-  Classes, SysUtils, FindThread, MusicPlayer, LCLProc, IniFiles;
+  {$ifndef LEGACY}
+  FindThread,
+  LCLProc,
+  {$endif}
+  Classes, SysUtils, MusicPlayer, IniFiles;
 
 type
 
@@ -27,8 +31,10 @@ type
     FFindPlaySongList, FFindPlayPathList: TStringList;
     FRandomPlaySelection: boolean;
 
+    {$ifndef LEGACY}
     FFindFiles: TFindFilesThread;
     FFindPlayFiles: TFindFilesThread;
+    {$endif}
 
     FMusicPlayer: TMusicPlayer;
     FConfigFile, FSearchPath: string;
@@ -107,20 +113,24 @@ destructor TPlayer.Destroy;
 begin
   FMusicPlayer.Stop;
 
+  {$ifndef LEGACY}
   if Assigned(FFindFiles) then
   begin
     FFindFiles.Terminate;
     FFindFiles.WaitFor;
     FreeAndNil(FFindFiles);
   end
-  else SaveSettings;
+  else
+  {$endif} SaveSettings;
 
+  {$ifndef LEGACY}
   if Assigned(FFindPlayFiles) then
   begin
     FFindPlayFiles.Terminate;
     FFindPlayFiles.WaitFor;
     FreeAndNil(FFindPlayFiles);
   end;
+  {$endif}
 
   FSongList.Free;
   FPathList.Free;
@@ -202,6 +212,7 @@ function TPlayer.Tick: integer;
 begin
   Result := -1;
 
+  {$ifndef LEGACY}
   if Assigned(FFindFiles) then
   begin
     if FFindFiles.Complete then
@@ -229,7 +240,7 @@ begin
     end
     else Result := FFindPlayFiles.Count;
   end
-  else if (FState = psPlaying) then
+  else {$endif} if (FState = psPlaying) then
   begin
     if FMusicPlayer.State = mpsStopped then
     begin
@@ -260,12 +271,16 @@ begin
         Filename := GetFilename(FSongIndex, FSongList, FPathList);
 
         if FileExists(Filename) then FMusicPlayer.Play(Filename)
-        else DebugLn('Music: Failed to find "' + Filename + '"');
+        {$ifndef LEGACY}
+        else DebugLn('Music: Failed to find "' + Filename + '"')
+        {$endif};
       end;
     except
       on E: Exception do
       begin
+        {$ifndef LEGACY}
         DebugLn(Self.ClassName + #9#9 + E.Message);
+        {$endif}
       end;
     end;
 
@@ -296,11 +311,15 @@ begin
         Filename := GetFilename(FPlaylistIndex, FPlaySongList, FPlayPathList);
 
         if FileExists(Filename) then FMusicPlayer.Play(Filename)
-        else DebugLn('Music: Failed to find "' + Filename + '"');
+        {$ifndef LEGACY}
+        else DebugLn('Music: Failed to find "' + Filename + '"')
+        {$endif};
       except
         on E: Exception do
         begin
+          {$ifndef LEGACY}
           DebugLn(Self.ClassName + #9#9 + E.Message);
+          {$endif}
         end;
       end;
     end;
@@ -384,6 +403,7 @@ end;
 
 procedure TPlayer.RescanSearchPath;
 begin
+  {$ifndef LEGACY}
   if Assigned(FFindFiles) then
   begin
     FFindFiles.Terminate;
@@ -398,6 +418,7 @@ begin
     FFindFiles := TFindFilesThread.Create(FFindSongList, FFindPathList, FSearchPath, '.mp3');
     FFindFiles.Resume;
   end;
+  {$endif}
 end;
 
 function TPlayer.GetFileName(Index: integer; SongList, PathList: TStringList) : string;
@@ -428,6 +449,7 @@ procedure TPlayer.PlaySelection(SearchPaths: string; Random: boolean);
 begin
   FRandomPlaySelection := Random;
 
+  {$ifndef LEGACY}
   if Assigned(FFindPlayFiles) then
   begin
     FFindPlayFiles.Terminate;
@@ -437,6 +459,7 @@ begin
 
   FFindPlayFiles := TFindFilesThread.Create(FFindPlaySongList, FFindPlayPathList, SearchPaths, '.mp3');
   FFindPlayFiles.Resume;
+  {$endif}
 end;
 
 end.

@@ -13,7 +13,7 @@ interface
 uses
   Classes, SysUtils,
   // synapse
-  blcksock;
+  blcksock, synsock;
 
 type
 
@@ -76,37 +76,67 @@ var
 begin
   {$IFDEF DEBUG} Log('Discover Server: Running ...'); {$ENDIF}
 
-  FSocket.Bind('0.0.0.0', IntToStr(FPort));
+  try
+    FSocket.Bind('0.0.0.0', IntToStr(FPort));
 
-  if FSocket.LastError <> 0 then
-  begin
-    Log(Format('Bind failed with error code %d', [FSocket.LastError]));
-    while not Terminated do Sleep(100);
-  end
-  else
-  begin
-    while not Terminated do
+    if FSocket.LastError <> 0 then
     begin
-      // wait one second for new packet
-      Buffer := FSocket.RecvPacket(1000);
-
-      if FSocket.LastError = 0 then
-      begin
-        {$IFDEF DEBUG} Log('Discover Server: Received packet ...'); {$ENDIF}
-        {$IFDEF DEBUG} Log('Discover Server: "' + buffer + '"'); {$ENDIF}
-
-        if Buffer = 'REQUEST:CLOCKNAME' then
+      Log(Format('Discover Server: Bind failed with error code %d', [FSocket.LastError]));
+      while not Terminated do Sleep(1000);
+    end
+    else
+    begin
+      try
+        while not Terminated do
         begin
-          {$IFDEF DEBUG} Log('Discover Server: Received REQUEST:CLOCKNAME ...'); {$ENDIF}
+          // wait two second for new packet
+          Buffer := FSocket.RecvPacket(2000);
 
-          // Send packet clock name
-          FSocket.SendString('CLOCKNAME:' + FClockName + #0);
+          if FSocket.LastError = 0 then
+          begin
+            {$IFDEF DEBUG} Log('Discover Server: Received packet ...'); {$ENDIF}
+            {$IFDEF DEBUG} Log('Discover Server: "' + buffer + '"'); {$ENDIF}
 
-          {$IFDEF DEBUG} Log('Discover Server: Sent "' + FClockName + '"'); {$ENDIF}
+            if Buffer = 'REQUEST:CLOCKNAME' then
+            begin
+              {$IFDEF DEBUG} Log('Discover Server: Received REQUEST:CLOCKNAME ...'); {$ENDIF}
+
+              // Send packet clock name
+              FSocket.SendString('CLOCKNAME:' + FClockName + #0);
+
+              {$IFDEF DEBUG} Log('Discover Server: Sent "' + FClockName + '"'); {$ENDIF}
+            end
+            else if FSocket.LastError <> WSAETIMEDOUT then
+            begin
+              Log(Format('Discover Server: RecvPacket failed with error code %d', [FSocket.LastError]));
+              Log('Discover Server: Rebinding socket ...');
+
+              FSocket.CloseSocket;
+              FSocket.Bind('0.0.0.0', IntToStr(FPort));
+
+              if FSocket.LastError <> 0 then
+              begin
+                Log(Format('Discover Server: Bind failed with error code %d', [FSocket.LastError]));
+                while not Terminated do Sleep(1000);
+              end;
+
+              Log('Discover Server: Restarted.');
+            end;
+          end;
         end;
+      finally
       end;
     end;
+  except
+    on E: exception do
+    begin
+      Log('Discover Server: Fatal Exception!');
+      Log('Fatal Exception: ' + E.Message);
+    end;
   end;
+
+  if Assigned(FSocket) then
+    FSocket.CloseSocket;
 
   {$IFDEF DEBUG} Log('Discover Server: Stopped ...'); {$ENDIF}
 end;
@@ -123,7 +153,11 @@ end;
 
 destructor TDiscoverServerThread.Destroy;
 begin
-  FSocket.Free;
+  if Assigned(FSocket) then
+  begin
+    FSocket.CloseSocket;
+    FSocket.Free;
+  end;
 
   inherited Destroy;
 end;

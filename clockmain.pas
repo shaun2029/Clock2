@@ -26,7 +26,7 @@ uses
   ConnectionHealth, Unix, Email, IniFiles, SignalHandler, Equaliser, DiscoverServer;
 
 const
-  VERSION = '2.6.4';
+  VERSION = '2.6.5';
 
 type
   TMusicState = (msPlaying, msPaused);

@@ -50,6 +50,9 @@ unit ID3v2Library;
 
 interface
 
+// Code to support older Lazarus/FPC
+//{$define LEGACY}
+
 Uses
     Classes;
 
@@ -531,11 +534,14 @@ var
 implementation
 
 Uses
-    SysUtils,
+    {$ifndef LEGACY}
+    LConvEncoding,
+    {$endif}
+    SysUtils;
     //Dialogs,
     //ZLibEx,
 //    ZLib,
-    LConvEncoding;
+//    ;
 
 function MakeInt64(LowDWord, HiDWord: DWord): Int64;
 begin
@@ -2304,7 +2310,11 @@ begin
                 Frames[FrameIndex].Stream.Read(PASCIIText^, Frames[FrameIndex].Stream.Size - Frames[FrameIndex].Stream.Position);
                 AnsiText := PASCIIText;
                 FreeMem(PASCIIText);
+                {$ifndef LEGACY}
                 Result := ISO_8859_1ToUTF8(AnsiText);
+                {$else}
+                Result := AnsiText;
+                {$endif}
             end;
             //* UTF-16
             1: begin
@@ -7171,4 +7181,4 @@ Initialization
     AIFCChunkID := 'AIFC';
     AIFFID3v2ID := 'ID3 ';
 
-end.
+end.

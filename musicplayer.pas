@@ -431,8 +431,8 @@ var
   Value: Integer;
 begin
   case FVolume of
-    0..2: Inc(FVolume); // for better low volume control
-    3..4: FVolume := 5;
+    0..1: Inc(FVolume); // for better low volume control
+    2..4: FVolume := 5;
     5..100:
       begin
         Value := 5 - (FVolume mod 5);
