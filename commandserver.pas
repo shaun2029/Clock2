@@ -18,7 +18,7 @@ uses
 type
 
   TRemoteCommand = (rcomNone, rcomNext, rcomMusic, rcomSleep, rcomMeditation, rcomPause, rcomVolumeUp,
-    rcomVolumeDown, rcomDisplayToggle, rcomSetRadioStation, rcomRadio);
+    rcomVolumeDown, rcomDisplayToggle, rcomSetRadioStation, rcomRadio, rcomFavorite);
 
   { TCOMServerThread }
 
@@ -271,9 +271,13 @@ begin
       FCritical.Leave;
       Socket.SendString(':OK' + #10);
     end
-    else if Buffer = 'CLOCK:DISCOVER' then
+    else if Buffer = 'CLOCK:FAVORITE' then
     begin
-      Socket.SendString('192.168.0.72' + #10);//GetEnvironmentVariable('HostName') + #10);
+      FCritical.Enter;
+      FCommand := rcomFavorite;
+      FCritical.Leave;
+      if Assigned(FOnCommand) then Self.Synchronize(FOnCommand);
+      Socket.SendString(':OK' + #10);
     end
     else Socket.SendString(':BAD' + #10);
   end;

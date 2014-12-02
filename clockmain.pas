@@ -141,6 +141,7 @@ type
 
     FFavoritesAuto: boolean;
 
+    procedure AddToFavorites;
     procedure BacklightBright;
     procedure BacklightDim;
     procedure CreateMusicPicker;
@@ -1160,7 +1161,7 @@ begin
   imgUpdateMusic.Picture.Assign(imgOn.Picture);
 end;
 
-procedure TfrmClockMain.labSongClick(Sender: TObject);
+procedure TfrmClockMain.AddToFavorites;
 var
   Titles: TStringList;
   FavFile, TimeStr: string;
@@ -1186,6 +1187,11 @@ begin
   end;
 
   Titles.Free;
+end;
+
+procedure TfrmClockMain.labSongClick(Sender: TObject);
+begin
+  AddToFavorites;
 end;
 
 procedure TfrmClockMain.lbDisplayClick(Sender: TObject);
@@ -1326,6 +1332,10 @@ begin
       begin
         Key := ',';
         FormKeyPress(Self, Key);
+      end;
+    rcomFavorite:
+      begin
+        AddToFavorites;
       end;
   end;
 end;
