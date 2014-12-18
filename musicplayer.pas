@@ -45,6 +45,7 @@ type
     FNewRadioTitle: string;
     FRadioTitleTime: TDateTime;
     FRadioPlaying: boolean;
+    FAdDelay: integer;
 
     FAnnouncementVol: integer;
     FAnnouncement: boolean;
@@ -149,6 +150,8 @@ begin
 end;
 
 procedure TMusicPlayer.StartPlayProcess(Song: string; out Process: TProcess);
+var
+  FileExt: String;
 begin
   Process := TProcess.Create(nil);
 
@@ -165,6 +168,15 @@ begin
     begin
       FRadioPlaying := True;
 
+      // AdDelay is used to mute adverts/announcements.
+      // Some stations have a delay between the title text change and the audio stream change.
+      FAdDelay := 1;
+
+      // SKY.FM (AudioTunes) has a 6 second delay
+      if Pos('sky.fm', LowerCase(Song)) > 0 then
+        FAdDelay := 6;
+
+
       if FUsePulseVol then
       begin
         Process.CommandLine := 'mplayer -msglevel all=4 -volume 100 -cache 256 '
@@ -180,6 +192,13 @@ begin
       if FVolAttenuation then
          Process.CommandLine := Process.CommandLine + '-af volume=-9:0 ';
 
+      FileExt := LowerCase(ExtractFileExt(Song));
+      if (FileExt = '.pls') or (FileExt = '.m3u') or (FileExt = '.asx')
+        or (FileExt = '.wpl') or (FileExt = '.xspf') then
+      begin
+        Process.CommandLine := Process.CommandLine + '-playlist ';
+      end;
+
       Process.CommandLine := Process.CommandLine + '"' + Song + '"';
     end
     else
@@ -188,6 +207,13 @@ begin
 
       if FVolAttenuation then
          Process.CommandLine := Process.CommandLine + '-af volume=-18:0 ';
+
+      FileExt := LowerCase(ExtractFileExt(Song));
+      if (FileExt = '.pls') or (FileExt = '.mu3') or (FileExt = '.asx')
+        or (FileExt = '.wpl') or (FileExt = '.xspf') then
+      begin
+        Process.CommandLine := Process.CommandLine + '-playlist ';
+      end;
 
       Process.CommandLine := Process.CommandLine + '"' + Song + '"';
     end;
@@ -329,9 +355,20 @@ begin
       if (i >= 0) then
       begin
         // Advert detection search for SKY.FM
-        Announcement := Pos('SKY.FM', UpperCase(TitleList.Strings[i]));
+        Announcement := Pos('sky.fm', LowerCase(TitleList.Strings[i]));
         if (Announcement = 0) then
-          Announcement := Pos('adw_ad=''true''', TitleList.Strings[i]);
+          Announcement := Pos('adw_ad=''true''', LowerCase(TitleList.Strings[i]));
+        // Advert detection search for Absolute Radio
+        if (Announcement = 0) then
+          Announcement := Pos('back-soon', LowerCase(TitleList.Strings[i]));
+        if (Announcement = 0) then
+          Announcement := Pos('adbreak', LowerCase(TitleList.Strings[i]));
+        //// Empty Titles - may cause issues???
+        // Streamed by Absolute 80s
+        //if (Announcement = 0) then
+        //  Announcement := Pos('ICY Info: StreamTitle='';StreamUrl='';', TitleList.Strings[i]);
+
+
 
         // Is there an announcement?
         if (Announcement > 0) then
@@ -342,13 +379,13 @@ begin
           if not FAnnouncement and (FAnnouncementStart = 0) then
           begin
             // Set announcment start time in the future
-            FAnnouncementStart := Now + EncodeTime(0, 0, 6, 0);
-            FAnnouncementStop := Now + EncodeTime(0, 0, 10, 0);
+            FAnnouncementStart := Now + EncodeTime(0, 0, FAdDelay, 0);
+            FAnnouncementStop := Now + EncodeTime(0, 0, 4 + FAdDelay, 0);
           end
           else
           begin
             // Update the end time
-            FAnnouncementStop := Now + EncodeTime(0, 0, 8, 0);
+            FAnnouncementStop := Now + EncodeTime(0, 0, 2 + FAdDelay, 0);
           end;
         end;
       end;
@@ -369,8 +406,15 @@ begin
         if (p > 1) then
          Title := Copy(Title, 1, p-2);
 
-        FNewRadioTitle := Title;
-        FRadioTitleTime := Now + EncodeTime(0, 0, 10, 0);
+        if Title = '' then
+        begin
+          Title := '';
+        end
+        else
+        begin
+          FNewRadioTitle := Title;
+          FRadioTitleTime := Now + EncodeTime(0, 0, FAdDelay, 0);
+        end;
 
         // Do not let the list grow
         FPlayProcessList := '';
