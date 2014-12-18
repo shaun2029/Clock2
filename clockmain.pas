@@ -26,7 +26,7 @@ uses
   ConnectionHealth, Unix, Email, IniFiles, SignalHandler, Equaliser, DiscoverServer;
 
 const
-  VERSION = '2.6.5';
+  VERSION = '2.6.6';
 
 type
   TMusicState = (msPlaying, msPaused);
@@ -1011,15 +1011,15 @@ begin
 
     if not FileExists(ExtractFilePath(Application.ExeName) + 'alarm.mp3')
       and not FileExists('/usr/share/clock/alarm.mp3') then
-      ShowMessage('Alarm Not Working' + LineEnding
+      ShowMessage('Alarm Failure' + LineEnding
       + 'The mp3 file "alarm.mp3" can not be found.' + LineEnding
       + 'Please copy the file "alarm.mp3" to the location:' + LineEnding
       + '/usr/share/clock/alarm.mp3')
-    else if not FileExists('/usr/bin/mpg123') and not FileExists('/usr/bin/mpg321') then
-      ShowMessage('Alarm Not Working' + LineEnding
-      + 'The package mpg123 was not found on this system.' + LineEnding
-      + 'Please install mpg123 to enable the alarm by running the command:' + LineEnding
-      + 'sudo apt-get install mpg123');
+    else if not FileExists('/usr/bin/mplayer') then
+      ShowMessage('Audio Playback Failure' + LineEnding
+      + 'The package mplayer was not found on this system.' + LineEnding
+      + 'Please install mplayer to enable audio playback:' + LineEnding
+      + 'sudo apt-get install mplayer');
 
     UpdateSettings;
     frmReminderList.FReminders := frmReminders;

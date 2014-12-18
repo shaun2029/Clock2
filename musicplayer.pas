@@ -29,7 +29,9 @@ type
 
   TMusicPlayer  = class
   private
-    FUsePulseVol, FVolAttenuation: boolean;
+    FUsePulseVol: boolean;
+    FVolAttenuation: integer;
+    FCache: integer;
     FMixerControl: string;
     FVolume: integer;
     FPlayProcess: TProcess;
@@ -57,6 +59,7 @@ type
     function GetState: TMusicPlayerState;
     procedure PlaySong(Song: string);
     procedure ProcessAnnouncement;
+    procedure SetVolAttenuation(AValue: integer);
     procedure SetVolume(Volume: integer);
     procedure StartAnnouncement;
     procedure StartPlayProcess(Song: string; out Process: TProcess);
@@ -77,7 +80,7 @@ type
     property SongTitle: string read FSongTitle;
     property State: TMusicPlayerState read GetState;
     property RadioTitle: string read GetRadioTitle;
-    property VolAttenuation: boolean read FVolAttenuation write FVolAttenuation;
+    property VolAttenuation: integer read FVolAttenuation write SetVolAttenuation;
   end;
 
 implementation
@@ -151,77 +154,50 @@ end;
 
 procedure TMusicPlayer.StartPlayProcess(Song: string; out Process: TProcess);
 var
+  Vol: integer;
   FileExt: String;
 begin
   Process := TProcess.Create(nil);
 
   FRadioPlaying := False;
 
-  { If the file does not exist then it could be a URL of a stream.
-    Use mplayer to play streams. Prefer MPG123 for MP3 files as it
-    supports replaygain. }
+  { If the file does not exist then it could be a URL of a stream. }
 
-  if not FileExists(Song) or not FileExists('/usr/bin/mpg123')
-    or not (LowerCase(ExtractFileExt(Song)) = '.mp3') or FVolAttenuation then
+  if not FileExists(Song) then
   begin
-    if not FileExists(Song) then
+    FRadioPlaying := True;
+
+    // AdDelay is used to mute adverts/announcements.
+    // Some stations have a delay between the title text change and the audio stream change.
+    FAdDelay := 1;
+
+    // SKY.FM (AudioTunes) has a 6 second delay
+    if Pos('sky.fm', LowerCase(Song)) > 0 then
+      FAdDelay := 6;
+
+    if FUsePulseVol then
     begin
-      FRadioPlaying := True;
-
-      // AdDelay is used to mute adverts/announcements.
-      // Some stations have a delay between the title text change and the audio stream change.
-      FAdDelay := 1;
-
-      // SKY.FM (AudioTunes) has a 6 second delay
-      if Pos('sky.fm', LowerCase(Song)) > 0 then
-        FAdDelay := 6;
-
-
-      if FUsePulseVol then
-      begin
-        Process.CommandLine := 'mplayer -msglevel all=4 -volume 100 -cache 256 '
-      end
-      else
-      begin
-        // Requires softvol
-        Process.CommandLine := 'mplayer -msglevel all=4 -softvol -volume 100 -cache 256 ';
-      end;
-
-      // Lower the volume if required.
-      // Attenuation will attenuate the playback volume level by 18dB to compensate for headphone amp.
-      if FVolAttenuation then
-         Process.CommandLine := Process.CommandLine + '-af volume=-9:0 ';
-
-      FileExt := LowerCase(ExtractFileExt(Song));
-      if (FileExt = '.pls') or (FileExt = '.m3u') or (FileExt = '.asx')
-        or (FileExt = '.wpl') or (FileExt = '.xspf') then
-      begin
-        Process.CommandLine := Process.CommandLine + '-playlist ';
-      end;
-
-      Process.CommandLine := Process.CommandLine + '"' + Song + '"';
+      Process.CommandLine := 'mplayer -msglevel all=4 -volume ' + IntToStr(100-FVolAttenuation);
     end
     else
     begin
-      Process.CommandLine := 'mplayer -volume 100 -cache 256 ';
-
-      if FVolAttenuation then
-         Process.CommandLine := Process.CommandLine + '-af volume=-18:0 ';
-
-      FileExt := LowerCase(ExtractFileExt(Song));
-      if (FileExt = '.pls') or (FileExt = '.mu3') or (FileExt = '.asx')
-        or (FileExt = '.wpl') or (FileExt = '.xspf') then
-      begin
-        Process.CommandLine := Process.CommandLine + '-playlist ';
-      end;
-
-      Process.CommandLine := Process.CommandLine + '"' + Song + '"';
+      // Requires softvol
+      Process.CommandLine := 'mplayer -msglevel all=4 -softvol -volume ' + IntToStr(100-FVolAttenuation);
     end;
   end
   else
   begin
-    Process.CommandLine := 'mpg123 --rva-mix "' + Song + '"';
+    Process.CommandLine := 'mplayer -volume ' + IntToStr(100-FVolAttenuation);
+
+    FileExt := LowerCase(ExtractFileExt(Song));
+    if (FileExt = '.pls') or (FileExt = '.mu3') or (FileExt = '.asx')
+      or (FileExt = '.wpl') or (FileExt = '.xspf') then
+    begin
+      Process.CommandLine := Process.CommandLine + '-playlist';
+    end;
   end;
+
+  Process.CommandLine := Process.CommandLine + ' -cache 256 "' + Song + '"';
 
   Process.Options := Process.Options + [poUsePipes, poStderrToOutPut];
   Process.Execute;
@@ -293,6 +269,13 @@ begin
     StopAnnouncement;
     FAnnouncement := False;
   end;
+end;
+
+procedure TMusicPlayer.SetVolAttenuation(AValue: integer);
+begin
+  if (AValue < 0) then FVolAttenuation := 0
+  else if (AValue > 100) then FVolAttenuation := 100
+  else FVolAttenuation:=AValue;
 end;
 
 // Mute the volume during an announcement
@@ -442,7 +425,7 @@ constructor TMusicPlayer.Create(MixerControl : string; UsePulseVol: boolean);
 begin
   FMixerControl := MixerControl;
   FUsePulseVol := UsePulseVol;
-  FVolAttenuation := False;
+  FVolAttenuation := 0;
 
   FPlayProcess := nil;
   FPlayProcessList := '';
