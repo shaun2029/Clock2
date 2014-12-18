@@ -8,4 +8,4 @@ backup/
 *.dll
 build/
 Clock2
-
+lnet/lazaruspackage/lib/
