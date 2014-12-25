@@ -31,7 +31,7 @@ type
   private
     FUsePulseVol: boolean;
     FVolAttenuation: integer;
-    FCache: integer;
+    FMplayerEQ: string;
     FMixerControl: string;
     FVolume: integer;
     FPlayProcess: TProcess;
@@ -48,6 +48,7 @@ type
     FRadioTitleTime: TDateTime;
     FRadioPlaying: boolean;
     FAdDelay: integer;
+    FAdvertType: string;
 
     FAnnouncementVol: integer;
     FAnnouncement: boolean;
@@ -66,7 +67,7 @@ type
     procedure StopAnnouncement;
     procedure StopSong;
   public
-    constructor Create(MixerControl : string; UsePulseVol: boolean);
+    constructor Create(MixerControl : string; UsePulseVol: boolean; EQ: array of integer);
     destructor Destroy; override;
 
     procedure Play(Filename: string);
@@ -197,7 +198,7 @@ begin
     end;
   end;
 
-  Process.CommandLine := Process.CommandLine + ' -cache 256 "' + Song + '"';
+  Process.CommandLine := Process.CommandLine  + FMplayerEQ + ' -cache 256 "' + Song + '"';
 
   Process.Options := Process.Options + [poUsePipes, poStderrToOutPut];
   Process.Execute;
@@ -295,6 +296,9 @@ begin
 end;
 
 function TMusicPlayer.GetRadioTitle: string;
+const
+  AdTypes: array [0..4] of string = ('sky.fm', 'adw_ad=''true''',
+    'back-soon', 'adbreak', 'ICY Info: StreamTitle='';StreamUrl='';');
 var
   Title, Output: string;
   TitleList: TStringList;
@@ -302,6 +306,7 @@ var
   Announcement: integer;
   AnnouncmentInProgress: boolean;
   H, M, S, MS: word;
+  j: Integer;
 begin
   // ICY Info: StreamTitle='Enos McLeod - Jericho';StreamUrl='';
 
@@ -337,21 +342,16 @@ begin
       i := TitleList.Count - 1;
       if (i >= 0) then
       begin
-        // Advert detection search for SKY.FM
-        Announcement := Pos('sky.fm', LowerCase(TitleList.Strings[i]));
-        if (Announcement = 0) then
-          Announcement := Pos('adw_ad=''true''', LowerCase(TitleList.Strings[i]));
-        // Advert detection search for Absolute Radio
-        if (Announcement = 0) then
-          Announcement := Pos('back-soon', LowerCase(TitleList.Strings[i]));
-        if (Announcement = 0) then
-          Announcement := Pos('adbreak', LowerCase(TitleList.Strings[i]));
-        //// Empty Titles - may cause issues???
-        // Streamed by Absolute 80s
-        //if (Announcement = 0) then
-        //  Announcement := Pos('ICY Info: StreamTitle='';StreamUrl='';', TitleList.Strings[i]);
-
-
+        // Advert detection search
+        for j := 0 to High(AdTypes) do
+        begin
+          Announcement := Pos(AdTypes[j], LowerCase(TitleList.Strings[i]));
+          if (Announcement > 0) then
+          begin
+            FAdvertType := AdTypes[j];
+            break;
+          end
+        end;
 
         // Is there an announcement?
         if (Announcement > 0) then
@@ -363,12 +363,25 @@ begin
           begin
             // Set announcment start time in the future
             FAnnouncementStart := Now + EncodeTime(0, 0, FAdDelay, 0);
-            FAnnouncementStop := Now + EncodeTime(0, 0, 4 + FAdDelay, 0);
-          end
-          else
+          end;
+
+          // Update the end time
+          FAnnouncementStop := Now + EncodeTime(0, 0, 2 + FAdDelay, 0);
+        end
+        else
+        begin
+          // Cancel if only short announcement
+          if AnnouncmentInProgress and not FAnnouncement then
           begin
-            // Update the end time
-            FAnnouncementStop := Now + EncodeTime(0, 0, 2 + FAdDelay, 0);
+            // Calculate length of announcement
+            DecodeTime(FAnnouncementStart - FAnnouncementStop, H, M, S, MS);
+
+            // Cancel if announcement < 4 seconds
+            if S < 4 then
+            begin
+              AnnouncmentInProgress := False;
+              FAnnouncementStart := 0
+            end;
           end;
         end;
       end;
@@ -416,16 +429,32 @@ begin
   // Override the song title
   if FAnnouncement then
   begin
-    Result := 'MUTING ADVERT ...';
+    Result := 'MUTING ADVERT ...' + FAdvertType;
   end
   else Result := FRadioTitle;
 end;
 
-constructor TMusicPlayer.Create(MixerControl : string; UsePulseVol: boolean);
+constructor TMusicPlayer.Create(MixerControl : string; UsePulseVol: boolean; EQ: array of integer);
+var
+  i: Integer;
 begin
   FMixerControl := MixerControl;
   FUsePulseVol := UsePulseVol;
   FVolAttenuation := 0;
+
+  // Create equaliser commandline params from input array.
+  FMplayerEQ := '';
+
+  if (Length(EQ) = 10) then
+  begin
+    FMplayerEQ := ' -af equalizer=';
+
+    for i := 0 to 8 do
+        FMplayerEQ := FMplayerEQ + IntToStr(EQ[i]) + ':';
+
+    // Last one gets no ':'
+    FMplayerEQ := FMplayerEQ + IntToStr(EQ[9]) + ' ';
+  end;
 
   FPlayProcess := nil;
   FPlayProcessList := '';
@@ -433,6 +462,8 @@ begin
   // Force getvolume to read the volume.
   FVolume := -1;
   FVolume := GetVolume;
+
+  FAdvertType := '';
 
   FID3v1 := TID3v1Tag.Create;
   FID3v2 := TID3v2Tag.Create;
@@ -458,8 +489,8 @@ var
   Value: Integer;
 begin
   case FVolume of
-    0..1: Inc(FVolume); // for better low volume control
-    2..4: FVolume := 5;
+    0: Inc(FVolume); // for better low volume control
+    1..4: FVolume := 5;
     5..100:
       begin
         Value := 5 - (FVolume mod 5);
@@ -478,8 +509,8 @@ var
   Value: Integer;
 begin
   case FVolume of
-    1..3: Dec(FVolume); // for better low volume control
-    4..5: FVolume := 2;
+    1: FVolume := 0; // for better low volume control
+    2..5: FVolume := 1;
     6..100:
       begin
         Value := FVolume mod 5;
