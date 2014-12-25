@@ -11,7 +11,7 @@ uses
   ReminderList, FindPicsThread, udpserver, sync, udpclient, music,
   commandserver, MusicPlayer, WaitForMedia, PlaylistCreator, TouchList,
   DateTime, SourcePicker, ConnectionHealth, Email,
-  SignalHandler, lnetbase, DiscoverServer;
+  SignalHandler, lnetbase, DiscoverServer, mplayereq;
 
 {$IFDEF WINDOWS}{$R picshow.rc}{$ENDIF}
 

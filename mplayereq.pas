@@ -1,7 +1,7 @@
 // Uses the Alsaequal plugin
 // http://www.thedigitalmachine.net/alsaequal.html
 
-unit equaliser;
+unit mplayereq;
 
 {$mode objfpc}{$H+}
 
@@ -11,17 +11,22 @@ uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ComCtrls,
   Buttons, StdCtrls, process;
 
+const
+  EqBands : array [0..9] of string = ('31.25Hz', '62.50Hz', '125Hz', '250Hz', '500Hz',
+  '1kHz', '2kHz', '4kHz', '8kHz', '16kHz');
+
 type
+  TMplayerEQ = array of integer;
 
-  { TfrmEqualiser }
+  { TfrmMplayerEQ }
 
-  TfrmEqualiser = class(TForm)
+  TfrmMplayerEQ = class(TForm)
     BtnDown2: TBitBtn;
     BtnDown3: TBitBtn;
     BtnDown1: TBitBtn;
     BtnDown4: TBitBtn;
     BtnDown5: TBitBtn;
-    btnClose: TSpeedButton;
+    btnApply: TSpeedButton;
     btnUp2: TBitBtn;
     btnUp3: TBitBtn;
     btnUp1: TBitBtn;
@@ -37,26 +42,22 @@ type
     tbarSetting4: TTrackBar;
     tbarSetting5: TTrackBar;
     procedure BtnDown1Click(Sender: TObject);
-    procedure btnCloseClick(Sender: TObject);
+    procedure btnApplyClick(Sender: TObject);
     procedure btnUp1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnResetClick(Sender: TObject);
-    procedure tbarSetting1Change(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { private declarations }
-    FSupported: boolean;
+    FEqLevels: TMplayerEQ;
     Setting: array [0..4] of TTrackBar;
     Down, Up: array [0..4] of TBitBtn;
-    EqSetting: array [0..9] of integer;
-    function GetAlsaEqSupported: boolean;
-    function GetEqChannel(Channel: integer): integer;
     procedure ReadEqSettings;
-    procedure SetEqChannel(Channel, Value: integer);
-    procedure WriteEqSettings(Channel: integer);
+    procedure WriteEqSettings;
   public
     { public declarations }
   published
-    property Supported: boolean read FSupported;
+    property Levels: TMplayerEQ read FEqLevels write FEqLevels;
   end;
 
 const
@@ -64,43 +65,37 @@ const
     '05. 500 Hz', '06. 1 kHz', '07. 2 kHz', '08. 4 kHz', '09. 8 kHz', '10. 16 kHz');
 
 var
-  frmEqualiser: TfrmEqualiser;
+  frmMplayerEQ: TfrmMplayerEQ;
 
 implementation
 
 {$R *.lfm}
 
-{ TfrmEqualiser }
+{ TfrmMplayerEQ }
 
-procedure TfrmEqualiser.btnUp1Click(Sender: TObject);
-var
-  Value: integer;
+procedure TfrmMplayerEQ.btnUp1Click(Sender: TObject);
 begin
-  Value := Setting[TBitBtn(Sender).Tag].Position mod 5;
-
-  if Value > 0 then Value := 5 - Value
-  else Value := 5;
-
-  Setting[TBitBtn(Sender).Tag].Position := Setting[TBitBtn(Sender).Tag].Position + Value;
+  if Setting[TBitBtn(Sender).Tag].Position < 12 then
+  begin
+    Setting[TBitBtn(Sender).Tag].Position := Setting[TBitBtn(Sender).Tag].Position + 1;
+  end;
 end;
 
-procedure TfrmEqualiser.BtnDown1Click(Sender: TObject);
-var
-  Value: Integer;
+procedure TfrmMplayerEQ.BtnDown1Click(Sender: TObject);
 begin
-  Value := Setting[TBitBtn(Sender).Tag].Position mod 5;
-
-  if Value = 0 then Value := 5;
-
-  Setting[TBitBtn(Sender).Tag].Position := Setting[TBitBtn(Sender).Tag].Position - Value;
+  if Setting[TBitBtn(Sender).Tag].Position > -12 then
+  begin
+    Setting[TBitBtn(Sender).Tag].Position := Setting[TBitBtn(Sender).Tag].Position - 1;
+  end;
 end;
 
-procedure TfrmEqualiser.btnCloseClick(Sender: TObject);
+procedure TfrmMplayerEQ.btnApplyClick(Sender: TObject);
 begin
+  WriteEqSettings;
   Close;
 end;
 
-procedure TfrmEqualiser.FormCreate(Sender: TObject);
+procedure TfrmMplayerEQ.FormCreate(Sender: TObject);
 var
   i: Integer;
 begin
@@ -122,101 +117,50 @@ begin
   Setting[3] := tbarSetting4;
   Setting[4] := tbarSetting5;
 
-  FSupported := GetAlsaEqSupported;
-
-  if FSupported then
-  begin
-    ReadEqSettings;
-
-    for i := 0 to 4 do
-    begin
-      Setting[i].OnChange := @tbarSetting1Change;
-    end;
-  end;
+  SetLength(FEqLevels, 0);
 end;
 
-procedure TfrmEqualiser.btnResetClick(Sender: TObject);
+procedure TfrmMplayerEQ.btnResetClick(Sender: TObject);
 var
   i: Integer;
 begin
   for i := 0 to 4 do
   begin
-    setting[i].Position := 50;
+    Setting[i].Position := 0;
   end;
 end;
 
-procedure TfrmEqualiser.tbarSetting1Change(Sender: TObject);
+procedure TfrmMplayerEQ.FormShow(Sender: TObject);
 begin
-  WriteEqSettings(TTrackBar(Sender).Tag);
+  ReadEqSettings
 end;
 
-function TfrmEqualiser.GetEqChannel(Channel: integer): integer;
-var
-  Output, Command, Value: string;
-  i: Integer;
-begin
-  Value := '';
-  Command := 'bash -c "amixer -D equal get ''' + EqChannelName[Channel]
-    + ''' | grep "%" | sed ''s/\(^[a-z0-9 :]\+\[\|\[\|\]\)//gi'' | head -n 1 | sed ''s/\%//g''"';
-
-  if RunCommand(Command, Output) then
-  begin
-    for i := 1 to Length(Output) do
-    begin
-      if (Output[i] >= '0') and (Output[i] <= '9') then
-        Value := Value + Output[i];
-    end;
-    Result := StrToIntDef(Value, 50);
-  end
-  else Result := 50;
-end;
-
-// Test if ALSA equaliser filter is installed
-function TfrmEqualiser.GetAlsaEqSupported(): boolean;
-var
-  Output, Command, Value: string;
-  i: Integer;
-begin
-  Value := '';
-  Command := 'bash -c "amixer -D equal get ''' + EqChannelName[9]
-    + ''' | grep "%" | sed ''s/\(^[a-z0-9 :]\+\[\|\[\|\]\)//gi'' | head -n 1 | sed ''s/\%//g''"';
-
-  if RunCommand(Command, Output) then
-  begin
-    Result := Length(Output) > 0
-  end
-  else Result := False;
-end;
-
-procedure TfrmEqualiser.SetEqChannel(Channel, Value: integer);
-var
-  Output, Command: string;
-begin
-  Command := 'amixer -D equal set ''' + EqChannelName[Channel]
-    + ''' ' + IntToStr(Value);
-  RunCommand(Command, Output);
-end;
-
-procedure TfrmEqualiser.ReadEqSettings;
+procedure TfrmMplayerEQ.ReadEqSettings;
 var
   i: integer;
 begin
-  for i := 0 to 9 do
-    EqSetting[i] := GetEqChannel(i);
-
-  Setting[0].Position := (EqSetting[0] + EqSetting[1] + 3) div 2;
-  Setting[1].Position := (EqSetting[2] + EqSetting[3] + 3) div 2;
-  Setting[2].Position := (EqSetting[4] + EqSetting[5] + 3) div 2;
-  Setting[3].Position := (EqSetting[6] + EqSetting[7] + 3) div 2;
-  Setting[4].Position := (EqSetting[8] + EqSetting[9] + 3) div 2;
+  if Length(FEqLevels) = 10 then
+  begin
+    Setting[0].Position := (FEqLevels[0] + FEqLevels[1] + 1) div 2;
+    Setting[1].Position := (FEqLevels[2] + FEqLevels[3] + 1) div 2;
+    Setting[2].Position := (FEqLevels[4] + FEqLevels[5] + 1) div 2;
+    Setting[3].Position := (FEqLevels[6] + FEqLevels[7] + 1) div 2;
+    Setting[4].Position := (FEqLevels[8] + FEqLevels[9] + 1) div 2;
+  end;
 end;
 
-procedure TfrmEqualiser.WriteEqSettings(Channel: integer);
+procedure TfrmMplayerEQ.WriteEqSettings;
 var
   i: Integer;
 begin
-  for i := (2 * Channel) to 1 + (2 * Channel) do
-    SetEqChannel(i, Setting[Channel].Position);
+  if Length(FEqLevels) = 10 then
+  begin
+    for i := 0 to 4 do
+    begin
+      FEqLevels[i*2] := Setting[i].Position;
+      FEqLevels[i*2+1] := Setting[i].Position;
+    end;
+  end;
 end;
 
 end.

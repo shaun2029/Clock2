@@ -1,14 +1,15 @@
-object frmEqualiser: TfrmEqualiser
+object frmMplayerEQ: TfrmMplayerEQ
   Left = 494
   Height = 389
   Top = 169
   Width = 409
   BorderIcons = []
   BorderStyle = bsSingle
-  Caption = 'Simple Equaliser for Alsaequal'
+  Caption = 'Equaliser for Mplayer'
   ClientHeight = 389
   ClientWidth = 409
   OnCreate = FormCreate
+  OnShow = FormShow
   Position = poScreenCenter
   LCLVersion = '1.0.10.0'
   object tbarSetting1: TTrackBar
@@ -17,7 +18,8 @@ object frmEqualiser: TfrmEqualiser
     Top = 56
     Width = 43
     Frequency = 10
-    Max = 100
+    Max = 12
+    Min = -12
     Orientation = trVertical
     Position = 0
     Reversed = True
@@ -52,7 +54,8 @@ object frmEqualiser: TfrmEqualiser
     Top = 56
     Width = 43
     Frequency = 10
-    Max = 100
+    Max = 12
+    Min = -12
     Orientation = trVertical
     Position = 0
     Reversed = True
@@ -88,7 +91,8 @@ object frmEqualiser: TfrmEqualiser
     Top = 56
     Width = 43
     Frequency = 10
-    Max = 100
+    Max = 12
+    Min = -12
     Orientation = trVertical
     Position = 0
     Reversed = True
@@ -158,7 +162,8 @@ object frmEqualiser: TfrmEqualiser
     Top = 56
     Width = 43
     Frequency = 10
-    Max = 100
+    Max = 12
+    Min = -12
     Orientation = trVertical
     Position = 0
     Reversed = True
@@ -194,7 +199,8 @@ object frmEqualiser: TfrmEqualiser
     Top = 56
     Width = 43
     Frequency = 10
-    Max = 100
+    Max = 12
+    Min = -12
     Orientation = trVertical
     Position = 0
     Reversed = True
@@ -221,13 +227,13 @@ object frmEqualiser: TfrmEqualiser
     Caption = 'Treble'
     ParentColor = False
   end
-  object btnClose: TSpeedButton
+  object btnApply: TSpeedButton
     Left = 224
     Height = 40
     Top = 336
     Width = 162
-    Caption = 'Close'
+    Caption = 'Apply Changes'
     NumGlyphs = 0
-    OnClick = btnCloseClick
+    OnClick = btnApplyClick
   end
 end

@@ -23,10 +23,10 @@ uses
   ExtCtrls, {MetOffice,} Alarm, Settings, Reminders, ReminderList, LCLProc,
   Music, Sync, Process, MusicPlayer, PlaylistCreator, commandserver,
   X, Xlib, CTypes, WaitForMedia, Pictures, DateTime, SourcePicker,
-  ConnectionHealth, Unix, Email, IniFiles, SignalHandler, Equaliser, DiscoverServer;
+  ConnectionHealth, Unix, Email, IniFiles, SignalHandler, Equaliser, MplayerEQ, DiscoverServer;
 
 const
-  VERSION = '2.6.6';
+  VERSION = '2.7.0';
 
 type
   TMusicState = (msPlaying, msPaused);
@@ -108,6 +108,7 @@ type
     procedure tmrMinuteTimer(Sender: TObject);
   private
     { private declarations }
+    FMplayerEQ: TMplayerEQ;
     FMPGPlayer: TMusicPlayer;
     FAlarm, FReminderAlarm: TAlarm;
     FCurrentReminders: TReminders;
@@ -142,6 +143,7 @@ type
     FFavoritesAuto: boolean;
 
     procedure AddToFavorites;
+    procedure ApplyMplayerEQ;
     procedure BacklightBright;
     procedure BacklightDim;
     procedure CreateMusicPicker;
@@ -194,6 +196,29 @@ implementation
 {$R *.lfm}
 
 { TfrmClockMain }
+
+procedure TfrmClockMain.ApplyMplayerEQ;
+var
+  IniFile: TIniFile;
+  i: Integer;
+begin
+  try
+    IniFile := TIniFile.Create(FConfigFilename);
+    for i := 0 to 9  do
+    begin
+      IniFile.WriteInteger('Equaliser', EqBands[i], FMplayerEQ[i]);
+    end;
+
+    IniFile.Free;
+  except
+  end;
+
+  if FPlayer.State = psPlaying then
+  begin
+    FPlayer.Pause;
+    FPlayer.Pause;
+  end;
+end;
 
 procedure TfrmClockMain.DisplayVolume;
 begin
@@ -740,16 +765,12 @@ begin
 end;
 
 procedure TfrmClockMain.FormCreate(Sender: TObject);
-const
-  EqBands : array [0..9] of string = ('31.25Hz', '62.50Hz', '125Hz', '250Hz', '500Hz',
-  '1kHz', '2kHz', '4kHz', '8kHz', '16kHz');
 var
   i: Integer;
   MixerControl : string;
   UsePulseVol: boolean;
   IniFile: TIniFile;
   RadioStations: String;
-  EQ: array [0..9] of integer;
 begin
   FFormShown := False;
   Self.Color := clBlack;
@@ -765,9 +786,11 @@ begin
   UsePulseVol := True;
   MixerControl := 'Master';
 
+  SetLength(FMplayerEQ, 10);
+
   for i := 0 to 9  do
   begin
-    EQ[i] := 0;
+    FMplayerEQ[i] := 0;
   end;
 
   try
@@ -777,14 +800,14 @@ begin
 
     for i := 0 to 9  do
     begin
-      EQ[i] := IniFile.ReadInteger('Equaliser', EqBands[i], 0);
+      FMplayerEQ[i] := IniFile.ReadInteger('Equaliser', EqBands[i], 0);
     end;
 
     IniFile.Free;
   except
   end;
 
-  FMPGPlayer := TMusicPlayer.Create(MixerControl, UsePulseVol, EQ);
+  FMPGPlayer := TMusicPlayer.Create(MixerControl, UsePulseVol, FMplayerEQ);
 
   FAlarm := TAlarm.Create(FMPGPlayer);
   FAlarm.Path := ExtractFilePath(Application.ExeName);
@@ -1231,13 +1254,26 @@ end;
 procedure TfrmClockMain.lbEqualiserClick(Sender: TObject);
 var
   frmEqualiser: TfrmEqualiser;
+  frmMplayerEQ: TfrmMplayerEQ;
 begin
   imgEqualiser.Picture.Assign(imgOff.Picture);
   Application.ProcessMessages;
   Self.Hide;
 
   frmEqualiser := TfrmEqualiser.Create(Self);
-  FormShowModal(frmEqualiser);
+  if frmEqualiser.Supported then
+  begin
+    FormShowModal(frmEqualiser);
+  end
+  else
+  begin
+    frmMplayerEQ := TfrmMplayerEQ.Create(Self);
+    frmMplayerEQ.Levels := FMplayerEQ;
+    FormShowModal(frmMplayerEQ);
+    frmMplayerEQ.Free;
+    ApplyMplayerEQ;
+  end;
+
   frmEqualiser.Free;
 
   Self.Show;

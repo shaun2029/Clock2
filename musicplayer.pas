@@ -19,7 +19,7 @@ uses
   {$else}
   process_legacy,
   {$endif}
-  Classes, SysUtils, ID3v1Library, ID3v2Library, unix, Pipes;
+  Classes, SysUtils, ID3v1Library, ID3v2Library, unix, Pipes, MplayerEQ;
 
 type
 
@@ -31,7 +31,7 @@ type
   private
     FUsePulseVol: boolean;
     FVolAttenuation: integer;
-    FMplayerEQ: string;
+    FMplayerEQ: TMplayerEQ;
     FMixerControl: string;
     FVolume: integer;
     FPlayProcess: TProcess;
@@ -67,7 +67,7 @@ type
     procedure StopAnnouncement;
     procedure StopSong;
   public
-    constructor Create(MixerControl : string; UsePulseVol: boolean; EQ: array of integer);
+    constructor Create(MixerControl : string; UsePulseVol: boolean; EQ: TMplayerEQ);
     destructor Destroy; override;
 
     procedure Play(Filename: string);
@@ -156,13 +156,28 @@ end;
 procedure TMusicPlayer.StartPlayProcess(Song: string; out Process: TProcess);
 var
   Vol: integer;
-  FileExt: String;
+  EQ, FileExt: String;
+  i: Integer;
 begin
   Process := TProcess.Create(nil);
 
   FRadioPlaying := False;
 
-  Process.CommandLine := 'mplayer -msglevel all=4 -cache 256 ' + FMplayerEQ + ' ';
+  // Create equaliser commandline params from input array.
+  EQ := '';
+
+  if (Length(FMplayerEQ) = 10) then
+  begin
+    EQ := ' -af equalizer=';
+
+    for i := 0 to 8 do
+        EQ := EQ + IntToStr(FMplayerEQ[i]) + ':';
+
+    // Last one gets no ':'
+    EQ := EQ + IntToStr(FMplayerEQ[9]) + ' ';
+  end;
+
+  Process.CommandLine := 'mplayer -msglevel all=4 -cache 256 ' + EQ + ' ';
 
   if not FUsePulseVol then
   begin
@@ -430,7 +445,7 @@ begin
   else Result := FRadioTitle;
 end;
 
-constructor TMusicPlayer.Create(MixerControl : string; UsePulseVol: boolean; EQ: array of integer);
+constructor TMusicPlayer.Create(MixerControl : string; UsePulseVol: boolean; EQ: TMplayerEQ);
 var
   i: Integer;
 begin
@@ -438,19 +453,7 @@ begin
   FUsePulseVol := UsePulseVol;
   FVolAttenuation := 0;
 
-  // Create equaliser commandline params from input array.
-  FMplayerEQ := '';
-
-  if (Length(EQ) = 10) then
-  begin
-    FMplayerEQ := ' -af equalizer=';
-
-    for i := 0 to 8 do
-        FMplayerEQ := FMplayerEQ + IntToStr(EQ[i]) + ':';
-
-    // Last one gets no ':'
-    FMplayerEQ := FMplayerEQ + IntToStr(EQ[9]) + ' ';
-  end;
+  FMplayerEQ := EQ;
 
   FPlayProcess := nil;
   FPlayProcessList := '';
