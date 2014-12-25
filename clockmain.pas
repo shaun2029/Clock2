@@ -740,13 +740,16 @@ begin
 end;
 
 procedure TfrmClockMain.FormCreate(Sender: TObject);
+const
+  EqBands : array [0..9] of string = ('31.25Hz', '62.50Hz', '125Hz', '250Hz', '500Hz',
+  '1kHz', '2kHz', '4kHz', '8kHz', '16kHz');
 var
   i: Integer;
   MixerControl : string;
   UsePulseVol: boolean;
   IniFile: TIniFile;
   RadioStations: String;
-  EQ: array of integer;
+  EQ: array [0..9] of integer;
 begin
   FFormShown := False;
   Self.Color := clBlack;
@@ -762,13 +765,23 @@ begin
   UsePulseVol := True;
   MixerControl := 'Master';
 
-  IniFile := TIniFile.Create(FConfigFilename);
+  for i := 0 to 9  do
+  begin
+    EQ[i] := 0;
+  end;
 
   try
+    IniFile := TIniFile.Create(FConfigFilename);
     UsePulseVol := IniFile.ReadBool('Volume', 'UsePulse', UsePulseVol);
     MixerControl := IniFile.ReadString('Volume', 'MixerControl', MixerControl);
-  finally
+
+    for i := 0 to 9  do
+    begin
+      EQ[i] := IniFile.ReadInteger('Equaliser', EqBands[i], 0);
+    end;
+
     IniFile.Free;
+  except
   end;
 
   FMPGPlayer := TMusicPlayer.Create(MixerControl, UsePulseVol, EQ);

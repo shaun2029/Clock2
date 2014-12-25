@@ -19,9 +19,9 @@ object frmSettings: TfrmSettings
     Height = 216
     Top = 8
     Width = 488
-    ActivePage = TabSheet7
+    ActivePage = TabSheet5
     ParentFont = False
-    TabIndex = 3
+    TabIndex = 5
     TabOrder = 0
     Options = [nboKeyboardTabSwitch]
     object TabSheet2: TTabSheet
@@ -423,7 +423,7 @@ object frmSettings: TfrmSettings
       object btnSelectMusic: TButton
         Left = 430
         Height = 25
-        Top = 27
+        Top = 18
         Width = 40
         Caption = '..'
         OnClick = btnSelectMusicClick
@@ -432,7 +432,7 @@ object frmSettings: TfrmSettings
       object btnSelectSleep: TButton
         Left = 430
         Height = 25
-        Top = 67
+        Top = 63
         Width = 40
         Caption = '..'
         OnClick = btnSelectSleepClick

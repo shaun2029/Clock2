@@ -162,8 +162,17 @@ begin
 
   FRadioPlaying := False;
 
-  { If the file does not exist then it could be a URL of a stream. }
+  Process.CommandLine := 'mplayer -msglevel all=4 -cache 256 ' + FMplayerEQ + ' ';
 
+  if not FUsePulseVol then
+  begin
+    // Requires softvol
+    Process.CommandLine := Process.CommandLine + '-softvol ';
+  end;
+
+  Process.CommandLine := Process.CommandLine + '-volume ' + IntToStr(100-FVolAttenuation) + ' ';
+
+  { If the file does not exist then it assumed to be a URL of a stream. }
   if not FileExists(Song) then
   begin
     FRadioPlaying := True;
@@ -176,29 +185,16 @@ begin
     if Pos('sky.fm', LowerCase(Song)) > 0 then
       FAdDelay := 6;
 
-    if FUsePulseVol then
-    begin
-      Process.CommandLine := 'mplayer -msglevel all=4 -volume ' + IntToStr(100-FVolAttenuation);
-    end
-    else
-    begin
-      // Requires softvol
-      Process.CommandLine := 'mplayer -msglevel all=4 -softvol -volume ' + IntToStr(100-FVolAttenuation);
-    end;
-  end
-  else
-  begin
-    Process.CommandLine := 'mplayer -volume ' + IntToStr(100-FVolAttenuation);
-
+    // Support playlists
     FileExt := LowerCase(ExtractFileExt(Song));
     if (FileExt = '.pls') or (FileExt = '.mu3') or (FileExt = '.asx')
       or (FileExt = '.wpl') or (FileExt = '.xspf') then
     begin
-      Process.CommandLine := Process.CommandLine + '-playlist';
+      Process.CommandLine := Process.CommandLine + ' -playlist ';
     end;
   end;
 
-  Process.CommandLine := Process.CommandLine  + FMplayerEQ + ' -cache 256 "' + Song + '"';
+  Process.CommandLine := Process.CommandLine  + ' "' + Song + '"';
 
   Process.Options := Process.Options + [poUsePipes, poStderrToOutPut];
   Process.Execute;
@@ -210,7 +206,7 @@ begin
   begin
     if not FPlayProcess.Running then
     begin
-      DestroyPlayProcess;
+      //DestroyPlayProcess;
     end;
   end;
 
@@ -489,8 +485,8 @@ var
   Value: Integer;
 begin
   case FVolume of
-    0: Inc(FVolume); // for better low volume control
-    1..4: FVolume := 5;
+    0..1: Inc(FVolume); // for better low volume control
+    2..4: FVolume := 5;
     5..100:
       begin
         Value := 5 - (FVolume mod 5);
@@ -509,8 +505,8 @@ var
   Value: Integer;
 begin
   case FVolume of
-    1: FVolume := 0; // for better low volume control
-    2..5: FVolume := 1;
+    1..2: Dec(FVolume); // for better low volume control
+    3..5: FVolume := 1;
     6..100:
       begin
         Value := FVolume mod 5;

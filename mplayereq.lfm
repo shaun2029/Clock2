@@ -1,0 +1,233 @@
+object frmEqualiser: TfrmEqualiser
+  Left = 494
+  Height = 389
+  Top = 169
+  Width = 409
+  BorderIcons = []
+  BorderStyle = bsSingle
+  Caption = 'Simple Equaliser for Alsaequal'
+  ClientHeight = 389
+  ClientWidth = 409
+  OnCreate = FormCreate
+  Position = poScreenCenter
+  LCLVersion = '1.0.10.0'
+  object tbarSetting1: TTrackBar
+    Left = 24
+    Height = 184
+    Top = 56
+    Width = 43
+    Frequency = 10
+    Max = 100
+    Orientation = trVertical
+    Position = 0
+    Reversed = True
+    ScalePos = trBottom
+    ShowSelRange = False
+    TickMarks = tmBoth
+    TabOrder = 0
+  end
+  object BtnDown1: TBitBtn
+    Left = 24
+    Height = 40
+    Top = 240
+    Width = 43
+    Caption = '-'
+    OnClick = BtnDown1Click
+    TabOrder = 1
+  end
+  object BtnDown2: TBitBtn
+    Tag = 1
+    Left = 104
+    Height = 40
+    Top = 240
+    Width = 43
+    Caption = '-'
+    OnClick = BtnDown1Click
+    TabOrder = 2
+  end
+  object tbarSetting2: TTrackBar
+    Tag = 1
+    Left = 104
+    Height = 184
+    Top = 56
+    Width = 43
+    Frequency = 10
+    Max = 100
+    Orientation = trVertical
+    Position = 0
+    Reversed = True
+    ScalePos = trBottom
+    ShowSelRange = False
+    TickMarks = tmBoth
+    TabOrder = 3
+  end
+  object btnUp2: TBitBtn
+    Tag = 1
+    Left = 104
+    Height = 43
+    Top = 10
+    Width = 43
+    Caption = '+'
+    OnClick = btnUp1Click
+    TabOrder = 4
+  end
+  object BtnDown3: TBitBtn
+    Tag = 2
+    Left = 184
+    Height = 40
+    Top = 240
+    Width = 43
+    Caption = '-'
+    OnClick = BtnDown1Click
+    TabOrder = 5
+  end
+  object tbarSetting3: TTrackBar
+    Tag = 2
+    Left = 184
+    Height = 184
+    Top = 56
+    Width = 43
+    Frequency = 10
+    Max = 100
+    Orientation = trVertical
+    Position = 0
+    Reversed = True
+    ScalePos = trBottom
+    ShowSelRange = False
+    TickMarks = tmBoth
+    TabOrder = 6
+  end
+  object btnUp3: TBitBtn
+    Tag = 2
+    Left = 184
+    Height = 43
+    Top = 10
+    Width = 43
+    Caption = '+'
+    OnClick = btnUp1Click
+    TabOrder = 7
+  end
+  object Label1: TLabel
+    Left = 24
+    Height = 18
+    Top = 296
+    Width = 32
+    Caption = 'Bass'
+    ParentColor = False
+  end
+  object Label3: TLabel
+    Left = 184
+    Height = 18
+    Top = 296
+    Width = 34
+    Caption = 'Mids'
+    ParentColor = False
+  end
+  object btnReset: TSpeedButton
+    Left = 24
+    Height = 40
+    Top = 336
+    Width = 162
+    Caption = 'Reset'
+    NumGlyphs = 0
+    OnClick = btnResetClick
+  end
+  object btnUp1: TBitBtn
+    Left = 24
+    Height = 43
+    Top = 10
+    Width = 43
+    Caption = '+'
+    OnClick = btnUp1Click
+    TabOrder = 8
+  end
+  object BtnDown4: TBitBtn
+    Tag = 3
+    Left = 264
+    Height = 40
+    Top = 240
+    Width = 43
+    Caption = '-'
+    OnClick = BtnDown1Click
+    TabOrder = 9
+  end
+  object tbarSetting4: TTrackBar
+    Tag = 3
+    Left = 264
+    Height = 184
+    Top = 56
+    Width = 43
+    Frequency = 10
+    Max = 100
+    Orientation = trVertical
+    Position = 0
+    Reversed = True
+    ScalePos = trBottom
+    ShowSelRange = False
+    TickMarks = tmBoth
+    TabOrder = 10
+  end
+  object btnUp4: TBitBtn
+    Tag = 3
+    Left = 264
+    Height = 43
+    Top = 10
+    Width = 43
+    Caption = '+'
+    OnClick = btnUp1Click
+    TabOrder = 11
+  end
+  object BtnDown5: TBitBtn
+    Tag = 4
+    Left = 344
+    Height = 40
+    Top = 240
+    Width = 43
+    Caption = '-'
+    OnClick = BtnDown1Click
+    TabOrder = 12
+  end
+  object tbarSetting5: TTrackBar
+    Tag = 4
+    Left = 344
+    Height = 184
+    Top = 56
+    Width = 43
+    Frequency = 10
+    Max = 100
+    Orientation = trVertical
+    Position = 0
+    Reversed = True
+    ScalePos = trBottom
+    ShowSelRange = False
+    TickMarks = tmBoth
+    TabOrder = 13
+  end
+  object btnUp5: TBitBtn
+    Tag = 4
+    Left = 344
+    Height = 43
+    Top = 10
+    Width = 43
+    Caption = '+'
+    OnClick = btnUp1Click
+    TabOrder = 14
+  end
+  object Label5: TLabel
+    Left = 344
+    Height = 18
+    Top = 296
+    Width = 43
+    Caption = 'Treble'
+    ParentColor = False
+  end
+  object btnClose: TSpeedButton
+    Left = 224
+    Height = 40
+    Top = 336
+    Width = 162
+    Caption = 'Close'
+    NumGlyphs = 0
+    OnClick = btnCloseClick
+  end
+end
