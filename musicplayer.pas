@@ -221,7 +221,7 @@ begin
   begin
     if not FPlayProcess.Running then
     begin
-      //DestroyPlayProcess;
+      DestroyPlayProcess;
     end;
   end;
 
@@ -509,7 +509,7 @@ var
 begin
   case FVolume of
     1..2: Dec(FVolume); // for better low volume control
-    3..5: FVolume := 1;
+    3..5: FVolume := 2;
     6..100:
       begin
         Value := FVolume mod 5;
