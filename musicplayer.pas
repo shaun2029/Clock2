@@ -177,7 +177,7 @@ begin
     EQ := EQ + IntToStr(FMplayerEQ[9]) + ' ';
   end;
 
-  Process.CommandLine := 'mplayer ';// + EQ + ' -softvol ' + '-volume ' + IntToStr(100-FVolAttenuation) + ' ';
+  Process.CommandLine := 'mplayer ' + EQ + ' -softvol ' + '-volume ' + IntToStr(100-FVolAttenuation);
 
   { If the file does not exist then it assumed to be a URL of a stream. }
   if not FileExists(Song) then
@@ -185,28 +185,30 @@ begin
     FRadioPlaying := True;
 
     // Announcement removal requires messages
-    Process.CommandLine := Process.CommandLine + ' -msglevel all=4 -cache 256 ';
+    Process.CommandLine := Process.CommandLine + ' -msglevel all=4';
 
     // AdDelay is used to mute adverts/announcements.
     // Some stations have a delay between the title text change and the audio stream change.
-    FAdDelay := 1;
+    FAdDelay := 8;
 
     // SKY.FM (AudioTunes) has a 6 second delay
     if Pos('sky.fm', LowerCase(Song)) > 0 then
-      FAdDelay := 6;
+      FAdDelay := 13;
 
     // Support playlists
     FileExt := LowerCase(ExtractFileExt(Song));
     if (FileExt = '.pls') or (FileExt = '.mu3') or (FileExt = '.asx')
       or (FileExt = '.wpl') or (FileExt = '.xspf') then
     begin
-      Process.CommandLine := Process.CommandLine + ' -playlist ';
+      Process.CommandLine := Process.CommandLine + ' -playlist';
     end;
+
+    Process.Options := Process.Options + [poUsePipes];
   end;
 
   Process.CommandLine := Process.CommandLine  + ' "' + Song + '"';
 
-  Process.Options := Process.Options + [poUsePipes, poStderrToOutPut];
+  Process.Options := Process.Options + [poStderrToOutPut];
   Process.Execute;
 end;
 
