@@ -15,13 +15,16 @@ interface
 uses
   Process,
   {$ifndef LEGACY}
-  LCLProc,
+  LCLProc, MplayerEQ,
   {$else}
   process_legacy,
   {$endif}
-  Classes, SysUtils, ID3v1Library, ID3v2Library, unix, Pipes, MplayerEQ;
+  Classes, SysUtils, ID3v1Library, ID3v2Library, unix, Pipes;
 
 type
+  {$ifdef LEGACY}
+  TMplayerEQ = array of integer;
+  {$endif}
 
   TMusicPlayerState = (mpsStopped, mpsPlaying);
 
