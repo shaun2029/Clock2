@@ -26,7 +26,7 @@ uses
   ConnectionHealth, Unix, Email, IniFiles, SignalHandler, Equaliser, MplayerEQ, DiscoverServer;
 
 const
-  VERSION = '2.7.0';
+  VERSION = '2.7.1';
 
 type
   TMusicState = (msPlaying, msPaused);
@@ -58,6 +58,7 @@ type
     labSongPrev2: TLabel;
     labSongPrev1: TLabel;
     lbEqualiser: TLabel;
+    lblAlarm: TLabel;
     lbPlayAlbums: TLabel;
     lbReminders: TLabel;
     lbReminderSummary: TLabel;
@@ -410,6 +411,18 @@ begin
   FAlarm.Tick(Current);
   FReminderAlarm.Tick(Current);
   FTimer.Tick(Current);
+
+  if (FTimer.State = asSet) and (FTimer.AlarmTime > Current) then
+  begin
+    DecodeTime(FTimer.AlarmTime - Current, Hour, Min, Sec, MSec);
+    TimeCaption := Format('%.2d:%.2d', [Min, Sec]);
+
+    if TimeCaption <> lblAlarm.Caption then
+      lblAlarm.Caption := TimeCaption;
+
+    lblAlarm.Visible := True;
+  end
+  else lblAlarm.Visible := False;
 
   if (FReminderAlarm.State = asActive) and (ReminderState <> asActive) then
   begin

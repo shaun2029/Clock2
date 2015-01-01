@@ -177,20 +177,15 @@ begin
     EQ := EQ + IntToStr(FMplayerEQ[9]) + ' ';
   end;
 
-  Process.CommandLine := 'mplayer -msglevel all=4 -cache 256 ' + EQ + ' ';
-
-  if not FUsePulseVol then
-  begin
-    // Requires softvol
-    Process.CommandLine := Process.CommandLine + '-softvol ';
-  end;
-
-  Process.CommandLine := Process.CommandLine + '-volume ' + IntToStr(100-FVolAttenuation) + ' ';
+  Process.CommandLine := 'mplayer ';// + EQ + ' -softvol ' + '-volume ' + IntToStr(100-FVolAttenuation) + ' ';
 
   { If the file does not exist then it assumed to be a URL of a stream. }
   if not FileExists(Song) then
   begin
     FRadioPlaying := True;
+
+    // Announcement removal requires messages
+    Process.CommandLine := Process.CommandLine + ' -msglevel all=4 -cache 256 ';
 
     // AdDelay is used to mute adverts/announcements.
     // Some stations have a delay between the title text change and the audio stream change.

@@ -1,4 +1,4 @@
-// Uses the Alsaequal plugin
+// Uses Mplayer commndline option to set EQ levels
 // http://www.thedigitalmachine.net/alsaequal.html
 
 unit mplayereq;
