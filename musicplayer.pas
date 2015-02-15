@@ -32,6 +32,7 @@ type
 
   TMusicPlayer  = class
   private
+    FNextTick: TDateTime;
     FUsePulseVol: boolean;
     FVolAttenuation: integer;
     FMplayerEQ: TMplayerEQ;
@@ -63,6 +64,8 @@ type
     function GetState: TMusicPlayerState;
     procedure PlaySong(Song: string);
     procedure ProcessAnnouncement;
+    function ProcessRadio: string;
+    function ReadProcessData: string;
     procedure SetVolAttenuation(AValue: integer);
     procedure SetVolume(Volume: integer);
     procedure StartAnnouncement;
@@ -72,6 +75,8 @@ type
   public
     constructor Create(MixerControl : string; UsePulseVol: boolean; EQ: TMplayerEQ);
     destructor Destroy; override;
+
+    procedure Tick;     // Used to process radio stream information
 
     procedure Play(Filename: string);
     procedure VolumeUp;
@@ -93,6 +98,8 @@ procedure TMusicPlayer.PlaySong(Song: string);
 begin
   // Ensure that song is not playing
   StopSong;
+
+WriteLn('PLAY: ' + Song);
 
   FSongTitle := '';
   FSongArtist := '';
@@ -121,11 +128,9 @@ begin
     except
       on E: Exception do
       begin
-        {$ifndef LEGACY}
-        DebugLn(Self.ClassName + #9#9 + 'Failed to get ID3 Tags for "'
+        WriteLn(Self.ClassName + #9#9 + 'Failed to get ID3 Tags for "'
           + ExtractFilename(Song) + '"');
-        DebugLn(Self.ClassName + #9#9 + E.Message);
-        {$endif}
+        WriteLn(Self.ClassName + #9#9 + E.Message);
       end;
     end;
   end
@@ -149,9 +154,8 @@ begin
   except
     on E: Exception do
     begin
-      {$ifndef LEGACY}
-      DebugLn(Self.ClassName + #9#9 + E.Message);
-      {$endif}
+      Writeln('EXCEPTION: Function TMusicPlayer.PlaySong');
+      Writeln('MESSAGE: ' + E.Message);
     end;
   end;
 end;
@@ -194,24 +198,24 @@ begin
     // Some stations have a delay between the title text change and the audio stream change.
     FAdDelay := 8;
 
-    // SKY.FM (AudioTunes) has a 6 second delay
-    if Pos('sky.fm', LowerCase(Song)) > 0 then
-      FAdDelay := 13;
-
     // Support playlists
     FileExt := LowerCase(ExtractFileExt(Song));
-    if (FileExt = '.pls') or (FileExt = '.mu3') or (FileExt = '.asx')
+    if (FileExt = '.pls') or (FileExt = '.m3u') or (FileExt = '.asx')
       or (FileExt = '.wpl') or (FileExt = '.xspf') then
     begin
       Process.CommandLine := Process.CommandLine + ' -playlist';
     end;
-
-    Process.Options := Process.Options + [poUsePipes];
   end;
 
   Process.CommandLine := Process.CommandLine  + ' "' + Song + '"';
 
-  Process.Options := Process.Options + [poStderrToOutPut];
+  Writeln('EXECUTE: ' + Process.CommandLine);
+
+  if FRadioPlaying then
+    Process.Options := Process.Options + [poStderrToOutPut, poUsePipes]
+  else
+    Process.Options := Process.Options + [poStderrToOutPut];
+
   Process.Execute;
 end;
 
@@ -221,6 +225,7 @@ begin
   begin
     if not FPlayProcess.Running then
     begin
+      WriteLn('DESTROY: Play process');
       DestroyPlayProcess;
     end;
   end;
@@ -238,19 +243,8 @@ end;
 
 procedure TMusicPlayer.DestroyPlayProcess;
 begin
-  if Assigned(FPlayProcess) then
+  if Assigned(FPlayProcess) and FRadioPlaying then
   begin
-    // If announcement in progress stop it.
-    if FAnnouncement then
-    begin
-      StopAnnouncement;
-      FAnnouncement := False;
-    end;
-
-    FAnnouncementStart := 0;
-
-    FState := mpsStopped;
-
     if FPlayProcess.Running then
     begin
       // Kill mplayer running in bash shell
@@ -258,8 +252,12 @@ begin
       FPlayProcess.Terminate(1);
     end;
 
-    FRadioPlaying := False;
     FreeAndNil(FPlayProcess);
+
+    FAnnouncement := False;
+    FAnnouncementStart := 0;
+    FState := mpsStopped;
+    FRadioPlaying := False;
     FPlayProcessList := '';
   end;
 end;
@@ -270,6 +268,8 @@ begin
   if not FAnnouncement and (FAnnouncementStart > 0)
     and (FAnnouncementStart < Now) then
   begin
+    Writeln('ANNOUNCE: StartAnnouncement ' + TimeToStr(Now));
+
     FAnnouncementStart := 0;
     StartAnnouncement;
     FAnnouncement := True;
@@ -278,6 +278,8 @@ begin
   // If announcement in progress look for stop
   if FAnnouncement and (FAnnouncementStop < Now) then
   begin
+    Writeln('ANNOUNCE: StopAnnouncement ' + TimeToStr(Now));
+
     StopAnnouncement;
     FAnnouncement := False;
   end;
@@ -293,27 +295,79 @@ end;
 // Mute the volume during an announcement
 procedure TMusicPlayer.StartAnnouncement;
 var
-  Input: TOutputPipeStream;
+  Buffer: array[0..1] of char;
+  i: Integer;
 begin
+  Writeln('MPLAYER: Setting volume low ...');
+
   if Assigned(FPlayProcess) then
-    FPlayProcess.Input.WriteAnsiString('m');
+  begin
+    // Mplayer volume down
+    Buffer[0] := '9';
+
+    for i := 0 to 30 do
+    begin
+      FPlayProcess.Input.Write(Buffer, 1);
+      Sleep(33);
+    end;
+  end;
+
+  Writeln('MPLAYER: Set volume low.');
 end;
 
 // Restores the volume after the announcement
 procedure TMusicPlayer.StopAnnouncement;
+var
+  Buffer: array[0..1] of char;
+  i: Integer;
 begin
+Writeln('MPLAYER: Setting volume high ...');
+
   if Assigned(FPlayProcess) then
-    FPlayProcess.Input.WriteAnsiString('m');
+  begin
+    // Mplayer volume up
+    Buffer[0] := '0';
+
+    for i := 0 to 30 do
+    begin
+      FPlayProcess.Input.Write(Buffer, 1);
+      Sleep(33);
+    end;
+  end;
+
+Writeln('MPLAYER: Volume high.');
 end;
 
-function TMusicPlayer.GetRadioTitle: string;
-const
-  AdTypes: array [0..4] of string = ('sky.fm', 'adw_ad=''true''',
-    'back-soon', 'adbreak', 'ICY Info: StreamTitle='';StreamUrl='';');
+function TMusicPlayer.ReadProcessData: string;
 var
-  Title, Output: string;
+  Output: string;
+  Len: integer;
+begin
+  Result := '';
+
+  if (FPlayProcess.Output.NumBytesAvailable > 0) then
+  begin
+    Len := FPlayProcess.Output.NumBytesAvailable;
+    SetLength(Output, Len);
+
+    FPlayProcess.Output.Read(PChar(@Output[1])^, Len);
+{
+    Writeln('MPLAYER: ------------------DATA----------------------');
+    Writeln(Output);
+    Writeln('MPLAYER: --------------------------------------------');
+}
+    Result := Output;
+  end;
+end;
+
+function TMusicPlayer.ProcessRadio: string;
+const
+  AdTypes: array [0..5] of string = ('sky.fm', 'adw_ad=''true''',
+    'back-soon', 'adbreak', 'ICY Info: StreamTitle='';StreamUrl='';', 'radiotunes');
+var
+  Title: string;
   TitleList: TStringList;
-  p, Len, i, v: integer;
+  Len, p, i, v: integer;
   Announcement: integer;
   AnnouncmentInProgress: boolean;
   H, M, S, MS: word;
@@ -331,16 +385,10 @@ begin
     begin
       if (FPlayProcess.Output.NumBytesAvailable > 0) then
       begin
-        Len := FPlayProcess.Output.NumBytesAvailable;
-        SetLength(Output, Len);
-        FPlayProcess.Output.Read(PChar(Output)^, Len);
-        FPlayProcessList := FPlayProcessList + Output;
-        TitleList.Text := FPlayProcessList;
-      end
-      else
-      begin
-        TitleList.Text := FPlayProcessList;
+        FPlayProcessList := FPlayProcessList + ReadProcessData;
       end;
+
+      TitleList.Text := FPlayProcessList;
 
       // Grep StreamTitle
       for i := TitleList.Count-1 downto 0 do
@@ -356,7 +404,7 @@ begin
         // Advert detection search
         for j := 0 to High(AdTypes) do
         begin
-          Announcement := Pos(AdTypes[j], LowerCase(TitleList.Strings[i]));
+          Announcement := Pos(LowerCase(AdTypes[j]), LowerCase(TitleList.Strings[i]));
           if (Announcement > 0) then
           begin
             FAdvertType := AdTypes[j];
@@ -374,6 +422,8 @@ begin
           begin
             // Set announcment start time in the future
             FAnnouncementStart := Now + EncodeTime(0, 0, FAdDelay, 0);
+
+            Writeln('ANNOUNCE: Start detected "' + FAdvertType + '"');
           end;
 
           // Update the end time
@@ -382,16 +432,18 @@ begin
         else
         begin
           // Cancel if only short announcement
-          if AnnouncmentInProgress and not FAnnouncement then
+          if (FAnnouncementStart <> 0) and not FAnnouncement then
           begin
             // Calculate length of announcement
             DecodeTime(FAnnouncementStart - FAnnouncementStop, H, M, S, MS);
 
             // Cancel if announcement < 4 seconds
-            if S < 4 then
+            if S <= 5 then
             begin
               AnnouncmentInProgress := False;
-              FAnnouncementStart := 0
+              FAnnouncementStart := 0;
+
+              Writeln('ANNOUNCE: Stopped - too short.');
             end;
           end;
         end;
@@ -426,17 +478,29 @@ begin
         // Do not let the list grow
         FPlayProcessList := '';
       end;
+
       ProcessAnnouncement;
     end;
-  finally
-     TitleList.Free;
+  except
+    on E: exception do
+    begin
+      Writeln('EXCEPTION: Function TMusicPlayer.GetRadioTitle');
+      Writeln('MESSAGE: ' + E.Message);
+      TitleList.Free;
+      Exit;
+    end
   end;
+
+  TitleList.Free;
 
   // Only update title after delay. This prevents showing the new song
   // before the old song has ended (due to buffering).
   if (FRadioTitleTime < Now) or (FRadioTitle = '') then
     FRadioTitle := FNewRadioTitle;
+end;
 
+function TMusicPlayer.GetRadioTitle: string;
+begin
   // Override the song title
   if FAnnouncement then
   begin
@@ -445,10 +509,22 @@ begin
   else Result := FRadioTitle;
 end;
 
+procedure TMusicPlayer.Tick;
+begin
+  if FNextTick < Now then
+  begin
+    if FRadioPlaying then ProcessRadio;
+
+    // Limit ticks to 1 a second
+    FNextTick := Now + EncodeTime(0, 0, 1, 0);
+  end;
+end;
+
 constructor TMusicPlayer.Create(MixerControl : string; UsePulseVol: boolean; EQ: TMplayerEQ);
 var
   i: Integer;
 begin
+  FNextTick := 0;
   FMixerControl := MixerControl;
   FUsePulseVol := UsePulseVol;
   FVolAttenuation := 0;

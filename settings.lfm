@@ -19,9 +19,9 @@ object frmSettings: TfrmSettings
     Height = 216
     Top = 8
     Width = 488
-    ActivePage = TabSheet5
+    ActivePage = TabSheet2
     ParentFont = False
-    TabIndex = 5
+    TabIndex = 0
     TabOrder = 0
     Options = [nboKeyboardTabSwitch]
     object TabSheet2: TTabSheet
@@ -45,22 +45,33 @@ object frmSettings: TfrmSettings
         Top = 11
         Width = 160
         Associate = stxtTimer
-        Min = 0
+        Min = 1
         Max = 180
         Position = 10
         TabOrder = 1
         Wrap = False
       end
       object btnStartTimer: TButton
-        Left = 62
-        Height = 86
-        Top = 91
-        Width = 280
+        Left = 14
+        Height = 62
+        Top = 115
+        Width = 224
         Caption = 'Start Timer'
         Font.Height = -26
         OnClick = btnStartTimerClick
         ParentFont = False
         TabOrder = 2
+      end
+      object btnStopTimer1: TButton
+        Left = 246
+        Height = 62
+        Top = 115
+        Width = 224
+        Caption = 'Cancel Timer'
+        Font.Height = -26
+        OnClick = btnStopTimer1Click
+        ParentFont = False
+        TabOrder = 3
       end
     end
     object TabSheet1: TTabSheet
@@ -538,7 +549,6 @@ object frmSettings: TfrmSettings
   end
   object tmrSettings: TTimer
     Interval = 200
-    OnTimer = tmrSettingsTimer
     left = 240
     top = 187
   end

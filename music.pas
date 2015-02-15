@@ -242,6 +242,8 @@ begin
   end
   else {$endif} if (FState = psPlaying) then
   begin
+    FMusicPlayer.Tick;
+
     if FMusicPlayer.State = mpsStopped then
     begin
       PlaySong(pdNext);
@@ -426,23 +428,26 @@ var
   PathIndex: integer;
   StartPos: integer;
 begin
-  Result := SongList.Strings[Index];
+  Result := '';
 
-  StartPos := Pos(':', Result);
-
-  if StartPos >= 0 then
+  if Index < SongList.Count then
   begin
-    PathIndex := StrToIntDef(Copy(Result, 1, StartPos - 1), -1);
+    Result := SongList.Strings[Index];
+    StartPos := Pos(':', Result);
 
-    if PathIndex >= 0 then
+    if StartPos > 0 then
     begin
-      Result := PathList.Strings[PathIndex]
-        + Copy(Result, StartPos + 1, Length(Result));
+      PathIndex := StrToIntDef(Copy(Result, 1, StartPos - 1), -1);
 
-      //DebugLn('GetFileName: Song ' + Result);
+      if PathIndex >= 0 then
+      begin
+        Result := PathList.Strings[PathIndex]
+          + Copy(Result, StartPos + 1, Length(Result));
+
+        //DebugLn('GetFileName: Song ' + Result);
+      end;
     end;
-  end
-  else Result := '';
+  end;
 end;
 
 procedure TPlayer.PlaySelection(SearchPaths: string; Random: boolean);

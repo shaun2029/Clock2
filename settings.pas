@@ -26,6 +26,7 @@ type
     btnSelectMeditation: TButton;
     btnPicturePath: TButton;
     btnSendFavorites: TButton;
+    btnStopTimer1: TButton;
     cbxFri: TCheckBox;
     cbxMon: TCheckBox;
     cbxSat: TCheckBox;
@@ -90,22 +91,24 @@ type
     procedure btnSelectSleepClick(Sender: TObject);
     procedure btnSendFavoritesClick(Sender: TObject);
     procedure btnStartTimerClick(Sender: TObject);
+    procedure btnStopTimer1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormKeyPress(Sender: TObject; var Key: char);
-    procedure tmrSettingsTimer(Sender: TObject);
     procedure XMLPropStorage1RestoreProperties(Sender: TObject);
     procedure XMLPropStorage1SaveProperties(Sender: TObject);
   private
     { private declarations }
-    FTimerActive: boolean;
+    FTimerUpdate: boolean;
+    FTimerTime: integer;
     function DecryptString(Key, Value: string): string;
     function EncryptString(Key, Value: string): string;
   public
     { public declarations }
     function SendFavorites(var Error: string): boolean;
   published
-    property TimerActive: boolean read FTimerActive write FTimerActive;
+    property TimerUpdate: boolean read FTimerUpdate write FTimerUpdate;
+    property TimerTime: integer read FTimerTime;
   end;
 
 const
@@ -126,20 +129,6 @@ begin
   begin
     XMLPropstorage1.Save;
     Self.Close;
-  end;
-end;
-
-procedure TfrmSettings.tmrSettingsTimer(Sender: TObject);
-begin
-  if stxtTimer.Caption = '0' then
-  begin
-    if btnStartTimer.Caption <> 'Stop Timer' then
-      btnStartTimer.Caption := 'Stop Timer';
-  end
-  else
-  begin
-    if btnStartTimer.Caption <> 'Start Timer' then
-      btnStartTimer.Caption := 'Start Timer';
   end;
 end;
 
@@ -225,7 +214,15 @@ end;
 
 procedure TfrmSettings.btnStartTimerClick(Sender: TObject);
 begin
-  FTimerActive := True;
+  FTimerUpdate := True;
+  FTimerTime := StrToIntDef(frmSettings.stxtTimer.Caption, 0);
+  Self.Close;
+end;
+
+procedure TfrmSettings.btnStopTimer1Click(Sender: TObject);
+begin
+  FTimerUpdate := True;
+  FTimerTime := 0;
   Self.Close;
 end;
 
@@ -326,7 +323,7 @@ end;
 
 procedure TfrmSettings.FormCreate(Sender: TObject);
 begin
-  FTimerActive := False;
+  FTimerUpdate := False;
   PageControl1.TabIndex := 0;
 
 {$IFDEF PICSHOW}
