@@ -188,13 +188,13 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ClockMain"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="19" Y="29"/>
         <UsageCount Value="207"/>
         <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit5>
       <Unit6>
@@ -244,10 +244,11 @@
         <Filename Value="musicplayer.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="MusicPlayer"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="8"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="285"/>
-        <CursorPos X="1" Y="303"/>
+        <TopLine Value="464"/>
+        <CursorPos X="14" Y="491"/>
         <UsageCount Value="212"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -456,7 +457,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="10" Y="40"/>
-        <UsageCount Value="0"/>
+        <UsageCount Value="10"/>
       </Unit30>
       <Unit31>
         <Filename Value="email.pas"/>
@@ -607,127 +608,123 @@
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit46>
     </Units>
-    <JumpHistory Count="30" HistoryIndex="29">
+    <JumpHistory Count="29" HistoryIndex="28">
       <Position1>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="405" Column="15" TopLine="378"/>
+        <Filename Value="musicplayer.pas"/>
+        <Caret Line="133" Column="16" TopLine="106"/>
       </Position1>
       <Position2>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="413" Column="9" TopLine="392"/>
+        <Filename Value="musicplayer.pas"/>
+        <Caret Line="135" Column="16" TopLine="108"/>
       </Position2>
       <Position3>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="415" Column="40" TopLine="398"/>
+        <Filename Value="musicplayer.pas"/>
+        <Caret Line="160" Column="14" TopLine="133"/>
       </Position3>
       <Position4>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="417" Column="22" TopLine="398"/>
+        <Filename Value="musicplayer.pas"/>
+        <Caret Line="161" Column="14" TopLine="134"/>
       </Position4>
       <Position5>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="831" Column="9" TopLine="804"/>
+        <Filename Value="musicplayer.pas"/>
+        <Caret Line="215" Column="27" TopLine="188"/>
       </Position5>
       <Position6>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="832" Column="9" TopLine="805"/>
+        <Filename Value="musicplayer.pas"/>
+        <Caret Line="231" Column="31" TopLine="203"/>
       </Position6>
       <Position7>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="836" Column="9" TopLine="809"/>
+        <Filename Value="musicplayer.pas"/>
+        <Caret Line="274" Column="29" TopLine="246"/>
       </Position7>
       <Position8>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="840" Column="9" TopLine="813"/>
+        <Filename Value="musicplayer.pas"/>
+        <Caret Line="283" Column="29" TopLine="255"/>
       </Position8>
       <Position9>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="882" Column="9" TopLine="854"/>
+        <Filename Value="musicplayer.pas"/>
+        <Caret Line="302" Column="27" TopLine="274"/>
       </Position9>
       <Position10>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="912" Column="9" TopLine="884"/>
+        <Filename Value="musicplayer.pas"/>
+        <Caret Line="1" Column="27" TopLine="1"/>
       </Position10>
       <Position11>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="968" Column="9" TopLine="940"/>
+        <Filename Value="musicplayer.pas"/>
+        <Caret Line="103" Column="27" TopLine="75"/>
       </Position11>
       <Position12>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1160" Column="15" TopLine="1132"/>
+        <Filename Value="musicplayer.pas"/>
+        <Caret Line="133" Column="16" TopLine="106"/>
       </Position12>
       <Position13>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1164" Column="11" TopLine="1136"/>
+        <Filename Value="musicplayer.pas"/>
+        <Caret Line="135" Column="16" TopLine="108"/>
       </Position13>
       <Position14>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1546" Column="15" TopLine="1518"/>
+        <Filename Value="musicplayer.pas"/>
+        <Caret Line="160" Column="14" TopLine="133"/>
       </Position14>
       <Position15>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1550" Column="11" TopLine="1522"/>
+        <Filename Value="musicplayer.pas"/>
+        <Caret Line="161" Column="14" TopLine="134"/>
       </Position15>
       <Position16>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1557" Column="15" TopLine="1527"/>
+        <Filename Value="musicplayer.pas"/>
+        <Caret Line="215" Column="27" TopLine="188"/>
       </Position16>
       <Position17>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1549" Column="27" TopLine="1527"/>
+        <Filename Value="musicplayer.pas"/>
+        <Caret Line="231" Column="31" TopLine="203"/>
       </Position17>
       <Position18>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1559" Column="10" TopLine="1540"/>
+        <Filename Value="musicplayer.pas"/>
+        <Caret Line="274" Column="29" TopLine="246"/>
       </Position18>
       <Position19>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1553" Column="26" TopLine="1540"/>
+        <Filename Value="musicplayer.pas"/>
+        <Caret Line="283" Column="29" TopLine="255"/>
       </Position19>
       <Position20>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="musicplayer.pas"/>
+        <Caret Line="302" Column="27" TopLine="274"/>
       </Position20>
       <Position21>
-        <Filename Value="settings.pas"/>
-        <Caret Line="102" Column="17" TopLine="95"/>
+        <Filename Value="musicplayer.pas"/>
+        <Caret Line="316" Column="27" TopLine="288"/>
       </Position21>
       <Position22>
-        <Filename Value="settings.pas"/>
-        <Caret Line="222" Column="38" TopLine="218"/>
+        <Filename Value="musicplayer.pas"/>
+        <Caret Line="325" Column="27" TopLine="297"/>
       </Position22>
       <Position23>
-        <Filename Value="settings.pas"/>
-        <Caret Line="111" Column="51" TopLine="87"/>
+        <Filename Value="musicplayer.pas"/>
+        <Caret Line="339" Column="27" TopLine="311"/>
       </Position23>
       <Position24>
-        <Filename Value="settings.pas"/>
-        <Caret Line="225" Column="13" TopLine="212"/>
+        <Filename Value="musicplayer.pas"/>
+        <Caret Line="357" Column="12" TopLine="329"/>
       </Position24>
       <Position25>
-        <Filename Value="settings.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="musicplayer.pas"/>
+        <Caret Line="358" Column="12" TopLine="330"/>
       </Position25>
       <Position26>
-        <Filename Value="settings.pas"/>
-        <Caret Line="306" Column="65" TopLine="299"/>
+        <Filename Value="musicplayer.pas"/>
+        <Caret Line="359" Column="12" TopLine="331"/>
       </Position26>
       <Position27>
-        <Filename Value="settings.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="musicplayer.pas"/>
+        <Caret Line="429" Column="37" TopLine="402"/>
       </Position27>
       <Position28>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1593" Column="37" TopLine="1579"/>
+        <Filename Value="musicplayer.pas"/>
+        <Caret Line="449" Column="39" TopLine="422"/>
       </Position28>
       <Position29>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1588" Column="29" TopLine="1572"/>
+        <Filename Value="musicplayer.pas"/>
+        <Caret Line="490" Column="14" TopLine="463"/>
       </Position29>
-      <Position30>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1592" Column="13" TopLine="1590"/>
-      </Position30>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

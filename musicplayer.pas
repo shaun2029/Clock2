@@ -11,6 +11,7 @@ interface
 
 // Code to support older Lazarus/FPC
 //{$define LEGACY}
+//{$define LOGGING}
 
 uses
   Process,
@@ -99,7 +100,7 @@ begin
   // Ensure that song is not playing
   StopSong;
 
-WriteLn('PLAY: ' + Song);
+  {$ifdef LOGGING} WriteLn('PLAY: ' + Song); {$endif}
 
   FSongTitle := '';
   FSongArtist := '';
@@ -128,9 +129,11 @@ WriteLn('PLAY: ' + Song);
     except
       on E: Exception do
       begin
+        {$ifdef LOGGING}
         WriteLn(Self.ClassName + #9#9 + 'Failed to get ID3 Tags for "'
           + ExtractFilename(Song) + '"');
         WriteLn(Self.ClassName + #9#9 + E.Message);
+        {$endif}
       end;
     end;
   end
@@ -209,7 +212,7 @@ begin
 
   Process.CommandLine := Process.CommandLine  + ' "' + Song + '"';
 
-  Writeln('EXECUTE: ' + Process.CommandLine);
+  {$ifdef LOGGING} Writeln('EXECUTE: ' + Process.CommandLine); {$endif}
 
   if FRadioPlaying then
     Process.Options := Process.Options + [poStderrToOutPut, poUsePipes]
@@ -225,7 +228,7 @@ begin
   begin
     if not FPlayProcess.Running then
     begin
-      WriteLn('DESTROY: Play process');
+      {$ifdef LOGGING} WriteLn('DESTROY: Play process'); {$endif}
       DestroyPlayProcess;
     end;
   end;
@@ -268,8 +271,7 @@ begin
   if not FAnnouncement and (FAnnouncementStart > 0)
     and (FAnnouncementStart < Now) then
   begin
-    Writeln('ANNOUNCE: StartAnnouncement ' + TimeToStr(Now));
-
+    {$ifdef LOGGING} Writeln('ANNOUNCE: StartAnnouncement ' + TimeToStr(Now)); {$endif}
     FAnnouncementStart := 0;
     StartAnnouncement;
     FAnnouncement := True;
@@ -278,8 +280,7 @@ begin
   // If announcement in progress look for stop
   if FAnnouncement and (FAnnouncementStop < Now) then
   begin
-    Writeln('ANNOUNCE: StopAnnouncement ' + TimeToStr(Now));
-
+    {$ifdef LOGGING} Writeln('ANNOUNCE: StopAnnouncement ' + TimeToStr(Now)); {$endif}
     StopAnnouncement;
     FAnnouncement := False;
   end;
@@ -298,7 +299,7 @@ var
   Buffer: array[0..1] of char;
   i: Integer;
 begin
-  Writeln('MPLAYER: Setting volume low ...');
+  {$ifdef LOGGING} Writeln('MPLAYER: Setting volume low ...'); {$endif}
 
   if Assigned(FPlayProcess) then
   begin
@@ -312,7 +313,7 @@ begin
     end;
   end;
 
-  Writeln('MPLAYER: Set volume low.');
+  {$ifdef LOGGING} Writeln('MPLAYER: Set volume low.'); {$endif}
 end;
 
 // Restores the volume after the announcement
@@ -321,7 +322,7 @@ var
   Buffer: array[0..1] of char;
   i: Integer;
 begin
-Writeln('MPLAYER: Setting volume high ...');
+  {$ifdef LOGGING} Writeln('MPLAYER: Setting volume high ...'); {$endif}
 
   if Assigned(FPlayProcess) then
   begin
@@ -335,7 +336,7 @@ Writeln('MPLAYER: Setting volume high ...');
     end;
   end;
 
-Writeln('MPLAYER: Volume high.');
+  {$ifdef LOGGING} Writeln('MPLAYER: Volume high.'); {$endif}
 end;
 
 function TMusicPlayer.ReadProcessData: string;
@@ -352,9 +353,11 @@ begin
 
     FPlayProcess.Output.Read(PChar(@Output[1])^, Len);
 {
+{$ifdef LOGGING}
     Writeln('MPLAYER: ------------------DATA----------------------');
     Writeln(Output);
     Writeln('MPLAYER: --------------------------------------------');
+{$endif}
 }
     Result := Output;
   end;
@@ -423,7 +426,7 @@ begin
             // Set announcment start time in the future
             FAnnouncementStart := Now + EncodeTime(0, 0, FAdDelay, 0);
 
-            Writeln('ANNOUNCE: Start detected "' + FAdvertType + '"');
+            {$ifdef LOGGING} Writeln('ANNOUNCE: Start detected "' + FAdvertType + '"'); {$endif}
           end;
 
           // Update the end time
@@ -443,7 +446,7 @@ begin
               AnnouncmentInProgress := False;
               FAnnouncementStart := 0;
 
-              Writeln('ANNOUNCE: Stopped - too short.');
+              {$ifdef LOGGING} Writeln('ANNOUNCE: Stopped - too short.'); {$endif}
             end;
           end;
         end;
