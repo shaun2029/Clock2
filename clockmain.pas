@@ -26,7 +26,7 @@ uses
   ConnectionHealth, Unix, Email, IniFiles, SignalHandler, Equaliser, MplayerEQ, DiscoverServer;
 
 const
-  VERSION = '2.7.1';
+  VERSION = '2.8.0';
 
 type
   TMusicState = (msPlaying, msPaused);
@@ -1541,14 +1541,23 @@ begin
 end;
 
 procedure TfrmClockMain.lblTimeClick(Sender: TObject);
+var
+  i: Integer;
 begin
   if (FAlarm.State = asActive)
     or (FTimer.State = asActive)
     or (FReminderAlarm.State = asActive) then
   begin
+    // Stop alarm ringing.
     FAlarm.ResetAlarm;
     FTimer.ResetAlarm;
     FReminderAlarm.ResetAlarm;
+  end
+  else
+  begin
+    // Turn off timer alarm.
+    for i := 0 to High(FTimer.Days) do
+      FTimer.Days[i] := False;
   end;
 end;
 
@@ -1576,12 +1585,12 @@ begin
 
   FEmailReminders := frmSettings.cbxEmailReminders.Checked;
 
-  if frmSettings.TimerActive then
+  if frmSettings.TimerUpdate then
   begin
     for i := 0 to High(FTimer.Days) do
       FTimer.Days[i] := False;
 
-    Minutes := StrToInt(frmSettings.stxtTimer.Caption);
+    Minutes := frmSettings.TimerTime;
 
     if Minutes > 0 then
     begin
@@ -1594,7 +1603,7 @@ begin
       FTimer.Days[DayOfWeek(FTimer.AlarmTime)] := True;
     end;
 
-    frmSettings.TimerActive := False;
+    frmSettings.TimerUpdate := False;
   end;
 
   if frmSettings.cbxGetReminders.Checked then
