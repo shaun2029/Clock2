@@ -246,12 +246,12 @@ end;
 
 procedure TMusicPlayer.DestroyPlayProcess;
 begin
-  if Assigned(FPlayProcess) and FRadioPlaying then
+  if Assigned(FPlayProcess) then
   begin
     if FPlayProcess.Running then
     begin
       // Kill mplayer running in bash shell
-      if FRadioPlaying then Shell('killall -9 mplayer');
+      Shell('killall -9 mplayer');
       FPlayProcess.Terminate(1);
     end;
 
