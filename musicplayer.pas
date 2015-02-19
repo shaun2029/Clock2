@@ -178,7 +178,7 @@ begin
 
   if (Length(FMplayerEQ) = 10) then
   begin
-    EQ := ' -af equalizer=';
+    EQ := '-af-add equalizer=';
 
     for i := 0 to 8 do
         EQ := EQ + IntToStr(FMplayerEQ[i]) + ':';
@@ -187,7 +187,7 @@ begin
     EQ := EQ + IntToStr(FMplayerEQ[9]) + ' ';
   end;
 
-  Process.CommandLine := 'mplayer ' + EQ + ' -softvol ' + '-volume ' + IntToStr(100-FVolAttenuation);
+  Process.CommandLine := 'mplayer ' + EQ + ' -af-add format=s16le -softvol -volume ' + IntToStr(100-FVolAttenuation);
 
   { If the file does not exist then it assumed to be a URL of a stream. }
   if not FileExists(Song) then

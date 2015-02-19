@@ -26,7 +26,7 @@ uses
   ConnectionHealth, Unix, Email, IniFiles, SignalHandler, Equaliser, MplayerEQ, DiscoverServer;
 
 const
-  VERSION = '2.8.1';
+  VERSION = '2.8.2';
 
 type
   TMusicState = (msPlaying, msPaused);
@@ -1629,10 +1629,6 @@ begin
       FSyncServer.RemindersFile(frmReminders.Filename);
     end;
   end;
-
-  // Update search path if needed by forcing reset
-  if FPlayer.SearchPath <> '' then
-    SetMusicSource(FMusicSource);
 
   FServerAddress := frmSettings.edtServerAddress.Text;
   FServerPort := frmSettings.edtServerPort.Text;

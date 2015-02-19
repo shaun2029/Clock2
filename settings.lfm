@@ -29,9 +29,9 @@ object frmSettings: TfrmSettings
       ClientHeight = 185
       ClientWidth = 484
       object stxtTimer: TStaticText
-        Left = 78
+        Left = 14
         Height = 71
-        Top = 11
+        Top = 19
         Width = 88
         Alignment = taCenter
         Caption = '10'
@@ -40,13 +40,14 @@ object frmSettings: TfrmSettings
         TabOrder = 0
       end
       object udTimer: TUpDown
-        Left = 166
+        Left = 102
         Height = 71
-        Top = 11
-        Width = 160
+        Top = 19
+        Width = 368
         Associate = stxtTimer
         Min = 1
         Max = 180
+        Orientation = udHorizontal
         Position = 10
         TabOrder = 1
         Wrap = False
