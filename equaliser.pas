@@ -122,7 +122,11 @@ begin
   Setting[3] := tbarSetting4;
   Setting[4] := tbarSetting5;
 
+  {$ifdef ALSA}
   FSupported := GetAlsaEqSupported;
+  {$else}
+  FSupported := False;
+  {$endif}
 
   if FSupported then
   begin
