@@ -165,6 +165,7 @@ end;
 
 procedure TMusicPlayer.StartPlayProcess(Song: string; out Process: TProcess);
 var
+  PlaylistTypes: array [0..4] of string = ('.pls', '.m3u', '.asx', '.wpl', '.xspf');
   Vol: integer;
   EQ, FileExt: String;
   i: Integer;
@@ -202,11 +203,13 @@ begin
     FAdDelay := 8;
 
     // Support playlists
-    FileExt := LowerCase(ExtractFileExt(Song));
-    if (FileExt = '.pls') or (FileExt = '.m3u') or (FileExt = '.asx')
-      or (FileExt = '.wpl') or (FileExt = '.xspf') then
+    for i := 0 to High(PlaylistTypes) do
     begin
-      Process.CommandLine := Process.CommandLine + ' -playlist';
+      if Pos(PlaylistTypes[i], LowerCase(Song)) > 0 then
+      begin
+        Process.CommandLine := Process.CommandLine + ' -playlist';
+        break;
+      end;
     end;
   end;
 
