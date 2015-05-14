@@ -14,7 +14,7 @@ uses
   FindThread,
   LCLProc,
   {$endif}
-  Classes, SysUtils, MusicPlayer, IniFiles;
+  Classes, SysUtils, MusicPlayer, IniFiles, MPD;
 
 type
 
@@ -52,6 +52,7 @@ type
     procedure PlaySong(Play: TPlayDirection);
     procedure RandomiseList(var List: TStringList);
     procedure SaveSettings;
+    procedure SetStreamURL(AValue: string);
     procedure StopSong;
   public
     procedure Play;
@@ -76,7 +77,7 @@ type
     property SongTitle: string read GetSongTitle;
     property State: TPlayerState read FState;
     property SearchPath: string read FSearchPath;
-    property StreamURL: string write FStreamURL;
+    property StreamURL: string write SetStreamURL;
     property StreamTitle: string read FStreamTitle write FStreamTitle;
   end;
 
@@ -154,7 +155,6 @@ begin
   if FState = psPlaying then
   begin
 //DebugLn('Music: Stop');
-
     FState := psStopped;
     StopSong;
   end;
@@ -167,7 +167,6 @@ begin
   if FState = psPlaying then
   begin
 //DebugLn('Music: Pause');
-
     FState := psStopped;
     StopSong;
 
@@ -179,7 +178,6 @@ end;
 procedure TPlayer.Play;
 begin
 //DebugLn('Music: Play');
-
   FState := psPlaying;
   PlaySong(pdCurrent);
   
@@ -189,7 +187,6 @@ end;
 procedure TPlayer.Next;
 begin
 //DebugLn('Music: Next');
-
   FState := psPlaying;
   PlaySong(pdNext);
 
@@ -199,7 +196,6 @@ end;
 procedure TPlayer.Previous;
 begin
 //DebugLn('Music: Next');
-
   FState := psPlaying;
   PlaySong(pdPrevious);
 
@@ -246,7 +242,8 @@ begin
 
     if FMusicPlayer.State = mpsStopped then
     begin
-      PlaySong(pdNext);
+      if FStreamURL <> '' then PlaySong(pdCurrent) // If the radio has stopped restart it.
+      else PlaySong(pdNext); // Play the next song
     end;
   end;
 end;
@@ -254,9 +251,22 @@ end;
 procedure TPlayer.PlaySong(Play: TPlayDirection);
 var
   Filename: string;
+  URL, Host, Port: string;
 begin
   if FStreamURL <> '' then
-    FMusicPlayer.Play(FStreamURL)
+  begin
+    URL := MPDParseURL(FStreamURL, Host, Port);
+
+    if Host <> '' then
+    begin
+      case Play of
+        pdPrevious: MPDCommand(Host, Port, 'prev');
+        pdNext:  MPDCommand(Host, Port, 'next');
+        else FMusicPlayer.Play(URL);
+      end;
+    end
+    else FMusicPlayer.Play(URL);
+  end
   else if not PlayPlaylistSong(Play) then
   begin
     case Play of
@@ -348,6 +358,12 @@ begin
   finally
     IniFile.Free;
   end;
+end;
+
+procedure TPlayer.SetStreamURL(AValue: string);
+begin
+  FStreamURL := AValue;
+  FState := psStopped;
 end;
 
 procedure TPlayer.LoadSettings;
