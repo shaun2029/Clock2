@@ -15666,21 +15666,23 @@ object frmClockMain: TfrmClockMain
     WordWrap = True
     OnClick = lbEqualiserClick
   end
-  object lblAlarm: TLabel
-    Cursor = crNone
-    Left = 680
-    Height = 40
+  object btnStopAlarm: TBitBtn
+    Left = 688
+    Height = 72
     Top = 8
-    Width = 99
-    AutoSize = False
-    Caption = 'lblAlarm'
+    Width = 104
+    Cancel = True
+    Caption = 'Stop'
+    Color = 5066061
     Font.Color = clYellow
-    Font.Height = -24
+    Font.Height = -29
     Font.Name = 'Sans'
-    ParentColor = False
-    ParentFont = False
-    Visible = False
+    GlyphShowMode = gsmAlways
+    ModalResult = 2
     OnClick = lblTimeClick
+    ParentFont = False
+    TabOrder = 0
+    Visible = False
   end
   object tmrTime: TTimer
     OnTimer = tmrTimeTimer

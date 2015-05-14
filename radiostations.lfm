@@ -1,0 +1,192 @@
+object frmRadioStations: TfrmRadioStations
+  Left = 390
+  Height = 480
+  Top = 226
+  Width = 800
+  BorderStyle = bsNone
+  Caption = 'frmRadioStations'
+  ClientHeight = 480
+  ClientWidth = 800
+  Color = clBlack
+  OnCreate = FormCreate
+  Position = poDesktopCenter
+  LCLVersion = '1.0.10.0'
+  object btnSave: TBitBtn
+    Left = 544
+    Height = 48
+    Top = 416
+    Width = 112
+    Caption = 'Save'
+    Default = True
+    Kind = bkOK
+    ModalResult = 1
+    OnClick = btnSaveClick
+    TabOrder = 0
+  end
+  object btnCancel: TBitBtn
+    Left = 672
+    Height = 48
+    Top = 416
+    Width = 112
+    Cancel = True
+    DefaultCaption = True
+    Kind = bkCancel
+    ModalResult = 2
+    TabOrder = 1
+  end
+  object mmoRadioStations: TMemo
+    Left = 16
+    Height = 394
+    Top = 8
+    Width = 768
+    Color = 6447719
+    Font.Color = clWhite
+    Lines.Strings = (
+      'mmoRadioStations'
+    )
+    OnChange = mmoRadioStationsChange
+    ParentFont = False
+    ScrollBars = ssAutoBoth
+    TabOrder = 2
+    WordWrap = False
+  end
+  object Defaults: TBitBtn
+    Left = 144
+    Height = 48
+    Top = 416
+    Width = 112
+    Caption = 'Defaults'
+    Kind = bkRetry
+    OnClick = DefaultsClick
+    TabOrder = 3
+  end
+  object btnHelp: TBitBtn
+    Left = 16
+    Height = 48
+    Top = 416
+    Width = 112
+    DefaultCaption = True
+    Kind = bkHelp
+    OnClick = btnHelpClick
+    TabOrder = 4
+  end
+  object mmoRadioDefaults: TMemo
+    Left = 297
+    Height = 280
+    Top = 56
+    Width = 447
+    Lines.Strings = (
+      'Indie Rock'
+      'http://pub1.radiotunes.com/radiotunes_indierock'
+      'Alt Rock'
+      'http://pub1.radiotunes.com/radiotunes_altrock'
+      'Roots Legacy Reggae'
+      'http://rootslegacy.fr:8080/listen.pls'
+      'Modern Rock'
+      'http://pub1.radiotunes.com/radiotunes_modernrock'
+      'Hard Rock'
+      'http://pub1.radiotunes.com/radiotunes_hardrock'
+      'Metal'
+      'http://pub1.radiotunes.com/radiotunes_metal'
+      'Pop Punk'
+      'http://pub1.radiotunes.com/radiotunes_poppunk'
+      'Pop Rock'
+      'http://pub1.radiotunes.com/radiotunes_poprock'
+      'Oldies'
+      'http://pub1.radiotunes.com/radiotunes_oldies'
+      '60''s Rock'
+      'http://pub1.radiotunes.com/radiotunes_60srock'
+      '60''s Hits'
+      'http://pub1.radiotunes.com/radiotunes_hit60s'
+      '80''s Rock'
+      'http://pub1.radiotunes.com/radiotunes_80srock'
+      '80''s Hits'
+      'http://pub1.radiotunes.com/radiotunes_the80s'
+      '80''s Dance'
+      'http://pub1.radiotunes.com/radiotunes_80sdance'
+      '90''s Hits'
+      'http://pub1.radiotunes.com/radiotunes_hit90s'
+      'Soft Rock'
+      'http://pub1.radiotunes.com/radiotunes_softrock'
+      'Classic Rock'
+      'http://pub1.radiotunes.com/radiotunes_classicrock'
+      'New Age'
+      'http://pub1.radiotunes.com/radiotunes_newage'
+      'Vocal New Age'
+      'http://pub1.radiotunes.com/radiotunes_vocalnewage'
+      'Dreamscapes'
+      'http://pub7.radiotunes.com/radiotunes_dreamscapes'
+      'Relaxation'
+      'http://pub6.radiotunes.com/radiotunes_relaxation'
+      'Nature'
+      'http://pub1.radiotunes.com/radiotunes_nature'
+      'Salsa'
+      'http://pub1.radiotunes.com/radiotunes_salsa'
+      'Bossa Nova'
+      'http://pub1.radiotunes.com/radiotunes_bossanova'
+      'Smooth Bossa Nova'
+      'http://pub1.radiotunes.com/radiotunes_smoothbossanova'
+      'American Songs'
+      'http://pub1.radiotunes.com/radiotunes_americansongbook'
+      'Classical Guitar'
+      'http://pub1.radiotunes.com/radiotunes_guitar'
+      'Classical Piano'
+      'http://pub1.radiotunes.com/radiotunes_classicalpianotrios'
+      'Solo Piano'
+      'http://pub1.radiotunes.com/radiotunes_solopiano'
+      'Country'
+      'http://pub1.radiotunes.com/radiotunes_country'
+      'Lounge'
+      'http://pub1.radiotunes.com/radiotunes_datempolounge'
+      '90''s R&&B'
+      'http://pub1.radiotunes.com/radiotunes_90srnb'
+      '00''s R&&B'
+      'http://pub1.radiotunes.com/radiotunes_00srnb'
+      'Hip-Hop'
+      'http://pub1.radiotunes.com/radiotunes_classicrap'
+      'Motown'
+      'http://pub1.radiotunes.com/radiotunes_classicmotown'
+      'Jazz Clasics'
+      'http://pub1.radiotunes.com/radiotunes_jazzclassics'
+      'Smooth Jazz'
+      'http://pub1.radiotunes.com/radiotunes_davekoz'
+      'Uptempo Jazz'
+      'http://pub1.radiotunes.com/radiotunes_uptemposmoothjazz'
+      'Top Hits'
+      'http://pub1.radiotunes.com/radiotunes_tophits'
+      'Absolute 80s'
+      'http://network.absoluteradio.co.uk/core/audio/ogg/live.pls?service=a8bb'
+      'Absolute Rock'
+      'http://network.absoluteradio.co.uk/core/audio/ogg/live.pls?service=vcbb'
+      'Absolute 60s'
+      'http://network.absoluteradio.co.uk/core/audio/ogg/live.pls?service=a6bb'
+      'Absolute 70s'
+      'http://network.absoluteradio.co.uk/core/audio/ogg/live.pls?service=a7bb'
+      'Absolute 90s'
+      'http://network.absoluteradio.co.uk/core/audio/ogg/live.pls?service=a9bb'
+      'Absolute 00s'
+      'http://network.absoluteradio.co.uk/core/audio/ogg/live.pls?service=a0bb'
+      'Radio 2000'
+      'http://216.246.37.51/pbs-radio2000-live'
+      'BBC 1'
+      'http://www.listenlive.eu/bbcradio1.m3u'
+      'BBC 1Xtra'
+      'http://www.listenlive.eu/bbc1xtra.m3u'
+      'BBC 2'
+      'http://www.listenlive.eu/bbcradio2.m3u'
+      'BBC 3'
+      'http://www.listenlive.eu/bbcradio3.m3u'
+      'BBC 4'
+      'http://www.listenlive.eu/bbcradio4.m3u'
+      'BBC 5 Live'
+      'http://www.listenlive.eu/bbc5live.m3u'
+      'BBC 5 Sports'
+      'http://www.listenlive.eu/bbc5liveextra.m3u'
+      'BBC 6 Music'
+      'http://www.listenlive.eu/bbc6music.m3u'
+    )
+    TabOrder = 5
+    Visible = False
+    WordWrap = False
+  end
+end

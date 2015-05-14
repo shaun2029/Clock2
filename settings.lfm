@@ -1,11 +1,11 @@
 object frmSettings: TfrmSettings
   Left = 511
-  Height = 278
+  Height = 311
   Top = 198
   Width = 504
   BorderStyle = bsSingle
   Caption = 'Settings'
-  ClientHeight = 278
+  ClientHeight = 311
   ClientWidth = 504
   KeyPreview = True
   OnCreate = FormCreate
@@ -16,17 +16,17 @@ object frmSettings: TfrmSettings
   LCLVersion = '1.0.10.0'
   object PageControl1: TPageControl
     Left = 8
-    Height = 216
+    Height = 248
     Top = 8
     Width = 488
-    ActivePage = TabSheet2
+    ActivePage = TabSheet5
     ParentFont = False
-    TabIndex = 0
+    TabIndex = 5
     TabOrder = 0
     Options = [nboKeyboardTabSwitch]
     object TabSheet2: TTabSheet
       Caption = 'Timer'
-      ClientHeight = 185
+      ClientHeight = 217
       ClientWidth = 484
       object stxtTimer: TStaticText
         Left = 14
@@ -55,7 +55,7 @@ object frmSettings: TfrmSettings
       object btnStartTimer: TButton
         Left = 14
         Height = 62
-        Top = 115
+        Top = 131
         Width = 224
         Caption = 'Start Timer'
         Font.Height = -26
@@ -66,7 +66,7 @@ object frmSettings: TfrmSettings
       object btnStopTimer1: TButton
         Left = 246
         Height = 62
-        Top = 115
+        Top = 131
         Width = 224
         Caption = 'Cancel Timer'
         Font.Height = -26
@@ -77,10 +77,10 @@ object frmSettings: TfrmSettings
     end
     object TabSheet1: TTabSheet
       Caption = 'Alarm'
-      ClientHeight = 185
+      ClientHeight = 217
       ClientWidth = 484
       object Label2: TLabel
-        Left = 46
+        Left = 14
         Height = 18
         Top = 27
         Width = 78
@@ -88,7 +88,7 @@ object frmSettings: TfrmSettings
         ParentColor = False
       end
       object edtHour: TSpinEdit
-        Left = 134
+        Left = 102
         Height = 27
         Top = 27
         Width = 50
@@ -124,7 +124,7 @@ object frmSettings: TfrmSettings
         TabOrder = 2
       end
       object cbxTue: TCheckBox
-        Left = 110
+        Left = 126
         Height = 24
         Top = 75
         Width = 34
@@ -132,7 +132,7 @@ object frmSettings: TfrmSettings
         TabOrder = 3
       end
       object cbxWed: TCheckBox
-        Left = 158
+        Left = 182
         Height = 24
         Top = 75
         Width = 40
@@ -140,7 +140,7 @@ object frmSettings: TfrmSettings
         TabOrder = 4
       end
       object cbxThu: TCheckBox
-        Left = 206
+        Left = 246
         Height = 24
         Top = 75
         Width = 34
@@ -148,7 +148,7 @@ object frmSettings: TfrmSettings
         TabOrder = 5
       end
       object cbxFri: TCheckBox
-        Left = 254
+        Left = 302
         Height = 24
         Top = 75
         Width = 34
@@ -156,9 +156,9 @@ object frmSettings: TfrmSettings
         TabOrder = 6
       end
       object cbxSun: TCheckBox
-        Left = 206
+        Left = 246
         Height = 24
-        Top = 107
+        Top = 115
         Width = 74
         Caption = 'Sunday'
         TabOrder = 8
@@ -166,23 +166,31 @@ object frmSettings: TfrmSettings
       object cbxSat: TCheckBox
         Left = 62
         Height = 24
-        Top = 107
+        Top = 115
         Width = 86
         Caption = 'Saturday'
         TabOrder = 7
       end
       object cbxSilentAlarm: TCheckBox
-        Left = 14
+        Left = 31
         Height = 24
-        Top = 147
+        Top = 163
         Width = 191
         Caption = 'Play Music (Silent Alarm)'
         TabOrder = 9
       end
+      object cbxPlayMusic: TCheckBox
+        Left = 278
+        Height = 24
+        Top = 163
+        Width = 175
+        Caption = 'Play music after alarm'
+        TabOrder = 10
+      end
     end
     object TabSheet4: TTabSheet
       Caption = 'Reminders'
-      ClientHeight = 185
+      ClientHeight = 217
       ClientWidth = 484
       object Label5: TLabel
         Left = 22
@@ -222,7 +230,7 @@ object frmSettings: TfrmSettings
       object cbxGetReminders: TCheckBox
         Left = 22
         Height = 24
-        Top = 107
+        Top = 115
         Width = 217
         Caption = 'Fetch reminders from server'
         TabOrder = 3
@@ -230,7 +238,7 @@ object frmSettings: TfrmSettings
       object edtServerAddress: TEdit
         Left = 134
         Height = 27
-        Top = 144
+        Top = 163
         Width = 133
         TabOrder = 4
         Text = '255.255.255.255'
@@ -239,7 +247,7 @@ object frmSettings: TfrmSettings
         Left = 318
         Height = 27
         Hint = 'Default port  44559'
-        Top = 144
+        Top = 163
         Width = 56
         ParentShowHint = False
         ShowHint = True
@@ -249,7 +257,7 @@ object frmSettings: TfrmSettings
       object Label12: TLabel
         Left = 22
         Height = 18
-        Top = 144
+        Top = 163
         Width = 103
         Caption = 'Server Address'
         ParentColor = False
@@ -257,7 +265,7 @@ object frmSettings: TfrmSettings
       object Label13: TLabel
         Left = 278
         Height = 18
-        Top = 144
+        Top = 163
         Width = 31
         Caption = 'Port'
         ParentColor = False
@@ -273,7 +281,7 @@ object frmSettings: TfrmSettings
     end
     object TabSheet7: TTabSheet
       Caption = 'General'
-      ClientHeight = 185
+      ClientHeight = 217
       ClientWidth = 484
       object cbxForceFullscreen: TCheckBox
         Left = 14
@@ -286,7 +294,7 @@ object frmSettings: TfrmSettings
       object cbxTouchScreen: TCheckBox
         Left = 14
         Height = 24
-        Top = 51
+        Top = 75
         Width = 171
         Caption = 'Touch Screen Support'
         TabOrder = 1
@@ -294,7 +302,7 @@ object frmSettings: TfrmSettings
       object Label7: TLabel
         Left = 14
         Height = 18
-        Top = 99
+        Top = 131
         Width = 85
         Caption = 'Clock Name:'
         ParentColor = False
@@ -302,7 +310,7 @@ object frmSettings: TfrmSettings
       object edtClockName: TEdit
         Left = 110
         Height = 27
-        Top = 99
+        Top = 131
         Width = 160
         MaxLength = 12
         TabOrder = 2
@@ -311,13 +319,13 @@ object frmSettings: TfrmSettings
     end
     object TabSheet6: TTabSheet
       Caption = 'Pictures'
-      ClientHeight = 185
+      ClientHeight = 217
       ClientWidth = 484
       object btnPicturePath: TButton
-        Left = 427
-        Height = 25
+        Left = 406
+        Height = 42
         Top = 31
-        Width = 40
+        Width = 61
         Caption = '..'
         OnClick = btnPicturePathClick
         TabOrder = 1
@@ -326,7 +334,7 @@ object frmSettings: TfrmSettings
         Left = 115
         Height = 27
         Top = 31
-        Width = 293
+        Width = 269
         TabOrder = 0
       end
       object Label14: TLabel
@@ -340,7 +348,7 @@ object frmSettings: TfrmSettings
       object Label15: TLabel
         Left = 14
         Height = 18
-        Top = 79
+        Top = 91
         Width = 42
         Caption = 'Delay:'
         ParentColor = False
@@ -348,7 +356,7 @@ object frmSettings: TfrmSettings
       object seDelay: TSpinEdit
         Left = 115
         Height = 27
-        Top = 79
+        Top = 91
         Width = 50
         MaxValue = 600
         MinValue = 1
@@ -358,7 +366,7 @@ object frmSettings: TfrmSettings
       object cbxRandomPictures: TCheckBox
         Left = 14
         Height = 24
-        Top = 127
+        Top = 147
         Width = 140
         Caption = 'Random Pictures'
         Checked = True
@@ -368,7 +376,7 @@ object frmSettings: TfrmSettings
     end
     object TabSheet5: TTabSheet
       Caption = 'Music'
-      ClientHeight = 185
+      ClientHeight = 217
       ClientWidth = 484
       object edtMusicPath: TEdit
         Left = 142
@@ -382,7 +390,7 @@ object frmSettings: TfrmSettings
         Left = 14
         Height = 26
         Top = 18
-        Width = 96
+        Width = 120
         AutoSize = False
         Caption = 'Music Path:'
         ParentColor = False
@@ -391,7 +399,7 @@ object frmSettings: TfrmSettings
       object edtSleepPath: TEdit
         Left = 142
         Height = 27
-        Top = 63
+        Top = 75
         Width = 272
         TabOrder = 2
         Text = '/home/user/Sleep'
@@ -399,25 +407,17 @@ object frmSettings: TfrmSettings
       object Label10: TLabel
         Left = 14
         Height = 24
-        Top = 67
-        Width = 96
+        Top = 75
+        Width = 120
         AutoSize = False
         Caption = 'Sleep Path:'
         ParentColor = False
         WordWrap = True
       end
-      object cbxPlayMusic: TCheckBox
-        Left = 14
-        Height = 24
-        Top = 143
-        Width = 175
-        Caption = 'Play music after alarm'
-        TabOrder = 6
-      end
       object edtMeditationPath: TEdit
         Left = 142
         Height = 27
-        Top = 107
+        Top = 129
         Width = 272
         TabOrder = 4
         Text = '/home/user/Meditation'
@@ -425,44 +425,53 @@ object frmSettings: TfrmSettings
       object Label11: TLabel
         Left = 14
         Height = 25
-        Top = 107
-        Width = 112
+        Top = 129
+        Width = 120
         AutoSize = False
         Caption = 'Meditation Path:'
         ParentColor = False
         WordWrap = True
       end
       object btnSelectMusic: TButton
-        Left = 430
-        Height = 25
-        Top = 18
-        Width = 40
+        Left = 422
+        Height = 40
+        Top = 11
+        Width = 48
         Caption = '..'
         OnClick = btnSelectMusicClick
         TabOrder = 1
       end
       object btnSelectSleep: TButton
-        Left = 430
-        Height = 25
-        Top = 63
-        Width = 40
+        Left = 422
+        Height = 39
+        Top = 67
+        Width = 48
         Caption = '..'
         OnClick = btnSelectSleepClick
         TabOrder = 3
       end
       object btnSelectMeditation: TButton
-        Left = 430
-        Height = 25
-        Top = 107
-        Width = 40
+        Left = 422
+        Height = 41
+        Top = 123
+        Width = 48
         Caption = '..'
         OnClick = btnSelectMeditationClick
         TabOrder = 5
       end
+      object btnConfigRadio: TBitBtn
+        Left = 14
+        Height = 32
+        Top = 171
+        Width = 400
+        Caption = 'Configure Radio Stations'
+        OnClick = btnConfigRadioClick
+        TabOrder = 6
+      end
     end
     object TabSheet3: TTabSheet
       Caption = 'Email'
-      ClientHeight = 185
+      ClientHeight = 217
       ClientWidth = 484
       object btnSendFavorites: TButton
         Left = 278
@@ -533,28 +542,27 @@ object frmSettings: TfrmSettings
   object BitBtn1: TBitBtn
     Left = 408
     Height = 40
-    Top = 232
+    Top = 264
     Width = 88
-    Default = True
     DefaultCaption = True
-    Kind = bkOK
-    ModalResult = 1
+    Kind = bkClose
+    ModalResult = 11
     TabOrder = 1
   end
   object XMLPropStorage1: TXMLPropStorage
     StoredValues = <>
     OnSaveProperties = XMLPropStorage1SaveProperties
     OnRestoreProperties = XMLPropStorage1RestoreProperties
-    left = 208
-    top = 187
+    left = 96
+    top = 264
   end
   object tmrSettings: TTimer
     Interval = 200
-    left = 240
-    top = 187
+    left = 192
+    top = 264
   end
   object dlgSelectDirectoryDialog: TSelectDirectoryDialog
-    left = 320
-    top = 187
+    left = 288
+    top = 264
   end
 end

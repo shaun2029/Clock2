@@ -18,15 +18,15 @@ unit ClockMain;
 interface
 
 uses
-  gtk2, gdk2,
-  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  ExtCtrls, {MetOffice,} Alarm, Settings, Reminders, ReminderList, LCLProc,
-  Music, Sync, Process, MusicPlayer, PlaylistCreator, commandserver,
-  X, Xlib, CTypes, WaitForMedia, Pictures, DateTime, SourcePicker,
-  ConnectionHealth, Unix, Email, IniFiles, SignalHandler, Equaliser, MplayerEQ, DiscoverServer;
+  gtk2, gdk2, Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs,
+  StdCtrls, ExtCtrls, Alarm, Settings, Reminders, ReminderList, LCLProc,
+  Buttons, Music, Sync, Process, MusicPlayer, PlaylistCreator, commandserver, X,
+  Xlib, CTypes, WaitForMedia, Pictures, DateTime, SourcePicker,
+  ConnectionHealth, Unix, Email, IniFiles, SignalHandler, Equaliser, MplayerEQ,
+  DiscoverServer, RadioStations;
 
 const
-  VERSION = '2.8.2';
+  VERSION = '3.0.0';
 
 type
   TMusicState = (msPlaying, msPaused);
@@ -36,6 +36,7 @@ type
   { TfrmClockMain }
 
   TfrmClockMain = class(TForm)
+    btnStopAlarm: TBitBtn;
     imgEqualiser: TImage;
     imgExit: TImage;
     imgPlayAlbums: TImage;
@@ -58,7 +59,6 @@ type
     labSongPrev2: TLabel;
     labSongPrev1: TLabel;
     lbEqualiser: TLabel;
-    lblAlarm: TLabel;
     lbPlayAlbums: TLabel;
     lbReminders: TLabel;
     lbReminderSummary: TLabel;
@@ -412,18 +412,6 @@ begin
   FReminderAlarm.Tick(Current);
   FTimer.Tick(Current);
 
-  if (FTimer.State = asSet) and (FTimer.AlarmTime > Current) then
-  begin
-    DecodeTime(FTimer.AlarmTime - Current, Hour, Min, Sec, MSec);
-    TimeCaption := Format('%.2d:%.2d', [Min, Sec]);
-
-    if TimeCaption <> lblAlarm.Caption then
-      lblAlarm.Caption := TimeCaption;
-
-    lblAlarm.Visible := True;
-  end
-  else lblAlarm.Visible := False;
-
   if (FReminderAlarm.State = asActive) and (ReminderState <> asActive) then
   begin
     lbReminderSummary.Font.Color := clYellow;
@@ -438,6 +426,23 @@ begin
     end;
 
     ReminderList.Free;
+  end;
+
+  if (FTimer.State = asSet) and (FTimer.AlarmTime > Current) then
+  begin
+    DecodeTime(FTimer.AlarmTime - Current, Hour, Min, Sec, MSec);
+    TimeCaption := Format('%.2d:%.2d', [Min, Sec]);
+
+    if TimeCaption <> btnStopAlarm.Caption then
+      btnStopAlarm.Caption := TimeCaption;
+
+    btnStopAlarm.Visible := True;
+  end
+  else
+  begin
+    btnStopAlarm.Caption := 'Stop';
+    btnStopAlarm.Visible := (FReminderAlarm.State = asActive)
+      or (FTimer.State = asActive) or (FAlarm.State = asActive);
   end;
 
   case FMusicSource of
@@ -523,7 +528,6 @@ var
   Error: String;
 begin
   tmrMinute.Enabled := False;
-
 
   DecodeTime(Now, H, M, S, Ms);
 
@@ -623,18 +627,40 @@ var
   Stations: TStringList;
   ConfigFile: string;
   i, s, t: Integer;
+  RadioStations: String;
 begin
-  SetLength(FSources, 0);
-
-  // Load custom stations and add them
-  ConfigFile := ChangeFileExt(FConfigFilename, '_custom_radio.cfg');
-
-  if FileExists(ConfigFile) then
+  if frmRadioStations.Changed then
   begin
-    Stations := TStringList.Create;
-    try
-      Stations.LoadFromFile(ConfigFile);
+    SetLength(FSources, 0);
 
+    // Load custom stations and add them
+    ConfigFile := ChangeFileExt(FConfigFilename, '_radio_stations.cfg');
+
+    frmRadioStations.ConfigFile := ConfigFile;
+
+    Stations := TStringList.Create;
+
+    if not FileExists(ConfigFile) then
+    begin
+      // Save default stations
+      try
+        Stations.Text := frmRadioStations.mmoRadioDefaults.Text;
+        Stations.SaveToFile(ConfigFile);
+      except
+      end;
+    end
+    else
+    begin
+      Stations := TStringList.Create;
+      try
+        Stations.LoadFromFile(ConfigFile);
+      except
+      end;
+    end;
+
+    frmRadioStations.mmoRadioStations.Text := Stations.Text;
+
+    try
       for i := Stations.Count - 1 downto 0 do
       begin
         Stations.Strings[i] := Trim(Stations.Strings[i]);
@@ -654,127 +680,21 @@ begin
     finally
       Stations.Free;
     end;
-  end;
 
-  s := Length(FSources);
-
-  // Add default stations
-  SetLength(FSources, 49 + s);
-
-  FSources[0 + s].Title := 'Indie Rock';
-  FSources[0 + s].Resource := 'http://pub1.radiotunes.com/radiotunes_indierock';
-  FSources[1 + s].Title := 'Alt Rock';
-  FSources[1 + s].Resource := 'http://pub1.radiotunes.com/radiotunes_altrock';
-  FSources[2 + s].Title := 'Roots Legacy Reggae';
-  FSources[2 + s].Resource := 'http://rootslegacy.fr:8080/listen.pls?sid=1';
-  FSources[3 + s].Title := 'Roots Reggae';
-  FSources[3 + s].Resource := 'http://pub8.radiotunes.com/radiotunes_rootsreggae';
-  FSources[4 + s].Title := 'Ska';
-  FSources[4 + s].Resource := 'http://pub7.radiotunes.com/radiotunes_ska';
-  FSources[5 + s].Title := 'Modern Rock';
-  FSources[5 + s].Resource := 'http://pub1.radiotunes.com/radiotunes_modernrock';
-  FSources[6 + s].Title := 'Hard Rock';
-  FSources[6 + s].Resource := 'http://pub1.radiotunes.com/radiotunes_hardrock';
-  FSources[7 + s].Title := 'Metal';
-  FSources[7 + s].Resource := 'http://pub1.radiotunes.com/radiotunes_metal';
-  FSources[8 + s].Title := 'Pop Punk';
-  FSources[8 + s].Resource := 'http://pub1.radiotunes.com/radiotunes_poppunk';
-  FSources[9 + s].Title := 'Pop Rock';
-  FSources[9 + s].Resource := 'http://pub1.radiotunes.com/radiotunes_poprock';
-  FSources[10 + s].Title := 'Oldies';
-  FSources[10 + s].Resource := 'http://pub1.radiotunes.com/radiotunes_oldies';
-  FSources[11 + s].Title := '60''s Rock';
-  FSources[11 + s].Resource := 'http://pub1.radiotunes.com/radiotunes_60srock';
-  FSources[12 + s].Title := '60''s Hits';
-  FSources[12 + s].Resource := 'http://pub1.radiotunes.com/radiotunes_hit60s';
-  FSources[13 + s].Title := '80''s Rock';
-  FSources[13 + s].Resource := 'http://pub1.radiotunes.com/radiotunes_80srock';
-  FSources[14 + s].Title := '80''s Hits';
-  FSources[14 + s].Resource := 'http://pub1.radiotunes.com/radiotunes_the80s';
-  FSources[15 + s].Title := '80''s Dance';
-  FSources[15 + s].Resource := 'http://pub1.radiotunes.com/radiotunes_80sdance';
-  FSources[16 + s].Title := '90''s Hits';
-  FSources[16 + s].Resource := 'http://pub1.radiotunes.com/radiotunes_hit90s';
-  FSources[17 + s].Title := 'Soft Rock';
-  FSources[17 + s].Resource := 'http://pub1.radiotunes.com/radiotunes_softrock';
-  FSources[18 + s].Title := 'Classic Rock';
-  FSources[18 + s].Resource := 'http://pub1.radiotunes.com/radiotunes_classicrock';
-  FSources[19 + s].Title := 'New Age';
-  FSources[19 + s].Resource := 'http://pub1.radiotunes.com/radiotunes_newage';
-  FSources[20 + s].Title := 'Vocal New Age';
-  FSources[20 + s].Resource := 'http://pub1.radiotunes.com/radiotunes_vocalnewage';
-  FSources[21 + s].Title := 'Dreamscapes';
-  FSources[21 + s].Resource := 'http://pub7.radiotunes.com/radiotunes_dreamscapes';
-  FSources[22 + s].Title := 'Relaxation';
-  FSources[22 + s].Resource := 'http://pub6.radiotunes.com/radiotunes_relaxation';
-  FSources[23 + s].Title := 'Nature';
-  FSources[23 + s].Resource := 'http://pub1.radiotunes.com/radiotunes_nature';
-  FSources[24 + s].Title := 'Salsa';
-  FSources[24 + s].Resource := 'http://pub1.radiotunes.com/radiotunes_salsa';
-  FSources[25 + s].Title := 'Bossa Nova';
-  FSources[25 + s].Resource := 'http://pub1.radiotunes.com/radiotunes_bossanova';
-  FSources[26 + s].Title := 'Smooth Bossa Nova';
-  FSources[26 + s].Resource := 'http://pub1.radiotunes.com/radiotunes_smoothbossanova';
-  FSources[27 + s].Title := 'American Songs';
-  FSources[27 + s].Resource := 'http://pub1.radiotunes.com/radiotunes_americansongbook';
-  FSources[28 + s].Title := 'Classical Guitar';
-  FSources[28 + s].Resource := 'http://pub1.radiotunes.com/radiotunes_guitar';
-  FSources[29 + s].Title := 'Classical Piano';
-  FSources[29 + s].Resource := 'http://pub1.radiotunes.com/radiotunes_classicalpianotrios';
-  FSources[30 + s].Title := 'Solo Piano';
-  FSources[30 + s].Resource := 'http://pub1.radiotunes.com/radiotunes_solopiano';
-  FSources[31 + s].Title := 'Country';
-  FSources[31 + s].Resource := 'http://pub1.radiotunes.com/radiotunes_country';
-  FSources[32 + s].Title := 'Lounge';
-  FSources[32 + s].Resource := 'http://pub1.radiotunes.com/radiotunes_datempolounge';
-  FSources[33 + s].Title := '90''s R&&B';
-  FSources[33 + s].Resource := 'http://pub1.radiotunes.com/radiotunes_90srnb';
-  FSources[34 + s].Title := '00''s R&&B';
-  FSources[34 + s].Resource := 'http://pub1.radiotunes.com/radiotunes_00srnb';
-  FSources[35 + s].Title := 'Hip-Hop';
-  FSources[35 + s].Resource := 'http://pub1.radiotunes.com/radiotunes_classicrap';
-  FSources[36 + s].Title := 'Motown';
-  FSources[36 + s].Resource := 'http://pub1.radiotunes.com/radiotunes_classicmotown';
-  FSources[37 + s].Title := 'Jazz Clasics';
-  FSources[37 + s].Resource := 'http://pub1.radiotunes.com/radiotunes_jazzclassics';
-  FSources[38 + s].Title := 'Smooth Jazz';
-  FSources[38 + s].Resource := 'http://pub1.radiotunes.com/radiotunes_davekoz';
-  FSources[39 + s].Title := 'Uptempo Jazz';
-  FSources[39 + s].Resource := 'http://pub1.radiotunes.com/radiotunes_uptemposmoothjazz';
-  FSources[40 + s].Title := 'Top Hits';
-  FSources[40 + s].Resource := 'http://pub1.radiotunes.com/radiotunes_tophits';
-  FSources[41 + s].Title := 'Radio 2000';
-  FSources[41 + s].Resource := 'http://216.246.37.51/pbs-radio2000-live';
-  FSources[42 + s].Title := 'BBC 1';
-  FSources[42 + s].Resource := 'http://www.bbc.co.uk/radio/listen/live/r1_aaclca.pls';
-  FSources[43 + s].Title := 'BBC 1Xtra';
-  FSources[43 + s].Resource := 'http://www.bbc.co.uk/radio/listen/live/r1x_aaclca.pls';
-  FSources[44 + s].Title := 'BBC 2';
-  FSources[44 + s].Resource := 'http://www.bbc.co.uk/radio/listen/live/r2_aaclca.pls';
-  FSources[45 + s].Title := 'BBC 3';
-  FSources[45 + s].Resource := 'http://www.bbc.co.uk/radio/listen/live/r3_aaclca.pls';
-  FSources[46 + s].Title := 'BBC 4';
-  FSources[46 + s].Resource := 'http://www.bbc.co.uk/radio/listen/live/r4_aaclca.pls';
-  FSources[47 + s].Title := 'BBC 5 Live';
-  FSources[47 + s].Resource := 'http://bbc.co.uk/radio/listen/live/r5l_aaclca.pls';
-  FSources[48 + s].Title := 'BBC 5 Sports';
-  FSources[48 + s].Resource := 'http://bbc.co.uk/radio/listen/live/r5lsp_aaclca.pls';
-
-// Save stations
-  {
-    Stations := TStringList.Create;
-    try
-      for i := 0 to High(FSources) do
-      begin
-        Stations.Add(FSources[i].Title);
-        Stations.Add(FSources[i].Resource);
-      end;
-
-      Stations.SaveToFile(ConfigFile);
-    except
+    // Load stations into Command Server
+    RadioStations := '';
+    for i := 0 to High(FSources) do
+    begin
+      RadioStations := RadioStations + FSources[i].Title + ';';
     end;
-    Stations.Free;
-  }
+    FComServer.RadioStations := RadioStations;
+
+    if Assigned(FRadioPicker) then FreeAndNil(FRadioPicker);
+
+    FRadioPicker := TfrmSourcePicker.Create(Self, FSources);
+
+    frmRadioStations.Changed := False;
+  end;
 end;
 
 procedure TfrmClockMain.FormCreate(Sender: TObject);
@@ -783,13 +703,14 @@ var
   MixerControl : string;
   UsePulseVol: boolean;
   IniFile: TIniFile;
-  RadioStations: String;
 begin
   FFormShown := False;
   Self.Color := clBlack;
 
   // Gets created when settings are updated
   FDiscoverServer := nil;
+
+  FRadioPicker := nil;
 
   labSong.Caption := '';
   labSongPrev1.Caption := '';
@@ -849,17 +770,10 @@ begin
 
   FLinuxDateTime := TLinuxDateTime.Create;
 
+  frmRadioStations := TfrmRadioStations.Create(Self);
   LoadRadioStations;
 
-  // Load stations into Command Server
-  RadioStations := '';
-  for i := 0 to High(FSources) do
-  begin
-    RadioStations := RadioStations + FSources[i].Title + ';';
-  end;
-  FComServer.RadioStations := RadioStations;
 
-  FRadioPicker := TfrmSourcePicker.Create(Self, FSources);
   CreateMusicPicker;
 
   FPlayer := nil;
@@ -911,6 +825,7 @@ begin
   FReminderAlarm.Free;
   FTimer.Free;
   FCOMServer.Free;
+  frmRadioStations.Free;
 end;
 
 procedure TfrmClockMain.FormKeyDown(Sender: TObject; var Key: Word;
@@ -1122,30 +1037,23 @@ begin
   imgMusic.Picture.Assign(imgOff.Picture);
   Application.ProcessMessages;
 
-  if frmSettings.cbxForceFullscreen.Checked then
+  if DirectoryExists(frmSettings.edtMeditationPath.Text) then
   begin
-    if FMusicPicker.BorderStyle <> bsNone then
-      FMusicPicker.BorderStyle := bsNone;
-  end
-  else
-  begin
-    if FMusicPicker.BorderStyle <> bsSingle then
-      FMusicPicker.BorderStyle := bsSingle;
-  end;
+    SetCursorType(FMusicPicker);
 
-  SetCursorType(FMusicPicker);
-
-  if FMusicPicker.ShowModal = mrOK then
-  begin
-    case FMusicPicker.ItemIndex of
-      0:   SetMusicSource(msrcMusic);
-      1:   SetMusicSource(msrcMeditation);
-      2:   SetMusicSource(msrcSleep);
+    if FMusicPicker.ShowModal = mrOK then
+    begin
+      case FMusicPicker.ItemIndex of
+        0:   SetMusicSource(msrcMusic);
+        1:   SetMusicSource(msrcMeditation);
+        2:   SetMusicSource(msrcSleep);
+      end;
     end;
+  end
+  else SetMusicSource(msrcMusic);
 
-    if not FAlarmActive then PlayMusic
+  if not FAlarmActive then PlayMusic
     else PauseMusic;
-  end;
 
   imgMusic.Picture.Assign(imgOn.Picture);
 end;
@@ -1210,16 +1118,45 @@ begin
 end;
 
 procedure TfrmClockMain.imgUpdateMusicClick(Sender: TObject);
+var
+  MusicSource: TMusicSource;
 begin
   imgUpdateMusic.Picture.Assign(imgOff.Picture);
   Self.Enabled := False;
 
   Application.ProcessMessages;
 
-  if (FPlayer.SearchPath <> '') then
+  if DirectoryExists(frmSettings.edtMeditationPath.Text) then
   begin
-    FPlayer.RescanSearchPath;
-    UpdatingMusic(FPlayer);
+    SetMusicSource(msrcMeditation);
+
+    if (FPlayer.SearchPath <> '') then
+    begin
+      FPlayer.RescanSearchPath;
+      UpdatingMusic(FPlayer);
+    end;
+  end;
+
+  if DirectoryExists(frmSettings.edtSleepPath.Text) then
+  begin
+    SetMusicSource(msrcSleep);
+
+    if (FPlayer.SearchPath <> '') then
+    begin
+      FPlayer.RescanSearchPath;
+      UpdatingMusic(FPlayer);
+    end;
+  end;
+
+  if DirectoryExists(frmSettings.edtMusicPath.Text) then
+  begin
+    SetMusicSource(msrcMusic);
+
+    if (FPlayer.SearchPath <> '') then
+    begin
+      FPlayer.RescanSearchPath;
+      UpdatingMusic(FPlayer);
+    end;
   end;
 
   Self.Enabled := True;
@@ -1310,6 +1247,8 @@ begin
   imgRadio.Picture.Assign(imgOff.Picture);
   Application.ProcessMessages;
 
+  LoadRadioStations;
+
   if frmSettings.cbxForceFullscreen.Checked then
   begin
     if FRadioPicker.BorderStyle <> bsNone then
@@ -1325,12 +1264,13 @@ begin
 
   if FRadioPicker.ShowModal = mrOK then
   begin
+    PauseMusic;
+
     SetMusicSource(msrcRadio);
     FPlayer.StreamTitle := FSources[FRadioPicker.ItemIndex].Title;
     FPlayer.StreamURL := FSources[FRadioPicker.ItemIndex].Resource;
 
-    if not FAlarmActive then PlayMusic
-    else PauseMusic;
+    if not FAlarmActive then PlayMusic;
   end;
 
   imgRadio.Picture.Assign(imgOn.Picture);
@@ -1479,6 +1419,17 @@ begin
   imgSettings.Picture.Assign(imgOff.Picture);
   Application.ProcessMessages;
   Self.Hide;
+
+  if frmSettings.cbxForceFullscreen.Checked then
+  begin
+    if frmRadioStations.BorderStyle <> bsNone then
+      frmRadioStations.BorderStyle := bsNone;
+  end
+  else
+  begin
+    if frmRadioStations.BorderStyle <> bsSingle then
+      frmRadioStations.BorderStyle := bsSingle;
+  end;
 
   FormShowModal(frmSettings);
 

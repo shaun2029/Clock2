@@ -12,7 +12,8 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  Spin, XMLPropStorage, ComCtrls, ExtCtrls, Buttons, Email, BlowFish, base64;
+  Spin, XMLPropStorage, ComCtrls, ExtCtrls, Buttons, Email, BlowFish, base64,
+  RadioStations;
 
 type
 
@@ -20,6 +21,7 @@ type
 
   TfrmSettings = class(TForm)
     BitBtn1: TBitBtn;
+    btnConfigRadio: TBitBtn;
     btnStartTimer: TButton;
     btnSelectMusic: TButton;
     btnSelectSleep: TButton;
@@ -29,13 +31,13 @@ type
     btnStopTimer1: TButton;
     cbxFri: TCheckBox;
     cbxMon: TCheckBox;
+    cbxPlayMusic: TCheckBox;
     cbxSat: TCheckBox;
     cbxSun: TCheckBox;
     cbxThu: TCheckBox;
     cbxTue: TCheckBox;
     cbxWed: TCheckBox;
     cbxEnableReminders: TCheckBox;
-    cbxPlayMusic: TCheckBox;
     cbxGetReminders: TCheckBox;
     cbxSilentAlarm: TCheckBox;
     cbxRandomPictures: TCheckBox;
@@ -85,6 +87,7 @@ type
     tmrSettings: TTimer;
     udTimer: TUpDown;
     XMLPropStorage1: TXMLPropStorage;
+    procedure btnConfigRadioClick(Sender: TObject);
     procedure btnPicturePathClick(Sender: TObject);
     procedure btnSelectMeditationClick(Sender: TObject);
     procedure btnSelectMusicClick(Sender: TObject);
@@ -242,6 +245,11 @@ procedure TfrmSettings.btnPicturePathClick(Sender: TObject);
 begin
   if dlgSelectDirectoryDialog.Execute then
      edtPicturePath.Text := dlgSelectDirectoryDialog.Filename;
+end;
+
+procedure TfrmSettings.btnConfigRadioClick(Sender: TObject);
+begin
+  frmRadioStations.ShowModal;
 end;
 
 procedure TfrmSettings.btnSelectSleepClick(Sender: TObject);
