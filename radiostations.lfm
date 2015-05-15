@@ -10,7 +10,7 @@ object frmRadioStations: TfrmRadioStations
   Color = clBlack
   OnCreate = FormCreate
   Position = poDesktopCenter
-  LCLVersion = '1.0.10.0'
+  LCLVersion = '1.2.4.0'
   object btnSave: TBitBtn
     Left = 544
     Height = 48
@@ -155,17 +155,17 @@ object frmRadioStations: TfrmRadioStations
       'Top Hits'
       'http://pub1.radiotunes.com/radiotunes_tophits'
       'Absolute 80s'
-      'http://network.absoluteradio.co.uk/core/audio/ogg/live.pls?service=a8bb'
+      'http://network.absoluteradio.co.uk/core/audio/mp3/live.pls?service=a8bb'
       'Absolute Rock'
-      'http://network.absoluteradio.co.uk/core/audio/ogg/live.pls?service=vcbb'
+      'http://network.absoluteradio.co.uk/core/audio/mp3/live.pls?service=vcbb'
       'Absolute 60s'
-      'http://network.absoluteradio.co.uk/core/audio/ogg/live.pls?service=a6bb'
+      'http://network.absoluteradio.co.uk/core/audio/mp3/live.pls?service=a6bb'
       'Absolute 70s'
-      'http://network.absoluteradio.co.uk/core/audio/ogg/live.pls?service=a7bb'
+      'http://network.absoluteradio.co.uk/core/audio/mp3/live.pls?service=a7bb'
       'Absolute 90s'
-      'http://network.absoluteradio.co.uk/core/audio/ogg/live.pls?service=a9bb'
+      'http://network.absoluteradio.co.uk/core/audio/mp3/live.pls?service=a9bb'
       'Absolute 00s'
-      'http://network.absoluteradio.co.uk/core/audio/ogg/live.pls?service=a0bb'
+      'http://network.absoluteradio.co.uk/core/audio/mp3/live.pls?service=a0bb'
       'Radio 2000'
       'http://216.246.37.51/pbs-radio2000-live'
       'BBC 1'
