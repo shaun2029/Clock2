@@ -5,7 +5,7 @@ unit DiscoverServer;
 // shauns2029@gmail.com
 //
 
-{$mode objfpc}{$H+}
+{$mode Delphi}
 //{$DEFINE DEBUG}
 
 interface
@@ -16,10 +16,15 @@ uses
   blcksock, synsock;
 
 type
+  TErrorState = (esOK, esSocketError, esException);
 
   { TUDPServerThread }
 
+  { TDiscoverServerThread }
+
   TDiscoverServerThread = class(TThread)
+  private
+    FErrorState: TErrorState;
   protected
     FSocket: TUDPBlockSocket;
     FPort: Integer;
@@ -29,6 +34,7 @@ type
   public
     constructor Create(Port: Integer; ClockName: string);
     destructor Destroy; override;
+    property Error: TErrorState read FErrorState;
   end;
 
   { TDiscoverServer }
@@ -36,9 +42,12 @@ type
   TDiscoverServer = class
   private
     FDiscoverServerThread: TDiscoverServerThread;
+    function GetErrorState: TErrorState;
   public
     constructor Create(Port: Integer; ClockName: string);
     destructor Destroy; override;
+  published
+    property Error: TErrorState read GetErrorState;
   end;
 
 implementation
@@ -49,6 +58,11 @@ begin
 end;
 
 { TDiscoverServer }
+
+function TDiscoverServer.GetErrorState: TErrorState;
+begin
+  Result := FDiscoverServerThread.Error;
+end;
 
 constructor TDiscoverServer.Create(Port: Integer; ClockName: string);
 begin
@@ -101,25 +115,16 @@ begin
             {$IFDEF DEBUG} Log('Discover Server: Received REQUEST:CLOCKNAME ...'); {$ENDIF}
 
             // Send packet clock name
-            FSocket.SendString('CLOCKNAME:' + FClockName + #0);
+            Buffer := FClockName + #0#0#0#0#0#0#0#0#0#0;
+            FSocket.SendString('CLOCKNAME:' +  Buffer);
 
-            {$IFDEF DEBUG} Log('Discover Server: Sent "' + FClockName + '"'); {$ENDIF}
+            {$IFDEF DEBUG} Log('Discover Server: Sent "' + Buffer + '"'); {$ENDIF}
           end
           else if FSocket.LastError <> WSAETIMEDOUT then
           begin
             Log(Format('Discover Server: RecvPacket failed with error code %d', [FSocket.LastError]));
-            Log('Discover Server: Rebinding socket ...');
-
-            FSocket.CloseSocket;
-            FSocket.Bind('0.0.0.0', IntToStr(FPort));
-
-            if FSocket.LastError <> 0 then
-            begin
-              Log(Format('Discover Server: Bind failed with error code %d', [FSocket.LastError]));
-              while not Terminated do Sleep(1000);
-            end;
-
-            Log('Discover Server: Restarted.');
+            Log(Format('Discover Server: Set error state!', [FSocket.LastError]));
+            while not Terminated do Sleep(100);
           end;
         end;
       end;
@@ -129,11 +134,12 @@ begin
     begin
       Log('Discover Server: Fatal Exception!');
       Log('Fatal Exception: ' + E.Message);
+      Log('Discover Server: Set error state!');
+      while not Terminated do Sleep(100);
     end;
   end;
 
-  if Assigned(FSocket) then
-    FSocket.CloseSocket;
+  FSocket.CloseSocket;
 
   {$IFDEF DEBUG} Log('Discover Server: Stopped ...'); {$ENDIF}
 end;
@@ -142,6 +148,7 @@ constructor TDiscoverServerThread.Create(Port: Integer; ClockName: string);
 begin
   inherited Create(False);
 
+  FErrorState := esOk;
   FSocket := TUDPBlockSocket.Create;
 
   FPort := Port;
@@ -153,7 +160,7 @@ begin
   if Assigned(FSocket) then
   begin
     FSocket.CloseSocket;
-    FSocket.Free;
+    FreeAndNil(FSocket);
   end;
 
   inherited Destroy;

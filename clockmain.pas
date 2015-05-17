@@ -26,7 +26,7 @@ uses
   DiscoverServer, RadioStations;
 
 const
-  VERSION = '3.0.0';
+  VERSION = '3.0.1';
 
 type
   TMusicState = (msPlaying, msPaused);
@@ -166,6 +166,7 @@ type
     procedure SetMonitorState(State: boolean);
     procedure SetMusicSource(Source: TMusicSource);
     procedure ShowForm(MyForm: TForm);
+    procedure StartDiscoverServer;
     procedure UpdatingMusic(Player: TPlayer);
     procedure ComServerCallback;
 
@@ -528,6 +529,13 @@ var
   Error: String;
 begin
   tmrMinute.Enabled := False;
+
+    // Update discover server with Clock name
+  if Assigned(FDiscoverServer) then
+  begin
+    if FDiscoverServer.Error <> esOK then
+      StartDiscoverServer;
+  end;
 
   DecodeTime(Now, H, M, S, Ms);
 
@@ -1517,7 +1525,6 @@ var
   i: Integer;
   Minutes: LongInt;
   Hours: Integer;
-  ClockName: String;
 begin
   FFavoritesAuto := frmSettings.cbxFavoritesAuto.Checked;
 
@@ -1586,18 +1593,7 @@ begin
 
   SetCursorType(Self);
 
-  // Update discover server with Clock name
-  if Assigned(FDiscoverServer) then
-    FreeAndNil(FDiscoverServer);
-
-  ClockName := Trim(frmSettings.edtClockName.Text);
-  if LowerCase(ClockName) = 'hostname' then
-    ClockName := Trim(GetHostName);
-
-  if ClockName = '' then
-    ClockName := 'no-name-set';
-
-  FDiscoverServer := TDiscoverServer.Create(44557, ClockName);
+  StartDiscoverServer;
 
   UpdateReminders;
 
@@ -1609,6 +1605,24 @@ begin
   begin
     BorderStyle := bsSingle;
   end;
+end;
+
+procedure TfrmClockMain.StartDiscoverServer;
+var
+  ClockName: String;
+begin
+  // Update discover server with Clock name
+  if Assigned(FDiscoverServer) then
+    FreeAndNil(FDiscoverServer);
+
+  ClockName := Trim(frmSettings.edtClockName.Text);
+  if LowerCase(ClockName) = 'hostname' then
+    ClockName := GetHostName;
+
+  if ClockName = '' then
+    ClockName := 'no-name-set';
+
+  FDiscoverServer := TDiscoverServer.Create(44557, ClockName);
 end;
 
 procedure TfrmClockMain.UpdateReminders;
