@@ -10,7 +10,7 @@ object frmRadioStations: TfrmRadioStations
   Color = clBlack
   OnCreate = FormCreate
   Position = poDesktopCenter
-  LCLVersion = '1.2.4.0'
+  LCLVersion = '1.0.10.0'
   object btnSave: TBitBtn
     Left = 544
     Height = 48
@@ -181,7 +181,7 @@ object frmRadioStations: TfrmRadioStations
       'BBC 5 Live'
       'http://www.listenlive.eu/bbc5live.m3u'
       'BBC 5 Sports'
-      'http://www.listenlive.eu/bbc5liveextra.m3u'
+      ' http://a.files.bbci.co.uk/media/live/manifesto/audio/simulcast/hls/uk/sbr_high/ak/bbc_radio_five_live_sports_extra.m3u8'
       'BBC 6 Music'
       'http://www.listenlive.eu/bbc6music.m3u'
     )
