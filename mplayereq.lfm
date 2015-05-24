@@ -18,8 +18,8 @@ object frmMplayerEQ: TfrmMplayerEQ
     Top = 56
     Width = 43
     Frequency = 10
-    Max = 12
-    Min = -12
+    Max = 6
+    Min = -6
     Orientation = trVertical
     Position = 0
     Reversed = True
@@ -54,8 +54,8 @@ object frmMplayerEQ: TfrmMplayerEQ
     Top = 56
     Width = 43
     Frequency = 10
-    Max = 12
-    Min = -12
+    Max = 6
+    Min = -6
     Orientation = trVertical
     Position = 0
     Reversed = True
@@ -91,8 +91,8 @@ object frmMplayerEQ: TfrmMplayerEQ
     Top = 56
     Width = 43
     Frequency = 10
-    Max = 12
-    Min = -12
+    Max = 6
+    Min = -6
     Orientation = trVertical
     Position = 0
     Reversed = True
@@ -162,8 +162,8 @@ object frmMplayerEQ: TfrmMplayerEQ
     Top = 56
     Width = 43
     Frequency = 10
-    Max = 12
-    Min = -12
+    Max = 6
+    Min = -6
     Orientation = trVertical
     Position = 0
     Reversed = True
@@ -199,8 +199,8 @@ object frmMplayerEQ: TfrmMplayerEQ
     Top = 56
     Width = 43
     Frequency = 10
-    Max = 12
-    Min = -12
+    Max = 6
+    Min = -6
     Orientation = trVertical
     Position = 0
     Reversed = True

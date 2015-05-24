@@ -75,7 +75,7 @@ implementation
 
 procedure TfrmMplayerEQ.btnUp1Click(Sender: TObject);
 begin
-  if Setting[TBitBtn(Sender).Tag].Position < 12 then
+  if Setting[TBitBtn(Sender).Tag].Position < 6 then
   begin
     Setting[TBitBtn(Sender).Tag].Position := Setting[TBitBtn(Sender).Tag].Position + 1;
   end;
@@ -83,7 +83,7 @@ end;
 
 procedure TfrmMplayerEQ.BtnDown1Click(Sender: TObject);
 begin
-  if Setting[TBitBtn(Sender).Tag].Position > -12 then
+  if Setting[TBitBtn(Sender).Tag].Position > -6 then
   begin
     Setting[TBitBtn(Sender).Tag].Position := Setting[TBitBtn(Sender).Tag].Position - 1;
   end;
@@ -141,11 +141,11 @@ var
 begin
   if Length(FEqLevels) = 10 then
   begin
-    Setting[0].Position := (FEqLevels[0] + FEqLevels[1] + 1) div 2;
-    Setting[1].Position := (FEqLevels[2] + FEqLevels[3] + 1) div 2;
-    Setting[2].Position := (FEqLevels[4] + FEqLevels[5] + 1) div 2;
-    Setting[3].Position := (FEqLevels[6] + FEqLevels[7] + 1) div 2;
-    Setting[4].Position := (FEqLevels[8] + FEqLevels[9] + 1) div 2;
+    Setting[0].Position := FEqLevels[0];
+    Setting[1].Position := FEqLevels[2];
+    Setting[2].Position := FEqLevels[4];
+    Setting[3].Position := FEqLevels[6];
+    Setting[4].Position := FEqLevels[8];
   end;
 end;
 
