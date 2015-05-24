@@ -173,6 +173,7 @@ var
   Vol: integer;
   EQ, FileExt: String;
   i: Integer;
+  UrlExt: String;
 begin
   Process := TProcess.Create(nil);
 
@@ -194,10 +195,16 @@ begin
 
   Process.CommandLine := 'mplayer ' + EQ + ' -af-add format=s16le -softvol -volume ' + IntToStr(100-FVolAttenuation);
 
-  { If the file does not exist then it assumed to be a URL of a stream. }
-  if not FileExists(Song) then
+  { If the sing name begins with 'http://' then it assumed to be a URL of a stream. }
+  if ((Pos('http://', Trim(Lowercase(Song))) = 1) or (Pos('https://', Trim(Lowercase(Song))) = 1)) then
   begin
     FRadioPlaying := True;
+
+    // Trim off http parameter '?'
+    if Pos('?', Song) > 0 then
+    begin
+       Song := Copy(Song, 1, Pos('?', Song) - 1);
+    end;
 
     // Announcement removal requires messages
     Process.CommandLine := Process.CommandLine + ' -msglevel all=4';
@@ -206,10 +213,12 @@ begin
     // Some stations have a delay between the title text change and the audio stream change.
     FAdDelay := 8;
 
+    UrlExt := ExtractFileExt(LowerCase(Song));
+
     // Support playlists
     for i := 0 to High(PlaylistTypes) do
     begin
-      if Pos(PlaylistTypes[i], LowerCase(Song)) > 0 then
+      if UrlExt = PlaylistTypes[i] then
       begin
         Process.CommandLine := Process.CommandLine + ' -playlist';
         break;
@@ -381,8 +390,8 @@ end;
 
 function TMusicPlayer.ProcessRadio: string;
 const
-  AdTypes: array [0..5] of string = ('sky.fm', 'adw_ad=''true''',
-    'back-soon', 'adbreak', 'ICY Info: StreamTitle='';StreamUrl='';', 'radiotunes');
+  AdTypes: array [0..4] of string = ('sky.fm', 'adw_ad=''true''',
+    'back-soon', 'ICY Info: StreamTitle='';StreamUrl='';', 'radiotunes');
 var
   Title: string;
   TitleList: TStringList;
