@@ -122,6 +122,7 @@ begin
           end
           else if FSocket.LastError <> WSAETIMEDOUT then
           begin
+            FErrorState := esSocketError;
             Log(Format('Discover Server: RecvPacket failed with error code %d', [FSocket.LastError]));
             Log(Format('Discover Server: Set error state!', [FSocket.LastError]));
             while not Terminated do Sleep(100);
@@ -132,6 +133,7 @@ begin
   except
     on E: exception do
     begin
+      FErrorState := esException;
       Log('Discover Server: Fatal Exception!');
       Log('Fatal Exception: ' + E.Message);
       Log('Discover Server: Set error state!');
