@@ -1211,40 +1211,18 @@ end;
 
 procedure TfrmClockMain.lbEqualiserClick(Sender: TObject);
 var
-  frmEqualiser: TfrmEqualiser;
   frmMplayerEQ: TfrmMplayerEQ;
-  ApplyMplayer: boolean;
   i: integer;
 begin
   imgEqualiser.Picture.Assign(imgOff.Picture);
   Application.ProcessMessages;
   Self.Hide;
 
-  frmEqualiser := TfrmEqualiser.Create(Self);
-  if frmEqualiser.Supported then
-  begin
-    // Alsaequal equaliser is supported
-    // Remove Mplayer EQ effect
-    for i := 0 to 9  do
-    begin
-      if FMplayerEQ[i] <> 0 then ApplyMplayer := True;
-      FMplayerEQ[i] := 0;
-    end;
-
-    FormShowModal(frmEqualiser);
-  end
-  else
-  begin
-    frmMplayerEQ := TfrmMplayerEQ.Create(Self);
-    frmMplayerEQ.Levels := FMplayerEQ;
-    FormShowModal(frmMplayerEQ);
-    frmMplayerEQ.Free;
-    ApplyMplayer := True;
-  end;
-
-  if ApplyMplayer then ApplyMplayerEQ;
-
-  frmEqualiser.Free;
+  frmMplayerEQ := TfrmMplayerEQ.Create(Self);
+  frmMplayerEQ.Levels := FMplayerEQ;
+  FormShowModal(frmMplayerEQ);
+  frmMplayerEQ.Free;
+  ApplyMplayerEQ;
 
   Self.Show;
   imgEqualiser.Picture.Assign(imgOn.Picture);
