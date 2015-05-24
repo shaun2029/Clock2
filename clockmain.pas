@@ -26,7 +26,7 @@ uses
   DiscoverServer, RadioStations;
 
 const
-  VERSION = '3.0.1';
+  VERSION = '3.0.2';
 
 type
   TMusicState = (msPlaying, msPaused);
@@ -1605,6 +1605,9 @@ begin
   begin
     BorderStyle := bsSingle;
   end;
+
+  // Update announcement strategy
+  FPlayer.Announcements := TAnnouncements(frmSettings.rgAnnouncements.ItemIndex);
 end;
 
 procedure TfrmClockMain.StartDiscoverServer;

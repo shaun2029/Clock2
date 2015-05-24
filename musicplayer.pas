@@ -28,6 +28,7 @@ type
   {$endif}
 
   TMusicPlayerState = (mpsStopped, mpsPlaying);
+  TAnnouncements = (anOff, anQuiet, anMute);
 
   { TMusicPlayer }
 
@@ -54,6 +55,7 @@ type
     FRadioPlaying: boolean;
     FAdDelay: integer;
     FAdvertType: string;
+    FMuteLevel: integer;
 
     FAnnouncementVol: integer;
     FAnnouncement: boolean;
@@ -67,11 +69,12 @@ type
     procedure ProcessAnnouncement;
     function ProcessRadio: string;
     function ReadProcessData: string;
+    procedure SetAnnouncements(AValue: TAnnouncements);
     procedure SetVolAttenuation(AValue: integer);
     procedure SetVolume(Volume: integer);
-    procedure StartAnnouncement;
+    procedure StartAnnouncement(MuteLevel: integer);
     procedure StartPlayProcess(Song: string; out Process: TProcess);
-    procedure StopAnnouncement;
+    procedure StopAnnouncement(MuteLevel: integer);
     procedure StopSong;
   public
     constructor Create(MixerControl : string; UsePulseVol: boolean; EQ: TMplayerEQ);
@@ -91,6 +94,7 @@ type
     property State: TMusicPlayerState read GetState;
     property RadioTitle: string read GetRadioTitle;
     property VolAttenuation: integer read FVolAttenuation write SetVolAttenuation;
+    property Announcements: TAnnouncements write SetAnnouncements;
   end;
 
 implementation
@@ -276,7 +280,7 @@ begin
   begin
     {$ifdef LOGGING} Writeln('ANNOUNCE: StartAnnouncement ' + TimeToStr(Now)); {$endif}
     FAnnouncementStart := 0;
-    StartAnnouncement;
+    StartAnnouncement(FMuteLevel);
     FAnnouncement := True;
   end;
 
@@ -284,7 +288,7 @@ begin
   if FAnnouncement and (FAnnouncementStop < Now) then
   begin
     {$ifdef LOGGING} Writeln('ANNOUNCE: StopAnnouncement ' + TimeToStr(Now)); {$endif}
-    StopAnnouncement;
+    StopAnnouncement(FMuteLevel);
     FAnnouncement := False;
   end;
 end;
@@ -297,7 +301,7 @@ begin
 end;
 
 // Mute the volume during an announcement
-procedure TMusicPlayer.StartAnnouncement;
+procedure TMusicPlayer.StartAnnouncement(MuteLevel: integer);
 var
   Buffer: array[0..1] of char;
   i: Integer;
@@ -309,7 +313,7 @@ begin
     // Mplayer volume down
     Buffer[0] := '9';
 
-    for i := 0 to 30 do
+    for i := 0 to MuteLevel do
     begin
       FPlayProcess.Input.Write(Buffer, 1);
       Sleep(33);
@@ -320,7 +324,7 @@ begin
 end;
 
 // Restores the volume after the announcement
-procedure TMusicPlayer.StopAnnouncement;
+procedure TMusicPlayer.StopAnnouncement(MuteLevel: integer);
 var
   Buffer: array[0..1] of char;
   i: Integer;
@@ -332,7 +336,7 @@ begin
     // Mplayer volume up
     Buffer[0] := '0';
 
-    for i := 0 to 30 do
+    for i := 0 to MuteLevel do
     begin
       FPlayProcess.Input.Write(Buffer, 1);
       Sleep(33);
@@ -364,6 +368,15 @@ begin
 }
     Result := Output;
   end;
+end;
+
+procedure TMusicPlayer.SetAnnouncements(AValue: TAnnouncements);
+begin
+  if AValue = anOff then
+    FMuteLevel := 0
+  else if AValue = anQuiet then
+    FMuteLevel := 12
+  else FMuteLevel := 30;
 end;
 
 function TMusicPlayer.ProcessRadio: string;
@@ -403,53 +416,57 @@ begin
           TitleList.Delete(i);
       end;
 
-      // Detect announcments (Adverts)
-      i := TitleList.Count - 1;
-      if (i >= 0) then
+      // Process announcements if required
+      if FMuteLevel > 0 then
       begin
-        // Advert detection search
-        for j := 0 to High(AdTypes) do
+        // Detect announcments (Adverts)
+        i := TitleList.Count - 1;
+        if (i >= 0) then
         begin
-          Announcement := Pos(LowerCase(AdTypes[j]), LowerCase(TitleList.Strings[i]));
-          if (Announcement > 0) then
+          // Advert detection search
+          for j := 0 to High(AdTypes) do
           begin
-            FAdvertType := AdTypes[j];
-            break;
-          end
-        end;
-
-        // Is there an announcement?
-        if (Announcement > 0) then
-        begin
-          AnnouncmentInProgress := True;
-
-          // Is an announcement, and is it known about and sheduled?
-          if not FAnnouncement and (FAnnouncementStart = 0) then
-          begin
-            // Set announcment start time in the future
-            FAnnouncementStart := Now + EncodeTime(0, 0, FAdDelay, 0);
-
-            {$ifdef LOGGING} Writeln('ANNOUNCE: Start detected "' + FAdvertType + '"'); {$endif}
+            Announcement := Pos(LowerCase(AdTypes[j]), LowerCase(TitleList.Strings[i]));
+            if (Announcement > 0) then
+            begin
+              FAdvertType := AdTypes[j];
+              break;
+            end
           end;
 
-          // Update the end time
-          FAnnouncementStop := Now + EncodeTime(0, 0, 2 + FAdDelay, 0);
-        end
-        else
-        begin
-          // Cancel if only short announcement
-          if (FAnnouncementStart <> 0) and not FAnnouncement then
+          // Is there an announcement?
+          if (Announcement > 0) then
           begin
-            // Calculate length of announcement
-            DecodeTime(FAnnouncementStart - FAnnouncementStop, H, M, S, MS);
+            AnnouncmentInProgress := True;
 
-            // Cancel if announcement < 4 seconds
-            if S <= 5 then
+            // Is an announcement, and is it known about and sheduled?
+            if not FAnnouncement and (FAnnouncementStart = 0) then
             begin
-              AnnouncmentInProgress := False;
-              FAnnouncementStart := 0;
+              // Set announcment start time in the future
+              FAnnouncementStart := Now + EncodeTime(0, 0, FAdDelay, 0);
 
-              {$ifdef LOGGING} Writeln('ANNOUNCE: Stopped - too short.'); {$endif}
+              {$ifdef LOGGING} Writeln('ANNOUNCE: Start detected "' + FAdvertType + '"'); {$endif}
+            end;
+
+            // Update the end time
+            FAnnouncementStop := Now + EncodeTime(0, 0, 2 + FAdDelay, 0);
+          end
+          else
+          begin
+            // Cancel if only short announcement
+            if (FAnnouncementStart <> 0) and not FAnnouncement then
+            begin
+              // Calculate length of announcement
+              DecodeTime(FAnnouncementStart - FAnnouncementStop, H, M, S, MS);
+
+              // Cancel if announcement < 4 seconds
+              if S <= 5 then
+              begin
+                AnnouncmentInProgress := False;
+                FAnnouncementStart := 0;
+
+                {$ifdef LOGGING} Writeln('ANNOUNCE: Stopped - too short.'); {$endif}
+              end;
             end;
           end;
         end;
@@ -534,6 +551,8 @@ begin
   FMixerControl := MixerControl;
   FUsePulseVol := UsePulseVol;
   FVolAttenuation := 0;
+
+  FMuteLevel := 0;
 
   FMplayerEQ := EQ;
 

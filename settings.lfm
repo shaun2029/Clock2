@@ -12,16 +12,16 @@ object frmSettings: TfrmSettings
   OnKeyDown = FormKeyDown
   OnKeyPress = FormKeyPress
   Position = poMainFormCenter
-  SessionProperties = 'cbxEmailReminders.Checked;cbxEnableReminders.Checked;cbxFavoritesAuto.Checked;cbxForceFullscreen.Checked;cbxFri.Checked;cbxGetReminders.Checked;cbxMon.Checked;cbxMonitorConnection.Checked;cbxPlayMusic.Checked;cbxRandomPictures.Checked;cbxSat.Checked;cbxSilentAlarm.Checked;cbxSun.Checked;cbxThu.Checked;cbxTouchScreen.Checked;cbxTue.Checked;cbxWed.Checked;edtClockName.Text;edtConnectionResetComand.Text;edtConnectionTimeout.Value;edtEmailAddress.Text;edtHour.Value;edtLocation1.Text;edtLocation2.Text;edtLocation3.Text;edtLocation.Text;edtMeditationPath.Text;edtMinute.Value;edtMusicPath.Text;edtPicturePath.Text;edtRemHour.Value;edtRemMinute.Value;edtServerAddress.Text;edtServerPort.Text;edtSleepPath.Text;edtSMTPAccount.Text;edtTestHost.Text;seDelay.Value'
-  LCLVersion = '1.0.10.0'
+  SessionProperties = 'cbxEmailReminders.Checked;cbxEnableReminders.Checked;cbxFavoritesAuto.Checked;cbxForceFullscreen.Checked;cbxFri.Checked;cbxGetReminders.Checked;cbxMon.Checked;cbxMonitorConnection.Checked;cbxPlayMusic.Checked;cbxRandomPictures.Checked;cbxSat.Checked;cbxSilentAlarm.Checked;cbxSun.Checked;cbxThu.Checked;cbxTouchScreen.Checked;cbxTue.Checked;cbxWed.Checked;edtClockName.Text;edtConnectionResetComand.Text;edtConnectionTimeout.Value;edtEmailAddress.Text;edtHour.Value;edtLocation1.Text;edtLocation2.Text;edtLocation3.Text;edtLocation.Text;edtMeditationPath.Text;edtMinute.Value;edtMusicPath.Text;edtPicturePath.Text;edtRemHour.Value;edtRemMinute.Value;edtServerAddress.Text;edtServerPort.Text;edtSleepPath.Text;edtSMTPAccount.Text;edtTestHost.Text;seDelay.Value;rgAnnouncements.ItemIndex'
+  LCLVersion = '1.2.4.0'
   object PageControl1: TPageControl
     Left = 8
     Height = 248
     Top = 8
     Width = 488
-    ActivePage = TabSheet5
+    ActivePage = TabSheet8
     ParentFont = False
-    TabIndex = 5
+    TabIndex = 2
     TabOrder = 0
     Options = [nboKeyboardTabSwitch]
     object TabSheet2: TTabSheet
@@ -188,6 +188,226 @@ object frmSettings: TfrmSettings
         TabOrder = 10
       end
     end
+    object TabSheet8: TTabSheet
+      Caption = 'Radio'
+      ClientHeight = 217
+      ClientWidth = 484
+      object btnConfigRadio: TBitBtn
+        Left = 14
+        Height = 48
+        Top = 147
+        Width = 456
+        Caption = 'Configure Radio Stations'
+        OnClick = btnConfigRadioClick
+        TabOrder = 0
+      end
+      object rgAnnouncements: TRadioGroup
+        Left = 14
+        Height = 105
+        Top = 11
+        Width = 264
+        AutoFill = True
+        Caption = 'Radio Announcements && Adverts'
+        ChildSizing.LeftRightSpacing = 6
+        ChildSizing.TopBottomSpacing = 6
+        ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+        ChildSizing.EnlargeVertical = crsHomogenousChildResize
+        ChildSizing.ShrinkHorizontal = crsScaleChilds
+        ChildSizing.ShrinkVertical = crsScaleChilds
+        ChildSizing.Layout = cclLeftToRightThenTopToBottom
+        ChildSizing.ControlsPerLine = 1
+        ClientHeight = 86
+        ClientWidth = 260
+        ItemIndex = 0
+        Items.Strings = (
+          'Off'
+          'Quiet'
+          'Mute'
+        )
+        TabOrder = 1
+      end
+    end
+    object TabSheet5: TTabSheet
+      Caption = 'Music'
+      ClientHeight = 217
+      ClientWidth = 484
+      object edtMusicPath: TEdit
+        Left = 142
+        Height = 27
+        Top = 18
+        Width = 272
+        TabOrder = 0
+        Text = '/home/user/Music'
+      end
+      object Label9: TLabel
+        Left = 14
+        Height = 26
+        Top = 18
+        Width = 120
+        AutoSize = False
+        Caption = 'Music Path:'
+        ParentColor = False
+        WordWrap = True
+      end
+      object edtSleepPath: TEdit
+        Left = 142
+        Height = 27
+        Top = 75
+        Width = 272
+        TabOrder = 2
+        Text = '/home/user/Sleep'
+      end
+      object Label10: TLabel
+        Left = 14
+        Height = 24
+        Top = 75
+        Width = 120
+        AutoSize = False
+        Caption = 'Sleep Path:'
+        ParentColor = False
+        WordWrap = True
+      end
+      object edtMeditationPath: TEdit
+        Left = 142
+        Height = 27
+        Top = 129
+        Width = 272
+        TabOrder = 4
+        Text = '/home/user/Meditation'
+      end
+      object Label11: TLabel
+        Left = 14
+        Height = 25
+        Top = 129
+        Width = 120
+        AutoSize = False
+        Caption = 'Meditation Path:'
+        ParentColor = False
+        WordWrap = True
+      end
+      object btnSelectMusic: TButton
+        Left = 422
+        Height = 40
+        Top = 11
+        Width = 48
+        Caption = '..'
+        OnClick = btnSelectMusicClick
+        TabOrder = 1
+      end
+      object btnSelectSleep: TButton
+        Left = 422
+        Height = 39
+        Top = 67
+        Width = 48
+        Caption = '..'
+        OnClick = btnSelectSleepClick
+        TabOrder = 3
+      end
+      object btnSelectMeditation: TButton
+        Left = 422
+        Height = 41
+        Top = 123
+        Width = 48
+        Caption = '..'
+        OnClick = btnSelectMeditationClick
+        TabOrder = 5
+      end
+    end
+    object TabSheet6: TTabSheet
+      Caption = 'Pictures'
+      ClientHeight = 217
+      ClientWidth = 484
+      object btnPicturePath: TButton
+        Left = 406
+        Height = 42
+        Top = 31
+        Width = 61
+        Caption = '..'
+        OnClick = btnPicturePathClick
+        TabOrder = 1
+      end
+      object edtPicturePath: TEdit
+        Left = 115
+        Height = 27
+        Top = 31
+        Width = 269
+        TabOrder = 0
+      end
+      object Label14: TLabel
+        Left = 14
+        Height = 18
+        Top = 27
+        Width = 87
+        Caption = 'Picture Path:'
+        ParentColor = False
+      end
+      object Label15: TLabel
+        Left = 14
+        Height = 18
+        Top = 91
+        Width = 42
+        Caption = 'Delay:'
+        ParentColor = False
+      end
+      object seDelay: TSpinEdit
+        Left = 115
+        Height = 27
+        Top = 91
+        Width = 50
+        MaxValue = 600
+        MinValue = 1
+        TabOrder = 2
+        Value = 10
+      end
+      object cbxRandomPictures: TCheckBox
+        Left = 14
+        Height = 24
+        Top = 147
+        Width = 140
+        Caption = 'Random Pictures'
+        Checked = True
+        State = cbChecked
+        TabOrder = 3
+      end
+    end
+    object TabSheet7: TTabSheet
+      Caption = 'General'
+      ClientHeight = 217
+      ClientWidth = 484
+      object cbxForceFullscreen: TCheckBox
+        Left = 14
+        Height = 24
+        Top = 19
+        Width = 135
+        Caption = 'Force Fullscreen'
+        TabOrder = 0
+      end
+      object cbxTouchScreen: TCheckBox
+        Left = 14
+        Height = 24
+        Top = 75
+        Width = 171
+        Caption = 'Touch Screen Support'
+        TabOrder = 1
+      end
+      object Label7: TLabel
+        Left = 14
+        Height = 18
+        Top = 131
+        Width = 85
+        Caption = 'Clock Name:'
+        ParentColor = False
+      end
+      object edtClockName: TEdit
+        Left = 110
+        Height = 27
+        Top = 131
+        Width = 160
+        MaxLength = 12
+        TabOrder = 2
+        Text = 'hostname'
+      end
+    end
     object TabSheet4: TTabSheet
       Caption = 'Reminders'
       ClientHeight = 217
@@ -279,196 +499,6 @@ object frmSettings: TfrmSettings
         TabOrder = 6
       end
     end
-    object TabSheet7: TTabSheet
-      Caption = 'General'
-      ClientHeight = 217
-      ClientWidth = 484
-      object cbxForceFullscreen: TCheckBox
-        Left = 14
-        Height = 24
-        Top = 19
-        Width = 135
-        Caption = 'Force Fullscreen'
-        TabOrder = 0
-      end
-      object cbxTouchScreen: TCheckBox
-        Left = 14
-        Height = 24
-        Top = 75
-        Width = 171
-        Caption = 'Touch Screen Support'
-        TabOrder = 1
-      end
-      object Label7: TLabel
-        Left = 14
-        Height = 18
-        Top = 131
-        Width = 85
-        Caption = 'Clock Name:'
-        ParentColor = False
-      end
-      object edtClockName: TEdit
-        Left = 110
-        Height = 27
-        Top = 131
-        Width = 160
-        MaxLength = 12
-        TabOrder = 2
-        Text = 'hostname'
-      end
-    end
-    object TabSheet6: TTabSheet
-      Caption = 'Pictures'
-      ClientHeight = 217
-      ClientWidth = 484
-      object btnPicturePath: TButton
-        Left = 406
-        Height = 42
-        Top = 31
-        Width = 61
-        Caption = '..'
-        OnClick = btnPicturePathClick
-        TabOrder = 1
-      end
-      object edtPicturePath: TEdit
-        Left = 115
-        Height = 27
-        Top = 31
-        Width = 269
-        TabOrder = 0
-      end
-      object Label14: TLabel
-        Left = 14
-        Height = 18
-        Top = 27
-        Width = 87
-        Caption = 'Picture Path:'
-        ParentColor = False
-      end
-      object Label15: TLabel
-        Left = 14
-        Height = 18
-        Top = 91
-        Width = 42
-        Caption = 'Delay:'
-        ParentColor = False
-      end
-      object seDelay: TSpinEdit
-        Left = 115
-        Height = 27
-        Top = 91
-        Width = 50
-        MaxValue = 600
-        MinValue = 1
-        TabOrder = 2
-        Value = 10
-      end
-      object cbxRandomPictures: TCheckBox
-        Left = 14
-        Height = 24
-        Top = 147
-        Width = 140
-        Caption = 'Random Pictures'
-        Checked = True
-        State = cbChecked
-        TabOrder = 3
-      end
-    end
-    object TabSheet5: TTabSheet
-      Caption = 'Music'
-      ClientHeight = 217
-      ClientWidth = 484
-      object edtMusicPath: TEdit
-        Left = 142
-        Height = 27
-        Top = 18
-        Width = 272
-        TabOrder = 0
-        Text = '/home/user/Music'
-      end
-      object Label9: TLabel
-        Left = 14
-        Height = 26
-        Top = 18
-        Width = 120
-        AutoSize = False
-        Caption = 'Music Path:'
-        ParentColor = False
-        WordWrap = True
-      end
-      object edtSleepPath: TEdit
-        Left = 142
-        Height = 27
-        Top = 75
-        Width = 272
-        TabOrder = 2
-        Text = '/home/user/Sleep'
-      end
-      object Label10: TLabel
-        Left = 14
-        Height = 24
-        Top = 75
-        Width = 120
-        AutoSize = False
-        Caption = 'Sleep Path:'
-        ParentColor = False
-        WordWrap = True
-      end
-      object edtMeditationPath: TEdit
-        Left = 142
-        Height = 27
-        Top = 129
-        Width = 272
-        TabOrder = 4
-        Text = '/home/user/Meditation'
-      end
-      object Label11: TLabel
-        Left = 14
-        Height = 25
-        Top = 129
-        Width = 120
-        AutoSize = False
-        Caption = 'Meditation Path:'
-        ParentColor = False
-        WordWrap = True
-      end
-      object btnSelectMusic: TButton
-        Left = 422
-        Height = 40
-        Top = 11
-        Width = 48
-        Caption = '..'
-        OnClick = btnSelectMusicClick
-        TabOrder = 1
-      end
-      object btnSelectSleep: TButton
-        Left = 422
-        Height = 39
-        Top = 67
-        Width = 48
-        Caption = '..'
-        OnClick = btnSelectSleepClick
-        TabOrder = 3
-      end
-      object btnSelectMeditation: TButton
-        Left = 422
-        Height = 41
-        Top = 123
-        Width = 48
-        Caption = '..'
-        OnClick = btnSelectMeditationClick
-        TabOrder = 5
-      end
-      object btnConfigRadio: TBitBtn
-        Left = 14
-        Height = 32
-        Top = 171
-        Width = 400
-        Caption = 'Configure Radio Stations'
-        OnClick = btnConfigRadioClick
-        TabOrder = 6
-      end
-    end
     object TabSheet3: TTabSheet
       Caption = 'Email'
       ClientHeight = 217
@@ -539,7 +569,7 @@ object frmSettings: TfrmSettings
       end
     end
   end
-  object BitBtn1: TBitBtn
+  object btnOk: TBitBtn
     Left = 408
     Height = 40
     Top = 264

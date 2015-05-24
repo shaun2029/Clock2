@@ -20,7 +20,7 @@ type
   { TfrmSettings }
 
   TfrmSettings = class(TForm)
-    BitBtn1: TBitBtn;
+    btnOk: TBitBtn;
     btnConfigRadio: TBitBtn;
     btnStartTimer: TButton;
     btnSelectMusic: TButton;
@@ -75,6 +75,7 @@ type
     Label9: TLabel;
     PageControl1: TPageControl;
     dlgSelectDirectoryDialog: TSelectDirectoryDialog;
+    rgAnnouncements: TRadioGroup;
     seDelay: TSpinEdit;
     stxtTimer: TStaticText;
     TabSheet1: TTabSheet;
@@ -84,6 +85,7 @@ type
     TabSheet5: TTabSheet;
     TabSheet6: TTabSheet;
     TabSheet7: TTabSheet;
+    TabSheet8: TTabSheet;
     tmrSettings: TTimer;
     udTimer: TUpDown;
     XMLPropStorage1: TXMLPropStorage;

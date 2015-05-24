@@ -52,6 +52,7 @@ type
     procedure PlaySong(Play: TPlayDirection);
     procedure RandomiseList(var List: TStringList);
     procedure SaveSettings;
+    procedure SetAnnouncements(AValue: TAnnouncements);
     procedure SetStreamURL(AValue: string);
     procedure StopSong;
   public
@@ -79,6 +80,7 @@ type
     property SearchPath: string read FSearchPath;
     property StreamURL: string write SetStreamURL;
     property StreamTitle: string read FStreamTitle write FStreamTitle;
+    property Announcements: TAnnouncements write SetAnnouncements;
   end;
 
 implementation
@@ -358,6 +360,11 @@ begin
   finally
     IniFile.Free;
   end;
+end;
+
+procedure TPlayer.SetAnnouncements(AValue: TAnnouncements);
+begin
+  FMusicPlayer.Announcements := AValue;
 end;
 
 procedure TPlayer.SetStreamURL(AValue: string);
