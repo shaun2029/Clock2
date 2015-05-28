@@ -44,6 +44,7 @@ type
     FStreamTitle: string;
     FStreamURL: string;
 
+    procedure FilterAudioFiles(var List: TStringList);
     function GetFileName(Index: integer; SongList, PathList: TStringList): string;
     function GetSongArtist: string;
     function GetSongTitle: string;
@@ -218,6 +219,7 @@ begin
       FFindFiles.Terminate;
       FFindFiles.WaitFor;
       FreeAndNil(FFindFiles);
+      FilterAudioFiles(FFindSongList);
       RandomiseList(FFindSongList);
       FSongList.Text := FFindSongList.Text;
       FPathList.Text := FFindPathList.Text;
@@ -231,6 +233,7 @@ begin
       FFindPlayFiles.Terminate;
       FFindPlayFiles.WaitFor;
       FreeAndNil(FFindPlayFiles);
+      FilterAudioFiles(FFindPlaySongList);
       if FRandomPlaySelection then RandomiseList(FFindPlaySongList);
       FPlaySongList.Text := FFindPlaySongList.Text;
       FPlayPathList.Text := FFindPlayPathList.Text;
@@ -410,6 +413,21 @@ begin
   else Result := FMusicPlayer.SongTitle;
 end;
 
+procedure TPlayer.FilterAudioFiles(var List: TStringList);
+var
+  i: integer;
+  Ext: String;
+begin
+  for i := List.Count -1 downto  0 do
+  begin
+    Ext := Lowercase(ExtractFileExt(List.Strings[i]));
+
+    if (Ext <> '.mp3') and (Ext <> '.m4a') and (Ext <> '.wma')
+      and (Ext <> '.ogg') and (Ext <> '.oga') and (Ext <> '.flac') then
+      List.Delete(i);
+  end;
+end;
+
 procedure TPlayer.RandomiseList(var List: TStringList);
 var
   i, r: integer;
@@ -434,6 +452,7 @@ begin
     FFindFiles.Terminate;
     FFindFiles.WaitFor;
     FreeAndNil(FFindFiles);
+    FilterAudioFiles(FFindPlaySongList);
     RandomiseList(FFindSongList);
     FSongList.Text := FFindSongList.Text;
     FPathList.Text := FFindPathList.Text;
@@ -485,7 +504,7 @@ begin
     FreeAndNil(FFindPlayFiles);
   end;
 
-  FFindPlayFiles := TFindFilesThread.Create(FFindPlaySongList, FFindPlayPathList, SearchPaths, '.mp3');
+  FFindPlayFiles := TFindFilesThread.Create(FFindPlaySongList, FFindPlayPathList, SearchPaths, '.*');
   FFindPlayFiles.Resume;
   {$endif}
 end;
