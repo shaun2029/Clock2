@@ -65,6 +65,7 @@ type
     lbExit: TLabel;
     lbMusic: TLabel;
     lbSettings1: TLabel;
+    ListBox1: TListBox;
     Radio: TLabel;
     lbPrevious: TLabel;
     lbPlay: TLabel;
@@ -1625,6 +1626,7 @@ end;
 procedure TfrmClockMain.PlayAlbums;
 var
   SongFile: String;
+  i: Integer;
 begin
   // Test is the search path has changed
   case FMusicSource of
@@ -1636,14 +1638,15 @@ begin
       begin
         SongFile := ChangeFileExt(FConfigFilename, '_meditation.cfg');
       end;
-    msrcMusic:
-      begin
-        SongFile := ChangeFileExt(FConfigFilename, '_music.cfg');
-      end
     else
     begin
-      Exit;
-    end;
+      if FMusicSource <> msrcMusic then
+      begin
+        SetMusicSource(msrcMusic);
+      end;
+
+      SongFile := ChangeFileExt(FConfigFilename, '_music.cfg');
+    end
   end;
 
   frmPlaylist := TfrmPlaylist.Create(Self);
@@ -1653,6 +1656,13 @@ begin
   if FormShowModal(frmPlaylist) = mrOk then
   begin
     FPlayer.PlaySelection(frmPlaylist.lstSelected.Items.Text, frmPlaylist.Random);
+
+    while (FPlayer.Tick >= 0) do
+    begin
+      Sleep(50);
+    end;
+
+    PlayMusic;
   end;
 
   frmPlaylist.Free;
