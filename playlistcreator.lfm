@@ -13,11 +13,11 @@ object frmPlaylist: TfrmPlaylist
   OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
   Position = poOwnerFormCenter
-  LCLVersion = '1.0.4.0'
+  LCLVersion = '1.2.4.0'
   object Panel1: TPanel
     Left = 8
-    Height = 378
-    Top = 8
+    Height = 354
+    Top = 32
     Width = 352
     TabOrder = 0
   end
@@ -42,18 +42,18 @@ object frmPlaylist: TfrmPlaylist
     TabOrder = 2
   end
   object btnAddAll: TBitBtn
-    Left = 272
+    Left = 184
     Height = 40
     Top = 392
-    Width = 88
-    Caption = 'Add All'
+    Width = 176
+    Caption = 'Add All Listed Music'
     OnClick = btnAddAllClick
     TabOrder = 3
   end
   object Panel2: TPanel
     Left = 368
-    Height = 378
-    Top = 8
+    Height = 354
+    Top = 32
     Width = 352
     TabOrder = 4
   end
@@ -73,7 +73,33 @@ object frmPlaylist: TfrmPlaylist
     Height = 40
     Top = 392
     Width = 160
-    Caption = 'Random Order'
+    Caption = 'Randomise Order'
     TabOrder = 6
+  end
+  object Splitter1: TSplitter
+    Left = 0
+    Height = 440
+    Top = 0
+    Width = 5
+  end
+  object Label1: TLabel
+    Left = 8
+    Height = 17
+    Top = 11
+    Width = 352
+    Alignment = taCenter
+    AutoSize = False
+    Caption = 'Select Albums'
+    ParentColor = False
+  end
+  object Label2: TLabel
+    Left = 368
+    Height = 17
+    Top = 11
+    Width = 352
+    Alignment = taCenter
+    AutoSize = False
+    Caption = 'Selected Albums'
+    ParentColor = False
   end
 end

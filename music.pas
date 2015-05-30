@@ -29,11 +29,9 @@ type
     FFindSongList, FFindPathList: TStringList;
     FPlaySongList, FPlayPathList: TStringList;
     FFindPlaySongList, FFindPlayPathList: TStringList;
-    FRandomPlaySelection: boolean;
 
     {$ifndef LEGACY}
     FFindFiles: TFindFilesThread;
-    FFindPlayFiles: TFindFilesThread;
     {$endif}
 
     FMusicPlayer: TMusicPlayer;
@@ -70,7 +68,7 @@ type
 
     function Tick: integer;
 
-    procedure PlaySelection(SearchPaths: string; Random: boolean);
+    function PlaySelection(SearchPaths: string; Random: boolean): integer;
 
     constructor Create(MusicPlayer: TMusicPlayer; ConfigFile, SearchPath: string);
     destructor Destroy; override;
@@ -126,15 +124,6 @@ begin
   end
   else
   {$endif} SaveSettings;
-
-  {$ifndef LEGACY}
-  if Assigned(FFindPlayFiles) then
-  begin
-    FFindPlayFiles.Terminate;
-    FFindPlayFiles.WaitFor;
-    FreeAndNil(FFindPlayFiles);
-  end;
-  {$endif}
 
   FSongList.Free;
   FPathList.Free;
@@ -225,21 +214,6 @@ begin
       FPathList.Text := FFindPathList.Text;
     end
     else Result := FFindFiles.Count;
-  end
-  else if Assigned(FFindPlayFiles) then
-  begin
-    if FFindPlayFiles.Complete then
-    begin
-      FFindPlayFiles.Terminate;
-      FFindPlayFiles.WaitFor;
-      FreeAndNil(FFindPlayFiles);
-      FilterAudioFiles(FFindPlaySongList);
-      if FRandomPlaySelection then RandomiseList(FFindPlaySongList);
-      FPlaySongList.Text := FFindPlaySongList.Text;
-      FPlayPathList.Text := FFindPlayPathList.Text;
-      FPlaylistIndex := -1;
-    end
-    else Result := FFindPlayFiles.Count;
   end
   else {$endif} if (FState = psPlaying) then
   begin
@@ -492,20 +466,32 @@ begin
   end;
 end;
 
-procedure TPlayer.PlaySelection(SearchPaths: string; Random: boolean);
+function TPlayer.PlaySelection(SearchPaths: string; Random: boolean): integer;
+{$ifndef LEGACY}
+var
+  FindPlaySelection: TFindFilesThread;
+{$endif}
 begin
-  FRandomPlaySelection := Random;
-
   {$ifndef LEGACY}
-  if Assigned(FFindPlayFiles) then
+
+  FindPlaySelection := TFindFilesThread.Create(FFindPlaySongList, FFindPlayPathList, SearchPaths, '.*');
+  FindPlaySelection.Resume;
+
+  while not (FindPlaySelection.Complete) do
   begin
-    FFindPlayFiles.Terminate;
-    FFindPlayFiles.WaitFor;
-    FreeAndNil(FFindPlayFiles);
+    Sleep(100);
   end;
 
-  FFindPlayFiles := TFindFilesThread.Create(FFindPlaySongList, FFindPlayPathList, SearchPaths, '.*');
-  FFindPlayFiles.Resume;
+  FindPlaySelection.Terminate;
+  FindPlaySelection.WaitFor;
+  FreeAndNil(FindPlaySelection);
+  FilterAudioFiles(FFindPlaySongList);
+  if Random then RandomiseList(FFindPlaySongList);
+  FPlaySongList.Text := FFindPlaySongList.Text;
+  FPlayPathList.Text := FFindPlayPathList.Text;
+  FPlaylistIndex := -1;
+
+  Result := FFindPlaySongList.Count;
   {$endif}
 end;
 

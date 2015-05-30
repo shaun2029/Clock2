@@ -26,11 +26,11 @@ uses
   DiscoverServer, RadioStations;
 
 const
-  VERSION = '3.0.3';
+  VERSION = '3.1.0';
 
 type
   TMusicState = (msPlaying, msPaused);
-  TMusicSource = (msrcSleep, msrcMusic, msrcMeditation, msrcRadio);
+  TMusicSource = (msrcMusic, msrcSleep, msrcMeditation, msrcRadio);
   TMediaKey = (mkNone, mkAudioPlay, mkAudioNext);
 
   { TfrmClockMain }
@@ -45,21 +45,21 @@ type
     imgOff: TImage;
     imgDisplay: TImage;
     imgPlay: TImage;
+    imgRadio: TImage;
     imgReminders: TImage;
     imgVolUp: TImage;
     imgVolDown: TImage;
     imgNext: TImage;
     imgMusic: TImage;
-    imgRadio: TImage;
     ImgSleep: TImage;
     imgPictures: TImage;
     imgUpdateMusic: TImage;
     imgSettings: TImage;
-    Label22: TLabel;
     labSongPrev2: TLabel;
     labSongPrev1: TLabel;
     lbEqualiser: TLabel;
     lbPlayAlbums: TLabel;
+    lbRadio: TLabel;
     lbReminders: TLabel;
     lbReminderSummary: TLabel;
     lbExit: TLabel;
@@ -131,6 +131,7 @@ type
     FPlayer: TPlayer;
  	  FMusicState: TMusicState;
     FMusicSource: TMusicSource;
+    FMusicNames: array [0..3] of string;
 
     FSources: TSourceArray;
 
@@ -448,21 +449,9 @@ begin
   end;
 
   case FMusicSource of
-    msrcSleep:
+    msrcSleep, msrcMeditation, msrcMusic, msrcRadio:
       begin
-        PlayerName := 'sleep';
-      end;
-    msrcMeditation:
-      begin
-        PlayerName := 'meditation';
-      end;
-    msrcMusic:
-      begin
-        PlayerName := 'music';
-      end;
-    msrcRadio:
-      begin
-        PlayerName := 'radio';
+        PlayerName := FMusicNames[Ord(FMusicSource)];
       end;
     else PlayerName := '';
   end;
@@ -725,6 +714,11 @@ begin
   labSongPrev1.Caption := '';
   labSongPrev2.Caption := '';
 
+  FMusicNames[Ord(msrcSleep)] := 'Sleep';
+  FMusicNames[Ord(msrcMeditation)] := 'Meditation';
+  FMusicNames[Ord(msrcMusic)] := 'Music';
+  FMusicNames[Ord(msrcRadio)] := 'Radio';
+
   FConfigFilename := GetAppConfigFile(False);
   UsePulseVol := True;
   MixerControl := 'Master';
@@ -782,7 +776,7 @@ begin
   frmRadioStations := TfrmRadioStations.Create(Self);
   LoadRadioStations;
 
-
+  FMusicPicker := nil;
   CreateMusicPicker;
 
   FPlayer := nil;
@@ -1028,10 +1022,13 @@ procedure TfrmClockMain.CreateMusicPicker;
 var
   Sources: TSourceArray;
 begin
+  if Assigned(FMusicPicker) then
+    FreeAndNil(FMusicPicker);
+
   SetLength(Sources, 3);
-  Sources[0].Title := 'Music';
-  Sources[1].Title := 'Meditation';
-  Sources[2].Title := 'Sleep';
+  Sources[0].Title := FMusicNames[Ord(msrcMusic)];
+  Sources[1].Title := FMusicNames[Ord(msrcSleep)];
+  Sources[2].Title := FMusicNames[Ord(msrcMeditation)];
   Sources[0].Resource := '';
   Sources[1].Resource := '';
   Sources[2].Resource := '';
@@ -1053,9 +1050,10 @@ begin
     if FMusicPicker.ShowModal = mrOK then
     begin
       case FMusicPicker.ItemIndex of
-        0:   SetMusicSource(msrcMusic);
-        1:   SetMusicSource(msrcMeditation);
-        2:   SetMusicSource(msrcSleep);
+        Ord(msrcMusic):   SetMusicSource(msrcMusic);
+        Ord(msrcSleep):   SetMusicSource(msrcSleep);
+        Ord(msrcMeditation):   SetMusicSource(msrcMeditation);
+        Ord(msrcRadio):   SetMusicSource(msrcRadio);
       end;
     end;
   end
@@ -1505,6 +1503,25 @@ var
   Minutes: LongInt;
   Hours: Integer;
 begin
+  // Get music source names
+  FMusicNames[Ord(msrcSleep)] := Trim(frmSettings.edtSleep.Text);
+  FMusicNames[Ord(msrcMeditation)] := Trim(frmSettings.edtMeditation.Text);
+  FMusicNames[Ord(msrcMusic)] := Trim(frmSettings.edtMusic.Text);
+  FMusicNames[Ord(msrcRadio)] := Trim('Radio');
+
+  // Update button names
+  lbSleep.Caption := FMusicNames[Ord(msrcSleep)];
+  lbRadio.Caption := FMusicNames[Ord(msrcRadio)];
+
+  if DirectoryExists(frmSettings.edtMeditationPath.Text) then
+  begin
+    // Recreate music picker
+    CreateMusicPicker;
+    lbMusic.Caption := 'Music';
+  end
+  else lbMusic.Caption := FMusicNames[Ord(msrcMusic)];
+
+
   FFavoritesAuto := frmSettings.cbxFavoritesAuto.Checked;
 
   FAlarm.Days[1] := frmSettings.cbxSun.Checked;
@@ -1655,14 +1672,11 @@ begin
 
   if FormShowModal(frmPlaylist) = mrOk then
   begin
-    FPlayer.PlaySelection(frmPlaylist.lstSelected.Items.Text, frmPlaylist.Random);
-
-    while (FPlayer.Tick >= 0) do
+    if FPlayer.PlaySelection(frmPlaylist.lstSelected.Items.Text, frmPlaylist.Random) > 0 then
     begin
-      Sleep(50);
-    end;
-
-    PlayMusic;
+      PlayMusic;
+    end
+    else ShowMessage('Error, could not find any music files!');
   end;
 
   frmPlaylist.Free;

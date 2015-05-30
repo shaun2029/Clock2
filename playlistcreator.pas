@@ -27,8 +27,11 @@ type
     btnAddAll: TBitBtn;
     btnBack: TBitBtn;
     btnOk: TBitBtn;
+    Label1: TLabel;
+    Label2: TLabel;
     Panel1: TPanel;
     Panel2: TPanel;
+    Splitter1: TSplitter;
     tbxRandom: TToggleBox;
     procedure btnAddAllClick(Sender: TObject);
     procedure btnBackClick(Sender: TObject);
