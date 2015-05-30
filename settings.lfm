@@ -19,9 +19,9 @@ object frmSettings: TfrmSettings
     Height = 264
     Top = 8
     Width = 488
-    ActivePage = TabSheet2
+    ActivePage = TabSheet5
     ParentFont = False
-    TabIndex = 0
+    TabIndex = 3
     TabOrder = 0
     Options = [nboKeyboardTabSwitch]
     object TabSheet2: TTabSheet
@@ -327,7 +327,7 @@ object frmSettings: TfrmSettings
         Width = 96
         MaxLength = 10
         TabOrder = 6
-        Text = 'Music'
+        Text = 'Music 1'
       end
       object Label16: TLabel
         Left = 14
@@ -344,7 +344,7 @@ object frmSettings: TfrmSettings
         Width = 96
         MaxLength = 10
         TabOrder = 7
-        Text = 'Sleep'
+        Text = 'Music 2'
       end
       object Label17: TLabel
         Left = 14
@@ -362,7 +362,7 @@ object frmSettings: TfrmSettings
         Width = 96
         MaxLength = 10
         TabOrder = 8
-        Text = 'Meditation'
+        Text = 'Music 3'
       end
     end
     object TabSheet6: TTabSheet

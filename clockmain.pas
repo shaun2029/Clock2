@@ -69,7 +69,7 @@ type
     Radio: TLabel;
     lbPrevious: TLabel;
     lbPlay: TLabel;
-    lbSleep: TLabel;
+    lbMusic2: TLabel;
     lbVolUp: TLabel;
     lbVolDown: TLabel;
     lbNext: TLabel;
@@ -105,7 +105,7 @@ type
     procedure lbPlayClick(Sender: TObject);
     procedure lbPreviousClick(Sender: TObject);
     procedure lbSettingsClick(Sender: TObject);
-    procedure lbSleepClick(Sender: TObject);
+    procedure lbMusic2Click(Sender: TObject);
     procedure tmrTimeTimer(Sender: TObject);
     procedure tmrMinuteTimer(Sender: TObject);
   private
@@ -132,6 +132,7 @@ type
  	  FMusicState: TMusicState;
     FMusicSource: TMusicSource;
     FMusicNames: array [0..3] of string;
+    FMusic2Source: TMusicSource;
 
     FSources: TSourceArray;
 
@@ -718,6 +719,7 @@ begin
   FMusicNames[Ord(msrcMeditation)] := 'Meditation';
   FMusicNames[Ord(msrcMusic)] := 'Music';
   FMusicNames[Ord(msrcRadio)] := 'Radio';
+  FMusic2Source := msrcSleep;
 
   FConfigFilename := GetAppConfigFile(False);
   UsePulseVol := True;
@@ -1261,12 +1263,12 @@ begin
   imgRadio.Picture.Assign(imgOn.Picture);
 end;
 
-procedure TfrmClockMain.lbSleepClick(Sender: TObject);
+procedure TfrmClockMain.lbMusic2Click(Sender: TObject);
 begin
   imgSleep.Picture.Assign(imgOff.Picture);
   Application.ProcessMessages;
 
-  SetMusicSource(msrcSleep);
+  SetMusicSource(FMusic2Source);
 
   if not FAlarmActive then PlayMusic
   else PauseMusic;
@@ -1510,7 +1512,6 @@ begin
   FMusicNames[Ord(msrcRadio)] := Trim('Radio');
 
   // Update button names
-  lbSleep.Caption := FMusicNames[Ord(msrcSleep)];
   lbRadio.Caption := FMusicNames[Ord(msrcRadio)];
 
   if DirectoryExists(frmSettings.edtMeditationPath.Text) then
@@ -1518,8 +1519,16 @@ begin
     // Recreate music picker
     CreateMusicPicker;
     lbMusic.Caption := 'Music';
+
+    lbMusic2.Caption := FMusicNames[Ord(msrcMusic)];
+    FMusic2Source := msrcMusic;
   end
-  else lbMusic.Caption := FMusicNames[Ord(msrcMusic)];
+  else
+  begin
+    lbMusic.Caption := FMusicNames[Ord(msrcMusic)];
+    lbMusic2.Caption := FMusicNames[Ord(msrcSleep)];
+    FMusic2Source := msrcSleep;
+  end;
 
 
   FFavoritesAuto := frmSettings.cbxFavoritesAuto.Checked;

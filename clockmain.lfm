@@ -3542,7 +3542,7 @@ object frmClockMain: TfrmClockMain
     Height = 88
     Top = 100
     Width = 144
-    OnClick = lbSleepClick
+    OnClick = lbMusic2Click
     Picture.Data = {
       1754506F727461626C654E6574776F726B47726170686963456B000089504E47
       0D0A1A0A0000000D49484452000001CC000001DA08060000008D547900000000
@@ -7907,7 +7907,7 @@ object frmClockMain: TfrmClockMain
     ParentFont = False
     OnClick = imgMusicClick
   end
-  object lbSleep: TLabel
+  object lbMusic2: TLabel
     Cursor = crNone
     Left = 24
     Height = 26
@@ -7921,7 +7921,7 @@ object frmClockMain: TfrmClockMain
     Font.Name = 'Sans'
     ParentColor = False
     ParentFont = False
-    OnClick = lbSleepClick
+    OnClick = lbMusic2Click
   end
   object lbVolUp: TLabel
     Cursor = crNone
