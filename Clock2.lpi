@@ -14,7 +14,7 @@
       <CharSet Value=""/>
       <StringTable ProductVersion=""/>
     </VersionInfo>
-    <BuildModes Count="3" Active="x64">
+    <BuildModes Count="3" Active="debug">
       <Item1 Name="debug" Default="True"/>
       <Item2 Name="i386">
         <CompilerOptions>
@@ -159,13 +159,13 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Settings"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="40"/>
+        <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit3>
       <Unit4>
@@ -185,12 +185,14 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ClockMain"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="101"/>
-        <CursorPos X="33" Y="135"/>
+        <TopLine Value="1040"/>
+        <CursorPos X="1" Y="1060"/>
         <UsageCount Value="207"/>
         <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit5>
       <Unit6>
@@ -442,7 +444,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="326"/>
         <CursorPos X="1" Y="357"/>
-        <UsageCount Value="0"/>
+        <UsageCount Value="10"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit29>
       <Unit30>
@@ -533,7 +535,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="277"/>
         <CursorPos X="33" Y="84"/>
-        <UsageCount Value="0"/>
+        <UsageCount Value="10"/>
       </Unit39>
       <Unit40>
         <Filename Value="/usr/share/fpcsrc/2.6.2/packages/fcl-process/src/pipes.pp"/>
@@ -644,7 +646,7 @@
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit51>
     </Units>
-    <JumpHistory Count="29" HistoryIndex="28">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="clockmain.pas"/>
         <Caret Line="790" Column="46" TopLine="757"/>
@@ -761,6 +763,10 @@
         <Filename Value="settings.pas"/>
         <Caret Line="227" Column="27" TopLine="205"/>
       </Position29>
+      <Position30>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="135" Column="33" TopLine="101"/>
+      </Position30>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

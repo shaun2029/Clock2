@@ -1057,12 +1057,18 @@ begin
         Ord(msrcMeditation):   SetMusicSource(msrcMeditation);
         Ord(msrcRadio):   SetMusicSource(msrcRadio);
       end;
+
+      if not FAlarmActive then PlayMusic
+        else PauseMusic;
     end;
   end
-  else SetMusicSource(msrcMusic);
+  else
+  begin
+    SetMusicSource(msrcMusic);
 
-  if not FAlarmActive then PlayMusic
-    else PauseMusic;
+    if not FAlarmActive then PlayMusic
+      else PauseMusic;
+  end;
 
   imgMusic.Picture.Assign(imgOn.Picture);
 end;
