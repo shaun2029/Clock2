@@ -26,7 +26,7 @@ uses
   DiscoverServer, RadioStations;
 
 const
-  VERSION = '3.1.0';
+  VERSION = '3.1.1';
 
 type
   TMusicState = (msPlaying, msPaused);
@@ -1077,7 +1077,6 @@ procedure TfrmClockMain.imgRemindersClick(Sender: TObject);
 begin
   imgReminders.Picture.Assign(imgOff.Picture);
   Application.ProcessMessages;
-  Self.Hide;
 
   if (FAlarm.State = asActive)
     or (FTimer.State = asActive)
@@ -1092,7 +1091,6 @@ begin
     FormShowModal(frmReminderList);
   end;
 
-  Self.Show;
   imgReminders.Picture.Assign(imgOn.Picture);
 end;
 
@@ -1223,15 +1221,25 @@ var
 begin
   imgEqualiser.Picture.Assign(imgOff.Picture);
   Application.ProcessMessages;
-  Self.Hide;
 
   frmMplayerEQ := TfrmMplayerEQ.Create(Self);
   frmMplayerEQ.Levels := FMplayerEQ;
+
+  if frmSettings.cbxForceFullscreen.Checked then
+  begin
+    if frmMplayerEQ.BorderStyle <> bsNone then
+      frmMplayerEQ.BorderStyle := bsNone;
+  end
+  else
+  begin
+    if frmMplayerEQ.BorderStyle <> bsSingle then
+      frmMplayerEQ.BorderStyle := bsSingle;
+  end;
+
   FormShowModal(frmMplayerEQ);
   frmMplayerEQ.Free;
   ApplyMplayerEQ;
 
-  Self.Show;
   imgEqualiser.Picture.Assign(imgOn.Picture);
 end;
 
@@ -1411,24 +1419,23 @@ procedure TfrmClockMain.lbSettingsClick(Sender: TObject);
 begin
   imgSettings.Picture.Assign(imgOff.Picture);
   Application.ProcessMessages;
-  Self.Hide;
 
   if frmSettings.cbxForceFullscreen.Checked then
   begin
-    if frmRadioStations.BorderStyle <> bsNone then
-      frmRadioStations.BorderStyle := bsNone;
+    if frmSettings.BorderStyle <> bsNone then
+      frmSettings.BorderStyle := bsNone;
   end
   else
   begin
-    if frmRadioStations.BorderStyle <> bsSingle then
-      frmRadioStations.BorderStyle := bsSingle;
+    if frmSettings.BorderStyle <> bsSingle then
+      frmSettings.BorderStyle := bsSingle;
   end;
 
   FormShowModal(frmSettings);
+  Application.ProcessMessages;
 
   UpdateSettings;
 
-  Self.Show;
   imgSettings.Picture.Assign(imgOn.Picture);
 end;
 
@@ -1470,6 +1477,18 @@ begin
   if frmSettings.edtPicturePath.Text = '' then
   begin
     frmSettings.PageControl1.TabIndex := 0;
+
+    if frmSettings.cbxForceFullscreen.Checked then
+    begin
+      if frmSettings.BorderStyle <> bsNone then
+        frmSettings.BorderStyle := bsNone;
+    end
+    else
+    begin
+      if frmSettings.BorderStyle <> bsSingle then
+        frmSettings.BorderStyle := bsSingle;
+    end;
+
     FormShowModal(frmSettings);
   end;
 
@@ -1575,27 +1594,36 @@ begin
     frmSettings.TimerUpdate := False;
   end;
 
-  if frmSettings.cbxGetReminders.Checked then
+  if Assigned(FSyncServer) then
+    FreeAndNil(FSyncServer);
+
+  if Assigned(FSyncClient) then
+    FreeAndNil(FSyncClient);
+
+  if frmSettings.cbxEnableReminders.Checked then
   begin
-    frmReminderList.CanEdit := False;
-
-    if Assigned(FSyncServer) then
-      FreeAndNil(FSyncServer);
-
-    if not Assigned(FSyncClient) then
-      FSyncClient := TSyncClient.Create;
-  end
-  else
-  begin
-    frmReminderList.CanEdit := True;
-
-    if Assigned(FSyncClient) then
-      FreeAndNil(FSyncClient);
-
-    if not Assigned(FSyncServer) then
+    if frmSettings.cbxGetReminders.Checked then
     begin
-      FSyncServer := TSyncServer.Create;
-      FSyncServer.RemindersFile(frmReminders.Filename);
+      frmReminderList.CanEdit := False;
+
+      if Assigned(FSyncServer) then
+        FreeAndNil(FSyncServer);
+
+      if not Assigned(FSyncClient) then
+        FSyncClient := TSyncClient.Create;
+    end
+    else
+    begin
+      frmReminderList.CanEdit := True;
+
+      if Assigned(FSyncClient) then
+        FreeAndNil(FSyncClient);
+
+      if not Assigned(FSyncServer) then
+      begin
+        FSyncServer := TSyncServer.Create;
+        FSyncServer.RemindersFile(frmReminders.Filename);
+      end;
     end;
   end;
 
@@ -1684,6 +1712,17 @@ begin
   frmPlaylist := TfrmPlaylist.Create(Self);
 
   frmPlaylist.LoadSongs(SongFile, FPlayer.SearchPath);
+
+  if frmSettings.cbxForceFullscreen.Checked then
+  begin
+    if frmPlaylist.BorderStyle <> bsNone then
+      frmPlaylist.BorderStyle := bsNone;
+  end
+  else
+  begin
+    if frmPlaylist.BorderStyle <> bsSingle then
+      frmPlaylist.BorderStyle := bsSingle;
+  end;
 
   if FormShowModal(frmPlaylist) = mrOk then
   begin
