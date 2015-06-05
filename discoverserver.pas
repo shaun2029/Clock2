@@ -103,7 +103,7 @@ begin
       while not Terminated do
       begin
         // wait two second for new packet
-        Buffer := FSocket.RecvPacket(2000);
+        Buffer := FSocket.RecvPacket(200);
 
         if FSocket.LastError = 0 then
         begin
