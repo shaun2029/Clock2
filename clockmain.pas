@@ -1042,9 +1042,6 @@ procedure TfrmClockMain.imgMusicClick(Sender: TObject);
 var
   Sources: TSourceArray;
 begin
-  imgMusic.Picture.Assign(imgOff.Picture);
-  Application.ProcessMessages;
-
   if DirectoryExists(frmSettings.edtMeditationPath.Text) then
   begin
     SetCursorType(FMusicPicker);
@@ -1064,20 +1061,20 @@ begin
   end
   else
   begin
+    imgMusic.Picture.Assign(imgOff.Picture);
+    Application.ProcessMessages;
+
     SetMusicSource(msrcMusic);
 
     if not FAlarmActive then PlayMusic
       else PauseMusic;
-  end;
 
-  imgMusic.Picture.Assign(imgOn.Picture);
+    imgMusic.Picture.Assign(imgOn.Picture);
+  end;
 end;
 
 procedure TfrmClockMain.imgRemindersClick(Sender: TObject);
 begin
-  imgReminders.Picture.Assign(imgOff.Picture);
-  Application.ProcessMessages;
-
   if (FAlarm.State = asActive)
     or (FTimer.State = asActive)
     or (FReminderAlarm.State = asActive) then
@@ -1090,30 +1087,18 @@ begin
   begin
     FormShowModal(frmReminderList);
   end;
-
-  imgReminders.Picture.Assign(imgOn.Picture);
 end;
 
 procedure TfrmClockMain.imgVolDownClick(Sender: TObject);
 begin
-  imgVolDown.Picture.Assign(imgOff.Picture);
-  Application.ProcessMessages;
-
   FMPGPlayer.VolumeDown;
   DisplayVolume;
-
-  imgVolDown.Picture.Assign(imgOn.Picture);
 end;
 
 procedure TfrmClockMain.imgVolUpClick(Sender: TObject);
 begin
-  imgVolUp.Picture.Assign(imgOff.Picture);
-  Application.ProcessMessages;
-
   FMPGPlayer.VolumeUp;
   DisplayVolume;
-
-  imgVolUp.Picture.Assign(imgOn.Picture);
 end;
 
 
@@ -1124,6 +1109,7 @@ begin
   if Assigned(Player) then
   begin
     repeat
+      Sleep(500);
       i := Player.Tick;
       Application.ProcessMessages;
     until i < 0;
@@ -1219,9 +1205,6 @@ var
   frmMplayerEQ: TfrmMplayerEQ;
   i: integer;
 begin
-  imgEqualiser.Picture.Assign(imgOff.Picture);
-  Application.ProcessMessages;
-
   frmMplayerEQ := TfrmMplayerEQ.Create(Self);
   frmMplayerEQ.Levels := FMplayerEQ;
 
@@ -1239,15 +1222,10 @@ begin
   FormShowModal(frmMplayerEQ);
   frmMplayerEQ.Free;
   ApplyMplayerEQ;
-
-  imgEqualiser.Picture.Assign(imgOn.Picture);
 end;
 
 procedure TfrmClockMain.imgRadioClick(Sender: TObject);
 begin
-  imgRadio.Picture.Assign(imgOff.Picture);
-  Application.ProcessMessages;
-
   LoadRadioStations;
 
   if frmSettings.cbxForceFullscreen.Checked then
@@ -1273,8 +1251,6 @@ begin
 
     if not FAlarmActive then PlayMusic;
   end;
-
-  imgRadio.Picture.Assign(imgOn.Picture);
 end;
 
 procedure TfrmClockMain.lbMusic2Click(Sender: TObject);
@@ -1401,25 +1377,16 @@ begin
 
   SetCursorType(MyForm);
   MyForm.Show;
-
-//  if frmSettings.cbxForceFullscreen.Checked then
-//    gdk_window_fullscreen(PGtkWidget(Handle)^.window);
 end;
 
 procedure TfrmClockMain.HideForm(MyForm: TForm);
 begin
   MyForm.Hide;
   MyForm.Close;
-
-//  if frmSettings.cbxForceFullscreen.Checked then
-//    gdk_window_fullscreen(PGtkWidget(Handle)^.window);
 end;
 
 procedure TfrmClockMain.lbSettingsClick(Sender: TObject);
 begin
-  imgSettings.Picture.Assign(imgOff.Picture);
-  Application.ProcessMessages;
-
   if frmSettings.cbxForceFullscreen.Checked then
   begin
     if frmSettings.BorderStyle <> bsNone then
@@ -1435,8 +1402,6 @@ begin
   Application.ProcessMessages;
 
   UpdateSettings;
-
-  imgSettings.Picture.Assign(imgOn.Picture);
 end;
 
 procedure TfrmClockMain.lbNextClick(Sender: TObject);
@@ -1451,12 +1416,7 @@ end;
 
 procedure TfrmClockMain.lbPlayAlbumsClick(Sender: TObject);
 begin
-  imgPlayAlbums.Picture.Assign(imgOff.Picture);
-  Application.ProcessMessages;
-
   PlayAlbums;
-
-  imgPlayAlbums.Picture.Assign(imgOn.Picture);
 end;
 
 procedure TfrmClockMain.lbPreviousClick(Sender: TObject);
