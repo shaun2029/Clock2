@@ -96,38 +96,42 @@ begin
     if FSocket.LastError <> 0 then
     begin
       Log(Format('Discover Server: Bind failed with error code %d', [FSocket.LastError]));
-      while not Terminated do Sleep(1000);
+      while not Terminated do Sleep(100);
     end
     else
     begin
       while not Terminated do
       begin
-        // wait two second for new packet
-        Buffer := FSocket.RecvPacket(200);
-
-        if FSocket.LastError = 0 then
+        if FSocket.CanReadEx(1) then
         begin
-          {$IFDEF DEBUG} Log('Discover Server: Received packet ...'); {$ENDIF}
-          {$IFDEF DEBUG} Log('Discover Server: "' + buffer + '"'); {$ENDIF}
+          // wait for new packet
+          Buffer := FSocket.RecvPacket(200);
 
-          if Buffer = 'REQUEST:CLOCKNAME' then
+          if FSocket.LastError = 0 then
           begin
-            {$IFDEF DEBUG} Log('Discover Server: Received REQUEST:CLOCKNAME ...'); {$ENDIF}
+            {$IFDEF DEBUG} Log('Discover Server: Received packet ...'); {$ENDIF}
+            {$IFDEF DEBUG} Log('Discover Server: "' + buffer + '"'); {$ENDIF}
 
-            // Send packet clock name
-            Buffer := FClockName + #0#0#0#0#0#0#0#0#0#0;
-            FSocket.SendString('CLOCKNAME:' +  Buffer);
+            if Buffer = 'REQUEST:CLOCKNAME' then
+            begin
+              {$IFDEF DEBUG} Log('Discover Server: Received REQUEST:CLOCKNAME ...'); {$ENDIF}
 
-            {$IFDEF DEBUG} Log('Discover Server: Sent "' + Buffer + '"'); {$ENDIF}
-          end
-          else if FSocket.LastError <> WSAETIMEDOUT then
-          begin
-            FErrorState := esSocketError;
-            Log(Format('Discover Server: RecvPacket failed with error code %d', [FSocket.LastError]));
-            Log(Format('Discover Server: Set error state!', [FSocket.LastError]));
-            while not Terminated do Sleep(100);
+              // Send packet clock name
+              Buffer := FClockName + #0#0#0#0#0#0#0#0#0#0;
+              FSocket.SendString('CLOCKNAME:' +  Buffer);
+
+              {$IFDEF DEBUG} Log('Discover Server: Sent "' + Buffer + '"'); {$ENDIF}
+            end
+            else
+            begin
+              FErrorState := esSocketError;
+              Log(Format('Discover Server: RecvPacket failed with error code %d', [FSocket.LastError]));
+              Log(Format('Discover Server: Set error state!', [FSocket.LastError]));
+              while not Terminated do Sleep(100);
+            end;
           end;
-        end;
+        end
+        else Sleep(200);
       end;
     end;
   except
