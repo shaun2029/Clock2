@@ -173,7 +173,6 @@ var
   Vol: integer;
   EQ, FileExt: String;
   i: Integer;
-  UrlExt: String;
 begin
   Process := TProcess.Create(nil);
 
@@ -195,16 +194,10 @@ begin
 
   Process.CommandLine := 'mplayer ' + EQ + ' -af-add format=s16le -softvol -volume ' + IntToStr(100-FVolAttenuation);
 
-  { If the sing name begins with 'http://' then it assumed to be a URL of a stream. }
+  { If the song name begins with 'http://' then it assumed to be a URL of a stream. }
   if ((Pos('http://', Trim(Lowercase(Song))) = 1) or (Pos('https://', Trim(Lowercase(Song))) = 1)) then
   begin
     FRadioPlaying := True;
-
-    // Trim off http parameter '?'
-    if Pos('?', Song) > 0 then
-    begin
-       Song := Copy(Song, 1, Pos('?', Song) - 1);
-    end;
 
     // Announcement removal requires messages
     Process.CommandLine := Process.CommandLine + ' -msglevel all=4';
@@ -213,12 +206,10 @@ begin
     // Some stations have a delay between the title text change and the audio stream change.
     FAdDelay := 8;
 
-    UrlExt := ExtractFileExt(LowerCase(Song));
-
     // Support playlists
     for i := 0 to High(PlaylistTypes) do
     begin
-      if UrlExt = PlaylistTypes[i] then
+      if Pos(PlaylistTypes[i], LowerCase(Song)) > 0 then
       begin
         Process.CommandLine := Process.CommandLine + ' -playlist';
         break;
