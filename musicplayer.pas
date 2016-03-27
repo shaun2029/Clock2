@@ -28,7 +28,7 @@ type
   {$endif}
 
   TMusicPlayerState = (mpsStopped, mpsPlaying);
-  TAnnouncements = (anOff, anQuiet, anMute);
+//  TAnnouncements = (anOff, anQuiet, anMute);
 
   { TMusicPlayer }
 
@@ -56,25 +56,25 @@ type
     FAdDelay: integer;
     FAdvertType: string;
     FMuteLevel: integer;
-
+(*
     FAnnouncementVol: integer;
     FAnnouncement: boolean;
     FAnnouncementStart: TDateTime;
     FAnnouncementStop: TDateTime;
-
+*)
     procedure DestroyPlayProcess;
     function GetRadioTitle: string;
     function GetState: TMusicPlayerState;
     procedure PlaySong(Song: string);
-    procedure ProcessAnnouncement;
+//    procedure ProcessAnnouncement;
     function ProcessRadio: string;
     function ReadProcessData: string;
-    procedure SetAnnouncements(AValue: TAnnouncements);
+//    procedure SetAnnouncements(AValue: TAnnouncements);
     procedure SetVolAttenuation(AValue: integer);
     procedure SetVolume(Volume: integer);
-    procedure StartAnnouncement(MuteLevel: integer);
+//    procedure StartAnnouncement(MuteLevel: integer);
     procedure StartPlayProcess(Song: string; out Process: TProcess);
-    procedure StopAnnouncement(MuteLevel: integer);
+//    procedure StopAnnouncement(MuteLevel: integer);
     procedure StopSong;
   public
     constructor Create(MixerControl : string; UsePulseVol: boolean; EQ: TMplayerEQ);
@@ -94,7 +94,7 @@ type
     property State: TMusicPlayerState read GetState;
     property RadioTitle: string read GetRadioTitle;
     property VolAttenuation: integer read FVolAttenuation write SetVolAttenuation;
-    property Announcements: TAnnouncements write SetAnnouncements;
+//    property Announcements: TAnnouncements write SetAnnouncements;
   end;
 
 implementation
@@ -263,15 +263,17 @@ begin
     end;
 
     FreeAndNil(FPlayProcess);
-
+(*
     FAnnouncement := False;
     FAnnouncementStart := 0;
+*)
     FState := mpsStopped;
     FRadioPlaying := False;
     FPlayProcessList := '';
   end;
 end;
 
+(*
 procedure TMusicPlayer.ProcessAnnouncement;
 begin
   // Look for announcement start if not currntly in progress
@@ -292,14 +294,14 @@ begin
     FAnnouncement := False;
   end;
 end;
-
+*)
 procedure TMusicPlayer.SetVolAttenuation(AValue: integer);
 begin
   if (AValue < 0) then FVolAttenuation := 0
   else if (AValue > 100) then FVolAttenuation := 100
   else FVolAttenuation:=AValue;
 end;
-
+(*
 // Mute the volume during an announcement
 procedure TMusicPlayer.StartAnnouncement(MuteLevel: integer);
 var
@@ -345,7 +347,7 @@ begin
 
   {$ifdef LOGGING} Writeln('MPLAYER: Volume high.'); {$endif}
 end;
-
+*)
 function TMusicPlayer.ReadProcessData: string;
 var
   Output: string;
@@ -369,7 +371,7 @@ begin
     Result := Output;
   end;
 end;
-
+(*
 procedure TMusicPlayer.SetAnnouncements(AValue: TAnnouncements);
 begin
   if AValue = anOff then
@@ -378,7 +380,7 @@ begin
     FMuteLevel := 12
   else FMuteLevel := 30;
 end;
-
+*)
 function TMusicPlayer.ProcessRadio: string;
 const
   AdTypes: array [0..4] of string = ('sky.fm', 'adw_ad=''true''',
@@ -387,8 +389,8 @@ var
   Title: string;
   TitleList: TStringList;
   Len, p, i, v: integer;
-  Announcement: integer;
-  AnnouncmentInProgress: boolean;
+//  Announcement: integer;
+//  AnnouncmentInProgress: boolean;
   H, M, S, MS: word;
   j: Integer;
 begin
@@ -397,7 +399,7 @@ begin
   TitleList := TStringList.Create;
   Title := '';
 
-  AnnouncmentInProgress := False;
+//  AnnouncmentInProgress := False;
 
   try
     if Assigned(FPlayProcess) then
@@ -415,7 +417,7 @@ begin
         if Pos('StreamTitle', TitleList.Strings[i]) = 0 then
           TitleList.Delete(i);
       end;
-
+(*
       // Process announcements if required
       if FMuteLevel > 0 then
       begin
@@ -475,6 +477,7 @@ begin
       if not AnnouncmentInProgress and not FAnnouncement
         and (TitleList.Count > 0) then
       begin
+*)
         Title := TitleList.Strings[TitleList.Count-1];
 
         // Remove unwanted beginning
@@ -500,9 +503,11 @@ begin
 
         // Do not let the list grow
         FPlayProcessList := '';
+(*
       end;
 
       ProcessAnnouncement;
+*)
     end;
   except
     on E: exception do
@@ -524,12 +529,13 @@ end;
 
 function TMusicPlayer.GetRadioTitle: string;
 begin
+(*
   // Override the song title
   if FAnnouncement then
   begin
     Result := 'MUTING ADVERT ...' + FAdvertType;
   end
-  else Result := FRadioTitle;
+  else *) Result := FRadioTitle;
 end;
 
 procedure TMusicPlayer.Tick;

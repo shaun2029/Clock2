@@ -13,15 +13,15 @@ object frmSettings: TfrmSettings
   OnKeyPress = FormKeyPress
   Position = poMainFormCenter
   SessionProperties = 'cbxEmailReminders.Checked;cbxEnableReminders.Checked;cbxFavoritesAuto.Checked;cbxForceFullscreen.Checked;cbxFri.Checked;cbxGetReminders.Checked;cbxMon.Checked;cbxMonitorConnection.Checked;cbxPlayMusic.Checked;cbxRandomPictures.Checked;cbxSat.Checked;cbxSilentAlarm.Checked;cbxSun.Checked;cbxThu.Checked;cbxTouchScreen.Checked;cbxTue.Checked;cbxWed.Checked;edtClockName.Text;edtConnectionResetComand.Text;edtConnectionTimeout.Value;edtEmailAddress.Text;edtHour.Value;edtLocation1.Text;edtLocation2.Text;edtLocation3.Text;edtLocation.Text;edtMeditationPath.Text;edtMinute.Value;edtMusicPath.Text;edtPicturePath.Text;edtRemHour.Value;edtRemMinute.Value;edtServerAddress.Text;edtServerPort.Text;edtSleepPath.Text;edtSMTPAccount.Text;edtTestHost.Text;rgAnnouncements.ItemIndex;seDelay.Value;edtSleep.Text;edtMusic.Text;edtMeditation.Text'
-  LCLVersion = '1.2.4.0'
+  LCLVersion = '1.0.10.0'
   object PageControl1: TPageControl
     Left = 8
     Height = 264
     Top = 8
     Width = 488
-    ActivePage = TabSheet5
+    ActivePage = TabSheet8
     ParentFont = False
-    TabIndex = 3
+    TabIndex = 2
     TabOrder = 0
     Options = [nboKeyboardTabSwitch]
     object TabSheet2: TTabSheet
@@ -225,6 +225,7 @@ object frmSettings: TfrmSettings
           'Mute'
         )
         TabOrder = 1
+        Visible = False
       end
     end
     object TabSheet5: TTabSheet
@@ -314,9 +315,9 @@ object frmSettings: TfrmSettings
       end
       object Label8: TLabel
         Left = 14
-        Height = 17
+        Height = 18
         Top = 48
-        Width = 44
+        Width = 45
         Caption = 'Name:'
         ParentColor = False
       end
@@ -331,9 +332,9 @@ object frmSettings: TfrmSettings
       end
       object Label16: TLabel
         Left = 14
-        Height = 17
+        Height = 18
         Top = 120
-        Width = 44
+        Width = 45
         Caption = 'Name:'
         ParentColor = False
       end
@@ -630,6 +631,14 @@ object frmSettings: TfrmSettings
     Kind = bkClose
     ModalResult = 11
     TabOrder = 1
+  end
+  object Button1: TButton
+    Left = 145
+    Height = 25
+    Top = 24
+    Width = 75
+    Caption = 'Button1'
+    TabOrder = 2
   end
   object XMLPropStorage1: TXMLPropStorage
     StoredValues = <>
