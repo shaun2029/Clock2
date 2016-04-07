@@ -26,7 +26,7 @@ uses
   DiscoverServer, RadioStations;
 
 const
-  VERSION = '3.1.4';
+  VERSION = '3.2.0';
 
 type
   TMusicState = (msPlaying, msPaused);
@@ -518,13 +518,14 @@ var
   CurrentList: TStringList;
   H, M, S, Ms: word;
   Error: String;
+  i: Integer;
 begin
   tmrMinute.Enabled := False;
 
-    // Update discover server with Clock name
+  // Update discover server with Clock name
   if Assigned(FDiscoverServer) then
   begin
-    if FDiscoverServer.Error <> esOK then
+    if FDiscoverServer.Error <> desOK then
       StartDiscoverServer;
   end;
 
@@ -568,6 +569,17 @@ begin
 
     frmReminders.RefreshReminders;
     UpdateReminders;
+
+    Rems := '';
+    CurrentList := TStringList.Create;
+    frmReminders.SortReminders(FCurrentReminders);
+    frmReminders.PopulateList(FCurrentReminders, CurrentList);
+    for i:= 0 to CurrentList.Count - 1 do
+    begin
+      Rems := CurrentList.Strings[i] + ';';
+      FComServer.Reminders := Rems;
+    end;
+
   end
   else tmrMinute.Tag := tmrMinute.Tag + 1;
 
@@ -1604,9 +1616,6 @@ begin
   begin
     BorderStyle := bsSingle;
   end;
-
-  // Update announcement strategy
-  FPlayer.Announcements := TAnnouncements(frmSettings.rgAnnouncements.ItemIndex);
 end;
 
 procedure TfrmClockMain.StartDiscoverServer;

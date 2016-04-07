@@ -632,14 +632,6 @@ object frmSettings: TfrmSettings
     ModalResult = 11
     TabOrder = 1
   end
-  object Button1: TButton
-    Left = 145
-    Height = 25
-    Top = 24
-    Width = 75
-    Caption = 'Button1'
-    TabOrder = 2
-  end
   object XMLPropStorage1: TXMLPropStorage
     StoredValues = <>
     OnSaveProperties = XMLPropStorage1SaveProperties
