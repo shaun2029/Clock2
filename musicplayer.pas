@@ -204,7 +204,7 @@ begin
 
     // AdDelay is used to mute adverts/announcements.
     // Some stations have a delay between the title text change and the audio stream change.
-    FAdDelay := 8;
+    FAdDelay := 3;
 
     // Support playlists
     for i := 0 to High(PlaylistTypes) do
@@ -473,11 +473,9 @@ begin
           end;
         end;
       end;
-
-      if not AnnouncmentInProgress and not FAnnouncement
-        and (TitleList.Count > 0) then
-      begin
 *)
+      if (TitleList.Count > 0) then
+      begin
         Title := TitleList.Strings[TitleList.Count-1];
 
         // Remove unwanted beginning
@@ -503,9 +501,8 @@ begin
 
         // Do not let the list grow
         FPlayProcessList := '';
-(*
       end;
-
+(*
       ProcessAnnouncement;
 *)
     end;
