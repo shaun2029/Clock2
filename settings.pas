@@ -45,6 +45,7 @@ type
     cbxTouchScreen: TCheckBox;
     cbxFavoritesAuto: TCheckBox;
     cbxEmailReminders: TCheckBox;
+    cbxReminderAlarm: TCheckBox;
     edtMusic: TEdit;
     edtSleep: TEdit;
     edtMeditation: TEdit;

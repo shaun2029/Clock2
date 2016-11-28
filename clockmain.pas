@@ -385,7 +385,6 @@ var
   i: Integer;
   Key: Char;
   PlayerName, Song: string;
-  ReminderState: TAlarmState;
   Day, Month, Year: word;
   Hour, Min, Sec, MSec: word;
 begin
@@ -410,13 +409,13 @@ begin
     end;
   end;
 
-  ReminderState := FReminderAlarm.State;
+  FReminderAlarm.Silent:= not frmSettings.cbxReminderAlarm.Checked;
 
   FAlarm.Tick(Current);
   FReminderAlarm.Tick(Current);
   FTimer.Tick(Current);
 
-  if (FReminderAlarm.State = asActive) and (ReminderState <> asActive) then
+  if (FReminderAlarm.State = asActive) then
   begin
     lbReminderSummary.Font.Color := clYellow;
     ReminderList := TStringList.Create;
@@ -445,7 +444,7 @@ begin
   else
   begin
     btnStopAlarm.Caption := 'Stop';
-    btnStopAlarm.Visible := (FReminderAlarm.State = asActive)
+    btnStopAlarm.Visible := ((FReminderAlarm.State = asActive) and (not FReminderAlarm.Silent))
       or (FTimer.State = asActive) or (FAlarm.State = asActive);
   end;
 

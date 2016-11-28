@@ -12,16 +12,16 @@ object frmSettings: TfrmSettings
   OnKeyDown = FormKeyDown
   OnKeyPress = FormKeyPress
   Position = poMainFormCenter
-  SessionProperties = 'cbxEmailReminders.Checked;cbxEnableReminders.Checked;cbxFavoritesAuto.Checked;cbxForceFullscreen.Checked;cbxFri.Checked;cbxGetReminders.Checked;cbxMon.Checked;cbxMonitorConnection.Checked;cbxPlayMusic.Checked;cbxRandomPictures.Checked;cbxSat.Checked;cbxSilentAlarm.Checked;cbxSun.Checked;cbxThu.Checked;cbxTouchScreen.Checked;cbxTue.Checked;cbxWed.Checked;edtClockName.Text;edtConnectionResetComand.Text;edtConnectionTimeout.Value;edtEmailAddress.Text;edtHour.Value;edtLocation1.Text;edtLocation2.Text;edtLocation3.Text;edtLocation.Text;edtMeditationPath.Text;edtMinute.Value;edtMusicPath.Text;edtPicturePath.Text;edtRemHour.Value;edtRemMinute.Value;edtServerAddress.Text;edtServerPort.Text;edtSleepPath.Text;edtSMTPAccount.Text;edtTestHost.Text;rgAnnouncements.ItemIndex;seDelay.Value;edtSleep.Text;edtMusic.Text;edtMeditation.Text'
+  SessionProperties = 'cbxEmailReminders.Checked;cbxEnableReminders.Checked;cbxFavoritesAuto.Checked;cbxForceFullscreen.Checked;cbxFri.Checked;cbxGetReminders.Checked;cbxMon.Checked;cbxMonitorConnection.Checked;cbxPlayMusic.Checked;cbxRandomPictures.Checked;cbxSat.Checked;cbxSilentAlarm.Checked;cbxSun.Checked;cbxThu.Checked;cbxTouchScreen.Checked;cbxTue.Checked;cbxWed.Checked;edtClockName.Text;edtConnectionResetComand.Text;edtConnectionTimeout.Value;edtEmailAddress.Text;edtHour.Value;edtLocation1.Text;edtLocation2.Text;edtLocation3.Text;edtLocation.Text;edtMeditationPath.Text;edtMeditation.Text;edtMinute.Value;edtMusicPath.Text;edtMusic.Text;edtPicturePath.Text;edtRemHour.Value;edtRemMinute.Value;edtServerAddress.Text;edtServerPort.Text;edtSleepPath.Text;edtSleep.Text;edtSMTPAccount.Text;edtTestHost.Text;rgAnnouncements.ItemIndex;seDelay.Value;cbxReminderAlarm.Checked'
   LCLVersion = '1.0.10.0'
   object PageControl1: TPageControl
     Left = 8
     Height = 264
     Top = 8
     Width = 488
-    ActivePage = TabSheet8
+    ActivePage = TabSheet4
     ParentFont = False
-    TabIndex = 2
+    TabIndex = 6
     TabOrder = 0
     Options = [nboKeyboardTabSwitch]
     object TabSheet2: TTabSheet
@@ -111,7 +111,7 @@ object frmSettings: TfrmSettings
         Left = 14
         Height = 17
         Top = 75
-        Width = 32
+        Width = 33
         Caption = 'Days'
         ParentColor = False
       end
@@ -159,7 +159,7 @@ object frmSettings: TfrmSettings
         Left = 246
         Height = 24
         Top = 115
-        Width = 74
+        Width = 76
         Caption = 'Sunday'
         TabOrder = 8
       end
@@ -167,7 +167,7 @@ object frmSettings: TfrmSettings
         Left = 62
         Height = 24
         Top = 115
-        Width = 86
+        Width = 87
         Caption = 'Saturday'
         TabOrder = 7
       end
@@ -175,7 +175,7 @@ object frmSettings: TfrmSettings
         Left = 31
         Height = 24
         Top = 163
-        Width = 191
+        Width = 193
         Caption = 'Play Music (Silent Alarm)'
         TabOrder = 9
       end
@@ -183,7 +183,7 @@ object frmSettings: TfrmSettings
         Left = 278
         Height = 24
         Top = 163
-        Width = 175
+        Width = 176
         Caption = 'Play music after alarm'
         TabOrder = 10
       end
@@ -467,9 +467,9 @@ object frmSettings: TfrmSettings
       ClientWidth = 484
       object Label5: TLabel
         Left = 22
-        Height = 17
+        Height = 18
         Top = 27
-        Width = 101
+        Width = 102
         Caption = 'Reminder Time'
         ParentColor = False
       end
@@ -529,17 +529,17 @@ object frmSettings: TfrmSettings
       end
       object Label12: TLabel
         Left = 22
-        Height = 17
+        Height = 18
         Top = 163
-        Width = 102
+        Width = 103
         Caption = 'Server Address'
         ParentColor = False
       end
       object Label13: TLabel
         Left = 278
-        Height = 17
+        Height = 18
         Top = 163
-        Width = 30
+        Width = 31
         Caption = 'Port'
         ParentColor = False
       end
@@ -550,6 +550,16 @@ object frmSettings: TfrmSettings
         Width = 138
         Caption = 'Email Reminders'
         TabOrder = 6
+      end
+      object cbxReminderAlarm: TCheckBox
+        Left = 278
+        Height = 24
+        Top = 27
+        Width = 183
+        Caption = 'Enable Reminder Alarm'
+        Checked = True
+        State = cbChecked
+        TabOrder = 7
       end
     end
     object TabSheet3: TTabSheet

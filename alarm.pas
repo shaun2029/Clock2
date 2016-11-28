@@ -48,7 +48,7 @@ type
 
     property OnBeforeAlarm: TAlarmCallback write FOnBeforeAlarm;
     property OnAfterAlarm: TAlarmCallback write FOnAfterAlarm;
-    property Silent: boolean write FSilent;
+    property Silent: boolean read FSilent write FSilent;
   end;
 
 implementation
@@ -93,17 +93,7 @@ begin
   if (FAlarmState <> asOff) and (CurrTime > FAlarmTime)
     and (CurrTime < FAlarmTime + EncodeTime(0, 3, 0, 0)) then
   begin
-    if FSilent then
-    begin
-      if Assigned(FOnBeforeAlarm) then
-        FOnBeforeAlarm;
-
-      FAlarmState := asOff;
-
-      if Assigned(FOnAfterAlarm) then
-        FOnAfterAlarm;
-    end
-    else if not ((CurrTime > FAlarmTime + EncodeTime(0, 1, 0, 0))
+    if not ((CurrTime > FAlarmTime + EncodeTime(0, 1, 0, 0))
       and (CurrTime < FAlarmTime + EncodeTime(0, 2, 0, 0))) then
     begin
       // Minute of silence between 1x2 minutes of ringing
@@ -113,13 +103,18 @@ begin
             if Assigned(FOnBeforeAlarm) then
               FOnBeforeAlarm;
 
-            SoundAlarm;
+            if not FSilent then
+               SoundAlarm;
+
             FAlarmState := asActive;
           end;
         asActive:
           begin
             if FMusicPlayer.State = mpsStopped then
-              SoundAlarm;
+            begin
+              if not FSilent then
+                SoundAlarm;
+            end;
           end;
       end;
     end;
