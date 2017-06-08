@@ -172,8 +172,8 @@ var
   Dest: string;
 begin
   Result := False;
-  Shell('xdotool mousemove 1 1');
-  Shell('xdotool mousemove 100 100');
+  fpSystem('xdotool mousemove 1 1');
+  fpSystem('xdotool mousemove 100 100');
 
   if FPictureIndex < 0 then FPictureIndex := FPictureList.Count -1;
   if FPictureIndex >= FPictureList.Count then FPictureIndex := 0;

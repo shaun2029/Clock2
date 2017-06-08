@@ -30,6 +30,7 @@ type
     FAlarmTime: TDatetime;
     FPath: string;
     FSilent: boolean;
+    FAcknowledged: boolean;
 
     procedure SoundAlarm;
   public
@@ -45,6 +46,7 @@ type
     property AlarmTime: TDatetime read FAlarmTime write FAlarmTime;
     property Path: string write FPath;
     property State: TAlarmState read FAlarmState;
+    property Acknowledged: boolean read FAcknowledged write FAcknowledged;
 
     property OnBeforeAlarm: TAlarmCallback write FOnBeforeAlarm;
     property OnAfterAlarm: TAlarmCallback write FOnAfterAlarm;
@@ -107,6 +109,7 @@ begin
                SoundAlarm;
 
             FAlarmState := asActive;
+            FAcknowledged := False;
           end;
         asActive:
           begin
@@ -167,6 +170,7 @@ begin
   FPath := '';
 
   FSilent := False;
+  FAcknowledged := True;
 end;
 
 destructor TAlarm.Destroy;

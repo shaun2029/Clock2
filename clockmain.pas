@@ -26,7 +26,7 @@ uses
   DiscoverServer, RadioStations;
 
 const
-  VERSION = '3.2.1';
+  VERSION = '3.3.0';
 
 type
   TMusicState = (msPlaying, msPaused);
@@ -415,8 +415,9 @@ begin
   FReminderAlarm.Tick(Current);
   FTimer.Tick(Current);
 
-  if (FReminderAlarm.State = asActive) then
+  if (FReminderAlarm.State = asActive) and (not FReminderAlarm.Acknowledged) then
   begin
+    FReminderAlarm.Acknowledged := True;
     lbReminderSummary.Font.Color := clYellow;
     ReminderList := TStringList.Create;
     frmReminders.SortReminders(FCurrentReminders);
@@ -520,6 +521,7 @@ var
   i: Integer;
 begin
   tmrMinute.Enabled := False;
+  tmrMinute.Interval := 60000;
 
   // Update discover server with Clock name
   if Assigned(FDiscoverServer) then
@@ -575,10 +577,12 @@ begin
     frmReminders.PopulateList(FCurrentReminders, CurrentList);
     for i:= 0 to CurrentList.Count - 1 do
     begin
-      Rems := CurrentList.Strings[i] + ';';
-      FComServer.Reminders := Rems;
+      Rems := Rems + CurrentList.Strings[i] + ';';
     end;
+    FComServer.Reminders := Rems;
 
+    lbReminderSummary.Caption := CurrentList.Text;
+    CurrentList.Free;
   end
   else tmrMinute.Tag := tmrMinute.Tag + 1;
 
@@ -605,21 +609,21 @@ procedure TfrmClockMain.SetMonitorState(State: boolean);
 begin
   if State then
   begin
-    Shell('xset -dpms');
-    Shell('xdotool mousemove 1 1');
-    Shell('xdotool mousemove 100 100');
-    Shell('xset +dpms');
+    fpSystem('xset -dpms');
+    fpSystem('xdotool mousemove 1 1');
+    fpSystem('xdotool mousemove 100 100');
+    fpSystem('xset +dpms');
   end
   else
   begin
-    Shell('xset dpms force off');
+    fpSystem('xset dpms force off');
   end;
 end;
 
 procedure TfrmClockMain.BacklightDim;
 begin
   try
-    Shell('sudo sh -c "echo 4 > /sys/class/backlight/openframe-bl/brightness"');
+    fpSystem('sudo sh -c "echo 4 > /sys/class/backlight/openframe-bl/brightness"');
   except
   end;
 end;
@@ -627,7 +631,7 @@ end;
 procedure TfrmClockMain.BacklightBright;
 begin
   try
-    Shell('sudo sh -c "echo 32 > /sys/class/backlight/openframe-bl/brightness"');
+    fpSystem('sudo sh -c "echo 32 > /sys/class/backlight/openframe-bl/brightness"');
   except
   end;
 end;
@@ -712,6 +716,8 @@ var
   i: Integer;
   MixerControl : string;
   UsePulseVol: boolean;
+  UseVol: string;
+  VolControl: TVolumeControl;
   IniFile: TIniFile;
 begin
   FFormShown := False;
@@ -733,6 +739,7 @@ begin
   FMusic2Source := msrcSleep;
 
   FConfigFilename := GetAppConfigFile(False);
+  VolControl := vcAlsa;
   UsePulseVol := True;
   MixerControl := 'Master';
 
@@ -745,6 +752,7 @@ begin
 
   try
     IniFile := TIniFile.Create(FConfigFilename);
+    UseVol := IniFile.ReadString('Volume', 'UseVolControl', '');
     UsePulseVol := IniFile.ReadBool('Volume', 'UsePulse', UsePulseVol);
     MixerControl := IniFile.ReadString('Volume', 'MixerControl', MixerControl);
 
@@ -757,7 +765,19 @@ begin
   except
   end;
 
-  FMPGPlayer := TMusicPlayer.Create(MixerControl, UsePulseVol, FMplayerEQ);
+  if (LowerCase(UseVol) = '') then
+  begin
+    if UsePulseVol then
+       VolControl := vcPulse
+    else VolControl := vcAlsa;
+  end
+  else if (LowerCase(UseVol) = 'alsa') then
+    VolControl := vcAlsa
+  else if (LowerCase(UseVol) = 'pulse') then
+    VolControl := vcPulse
+  else VolControl := vcSoftVol;
+
+  FMPGPlayer := TMusicPlayer.Create(MixerControl, VolControl, FMplayerEQ);
 
   FAlarm := TAlarm.Create(FMPGPlayer);
   FAlarm.Path := ExtractFilePath(Application.ExeName);
@@ -801,6 +821,10 @@ begin
   FRadioStation := 0;
   FPlayer.StreamTitle := FSources[FRadioStation].Title;
   FPlayer.StreamURL := FSources[FRadioStation].Resource;
+
+  // Activate Reminder update.
+  tmrMinute.Interval := 10000;
+  tmrMinute.Tag := 9999;
 {$IFDEF GRABXKEYS}
   GrabMediaKeys;
 {$ENDIF}

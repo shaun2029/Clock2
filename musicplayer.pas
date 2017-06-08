@@ -29,13 +29,14 @@ type
 
   TMusicPlayerState = (mpsStopped, mpsPlaying);
 //  TAnnouncements = (anOff, anQuiet, anMute);
+  TVolumeControl = (vcPulse, vcAlsa, vcSoftVol);
 
   { TMusicPlayer }
 
   TMusicPlayer  = class
   private
     FNextTick: TDateTime;
-    FUsePulseVol: boolean;
+    FVolumeControl: TVolumeControl;
     FVolAttenuation: integer;
     FMplayerEQ: TMplayerEQ;
     FMixerControl: string;
@@ -76,8 +77,9 @@ type
     procedure StartPlayProcess(Song: string; out Process: TProcess);
 //    procedure StopAnnouncement(MuteLevel: integer);
     procedure StopSong;
+    procedure WriteProcessData(Command: string);
   public
-    constructor Create(MixerControl : string; UsePulseVol: boolean; EQ: TMplayerEQ);
+    constructor Create(MixerControl : string; VolControl: TVolumeControl; EQ: TMplayerEQ);
     destructor Destroy; override;
 
     procedure Tick;     // Used to process radio stream information
@@ -192,7 +194,7 @@ begin
     EQ := EQ + IntToStr(FMplayerEQ[9]) + ' ';
   end;
 
-  Process.CommandLine := 'mplayer ' + EQ + ' -af-add format=s16le -softvol -volume ' + IntToStr(100-FVolAttenuation);
+  Process.CommandLine := 'mplayer ' + EQ + ' -slave -af-add format=s16le -softvol -volume ' + IntToStr(100-FVolAttenuation);
 
   { If the song name begins with 'http://' then it assumed to be a URL of a stream. }
   if ((Pos('http://', Trim(Lowercase(Song))) = 1) or (Pos('https://', Trim(Lowercase(Song))) = 1)) then
@@ -221,10 +223,7 @@ begin
 
   {$ifdef LOGGING} Writeln('EXECUTE: ' + Process.CommandLine); {$endif}
 
-  if FRadioPlaying then
-    Process.Options := Process.Options + [poStderrToOutPut, poUsePipes]
-  else
-    Process.Options := Process.Options + [poStderrToOutPut];
+  Process.Options := [poStderrToOutPut, poUsePipes];
 
   Process.Execute;
 end;
@@ -258,7 +257,7 @@ begin
     if FPlayProcess.Running then
     begin
       // Kill mplayer running in bash shell
-      Shell('killall -9 mplayer');
+      fpSystem('killall -9 mplayer');
       FPlayProcess.Terminate(1);
     end;
 
@@ -361,16 +360,25 @@ begin
     SetLength(Output, Len);
 
     FPlayProcess.Output.Read(PChar(@Output[1])^, Len);
-{
+
 {$ifdef LOGGING}
-    Writeln('MPLAYER: ------------------DATA----------------------');
-    Writeln(Output);
-    Writeln('MPLAYER: --------------------------------------------');
+    Writeln(stderr, 'MPLAYER: ------------------DATA----------------------');
+    Writeln(stderr, Output);
+    Writeln(stderr, 'MPLAYER: --------------------------------------------');
 {$endif}
-}
+
     Result := Output;
   end;
 end;
+
+procedure TMusicPlayer.WriteProcessData(Command: string);
+var
+  Len: integer;
+begin
+  Command := Command + LineEnding;
+  FPlayProcess.Input.Write(Command[1], Length(Command));
+end;
+
 (*
 procedure TMusicPlayer.SetAnnouncements(AValue: TAnnouncements);
 begin
@@ -539,20 +547,27 @@ procedure TMusicPlayer.Tick;
 begin
   if FNextTick < Now then
   begin
-    if FRadioPlaying then ProcessRadio;
+    if FRadioPlaying then ProcessRadio
+    else
+    begin
+      if (FPlayProcess.Output.NumBytesAvailable > 0) then
+      begin
+        ReadProcessData;
+      end;
+    end;
 
     // Limit ticks to 1 a second
     FNextTick := Now + EncodeTime(0, 0, 1, 0);
   end;
 end;
 
-constructor TMusicPlayer.Create(MixerControl : string; UsePulseVol: boolean; EQ: TMplayerEQ);
+constructor TMusicPlayer.Create(MixerControl : string; VolControl: TVolumeControl; EQ: TMplayerEQ);
 var
   i: Integer;
 begin
   FNextTick := 0;
   FMixerControl := MixerControl;
-  FUsePulseVol := UsePulseVol;
+  FVolumeControl := VolControl;
   FVolAttenuation := 0;
 
   FMuteLevel := 0;
@@ -635,14 +650,21 @@ begin
   if Volume > 100 then Volume := 100
   else if Volume < 0 then Volume := 0;
 
-  if FUsePulseVol then
-    CommandLine := 'amixer -D pulse sset ''' + FMixerControl + ''' '
+  if FVolumeControl = vcSoftVol then
+  begin
+    WriteProcessData('set_property volume ' + IntToStr(Volume));
+  end
   else
-    CommandLine := 'amixer -- sset ''' + FMixerControl + ''' playback ';
+  begin
+    if FVolumeControl = vcPulse then
+      CommandLine := 'amixer -D pulse sset ''' + FMixerControl + ''' '
+    else
+      CommandLine := 'amixer -- sset ''' + FMixerControl + ''' playback ';
 
-  CommandLine := CommandLine + IntToStr(Volume) + '%';
+    CommandLine := CommandLine + IntToStr(Volume) + '%';
 
-  RunCommand(CommandLine, Output);
+    RunCommand(CommandLine, Output);
+  end;
 end;
 
 function TMusicPlayer.GetVolume: integer;
@@ -653,11 +675,11 @@ var
 begin
   // Only get the volume once.
   if FVolume > 0 then Result := FVolume
-  else
+  else if FVolumeControl <> vcSoftVol then
   begin
-    Result := 50;
+    Result := 100;
 
-    if FUsePulseVol then
+    if FVolumeControl = vcPulse then
       CommandLine := 'amixer -D pulse sget ''' + FMixerControl
     else
       CommandLine := 'amixer -- sget ''' + FMixerControl + ''' playback';
