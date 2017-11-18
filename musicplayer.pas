@@ -10,20 +10,20 @@ unit MusicPlayer;
 interface
 
 // Code to support older Lazarus/FPC
-//{$define LEGACY}
+//{$define NOGUI}
 //{$define LOGGING}
 
 uses
   Process,
-  {$ifndef LEGACY}
+  {$ifndef NOGUI}
   LCLProc, MplayerEQ,
   {$else}
   process_legacy,
   {$endif}
-  Classes, SysUtils, ID3v1Library, ID3v2Library, unix, Pipes;
+  Classes, SysUtils, ID3v1Library, ID3v2Library, unix, Pipes, MPD;
 
 type
-  {$ifdef LEGACY}
+  {$ifdef NOGUI}
   TMplayerEQ = array of integer;
   {$endif}
 
@@ -46,6 +46,7 @@ type
     FPlayProcessList: string;
     FSongArtist: string;
     FSongTitle: string;
+    FSongURL: string;
     FState: TMusicPlayerState;
     FID3v1: TID3v1Tag;
     FID3v2: TID3v2Tag;
@@ -54,28 +55,17 @@ type
     FNewRadioTitle: string;
     FRadioTitleTime: TDateTime;
     FRadioPlaying: boolean;
-    FAdDelay: integer;
-    FAdvertType: string;
     FMuteLevel: integer;
-(*
-    FAnnouncementVol: integer;
-    FAnnouncement: boolean;
-    FAnnouncementStart: TDateTime;
-    FAnnouncementStop: TDateTime;
-*)
     procedure DestroyPlayProcess;
     function GetRadioTitle: string;
     function GetState: TMusicPlayerState;
-    procedure PlaySong(Song: string);
-//    procedure ProcessAnnouncement;
-    function ProcessRadio: string;
+    procedure PlaySong(Song, URL: string);
+    procedure ProcessRadio;
     function ReadProcessData: string;
-//    procedure SetAnnouncements(AValue: TAnnouncements);
     procedure SetVolAttenuation(AValue: integer);
     procedure SetVolume(Volume: integer);
-//    procedure StartAnnouncement(MuteLevel: integer);
     procedure StartPlayProcess(Song: string; out Process: TProcess);
-//    procedure StopAnnouncement(MuteLevel: integer);
+    procedure StartPlayApplication(CommandLine: string; out Process: TProcess);
     procedure StopSong;
     procedure WriteProcessData(Command: string);
   public
@@ -84,7 +74,7 @@ type
 
     procedure Tick;     // Used to process radio stream information
 
-    procedure Play(Filename: string);
+    procedure Play(Filename, URL: string);
     procedure VolumeUp;
     procedure VolumeDown;
     procedure Stop;
@@ -96,12 +86,11 @@ type
     property State: TMusicPlayerState read GetState;
     property RadioTitle: string read GetRadioTitle;
     property VolAttenuation: integer read FVolAttenuation write SetVolAttenuation;
-//    property Announcements: TAnnouncements write SetAnnouncements;
   end;
 
 implementation
 
-procedure TMusicPlayer.PlaySong(Song: string);
+procedure TMusicPlayer.PlaySong(Song, URL: string);
 begin
   // Ensure that song is not playing
   StopSong;
@@ -112,6 +101,7 @@ begin
   FSongArtist := '';
   FRadioTitle := '';
   FNewRadioTitle := '';
+  FSongURL := URL;
 
   if FileExists(Song) then
   begin
@@ -155,7 +145,12 @@ begin
   try
     if Assigned(FPlayProcess) then DestroyPlayProcess;
 
-    StartPlayProcess(Song, FPlayProcess);
+    // If the song name starts with cmd: then treat the song as a command.
+    if (Pos('cmd://', Song) = 1) then
+    begin
+      StartPlayApplication(Copy(Song, 7, Length(Song)), FPlayProcess);
+    end
+    else StartPlayProcess(Song, FPlayProcess);
 
     if Trim(FSongTitle) = '' then FSongTitle := ExtractFilename(Song);
 
@@ -172,8 +167,7 @@ end;
 procedure TMusicPlayer.StartPlayProcess(Song: string; out Process: TProcess);
 var
   PlaylistTypes: array [0..4] of string = ('.pls', '.m3u', '.asx', '.wpl', '.xspf');
-  Vol: integer;
-  EQ, FileExt: String;
+  EQ: String;
   i: Integer;
 begin
   Process := TProcess.Create(nil);
@@ -194,19 +188,20 @@ begin
     EQ := EQ + IntToStr(FMplayerEQ[9]) + ' ';
   end;
 
-  Process.CommandLine := 'mplayer ' + EQ + ' -slave -af-add format=s16le -softvol -volume ' + IntToStr(100-FVolAttenuation);
+
+  if FVolumeControl = vcPulse then
+     Process.CommandLine := 'mplayer -ao pulse ' + EQ
+  else if FVolumeControl = vcPulse then
+     Process.CommandLine := 'mplayer -ao alsa ' + EQ
+  else
+     Process.CommandLine := 'mplayer ' + EQ;
+
+  Process.CommandLine := Process.CommandLine + ' -slave -af-add format=s16le -softvol -volume ' + IntToStr(100-FVolAttenuation);
 
   { If the song name begins with 'http://' then it assumed to be a URL of a stream. }
-  if ((Pos('http://', Trim(Lowercase(Song))) = 1) or (Pos('https://', Trim(Lowercase(Song))) = 1)) then
+  if ((Pos('http://', Trim(Lowercase(Song))) > 0) or (Pos('https://', Trim(Lowercase(Song))) > 0)) then
   begin
     FRadioPlaying := True;
-
-    // Announcement removal requires messages
-    Process.CommandLine := Process.CommandLine + ' -msglevel all=4';
-
-    // AdDelay is used to mute adverts/announcements.
-    // Some stations have a delay between the title text change and the audio stream change.
-    FAdDelay := 3;
 
     // Support playlists
     for i := 0 to High(PlaylistTypes) do
@@ -220,6 +215,20 @@ begin
   end;
 
   Process.CommandLine := Process.CommandLine  + ' "' + Song + '"';
+
+  {$ifdef LOGGING} Writeln('EXECUTE: ' + Process.CommandLine); {$endif}
+
+  Process.Options := [poStderrToOutPut, poUsePipes];
+
+  Process.Execute;
+end;
+
+procedure TMusicPlayer.StartPlayApplication(CommandLine: string; out Process: TProcess);
+begin
+  Process := TProcess.Create(nil);
+
+  FRadioPlaying := True;
+  Process.CommandLine := CommandLine;
 
   {$ifdef LOGGING} Writeln('EXECUTE: ' + Process.CommandLine); {$endif}
 
@@ -251,102 +260,32 @@ begin
 end;
 
 procedure TMusicPlayer.DestroyPlayProcess;
+var
+  Output: string;
 begin
   if Assigned(FPlayProcess) then
   begin
     if FPlayProcess.Running then
     begin
       // Kill mplayer running in bash shell
-      fpSystem('killall -9 mplayer');
-      FPlayProcess.Terminate(1);
+      FPlayProcess.Terminate(0);
+      RunCommand('killall -9 mplayer', Output);
     end;
 
     FreeAndNil(FPlayProcess);
-(*
-    FAnnouncement := False;
-    FAnnouncementStart := 0;
-*)
     FState := mpsStopped;
     FRadioPlaying := False;
     FPlayProcessList := '';
   end;
 end;
 
-(*
-procedure TMusicPlayer.ProcessAnnouncement;
-begin
-  // Look for announcement start if not currntly in progress
-  if not FAnnouncement and (FAnnouncementStart > 0)
-    and (FAnnouncementStart < Now) then
-  begin
-    {$ifdef LOGGING} Writeln('ANNOUNCE: StartAnnouncement ' + TimeToStr(Now)); {$endif}
-    FAnnouncementStart := 0;
-    StartAnnouncement(FMuteLevel);
-    FAnnouncement := True;
-  end;
-
-  // If announcement in progress look for stop
-  if FAnnouncement and (FAnnouncementStop < Now) then
-  begin
-    {$ifdef LOGGING} Writeln('ANNOUNCE: StopAnnouncement ' + TimeToStr(Now)); {$endif}
-    StopAnnouncement(FMuteLevel);
-    FAnnouncement := False;
-  end;
-end;
-*)
 procedure TMusicPlayer.SetVolAttenuation(AValue: integer);
 begin
   if (AValue < 0) then FVolAttenuation := 0
   else if (AValue > 100) then FVolAttenuation := 100
   else FVolAttenuation:=AValue;
 end;
-(*
-// Mute the volume during an announcement
-procedure TMusicPlayer.StartAnnouncement(MuteLevel: integer);
-var
-  Buffer: array[0..1] of char;
-  i: Integer;
-begin
-  {$ifdef LOGGING} Writeln('MPLAYER: Setting volume low ...'); {$endif}
 
-  if Assigned(FPlayProcess) then
-  begin
-    // Mplayer volume down
-    Buffer[0] := '9';
-
-    for i := 0 to MuteLevel do
-    begin
-      FPlayProcess.Input.Write(Buffer, 1);
-      Sleep(33);
-    end;
-  end;
-
-  {$ifdef LOGGING} Writeln('MPLAYER: Set volume low.'); {$endif}
-end;
-
-// Restores the volume after the announcement
-procedure TMusicPlayer.StopAnnouncement(MuteLevel: integer);
-var
-  Buffer: array[0..1] of char;
-  i: Integer;
-begin
-  {$ifdef LOGGING} Writeln('MPLAYER: Setting volume high ...'); {$endif}
-
-  if Assigned(FPlayProcess) then
-  begin
-    // Mplayer volume up
-    Buffer[0] := '0';
-
-    for i := 0 to MuteLevel do
-    begin
-      FPlayProcess.Input.Write(Buffer, 1);
-      Sleep(33);
-    end;
-  end;
-
-  {$ifdef LOGGING} Writeln('MPLAYER: Volume high.'); {$endif}
-end;
-*)
 function TMusicPlayer.ReadProcessData: string;
 var
   Output: string;
@@ -379,35 +318,16 @@ begin
   FPlayProcess.Input.Write(Command[1], Length(Command));
 end;
 
-(*
-procedure TMusicPlayer.SetAnnouncements(AValue: TAnnouncements);
-begin
-  if AValue = anOff then
-    FMuteLevel := 0
-  else if AValue = anQuiet then
-    FMuteLevel := 12
-  else FMuteLevel := 30;
-end;
-*)
-function TMusicPlayer.ProcessRadio: string;
-const
-  AdTypes: array [0..4] of string = ('sky.fm', 'adw_ad=''true''',
-    'back-soon', 'ICY Info: StreamTitle='';StreamUrl='';', 'radiotunes');
+procedure TMusicPlayer.ProcessRadio;
 var
   Title: string;
   TitleList: TStringList;
   Len, p, i, v: integer;
-//  Announcement: integer;
-//  AnnouncmentInProgress: boolean;
   H, M, S, MS: word;
   j: Integer;
 begin
-  // ICY Info: StreamTitle='Enos McLeod - Jericho';StreamUrl='';
-
   TitleList := TStringList.Create;
   Title := '';
-
-//  AnnouncmentInProgress := False;
 
   try
     if Assigned(FPlayProcess) then
@@ -425,63 +345,7 @@ begin
         if Pos('StreamTitle', TitleList.Strings[i]) = 0 then
           TitleList.Delete(i);
       end;
-(*
-      // Process announcements if required
-      if FMuteLevel > 0 then
-      begin
-        // Detect announcments (Adverts)
-        i := TitleList.Count - 1;
-        if (i >= 0) then
-        begin
-          // Advert detection search
-          for j := 0 to High(AdTypes) do
-          begin
-            Announcement := Pos(LowerCase(AdTypes[j]), LowerCase(TitleList.Strings[i]));
-            if (Announcement > 0) then
-            begin
-              FAdvertType := AdTypes[j];
-              break;
-            end
-          end;
 
-          // Is there an announcement?
-          if (Announcement > 0) then
-          begin
-            AnnouncmentInProgress := True;
-
-            // Is an announcement, and is it known about and sheduled?
-            if not FAnnouncement and (FAnnouncementStart = 0) then
-            begin
-              // Set announcment start time in the future
-              FAnnouncementStart := Now + EncodeTime(0, 0, FAdDelay, 0);
-
-              {$ifdef LOGGING} Writeln('ANNOUNCE: Start detected "' + FAdvertType + '"'); {$endif}
-            end;
-
-            // Update the end time
-            FAnnouncementStop := Now + EncodeTime(0, 0, 2 + FAdDelay, 0);
-          end
-          else
-          begin
-            // Cancel if only short announcement
-            if (FAnnouncementStart <> 0) and not FAnnouncement then
-            begin
-              // Calculate length of announcement
-              DecodeTime(FAnnouncementStart - FAnnouncementStop, H, M, S, MS);
-
-              // Cancel if announcement < 4 seconds
-              if S <= 5 then
-              begin
-                AnnouncmentInProgress := False;
-                FAnnouncementStart := 0;
-
-                {$ifdef LOGGING} Writeln('ANNOUNCE: Stopped - too short.'); {$endif}
-              end;
-            end;
-          end;
-        end;
-      end;
-*)
       if (TitleList.Count > 0) then
       begin
         Title := TitleList.Strings[TitleList.Count-1];
@@ -504,15 +368,12 @@ begin
         else
         begin
           FNewRadioTitle := Title;
-          FRadioTitleTime := Now + EncodeTime(0, 0, FAdDelay, 0);
+          FRadioTitleTime := Now + EncodeTime(0, 0, 3, 0);
         end;
 
         // Do not let the list grow
         FPlayProcessList := '';
       end;
-(*
-      ProcessAnnouncement;
-*)
     end;
   except
     on E: exception do
@@ -533,14 +394,16 @@ begin
 end;
 
 function TMusicPlayer.GetRadioTitle: string;
+var
+  URL, Host, Port: string;
 begin
-(*
-  // Override the song title
-  if FAnnouncement then
+  URL := MPDParseURL(FSongURL, Host, Port);
+
+  if Host <> '' then
   begin
-    Result := 'MUTING ADVERT ...' + FAdvertType;
+    Result := MPDGetTrackTitle(Host, Port);
   end
-  else *) Result := FRadioTitle;
+  else Result := FRadioTitle;
 end;
 
 procedure TMusicPlayer.Tick;
@@ -581,8 +444,6 @@ begin
   FVolume := -1;
   FVolume := GetVolume;
 
-  FAdvertType := '';
-
   FID3v1 := TID3v1Tag.Create;
   FID3v2 := TID3v2Tag.Create;
 end;
@@ -597,9 +458,9 @@ begin
   inherited Destroy;
 end;
 
-procedure TMusicPlayer.Play(Filename: string);
+procedure TMusicPlayer.Play(Filename, URL: string);
 begin
-  PlaySong(Filename);
+  PlaySong(Filename, URL);
 end;
 
 procedure TMusicPlayer.VolumeUp;
@@ -675,7 +536,12 @@ var
 begin
   // Only get the volume once.
   if FVolume > 0 then Result := FVolume
-  else if FVolumeControl <> vcSoftVol then
+  else if FVolumeControl = vcSoftVol then
+  begin
+    FVolume := 100;
+    Result := FVolume;
+  end
+  else
   begin
     Result := 100;
 

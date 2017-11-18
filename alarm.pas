@@ -68,7 +68,7 @@ DebugLn('Alarm: Sound alarm');
   else
     AlarmFile := '/usr/share/clock/alarm.mp3';
 
-  FMusicPlayer.Play(AlarmFile);
+  FMusicPlayer.Play(AlarmFile, '');
 end;
 
 procedure TAlarm.Tick(CurrTime: TDateTime);

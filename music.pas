@@ -10,11 +10,7 @@ unit music;
 interface
 
 uses
-  {$ifndef LEGACY}
-  FindThread,
-  LCLProc,
-  {$endif}
-  Classes, SysUtils, MusicPlayer, IniFiles, MPD;
+  Classes, SysUtils, MusicPlayer, IniFiles, FindThread, LCLProc, MPD;
 
 type
 
@@ -29,10 +25,7 @@ type
     FFindSongList, FFindPathList: TStringList;
     FPlaySongList, FPlayPathList: TStringList;
     FFindPlaySongList, FFindPlayPathList: TStringList;
-
-    {$ifndef LEGACY}
     FFindFiles: TFindFilesThread;
-    {$endif}
 
     FMusicPlayer: TMusicPlayer;
     FConfigFile, FSearchPath: string;
@@ -41,17 +34,17 @@ type
     FState: TPlayerState;
     FStreamTitle: string;
     FStreamURL: string;
+    FRandom: boolean;
 
     procedure FilterAudioFiles(var List: TStringList);
     function GetFileName(Index: integer; SongList, PathList: TStringList): string;
     function GetSongArtist: string;
     function GetSongTitle: string;
-    procedure LoadSettings;
+    function LoadSettings: boolean;
     function PlayPlaylistSong(Play: TPlayDirection): boolean;
     procedure PlaySong(Play: TPlayDirection);
     procedure RandomiseList(var List: TStringList);
     procedure SaveSettings;
-//    procedure SetAnnouncements(AValue: TAnnouncements);
     procedure SetStreamURL(AValue: string);
     procedure StopSong;
   public
@@ -70,23 +63,26 @@ type
 
     function PlaySelection(SearchPaths: string; Random: boolean): integer;
 
-    constructor Create(MusicPlayer: TMusicPlayer; ConfigFile, SearchPath: string);
+    constructor Create(MusicPlayer: TMusicPlayer; ConfigFile,
+      SearchPath: string; Random: boolean);
+
     destructor Destroy; override;
   published
     property SongArtist: string read GetSongArtist;
     property SongTitle: string read GetSongTitle;
     property State: TPlayerState read FState;
     property SearchPath: string read FSearchPath;
-    property StreamURL: string write SetStreamURL;
+    property StreamURL: string read FStreamURL write SetStreamURL;
     property StreamTitle: string read FStreamTitle write FStreamTitle;
-//    property Announcements: TAnnouncements write SetAnnouncements;
+    property SongIndex: integer read FSongIndex;
   end;
 
 implementation
 
 { TPlayer }
 
-constructor TPlayer.Create(MusicPlayer: TMusicPlayer; ConfigFile, SearchPath: string);
+constructor TPlayer.Create(MusicPlayer: TMusicPlayer; ConfigFile,
+  SearchPath: string; Random: boolean);
 begin
   inherited Create;
 
@@ -106,24 +102,29 @@ begin
   FFindPlayPathList := TStringList.Create;
   FSongIndex := 0;
   FState := psStopped;
-
+  FRandom := Random;
   FSearchPath := SearchPath;
-  LoadSettings;
+
+  if (FStreamURL = '') and not LoadSettings and DirectoryExists(FSearchPath) then
+  begin
+    PlaySelection(FSearchPath, FRandom);
+    FSongList.Text := FPlaySongList.Text;
+    FPathList.Text := FPlayPathList.Text;
+    SaveSettings;
+  end;
 end;
 
 destructor TPlayer.Destroy;
 begin
   FMusicPlayer.Stop;
 
-  {$ifndef LEGACY}
   if Assigned(FFindFiles) then
   begin
     FFindFiles.Terminate;
     FFindFiles.WaitFor;
     FreeAndNil(FFindFiles);
   end
-  else
-  {$endif} SaveSettings;
+  else SaveSettings;
 
   FSongList.Free;
   FPathList.Free;
@@ -200,7 +201,6 @@ function TPlayer.Tick: integer;
 begin
   Result := -1;
 
-  {$ifndef LEGACY}
   if Assigned(FFindFiles) then
   begin
     if FFindFiles.Complete then
@@ -209,13 +209,16 @@ begin
       FFindFiles.WaitFor;
       FreeAndNil(FFindFiles);
       FilterAudioFiles(FFindSongList);
-      RandomiseList(FFindSongList);
+
+      if FRandom then
+         RandomiseList(FFindSongList);
+
       FSongList.Text := FFindSongList.Text;
       FPathList.Text := FFindPathList.Text;
     end
     else Result := FFindFiles.Count;
   end
-  else {$endif} if (FState = psPlaying) then
+  else if (FState = psPlaying) then
   begin
     FMusicPlayer.Tick;
 
@@ -241,10 +244,10 @@ begin
       case Play of
         pdPrevious: MPDCommand(Host, Port, 'prev');
         pdNext:  MPDCommand(Host, Port, 'next');
-        else FMusicPlayer.Play(URL);
+        else FMusicPlayer.Play(URL, FStreamURL);
       end;
     end
-    else FMusicPlayer.Play(URL);
+    else FMusicPlayer.Play(URL, FStreamURL);
   end
   else if not PlayPlaylistSong(Play) then
   begin
@@ -261,17 +264,13 @@ begin
       begin
         Filename := GetFilename(FSongIndex, FSongList, FPathList);
 
-        if FileExists(Filename) then FMusicPlayer.Play(Filename)
-        {$ifndef LEGACY}
+        if FileExists(Filename) then FMusicPlayer.Play(Filename, '')
         else DebugLn('Music: Failed to find "' + Filename + '"')
-        {$endif};
       end;
     except
       on E: Exception do
       begin
-        {$ifndef LEGACY}
         DebugLn(Self.ClassName + #9#9 + E.Message);
-        {$endif}
       end;
     end;
 
@@ -301,16 +300,12 @@ begin
       try
         Filename := GetFilename(FPlaylistIndex, FPlaySongList, FPlayPathList);
 
-        if FileExists(Filename) then FMusicPlayer.Play(Filename)
-        {$ifndef LEGACY}
+        if FileExists(Filename) then FMusicPlayer.Play(Filename, '')
         else DebugLn('Music: Failed to find "' + Filename + '"')
-        {$endif};
       except
         on E: Exception do
         begin
-          {$ifndef LEGACY}
           DebugLn(Self.ClassName + #9#9 + E.Message);
-          {$endif}
         end;
       end;
     end;
@@ -338,22 +333,18 @@ begin
     IniFile.Free;
   end;
 end;
-(*
-procedure TPlayer.SetAnnouncements(AValue: TAnnouncements);
-begin
-  FMusicPlayer.Announcements := AValue;
-end;
-*)
+
 procedure TPlayer.SetStreamURL(AValue: string);
 begin
   FStreamURL := AValue;
   FState := psStopped;
 end;
 
-procedure TPlayer.LoadSettings;
+function TPlayer.LoadSettings: boolean;
 var
   IniFile: TIniFile;
 begin
+  Result := False;
   if FConfigFile = '' then Exit;
 
   IniFile := TIniFile.Create(FConfigFile);
@@ -369,6 +360,7 @@ begin
     begin
       FSongList.LoadFromFile(ChangeFileExt(FConfigFile, '.pl'));
       FPathList.LoadFromFile(ChangeFileExt(FConfigFile, '.plp'));
+      Result := True;
     end;
   finally
     IniFile.Free;
@@ -382,8 +374,11 @@ begin
 end;
 
 function TPlayer.GetSongTitle: string;
+var
+  URL, Host, Port: string;
 begin
-  if FStreamURL <> '' then Result := FMusicPlayer.RadioTitle
+  if FStreamURL <> '' then
+    Result := FMusicPlayer.RadioTitle
   else Result := FMusicPlayer.SongTitle;
 end;
 
@@ -420,23 +415,17 @@ end;
 
 procedure TPlayer.RescanSearchPath;
 begin
-  {$ifndef LEGACY}
   if Assigned(FFindFiles) then
   begin
     FFindFiles.Terminate;
     FFindFiles.WaitFor;
     FreeAndNil(FFindFiles);
-    FilterAudioFiles(FFindPlaySongList);
-    RandomiseList(FFindSongList);
-    FSongList.Text := FFindSongList.Text;
-    FPathList.Text := FFindPathList.Text;
   end
   else
   begin
-    FFindFiles := TFindFilesThread.Create(FFindSongList, FFindPathList, FSearchPath, '.mp3');
+    FFindFiles := TFindFilesThread.Create(FFindSongList, FFindPathList, FSearchPath, '.*', False, 0);
     FFindFiles.Resume;
   end;
-  {$endif}
 end;
 
 function TPlayer.GetFileName(Index: integer; SongList, PathList: TStringList) : string;
@@ -467,14 +456,10 @@ begin
 end;
 
 function TPlayer.PlaySelection(SearchPaths: string; Random: boolean): integer;
-{$ifndef LEGACY}
 var
   FindPlaySelection: TFindFilesThread;
-{$endif}
 begin
-  {$ifndef LEGACY}
-
-  FindPlaySelection := TFindFilesThread.Create(FFindPlaySongList, FFindPlayPathList, SearchPaths, '.*');
+  FindPlaySelection := TFindFilesThread.Create(FFindPlaySongList, FFindPlayPathList, SearchPaths, '.*', False, 0);
   FindPlaySelection.Resume;
 
   while not (FindPlaySelection.Complete) do
@@ -486,13 +471,14 @@ begin
   FindPlaySelection.WaitFor;
   FreeAndNil(FindPlaySelection);
   FilterAudioFiles(FFindPlaySongList);
-  if Random then RandomiseList(FFindPlaySongList);
+  if Random then RandomiseList(FFindPlaySongList)
+  else FFindPlaySongList.Sort;
   FPlaySongList.Text := FFindPlaySongList.Text;
   FPlayPathList.Text := FFindPlayPathList.Text;
   FPlaylistIndex := -1;
+  FRandom := Random;
 
   Result := FFindPlaySongList.Count;
-  {$endif}
 end;
 
 end.

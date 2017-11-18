@@ -23,12 +23,15 @@ type
     FComplete: boolean;
     FCritical: TCriticalSection;
     FFileList, FPathList: TStringList;
+    FOnlyDirectories: boolean;
+    FDepth: integer;
 
     procedure FindFiles(FilesList, PathList: TStringList; StartDir, Extension: string);
     function GetComplete: boolean;
     function GetCount: integer;
   public
-    constructor Create(FileList, PathList: TStringList; SearchPaths, Extension: string);
+    constructor Create(FileList, PathList: TStringList; SearchPaths, Extension: string;
+      OnlyDirectories: boolean; Depth: integer);
     destructor Destroy; override;
 
     procedure Execute; override;
@@ -50,24 +53,33 @@ end;
 function TFindFilesThread.GetCount: integer;
 begin
   FCritical.Enter;
-  Result := FFileList.Count;
+
+  if Assigned(FFileList) then
+    Result := FFileList.Count
+  else
+    Result := FPathList.Count;
+
   FCritical.Leave;
 end;
 
 { The FileList and PathList are used in combination when producing a file file path.
   This is done to save memory when storing files.}
 constructor TFindFilesThread.Create(FileList, PathList: TStringList;
-  SearchPaths, Extension: string);
+  SearchPaths, Extension: string; OnlyDirectories: boolean; Depth: integer);
 begin
   inherited Create(True);
   FSearchPaths := SearchPaths;
   FComplete := False;
+  FOnlyDirectories := OnlyDirectories;
   FExtension := Extension;
+  FDepth := Depth;
 
   FFileList := FileList;
   FPathList := PathList;
 
-  FFileList.Clear;
+  if Assigned(FFileList) then
+    FFileList.Clear;
+
   FPathList.Clear;
 
   FCritical := TCriticalSection.Create;
@@ -97,7 +109,8 @@ begin
     end;
   end;
 
-  FFileList.Sort;
+  if Assigned(FFileList) then
+    FFileList.Sort;
 
   Paths.Free;
   FComplete := True;
@@ -113,53 +126,108 @@ var
   i: integer;
   PathIndex: integer;
   PathIndexStr: string;
+  Depth, StartLen: integer;
 begin
   if Terminated then Exit;
 
-  if StartDir[length(StartDir)] <> '/' then
+  StartLen := Length(StartDir);
+
+  if StartDir[StartLen] <> '/' then
+  begin
     StartDir := StartDir + '/';
+    Inc(StartLen);
+  end;
+
+  { Calculate current depth. }
+  Depth := -1;
+  for i := 1 to StartLen do
+  begin
+    if StartDir[i] = '/' then
+      Inc(Depth);
+  end;
 
   // Build a list of the files in the directory StartDir
 
-
-  PathIndex := PathList.IndexOf(StartDir);
-  if PathIndex < 0 then
+  if Assigned(FilesList) then
   begin
-    PathIndex := PathList.Count;
-    PathList.Add(StartDir);
-  end;
+    PathIndex := PathList.IndexOf(StartDir);
+    if PathIndex < 0 then
+    begin
+      PathIndex := PathList.Count;
+      PathList.Add(StartDir);
+    end;
 
-  PathIndexStr := IntToStr(PathIndex);
+    PathIndexStr := IntToStr(PathIndex);
 
-  IsFound :=
-    FindFirst(StartDir+'*' + Extension, faAnyFile-faDirectory, SR) = 0;
-  while IsFound do
+    IsFound :=
+      FindFirst(StartDir+'*' + Extension, faAnyFile-faDirectory, SR) = 0;
+    while IsFound do
+    begin
+      FCritical.Enter;
+      FilesList.Add(PathIndexStr + ':' + SR.Name);
+      FCritical.Leave;
+
+      IsFound := FindNext(SR) = 0;
+    end;
+
+    FindClose(SR);
+  end
+  else if Extension <> '' then
   begin
-    FCritical.Enter;
-    FilesList.Add(PathIndexStr + ':' + SR.Name);
-    FCritical.Leave;
+    { If an extension is specified, include the directoy if at leat one file of that type exists in it. }
 
-    IsFound := FindNext(SR) = 0;
+    if Extension[Length(Extension)] <> ';' then
+       Extension := Extension + ';';
+
+    IsFound :=
+      FindFirst(StartDir+'*.*', faAnyFile-faDirectory, SR) = 0;
+    while IsFound do
+    begin
+      if Pos(Lowercase(ExtractFileExt(SR.Name)) + ';', Lowercase(Extension)) > 0 then
+      begin
+        PathIndex := PathList.IndexOf(StartDir);
+        if PathIndex < 0 then
+        begin
+          PathList.Add(StartDir);
+        end;
+
+        IsFound := False;
+      end
+      else IsFound := FindNext(SR) = 0;
+    end;
+
+    FindClose(SR);
+  end
+  else
+  begin
+    PathIndex := PathList.IndexOf(StartDir);
+    if PathIndex < 0 then
+    begin
+      PathList.Add(StartDir);
+    end;
   end;
-  FindClose(SR);
 
-  // Build a list of subdirectories
-  DirList := TStringList.Create;
-  IsFound := FindFirst(StartDir+'*', faAnyFile and faDirectory, SR) = 0;
-  while IsFound and not Terminated do begin
-    if ((SR.Attr and faDirectory) <> 0) and
-         (SR.Name[1] <> '.') then
-      DirList.Add(StartDir + SR.Name);
+  if (FDepth = 0) or (Depth < FDepth) then
+  begin
+    // Build a list of subdirectories
+    DirList := TStringList.Create;
+    IsFound := FindFirst(StartDir+'*', faAnyFile and faDirectory, SR) = 0;
+    while IsFound and not Terminated do begin
+      if ((SR.Attr and faDirectory) <> 0)
+        and (SR.Name <> '') and (SR.Name[1] <> '.') then
+      begin
+        DirList.Add(StartDir + SR.Name);
+      end;
+      IsFound := FindNext(SR) = 0;
+    end;
+    FindClose(SR);
 
-    IsFound := FindNext(SR) = 0;
+    // Scan the list of subdirectories
+    for i := 0 to DirList.Count - 1 do
+      FindFiles(FilesList, PathList, DirList[i], Extension);
+
+    DirList.Free;
   end;
-  FindClose(SR);
-
-  // Scan the list of subdirectories
-  for i := 0 to DirList.Count - 1 do
-    FindFiles(FilesList, PathList, DirList[i], Extension);
-
-  DirList.Free;
 end;
 
 

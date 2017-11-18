@@ -292,21 +292,21 @@ begin
     msrcSleep:
       begin
         FPlayer := TPlayer.Create(FMPGPlayer,
-          ChangeFileExt(FConfigFilename, '_sleep.cfg'), frmSettings.edtSleepPath.Text);
+          ChangeFileExt(FConfigFilename, '_sleep.cfg'), frmSettings.edtSleepPath.Text, True);
       end;
     msrcMusic:
       begin
         FPlayer := TPlayer.Create(FMPGPlayer,
-          ChangeFileExt(FConfigFilename, '_music.cfg'), frmSettings.edtMusicPath.Text);
+          ChangeFileExt(FConfigFilename, '_music.cfg'), frmSettings.edtMusicPath.Text, True);
       end;
     msrcMeditation:
       begin
         FPlayer := TPlayer.Create(FMPGPlayer,
-          ChangeFileExt(FConfigFilename, '_meditation.cfg'), frmSettings.edtMeditationPath.Text);
+          ChangeFileExt(FConfigFilename, '_meditation.cfg'), frmSettings.edtMeditationPath.Text, True);
       end;
     else
     begin
-      FPlayer := TPlayer.Create(FMPGPlayer, '', '');
+      FPlayer := TPlayer.Create(FMPGPlayer, '', '', True);
       Source := msrcRadio;
     end;
   end;
