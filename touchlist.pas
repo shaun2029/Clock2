@@ -5,7 +5,7 @@ unit TouchList;
 interface
 
 uses
-  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
+  LazUTF8,Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
   ExtCtrls, types, LCLProc;
 
 type
@@ -314,4 +314,4 @@ begin
 end;
 
 end.
-
+

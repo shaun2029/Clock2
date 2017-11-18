@@ -1,18 +1,16 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
-    <Version Value="9"/>
+    <Version Value="10"/>
     <General>
       <MainUnit Value="0"/>
       <Title Value="Clock2"/>
       <UseXPManifest Value="True"/>
       <Icon Value="0"/>
-      <ActiveWindowIndexAtStart Value="0"/>
     </General>
     <VersionInfo>
       <Language Value=""/>
       <CharSet Value=""/>
-      <StringTable ProductVersion=""/>
     </VersionInfo>
     <BuildModes Count="3" Active="i386">
       <Item1 Name="debug" Default="True"/>
@@ -35,8 +33,8 @@
             <StackSize Value="1048576"/>
             <TargetProcessor Value="pentium3"/>
             <Optimizations>
-              <VariablesInRegisters Value="True"/>
               <OptimizationLevel Value="3"/>
+              <VariablesInRegisters Value="True"/>
             </Optimizations>
           </CodeGeneration>
           <Linking>
@@ -47,9 +45,6 @@
             </Debugging>
             <LinkSmart Value="True"/>
           </Linking>
-          <Other>
-            <CompilerPath Value="$(CompPath)"/>
-          </Other>
         </CompilerOptions>
       </Item2>
       <Item3 Name="x64">
@@ -71,8 +66,8 @@
             <StackSize Value="1048576"/>
             <TargetCPU Value="x86_64"/>
             <Optimizations>
-              <VariablesInRegisters Value="True"/>
               <OptimizationLevel Value="3"/>
+              <VariablesInRegisters Value="True"/>
             </Optimizations>
           </CodeGeneration>
           <Linking>
@@ -82,9 +77,6 @@
             </Debugging>
             <LinkSmart Value="True"/>
           </Linking>
-          <Other>
-            <CompilerPath Value="$(CompPath)"/>
-          </Other>
         </CompilerOptions>
       </Item3>
     </BuildModes>
@@ -116,9 +108,7 @@
       <Unit0>
         <Filename Value="Clock2.lpr"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="9"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
+        <EditorIndex Value="11"/>
         <CursorPos X="63" Y="32"/>
         <UsageCount Value="225"/>
         <Loaded Value="True"/>
@@ -131,8 +121,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Pictures"/>
-        <EditorIndex Value="15"/>
-        <WindowIndex Value="0"/>
+        <EditorIndex Value="17"/>
         <TopLine Value="159"/>
         <CursorPos X="11" Y="176"/>
         <UsageCount Value="225"/>
@@ -155,8 +144,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Settings"/>
-        <EditorIndex Value="8"/>
-        <WindowIndex Value="0"/>
+        <EditorIndex Value="10"/>
         <TopLine Value="80"/>
         <CursorPos X="59" Y="108"/>
         <UsageCount Value="200"/>
@@ -166,9 +154,7 @@
       <Unit4>
         <Filename Value="alarm.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="alarm"/>
-        <EditorIndex Value="4"/>
-        <WindowIndex Value="0"/>
+        <EditorIndex Value="6"/>
         <TopLine Value="53"/>
         <CursorPos X="34" Y="71"/>
         <UsageCount Value="207"/>
@@ -183,10 +169,9 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ClockMain"/>
         <IsVisibleTab Value="True"/>
-        <EditorIndex Value="0"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="299"/>
-        <CursorPos X="57" Y="309"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="10"/>
+        <CursorPos X="19" Y="29"/>
         <UsageCount Value="207"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -208,8 +193,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Reminders"/>
-        <EditorIndex Value="10"/>
-        <WindowIndex Value="0"/>
+        <EditorIndex Value="12"/>
         <TopLine Value="370"/>
         <CursorPos X="40" Y="384"/>
         <UsageCount Value="203"/>
@@ -236,8 +220,7 @@
         <Filename Value="musicplayer.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="MusicPlayer"/>
-        <EditorIndex Value="14"/>
-        <WindowIndex Value="0"/>
+        <EditorIndex Value="16"/>
         <TopLine Value="101"/>
         <CursorPos X="11" Y="104"/>
         <UsageCount Value="212"/>
@@ -251,8 +234,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ReminderList"/>
-        <EditorIndex Value="3"/>
-        <WindowIndex Value="0"/>
+        <EditorIndex Value="5"/>
         <TopLine Value="57"/>
         <CursorPos X="14" Y="85"/>
         <UsageCount Value="212"/>
@@ -262,8 +244,8 @@
       <Unit12>
         <Filename Value="commandserver.pas"/>
         <IsPartOfProject Value="True"/>
-        <TopLine Value="183"/>
-        <CursorPos X="28" Y="259"/>
+        <TopLine Value="5"/>
+        <CursorPos X="53" Y="20"/>
         <UsageCount Value="212"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -271,9 +253,7 @@
       <Unit13>
         <Filename Value="music.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="music"/>
-        <EditorIndex Value="12"/>
-        <WindowIndex Value="0"/>
+        <EditorIndex Value="14"/>
         <TopLine Value="409"/>
         <CursorPos X="39" Y="426"/>
         <UsageCount Value="212"/>
@@ -293,9 +273,7 @@
       <Unit15>
         <Filename Value="sync.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="sync"/>
-        <EditorIndex Value="1"/>
-        <WindowIndex Value="0"/>
+        <EditorIndex Value="3"/>
         <TopLine Value="36"/>
         <CursorPos X="25" Y="48"/>
         <UsageCount Value="212"/>
@@ -305,11 +283,9 @@
       <Unit16>
         <Filename Value="udpclient.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="udpclient"/>
-        <EditorIndex Value="2"/>
-        <WindowIndex Value="0"/>
+        <EditorIndex Value="4"/>
         <TopLine Value="81"/>
-        <CursorPos X="1" Y="106"/>
+        <CursorPos Y="106"/>
         <UsageCount Value="212"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -331,8 +307,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="PlaylistCreator"/>
-        <EditorIndex Value="16"/>
-        <WindowIndex Value="0"/>
+        <EditorIndex Value="18"/>
         <TopLine Value="400"/>
         <CursorPos X="22" Y="431"/>
         <UsageCount Value="200"/>
@@ -344,9 +319,10 @@
         <Filename Value="touchlist.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="TouchList"/>
-        <TopLine Value="30"/>
-        <CursorPos X="26" Y="56"/>
+        <EditorIndex Value="2"/>
+        <CursorPos X="11" Y="8"/>
         <UsageCount Value="200"/>
+        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit19>
       <Unit20>
@@ -394,9 +370,7 @@
       </Unit24>
       <Unit25>
         <Filename Value="synapse/source/lib/blcksock.pas"/>
-        <UnitName Value="blcksock"/>
-        <EditorIndex Value="7"/>
-        <WindowIndex Value="0"/>
+        <EditorIndex Value="9"/>
         <TopLine Value="2676"/>
         <CursorPos X="32" Y="2704"/>
         <UsageCount Value="77"/>
@@ -475,7 +449,7 @@
         <ResourceBaseClass Value="Form"/>
         <TopLine Value="114"/>
         <CursorPos X="8" Y="124"/>
-        <UsageCount Value="51"/>
+        <UsageCount Value="52"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit35>
       <Unit36>
@@ -489,11 +463,10 @@
         <Filename Value="discoverserver.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="DiscoverServer"/>
-        <EditorIndex Value="6"/>
-        <WindowIndex Value="0"/>
+        <EditorIndex Value="8"/>
         <TopLine Value="87"/>
         <CursorPos X="13" Y="117"/>
-        <UsageCount Value="175"/>
+        <UsageCount Value="176"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit37>
@@ -541,7 +514,7 @@
         <ResourceBaseClass Value="Form"/>
         <TopLine Value="125"/>
         <CursorPos X="19" Y="136"/>
-        <UsageCount Value="95"/>
+        <UsageCount Value="96"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit44>
       <Unit45>
@@ -561,12 +534,9 @@
       <Unit47>
         <Filename Value="mpd.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="mpd"/>
-        <EditorIndex Value="13"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
+        <EditorIndex Value="15"/>
         <CursorPos X="12" Y="10"/>
-        <UsageCount Value="81"/>
+        <UsageCount Value="82"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit47>
@@ -577,11 +547,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="RadioStations"/>
-        <EditorIndex Value="11"/>
-        <WindowIndex Value="0"/>
+        <EditorIndex Value="13"/>
         <TopLine Value="39"/>
         <CursorPos X="27" Y="49"/>
-        <UsageCount Value="73"/>
+        <UsageCount Value="74"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit48>
@@ -607,13 +576,11 @@
       <Unit52>
         <Filename Value="lnet/lib/lnet.pp"/>
         <UnitName Value="lNet"/>
-        <EditorIndex Value="5"/>
-        <WindowIndex Value="0"/>
+        <EditorIndex Value="7"/>
         <TopLine Value="769"/>
         <CursorPos X="30" Y="784"/>
         <UsageCount Value="14"/>
         <Loaded Value="True"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit52>
       <Unit53>
         <Filename Value="/usr/share/fpcsrc/3.0.2/packages/fcl-process/src/process.pp"/>
@@ -630,47 +597,124 @@
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit54>
     </Units>
-    <JumpHistory Count="10" HistoryIndex="9">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="547" Column="28" TopLine="524"/>
+        <Caret Column="41"/>
       </Position1>
       <Position2>
-        <Filename Value="sync.pas"/>
-        <Caret Line="48" Column="25" TopLine="36"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="505" Column="32" TopLine="481"/>
       </Position2>
       <Position3>
-        <Filename Value="alarm.pas"/>
-        <Caret Line="112" Column="28" TopLine="96"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="924" Column="21" TopLine="924"/>
       </Position3>
       <Position4>
-        <Filename Value="alarm.pas"/>
-        <Caret Line="71" Column="18" TopLine="53"/>
+        <Filename Value="clockmain.pas"/>
       </Position4>
       <Position5>
-        <Filename Value="musicplayer.pas"/>
-        <Caret Line="77" Column="19" TopLine="61"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="505" Column="32" TopLine="475"/>
       </Position5>
       <Position6>
-        <Filename Value="musicplayer.pas"/>
-        <Caret Line="86" Column="31" TopLine="61"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="944" Column="14" TopLine="922"/>
       </Position6>
       <Position7>
-        <Filename Value="musicplayer.pas"/>
-        <Caret Line="93" Column="42" TopLine="86"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="170" Column="29" TopLine="156"/>
       </Position7>
       <Position8>
-        <Filename Value="music.pas"/>
-        <Caret Line="242" Column="26" TopLine="242"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="286" Column="39" TopLine="295"/>
       </Position8>
       <Position9>
-        <Filename Value="music.pas"/>
-        <Caret Line="426" Column="101" TopLine="410"/>
+        <Filename Value="clockmain.pas"/>
       </Position9>
       <Position10>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="585" Column="1" TopLine="559"/>
+        <Caret Line="34" Column="48" TopLine="10"/>
       </Position10>
+      <Position11>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="52" Column="12" TopLine="28"/>
+      </Position11>
+      <Position12>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="75" Column="11" TopLine="51"/>
+      </Position12>
+      <Position13>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="102" Column="21" TopLine="78"/>
+      </Position13>
+      <Position14>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="248" Column="21" TopLine="224"/>
+      </Position14>
+      <Position15>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="252" Column="40" TopLine="236"/>
+      </Position15>
+      <Position16>
+        <Filename Value="clockmain.pas"/>
+      </Position16>
+      <Position17>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="34" Column="48" TopLine="10"/>
+      </Position17>
+      <Position18>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="52" Column="12" TopLine="28"/>
+      </Position18>
+      <Position19>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="505" Column="32" TopLine="484"/>
+      </Position19>
+      <Position20>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="936" Column="36" TopLine="912"/>
+      </Position20>
+      <Position21>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="1321" Column="9" TopLine="1311"/>
+      </Position21>
+      <Position22>
+        <Filename Value="commandserver.pas"/>
+        <Caret Line="20" Column="53" TopLine="5"/>
+      </Position22>
+      <Position23>
+        <Filename Value="commandserver.pas"/>
+        <Caret Line="243" Column="31" TopLine="219"/>
+      </Position23>
+      <Position24>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="1341" TopLine="1324"/>
+      </Position24>
+      <Position25>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="1362" Column="19" TopLine="1338"/>
+      </Position25>
+      <Position26>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="497" Column="19" TopLine="483"/>
+      </Position26>
+      <Position27>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="983" TopLine="957"/>
+      </Position27>
+      <Position28>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="1359" TopLine="1337"/>
+      </Position28>
+      <Position29>
+        <Filename Value="touchlist.pas"/>
+        <Caret Line="106" Column="20" TopLine="92"/>
+      </Position29>
+      <Position30>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="1347" Column="35" TopLine="1337"/>
+      </Position30>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
@@ -697,12 +741,9 @@
         <DebugInfoType Value="dsDwarf2"/>
       </Debugging>
     </Linking>
-    <Other>
-      <CompilerPath Value="$(CompPath)"/>
-    </Other>
   </CompilerOptions>
   <Debugging>
-    <BreakPoints Count="3">
+    <BreakPoints Count="2">
       <Item1>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
@@ -717,13 +758,6 @@
         <Source Value="email.pas"/>
         <Line Value="192"/>
       </Item2>
-      <Item3>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="clockmain.pas"/>
-        <Line Value="544"/>
-      </Item3>
     </BreakPoints>
     <Exceptions Count="7">
       <Item1>

@@ -26,7 +26,7 @@ uses
   DiscoverServer, RadioStations;
 
 const
-  VERSION = '3.3.0';
+  VERSION = '3.3.1';
 
 type
   TMusicState = (msPlaying, msPaused);
@@ -1320,14 +1320,11 @@ begin
   case Command of
     rcomNext:
       begin
-        case FMusicSource of
-          msrcSleep: Key := 's';
-          msrcMeditation: Key := 'd';
-          msrcRadio: Key := 'n';
-          else Key := 'm';
-        end;
-
-        FormKeyPress(Self, Key);
+        FPlayer.Next;
+      end;
+    rcomPrevious:
+      begin
+        FPlayer.Previous;
       end;
     rcomMusic:
       begin
@@ -1362,18 +1359,20 @@ begin
       end;
     rcomPause:
       begin
-        Key := 'p';
-        FormKeyPress(Self, Key);
+        case FMusicState of
+          msPlaying: PauseMusic;
+          else PlayMusic;
+        end;
       end;
     rcomVolumeUp:
       begin
-        Key := '.';
-        FormKeyPress(Self, Key);
+        FMPGPlayer.VolumeUp;
+        DisplayVolume;
       end;
     rcomVolumeDown:
       begin
-        Key := ',';
-        FormKeyPress(Self, Key);
+        FMPGPlayer.VolumeDown;
+        DisplayVolume;
       end;
     rcomFavorite:
       begin
