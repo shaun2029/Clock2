@@ -26,7 +26,7 @@ uses
   DiscoverServer, RadioStations;
 
 const
-  VERSION = '3.3.1';
+  VERSION = '3.3.3';
 
 type
   TMusicState = (msPlaying, msPaused);
@@ -77,6 +77,7 @@ type
     lbDisplay: TLabel;
     labSong: TLabel;
     lblTime: TLabel;
+    tmrCommand: TTimer;
     UpdateMusic: TLabel;
     lbSettings: TLabel;
     tmrMinute: TTimer;
@@ -106,6 +107,7 @@ type
     procedure lbPreviousClick(Sender: TObject);
     procedure lbSettingsClick(Sender: TObject);
     procedure lbMusic2Click(Sender: TObject);
+    procedure tmrCommandTimer(Sender: TObject);
     procedure tmrTimeTimer(Sender: TObject);
     procedure tmrMinuteTimer(Sender: TObject);
   private
@@ -242,21 +244,11 @@ end;
 
 procedure TfrmClockMain.PlayMusic;
 begin
-  case FMusicState of
-    msPlaying:
-      begin
-        FPlayer.Next; // if playing play next track
-	    end;
-    else
-    begin
-      FPlayer.Play;
-    end;
-  end;
+  FPlayer.Play;
+  FMusicState := msPlaying;
 
   // Display volume when play back is started.
   DisplayVolume;
-
-  FMusicState := msPlaying;
 end;
 
 procedure TfrmClockMain.PlayPreviousMusic;
@@ -1279,12 +1271,12 @@ begin
   if FRadioPicker.ShowModal = mrOK then
   begin
     PauseMusic;
-
     SetMusicSource(msrcRadio);
     FPlayer.StreamTitle := FSources[FRadioPicker.ItemIndex].Title;
     FPlayer.StreamURL := FSources[FRadioPicker.ItemIndex].Resource;
 
-    if not FAlarmActive then PlayMusic;
+    if not FAlarmActive then
+      PlayMusic;
   end;
 end;
 
@@ -1301,11 +1293,17 @@ begin
   imgSleep.Picture.Assign(imgOn.Picture);
 end;
 
+procedure TfrmClockMain.tmrCommandTimer(Sender: TObject);
+begin
+  tmrCommand.Enabled := False;
+  ProcessCommand(FComServer.Command);
+end;
+
 procedure TfrmClockMain.ComServerCallback;
 var
   Command: TRemoteCommand;
 begin
-  ProcessCommand(FComServer.Command);
+  tmrCommand.Enabled := True;
 end;
 
 procedure TfrmClockMain.SignalCallback(Command: TRemoteCommand);

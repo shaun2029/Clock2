@@ -413,7 +413,7 @@ begin
     if FRadioPlaying then ProcessRadio
     else
     begin
-      if (FPlayProcess.Output.NumBytesAvailable > 0) then
+      if (Assigned(FPlayProcess)) and (FPlayProcess.Output.NumBytesAvailable > 0) then
       begin
         ReadProcessData;
       end;

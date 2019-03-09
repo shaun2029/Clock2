@@ -190,7 +190,9 @@ begin
           ConnectionSocket.Socket := ListenerSocket.accept;
           ConnectionSocket.ConvertLineEnd := True;
           //WriteLn('Attending Connection. Error code (0=Success): ', ConnectionSocket.lasterror);
+          FCritical.Enter;
           AttendConnection(ConnectionSocket);
+          FCritical.Leave;
           ConnectionSocket.CloseSocket;
         end
         else if ListenerSocket.LastError <> 0 then
@@ -231,123 +233,93 @@ begin
   begin
     if Buffer = 'CLOCK:NEXT' then
     begin
-      FCritical.Enter;
       FCommand := rcomNext;
-      FCritical.Leave;
-      if Assigned(FOnCommand) then Self.Synchronize(FOnCommand);
+      if Assigned(FOnCommand) then FOnCommand;
       Socket.SendString(':OK' + #10);
     end
     else if Buffer = 'CLOCK:PREVIOUS' then
     begin
-      FCritical.Enter;
       FCommand := rcomPrevious;
-      FCritical.Leave;
-      if Assigned(FOnCommand) then Self.Synchronize(FOnCommand);
+      if Assigned(FOnCommand) then FOnCommand;
       Socket.SendString(':OK' + #10);
     end
     else if Buffer = 'CLOCK:MUSIC' then
     begin
-      FCritical.Enter;
       FCommand := rcomMusic;
-      FCritical.Leave;
-      if Assigned(FOnCommand) then Self.Synchronize(FOnCommand);
+      if Assigned(FOnCommand) then FOnCommand;
       Socket.SendString(':OK' + #10);
     end
     else if Buffer = 'CLOCK:SLEEP' then
     begin
-      FCritical.Enter;
       FCommand := rcomSleep;
-      FCritical.Leave;
-      if Assigned(FOnCommand) then Self.Synchronize(FOnCommand);
+      if Assigned(FOnCommand) then FOnCommand;
       Socket.SendString(':OK' + #10);
     end
     else if Buffer = 'CLOCK:MEDITATION' then
     begin
-      FCritical.Enter;
       FCommand := rcomMeditation;
-      FCritical.Leave;
-      if Assigned(FOnCommand) then Self.Synchronize(FOnCommand);
+      if Assigned(FOnCommand) then FOnCommand;
       Socket.SendString(':OK' + #10);
     end
     else if Buffer = 'CLOCK:DISPLAY:TOGGLE' then
     begin
-      FCritical.Enter;
       FCommand := rcomDisplayToggle;
-      FCritical.Leave;
-      if Assigned(FOnCommand) then Self.Synchronize(FOnCommand);
+      if Assigned(FOnCommand) then FOnCommand;
       Socket.SendString(':OK' + #10);
     end
     else if Pos('CLOCK:RADIO', Buffer) > 0 then
     begin
-      FCritical.Enter;
       FCommand := rcomRadio;
-      FCritical.Leave;
-      if Assigned(FOnCommand) then Self.Synchronize(FOnCommand);
+      if Assigned(FOnCommand) then FOnCommand;
       Socket.SendString(':OK' + #10);
     end
     else if Pos('CLOCK:SET:RADIOSTATION:', Buffer) > 0 then
     begin
-      FCritical.Enter;
       Buffer := Copy(Buffer, Length('CLOCK:SET:RADIOSTATION:') + 1, Length(Buffer));
       Buffer := StringReplace(Buffer, #10, '', [rfReplaceAll]);
       Buffer := StringReplace(Buffer, #13, '', [rfReplaceAll]);
       FRadioStation := StrToIntDef(Buffer, 0);
       FCommand := rcomSetRadioStation;
-      FCritical.Leave;
-      if Assigned(FOnCommand) then Self.Synchronize(FOnCommand);
+      if Assigned(FOnCommand) then FOnCommand;
       Socket.SendString(':OK' + #10);
     end
     else if Pos('CLOCK:GET:REMINDERS', Buffer) > 0 then
     begin
-      FCritical.Enter;
       Socket.SendString(FReminders + #10);
-      FCritical.Leave;
       Socket.SendString(':OK' + #10);
     end
     else if Pos('CLOCK:GET:RADIOSTATIONS', Buffer) > 0 then
     begin
-      FCritical.Enter;
       Socket.SendString(FRadioStations + #10);
-      FCritical.Leave;
       Socket.SendString(':OK' + #10);
     end
     else if Buffer = 'CLOCK:PAUSE' then
     begin
-      FCritical.Enter;
       FCommand := rcomPause;
-      FCritical.Leave;
-      if Assigned(FOnCommand) then Self.Synchronize(FOnCommand);
+      if Assigned(FOnCommand) then FOnCommand;
       Socket.SendString(':OK' + #10);
     end
     else if Buffer = 'CLOCK:VOLUP' then
     begin
-      FCritical.Enter;
       FCommand := rcomVolumeUp;
-      FCritical.Leave;
-      if Assigned(FOnCommand) then Self.Synchronize(FOnCommand);
+      if Assigned(FOnCommand) then FOnCommand;
       Socket.SendString(':OK' + #10);
     end
     else if Buffer = 'CLOCK:VOLDOWN' then
     begin
-      FCritical.Enter;
       FCommand := rcomVolumeDown;
-      FCritical.Leave;
-      if Assigned(FOnCommand) then Self.Synchronize(FOnCommand);
+      if Assigned(FOnCommand) then FOnCommand;
       Socket.SendString(':OK' + #10);
     end
     else if Buffer = 'CLOCK:PLAYING' then
     begin
-      FCritical.Enter;
       Socket.SendString(FPlaying + #10);
-      FCritical.Leave;
       Socket.SendString(':OK' + #10);
     end
     else if Buffer = 'CLOCK:FAVORITE' then
     begin
-      FCritical.Enter;
       FCommand := rcomFavorite;
-      FCritical.Leave;
-      if Assigned(FOnCommand) then Self.Synchronize(FOnCommand);
+      if Assigned(FOnCommand) then FOnCommand;
       Socket.SendString(':OK' + #10);
     end
     else Socket.SendString(':BAD' + #10);
