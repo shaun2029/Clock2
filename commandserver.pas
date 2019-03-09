@@ -26,7 +26,6 @@ type
 
   TCOMServerThread = class(TThread)
   private
-    FOnCommand: TThreadMethod;
     FPort: integer;
     FPlaying, FRadioStations, FReminders: string;
     FRadioStation: integer;
@@ -46,9 +45,11 @@ type
   public
     constructor Create(Port: integer);
     destructor Destroy; override;
+
+    procedure Lock();
+    procedure Unlock();
   published
     property Playing: string write SetPlaying;
-    property OnCommand: TThreadMethod read FOnCommand write FOnCommand;
     property RadioStation: integer read GetRadioStation;
     property RadioStations: string write SetRadioStations;
     property Reminders: string write SetReminders;
@@ -61,7 +62,6 @@ type
     FCOMServerThread: TCOMServerThread;
     function GetErrorState: TComErrorState;
     function GetRadioStation: integer;
-    procedure SetOnCommand(AValue: TThreadMethod);
     procedure SetPlaying(const AValue: string);
     function GetCommand: TRemoteCommand;
     procedure SetRadioStations(AValue: string);
@@ -71,7 +71,6 @@ type
     destructor Destroy; override;
   published
     property Playing: string write SetPlaying;
-    property OnCommand: TThreadMethod write SetOnCommand;
     property RadioStation: integer read GetRadioStation;
     property Command: TRemoteCommand read GetCommand;
     property RadioStations: string write SetRadioStations;
@@ -89,37 +88,44 @@ end;
 { TCOMServer }
 function TCOMServer.GetErrorState: TComErrorState;
 begin
+  FCOMServerThread.Lock;
   Result := FCOMServerThread.Error;
+  FCOMServerThread.Unlock;
 end;
 
 procedure TCOMServer.SetPlaying(const AValue: string);
 begin
+  FCOMServerThread.Lock;
   FCOMServerThread.Playing := AValue;
-end;
-
-procedure TCOMServer.SetOnCommand(AValue: TThreadMethod);
-begin
-  FCOMServerThread.OnCommand := AValue;
+  FCOMServerThread.Unlock;
 end;
 
 function TCOMServer.GetRadioStation: integer;
 begin
+  FCOMServerThread.Lock;
   Result := FCOMServerThread.RadioStation;
+  FCOMServerThread.Unlock;
 end;
 
 function TCOMServer.GetCommand: TRemoteCommand;
 begin
+  FCOMServerThread.Lock;
   Result := FCOMServerThread.GetCommand;
+  FCOMServerThread.Unlock;
 end;
 
 procedure TCOMServer.SetRadioStations(AValue: string);
 begin
+  FCOMServerThread.Lock;
   FCOMServerThread.RadioStations := AValue;
+  FCOMServerThread.Unlock;
 end;
 
 procedure TCOMServer.SetReminders(AValue: string);
 begin
+  FCOMServerThread.Lock;
   FCOMServerThread.Reminders := AValue;
+  FCOMServerThread.Unlock;
 end;
 
 constructor TCOMServer.Create(Port: integer);
@@ -233,44 +239,51 @@ begin
   begin
     if Buffer = 'CLOCK:NEXT' then
     begin
+      FCritical.Enter;
       FCommand := rcomNext;
-      if Assigned(FOnCommand) then FOnCommand;
+      FCritical.Leave;
       Socket.SendString(':OK' + #10);
     end
     else if Buffer = 'CLOCK:PREVIOUS' then
     begin
+      FCritical.Enter;
       FCommand := rcomPrevious;
-      if Assigned(FOnCommand) then FOnCommand;
+      FCritical.Leave;
       Socket.SendString(':OK' + #10);
     end
     else if Buffer = 'CLOCK:MUSIC' then
     begin
+      FCritical.Enter;
       FCommand := rcomMusic;
-      if Assigned(FOnCommand) then FOnCommand;
+      FCritical.Leave;
       Socket.SendString(':OK' + #10);
     end
     else if Buffer = 'CLOCK:SLEEP' then
     begin
+      FCritical.Enter;
       FCommand := rcomSleep;
-      if Assigned(FOnCommand) then FOnCommand;
+      FCritical.Leave;
       Socket.SendString(':OK' + #10);
     end
     else if Buffer = 'CLOCK:MEDITATION' then
     begin
+      FCritical.Enter;
       FCommand := rcomMeditation;
-      if Assigned(FOnCommand) then FOnCommand;
+      FCritical.Leave;
       Socket.SendString(':OK' + #10);
     end
     else if Buffer = 'CLOCK:DISPLAY:TOGGLE' then
     begin
+      FCritical.Enter;
       FCommand := rcomDisplayToggle;
-      if Assigned(FOnCommand) then FOnCommand;
+      FCritical.Leave;
       Socket.SendString(':OK' + #10);
     end
     else if Pos('CLOCK:RADIO', Buffer) > 0 then
     begin
+      FCritical.Enter;
       FCommand := rcomRadio;
-      if Assigned(FOnCommand) then FOnCommand;
+      FCritical.Leave;
       Socket.SendString(':OK' + #10);
     end
     else if Pos('CLOCK:SET:RADIOSTATION:', Buffer) > 0 then
@@ -278,48 +291,59 @@ begin
       Buffer := Copy(Buffer, Length('CLOCK:SET:RADIOSTATION:') + 1, Length(Buffer));
       Buffer := StringReplace(Buffer, #10, '', [rfReplaceAll]);
       Buffer := StringReplace(Buffer, #13, '', [rfReplaceAll]);
+      FCritical.Enter;
       FRadioStation := StrToIntDef(Buffer, 0);
       FCommand := rcomSetRadioStation;
-      if Assigned(FOnCommand) then FOnCommand;
+      FCritical.Leave;
       Socket.SendString(':OK' + #10);
     end
     else if Pos('CLOCK:GET:REMINDERS', Buffer) > 0 then
     begin
+      FCritical.Enter;
       Socket.SendString(FReminders + #10);
+      FCritical.Leave;
       Socket.SendString(':OK' + #10);
     end
     else if Pos('CLOCK:GET:RADIOSTATIONS', Buffer) > 0 then
     begin
+      FCritical.Enter;
       Socket.SendString(FRadioStations + #10);
+      FCritical.Leave;
       Socket.SendString(':OK' + #10);
     end
     else if Buffer = 'CLOCK:PAUSE' then
     begin
+      FCritical.Enter;
       FCommand := rcomPause;
-      if Assigned(FOnCommand) then FOnCommand;
+      FCritical.Leave;
       Socket.SendString(':OK' + #10);
     end
     else if Buffer = 'CLOCK:VOLUP' then
     begin
+      FCritical.Enter;
       FCommand := rcomVolumeUp;
-      if Assigned(FOnCommand) then FOnCommand;
+      FCritical.Leave;
       Socket.SendString(':OK' + #10);
     end
     else if Buffer = 'CLOCK:VOLDOWN' then
     begin
+      FCritical.Enter;
       FCommand := rcomVolumeDown;
-      if Assigned(FOnCommand) then FOnCommand;
+      FCritical.Leave;
       Socket.SendString(':OK' + #10);
     end
     else if Buffer = 'CLOCK:PLAYING' then
     begin
+      FCritical.Enter;
       Socket.SendString(FPlaying + #10);
+      FCritical.Leave;
       Socket.SendString(':OK' + #10);
     end
     else if Buffer = 'CLOCK:FAVORITE' then
     begin
+      FCritical.Enter;
       FCommand := rcomFavorite;
-      if Assigned(FOnCommand) then FOnCommand;
+      FCritical.Leave;
       Socket.SendString(':OK' + #10);
     end
     else Socket.SendString(':BAD' + #10);
@@ -352,14 +376,23 @@ begin
   FRadioStations := '';
   FReminders := '';
   FPort := Port;
-  FOnCommand := nil;
 end;
 
 destructor TCOMServerThread.Destroy;
 begin
-  FCritical.Free;
-
   inherited Destroy;
+
+  FCritical.Free;
+end;
+
+procedure TCOMServerThread.Lock;
+begin
+  FCritical.Enter;
+end;
+
+procedure TCOMServerThread.Unlock;
+begin
+  FCritical.Leave;
 end;
 
 end.
