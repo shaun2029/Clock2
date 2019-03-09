@@ -102,6 +102,7 @@ begin
   FRadioTitle := '';
   FNewRadioTitle := '';
   FSongURL := URL;
+  Song := Trim(song);
 
   if FileExists(Song) then
   begin
@@ -315,7 +316,8 @@ var
   Len: integer;
 begin
   Command := Command + LineEnding;
-  FPlayProcess.Input.Write(Command[1], Length(Command));
+  if Assigned(FPlayProcess) then
+    FPlayProcess.Input.Write(Command[1], Length(Command));
 end;
 
 procedure TMusicPlayer.ProcessRadio;
@@ -413,7 +415,7 @@ begin
     if FRadioPlaying then ProcessRadio
     else
     begin
-      if (Assigned(FPlayProcess)) and (FPlayProcess.Output.NumBytesAvailable > 0) then
+      if Assigned(FPlayProcess) and (FPlayProcess.Output.NumBytesAvailable > 0) then
       begin
         ReadProcessData;
       end;

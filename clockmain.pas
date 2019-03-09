@@ -26,7 +26,7 @@ uses
   DiscoverServer, RadioStations;
 
 const
-  VERSION = '3.3.3';
+  VERSION = '3.4.0';
 
 type
   TMusicState = (msPlaying, msPaused);
@@ -164,6 +164,7 @@ type
     procedure PauseMusic;
     procedure PlayAlbums;
     procedure PlayMusic;
+    procedure PlayNextMusic;
     procedure PlayPreviousMusic;
     procedure ProcessCommand(Command: TRemoteCommand);
     procedure SendReminders(Reminders: String);
@@ -249,6 +250,12 @@ begin
 
   // Display volume when play back is started.
   DisplayVolume;
+end;
+
+procedure TfrmClockMain.PlayNextMusic;
+begin
+  FPlayer.Next;
+  FMusicState := msPlaying;
 end;
 
 procedure TfrmClockMain.PlayPreviousMusic;
@@ -794,7 +801,7 @@ begin
   FSyncClient := nil;
 
   FCOMServer := TCOMServer.Create(44558);
-  FCOMServer.OnCommand := ComServerCallback;
+  tmrCommand.Enabled := True;
 
   FLinuxDateTime := TLinuxDateTime.Create;
 
@@ -1294,9 +1301,16 @@ begin
 end;
 
 procedure TfrmClockMain.tmrCommandTimer(Sender: TObject);
+var
+  Command: TRemoteCommand;
 begin
   tmrCommand.Enabled := False;
-  ProcessCommand(FComServer.Command);
+
+  Command := FComServer.Command;
+  if (Command <> rcomNone) then
+     ProcessCommand(Command);
+
+  tmrCommand.Enabled := True;
 end;
 
 procedure TfrmClockMain.ComServerCallback;
@@ -1441,7 +1455,7 @@ begin
   imgNext.Picture.Assign(imgOff.Picture);
   Application.ProcessMessages;
 
-  PlayMusic;
+  PlayNextMusic;
 
   imgNext.Picture.Assign(imgOn.Picture);
 end;
