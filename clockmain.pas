@@ -174,7 +174,6 @@ type
     procedure ShowForm(MyForm: TForm);
     procedure StartDiscoverServer;
     procedure UpdatingMusic(Player: TPlayer);
-    procedure ComServerCallback;
 
 {$IFDEF GRABXKEYS}
     procedure GrabMediaKeys;
@@ -844,6 +843,8 @@ end;
 
 procedure TfrmClockMain.FormActivate(Sender: TObject);
 begin
+  Randomize;
+
   if frmSettings.cbxForceFullscreen.Checked then
     gdk_window_fullscreen(PGtkWidget(Handle)^.window);
 end;
@@ -1310,13 +1311,6 @@ begin
   if (Command <> rcomNone) then
      ProcessCommand(Command);
 
-  tmrCommand.Enabled := True;
-end;
-
-procedure TfrmClockMain.ComServerCallback;
-var
-  Command: TRemoteCommand;
-begin
   tmrCommand.Enabled := True;
 end;
 

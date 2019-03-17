@@ -114,7 +114,11 @@ begin
 
             // Send packet clock name
             Buffer := FClockName + #0#0#0#0#0#0#0#0#0#0;
-	          Sleep(Random(200));
+	          Sleep(Random(500));
+            FSocket.SendString('CLOCKNAME:' +  Buffer);
+	          Sleep(Random(500));
+            FSocket.SendString('CLOCKNAME:' +  Buffer);
+	          Sleep(Random(500));
             FSocket.SendString('CLOCKNAME:' +  Buffer);
 
             {$IFDEF DEBUG} Log('Discover Server: Sent "' + Buffer + '"'); {$ENDIF}
