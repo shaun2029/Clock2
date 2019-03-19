@@ -6,7 +6,7 @@ unit DiscoverServer;
 //
 
 {$mode Delphi}
-//{$DEFINE DEBUG}
+{$DEFINE DEBUG}
 
 interface
 
@@ -101,7 +101,7 @@ begin
       while not Terminated do
       begin
         // wait for new packet
-        Buffer := FSocket.RecvPacket(200);
+        Buffer := FSocket.RecvPacket(1000);
 
         if FSocket.LastError = 0 then
         begin
@@ -113,12 +113,9 @@ begin
             {$IFDEF DEBUG} Log('Discover Server: Received REQUEST:CLOCKNAME ...'); {$ENDIF}
 
             // Send packet clock name
-            Buffer := FClockName + #0#0#0#0#0#0#0#0#0#0;
-	          Sleep(Random(500));
+            Buffer := FClockName + #0;
             FSocket.SendString('CLOCKNAME:' +  Buffer);
-	          Sleep(Random(500));
-            FSocket.SendString('CLOCKNAME:' +  Buffer);
-	          Sleep(Random(500));
+	          Sleep(Random(40));
             FSocket.SendString('CLOCKNAME:' +  Buffer);
 
             {$IFDEF DEBUG} Log('Discover Server: Sent "' + Buffer + '"'); {$ENDIF}
@@ -156,6 +153,7 @@ begin
   FErrorState := desOk;
   FSocket := TUDPBlockSocket.Create;
   FSocket.ConvertLineEnd := True;
+  FSocket.EnableBroadcast(True);
 
   FPort := Port;
   FClockName := ClockName;
