@@ -26,7 +26,7 @@ uses
   DiscoverServer, RadioStations;
 
 const
-  VERSION = '3.4.0';
+  VERSION = '3.5.0';
 
 type
   TMusicState = (msPlaying, msPaused);
@@ -712,7 +712,7 @@ end;
 procedure TfrmClockMain.FormCreate(Sender: TObject);
 var
   i: Integer;
-  MixerControl : string;
+  MixerControl, SerialDevice : string;
   UsePulseVol: boolean;
   UseVol: string;
   VolControl: TVolumeControl;
@@ -753,6 +753,7 @@ begin
     UseVol := IniFile.ReadString('Volume', 'UseVolControl', '');
     UsePulseVol := IniFile.ReadBool('Volume', 'UsePulse', UsePulseVol);
     MixerControl := IniFile.ReadString('Volume', 'MixerControl', MixerControl);
+    SerialDevice := IniFile.ReadString('Control', 'SerialDevice', '/dev/ttyUSB0');
 
     for i := 0 to 9  do
     begin
@@ -799,7 +800,7 @@ begin
   FSyncServer := nil;
   FSyncClient := nil;
 
-  FCOMServer := TCOMServer.Create(44558);
+  FCOMServer := TCOMServer.Create(44558, SerialDevice);
   tmrCommand.Enabled := True;
 
   FLinuxDateTime := TLinuxDateTime.Create;

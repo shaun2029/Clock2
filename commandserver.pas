@@ -29,11 +29,18 @@ type
     FPort: integer;
     FPlaying, FRadioStations, FReminders: string;
     FRadioStation: integer;
+    FIRRadioStation: integer;
     FErrorState: TComErrorState;
+    FIRRead, FIRWrite: TextFile;
+    FSerialDevice: string;
+    FTemprature: single;
 
-    procedure AttendConnection(Socket: TTCPBlockSocket);
+    procedure AttendConnection(Socket: TTCPBlockSocket; IRActive: boolean);
     function GetRadioStation: integer;
     function GetCommand: TRemoteCommand;
+    procedure ReadSerialCommands;
+    procedure CloseSerialDevice;
+    function OpenSerialDevice(Filename: string): boolean;
     procedure SetPlaying(const AValue: string);
     procedure SetRadioStations(const AValue: string);
     procedure SetReminders(const AValue: string);
@@ -43,7 +50,7 @@ type
 
     procedure Execute; override;
   public
-    constructor Create(Port: integer);
+    constructor Create(Port: integer; SerialDevice: string);
     destructor Destroy; override;
 
     procedure Lock();
@@ -60,6 +67,8 @@ type
   TCOMServer = class
   private
     FCOMServerThread: TCOMServerThread;
+    FSerialDevice: string;
+
     function GetErrorState: TComErrorState;
     function GetRadioStation: integer;
     procedure SetPlaying(const AValue: string);
@@ -67,7 +76,7 @@ type
     procedure SetRadioStations(AValue: string);
     procedure SetReminders(AValue: string);
   public
-    constructor Create(Port: integer);
+    constructor Create(Port: integer; SerialDevice: string);
     destructor Destroy; override;
   published
     property Playing: string write SetPlaying;
@@ -128,11 +137,11 @@ begin
   FCOMServerThread.Unlock;
 end;
 
-constructor TCOMServer.Create(Port: integer);
+constructor TCOMServer.Create(Port: integer; SerialDevice: string);
 begin
   inherited Create;
 
-  FCOMServerThread := TCOMServerThread.Create(Port);
+  FCOMServerThread := TCOMServerThread.Create(Port, SerialDevice);
 end;
 
 destructor TCOMServer.Destroy;
@@ -171,7 +180,11 @@ end;
 procedure TCOMServerThread.Execute;
 var
   ListenerSocket, ConnectionSocket: TTCPBlockSocket;
+  IRActive: boolean;
 begin
+  FIRRadioStation := 0;
+  IRActive := OpenSerialDevice(FSerialDevice);
+
   try
     ListenerSocket := TTCPBlockSocket.Create;
     ConnectionSocket := TTCPBlockSocket.Create;
@@ -191,13 +204,18 @@ begin
     else
     begin
       repeat
+        if (IRActive) then
+        begin
+          ReadSerialCommands;
+        end;
+
         if ListenerSocket.CanRead(200) then
         begin
           ConnectionSocket.Socket := ListenerSocket.accept;
           ConnectionSocket.ConvertLineEnd := True;
           //WriteLn('Attending Connection. Error code (0=Success): ', ConnectionSocket.lasterror);
           FCritical.Enter;
-          AttendConnection(ConnectionSocket);
+          AttendConnection(ConnectionSocket, IRActive);
           FCritical.Leave;
           ConnectionSocket.CloseSocket;
         end
@@ -214,6 +232,11 @@ begin
     ListenerSocket.CloseSocket;
     ListenerSocket.Free;
     ConnectionSocket.Free;
+
+    if (IRActive) then
+    begin
+      CloseSerialDevice;
+    end;
   except
     on E: exception do
     begin
@@ -226,7 +249,14 @@ begin
   end;
 end;
 
-procedure TCOMServerThread.AttendConnection(Socket: TTCPBlockSocket);
+{ Linux request:
+  exec 3<>/dev/tcp/127.0.0.1/44558; echo -e "CLOCK:TEMPRATURE\r\n" >&3; cat <&3
+
+  Responce:
+  27.81999969
+  :OK
+}
+procedure TCOMServerThread.AttendConnection(Socket: TTCPBlockSocket; IRActive: boolean);
 var
   Buffer: string;
   LastError: integer;
@@ -339,6 +369,20 @@ begin
       FCritical.Leave;
       Socket.SendString(':OK' + #10);
     end
+    else if Buffer = 'CLOCK:TEMPRATURE' then
+    begin
+      if (IRActive) then
+      begin
+        writeln(FIRWrite, 'gettemp');
+        Sleep(200);
+        ReadSerialCommands;
+      end;
+
+      FCritical.Enter;
+      Socket.SendString(FloatToStr(FTemprature) + #10);
+      FCritical.Leave;
+      Socket.SendString(':OK' + #10);
+    end
     else if Buffer = 'CLOCK:FAVORITE' then
     begin
       FCritical.Enter;
@@ -365,7 +409,7 @@ begin
   FCritical.Leave;
 end;
 
-constructor TCOMServerThread.Create(Port: integer);
+constructor TCOMServerThread.Create(Port: integer; SerialDevice: string);
 begin
   inherited Create(False);
 
@@ -376,6 +420,7 @@ begin
   FRadioStations := '';
   FReminders := '';
   FPort := Port;
+  FSerialDevice := SerialDevice;
 end;
 
 destructor TCOMServerThread.Destroy;
@@ -385,14 +430,170 @@ begin
   FCritical.Free;
 end;
 
-procedure TCOMServerThread.Lock;
+procedure TCOMServerThread.Lock();
 begin
   FCritical.Enter;
 end;
 
-procedure TCOMServerThread.Unlock;
+procedure TCOMServerThread.Unlock();
 begin
   FCritical.Leave;
+end;
+
+{
+ Serial device is arduino connected to IR receiver and LM35 temprature sensor.
+
+IR Commands and codes:
+
+  Next
+  Received SONY: 8DC
+  Code Length:12
+
+  Prev
+  Received SONY: DC
+  Code Length:12
+
+  Play/Pause
+  Received SONY: 59C
+  Code Length:12
+
+  Radio 0
+  Received SONY: 6BC
+  Code Length:12
+
+  Radio 1
+  Received SONY: EBC
+  Code Length:12
+
+  Radio 3
+  Received SONY: 5BC
+  Code Length:12
+
+  Sleep
+  Received SONY: E3C
+  Code Length:12
+
+  Vol Up
+  Received SONY: 39C
+  Code Length:12
+
+  Vol Down
+  Received SONY: D9C
+  Code Length:12
+}
+
+function TCOMServerThread.OpenSerialDevice(Filename: string): boolean;
+begin
+  Result := True;
+
+  // Set the name of the file that will be read
+  AssignFile(FIRRead, Filename);
+  AssignFile(FIRWrite, Filename);
+
+  // Embed the file handling in a try/except block to handle errors gracefully
+  try
+    // Open the file for reading
+    ReWrite(FIRWrite);
+  except
+  end;
+
+  // Embed the file handling in a try/except block to handle errors gracefully
+  try
+    // Open the file for reading
+    Reset(FIRRead);
+  except
+    Result := False;
+  end;
+end;
+
+procedure TCOMServerThread.CloseSerialDevice;
+begin
+  try
+    // Done so close the file
+    CloseFile(FIRWrite);
+    CloseFile(FIRRead);
+  except
+  end;
+end;
+
+procedure TCOMServerThread.ReadSerialCommands;
+var
+  s: string;
+begin
+  // Embed the file handling in a try/except block to handle errors gracefully
+  try
+    while not Eof(FIRRead) do
+    begin
+      readln(FIRRead, s);
+      writeln(s);
+
+      // Next
+      if (s = 'Received SONY: 8DC') then
+      begin
+        FCritical.Enter;
+        FCommand := rcomNext;
+        FCritical.Leave;
+      end
+      else if (s = 'Received SONY: DC') then
+      begin
+        FCritical.Enter;
+        FCommand := rcomPrevious;
+        FCritical.Leave;
+      end
+      else if (s = 'Received SONY: 59C') then
+      begin
+        FCritical.Enter;
+        FCommand := rcomPause;
+        FCritical.Leave;
+      end
+      else if (s = 'Received SONY: 39C') then
+      begin
+        FCritical.Enter;
+        FCommand := rcomVolumeUp;
+        FCritical.Leave;
+      end
+      else if (s = 'Received SONY: D9C') then
+      begin
+        FCritical.Enter;
+        FCommand := rcomVolumeDown;
+        FCritical.Leave;
+      end
+      else if (s = 'Received SONY: EBC') then
+      begin
+        FCritical.Enter;
+        FRadioStation := 0;
+        FCommand := rcomSetRadioStation;
+        FCritical.Leave;
+      end
+      else if (s = 'Received SONY: 6BC') then
+      begin
+        FCritical.Enter;
+        FRadioStation := 1;
+        FCommand := rcomSetRadioStation;
+        FCritical.Leave;
+      end
+      else if (s = 'Received SONY: 5BC') then
+      begin
+        FCritical.Enter;
+        FRadioStation := 2;
+        FCommand := rcomSetRadioStation;
+        FCritical.Leave;
+      end
+      else if (s = 'Received SONY: E3C') then
+      begin
+        FCritical.Enter;
+        FCommand := rcomSleep;
+        FCritical.Leave;
+      end
+      else if (Pos('Temp: ', s) = 1) then
+      begin
+        FCritical.Enter;
+        FTemprature := StrToFloat(StringReplace(s, 'Temp: ', '', [rfIgnoreCase]));
+        FCritical.Leave;
+      end;
+    end;
+  except
+  end;
 end;
 
 end.
