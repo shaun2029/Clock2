@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
-    <Version Value="11"/>
+    <Version Value="10"/>
     <General>
       <MainUnit Value="0"/>
       <Title Value="Clock2"/>
@@ -83,10 +83,9 @@
       <Version Value="2"/>
     </PublishOptions>
     <RunParams>
-      <FormatVersion Value="2"/>
-      <Modes Count="1">
-        <Mode0 Name="default"/>
-      </Modes>
+      <local>
+        <FormatVersion Value="1"/>
+      </local>
     </RunParams>
     <RequiredPackages Count="3">
       <Item1>
@@ -100,14 +99,13 @@
         <PackageName Value="LCL"/>
       </Item3>
     </RequiredPackages>
-    <Units Count="46">
+    <Units Count="47">
       <Unit0>
         <Filename Value="Clock2.lpr"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="11"/>
+        <EditorIndex Value="-1"/>
         <CursorPos X="24" Y="28"/>
         <UsageCount Value="225"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit0>
       <Unit1>
@@ -117,11 +115,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Pictures"/>
-        <EditorIndex Value="17"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="159"/>
         <CursorPos X="11" Y="176"/>
         <UsageCount Value="225"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit1>
       <Unit2>
@@ -140,21 +137,19 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Settings"/>
-        <EditorIndex Value="10"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="329"/>
         <CursorPos X="59" Y="108"/>
         <UsageCount Value="200"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit3>
       <Unit4>
         <Filename Value="alarm.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="53"/>
         <CursorPos X="34" Y="71"/>
         <UsageCount Value="207"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit4>
       <Unit5>
@@ -165,8 +160,8 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ClockMain"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="783"/>
-        <CursorPos X="43" Y="796"/>
+        <TopLine Value="67"/>
+        <CursorPos X="19" Y="29"/>
         <UsageCount Value="207"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -188,12 +183,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Reminders"/>
-        <EditorIndex Value="12"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="370"/>
         <CursorPos X="40" Y="384"/>
         <UsageCount Value="203"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit7>
       <Unit8>
@@ -215,9 +208,8 @@
         <Filename Value="musicplayer.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="MusicPlayer"/>
-        <EditorIndex Value="16"/>
-        <TopLine Value="449"/>
-        <CursorPos Y="224"/>
+        <TopLine Value="35"/>
+        <CursorPos X="28" Y="44"/>
         <UsageCount Value="212"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -229,19 +221,19 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ReminderList"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="57"/>
         <CursorPos X="14" Y="85"/>
         <UsageCount Value="212"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit11>
       <Unit12>
         <Filename Value="commandserver.pas"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="503"/>
-        <CursorPos Y="482"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="466"/>
+        <CursorPos X="5" Y="482"/>
         <UsageCount Value="212"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -249,11 +241,10 @@
       <Unit13>
         <Filename Value="music.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="14"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="409"/>
         <CursorPos X="39" Y="426"/>
         <UsageCount Value="212"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit13>
       <Unit14>
@@ -263,26 +254,24 @@
         <ResourceBaseClass Value="Form"/>
         <TopLine Value="13"/>
         <CursorPos Y="36"/>
-        <UsageCount Value="188"/>
+        <UsageCount Value="187"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit14>
       <Unit15>
         <Filename Value="sync.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="36"/>
         <CursorPos X="25" Y="48"/>
         <UsageCount Value="212"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit15>
       <Unit16>
         <Filename Value="udpclient.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="-1"/>
         <CursorPos Y="106"/>
         <UsageCount Value="212"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit16>
       <Unit17>
@@ -302,22 +291,19 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="PlaylistCreator"/>
-        <EditorIndex Value="18"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="400"/>
         <CursorPos X="22" Y="431"/>
         <UsageCount Value="200"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit18>
       <Unit19>
         <Filename Value="touchlist.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="TouchList"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="-1"/>
         <CursorPos X="11" Y="8"/>
         <UsageCount Value="200"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit19>
       <Unit20>
@@ -325,14 +311,14 @@
         <UnitName Value="UniqueInstanceRaw"/>
         <TopLine Value="47"/>
         <CursorPos X="98" Y="55"/>
-        <UsageCount Value="35"/>
+        <UsageCount Value="34"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit20>
       <Unit21>
         <Filename Value="/usr/share/fpcsrc/2.6.0/rtl/objpas/sysutils/datih.inc"/>
         <TopLine Value="95"/>
         <CursorPos X="10" Y="109"/>
-        <UsageCount Value="25"/>
+        <UsageCount Value="24"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit21>
       <Unit22>
@@ -360,16 +346,15 @@
         <Filename Value="/usr/share/fpcsrc/2.6.0/rtl/objpas/classes/classesh.inc"/>
         <TopLine Value="1468"/>
         <CursorPos X="40" Y="1468"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit24>
       <Unit25>
         <Filename Value="synapse/source/lib/blcksock.pas"/>
-        <EditorIndex Value="9"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="1062"/>
         <CursorPos X="30" Y="1080"/>
         <UsageCount Value="125"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit25>
       <Unit26>
@@ -384,7 +369,7 @@
         <Filename Value="synapse/source/lib/httpsend.pas"/>
         <TopLine Value="326"/>
         <CursorPos Y="357"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit27>
       <Unit28>
@@ -399,7 +384,7 @@
       <Unit29>
         <Filename Value="lnet/lib/lcontainersh.inc"/>
         <CursorPos X="31" Y="17"/>
-        <UsageCount Value="31"/>
+        <UsageCount Value="30"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit29>
       <Unit30>
@@ -415,7 +400,7 @@
         <Filename Value="/usr/share/fpcsrc/2.6.2/rtl/objpas/classes/classesh.inc"/>
         <TopLine Value="907"/>
         <CursorPos X="14" Y="926"/>
-        <UsageCount Value="1"/>
+        <UsageCount Value="10"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit31>
       <Unit32>
@@ -426,31 +411,30 @@
         <ResourceBaseClass Value="Form"/>
         <TopLine Value="114"/>
         <CursorPos X="8" Y="124"/>
-        <UsageCount Value="155"/>
+        <UsageCount Value="163"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit32>
       <Unit33>
         <Filename Value="discoverserver.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="DiscoverServer"/>
-        <EditorIndex Value="8"/>
+        <EditorIndex Value="-1"/>
         <CursorPos X="51" Y="104"/>
         <UsageCount Value="274"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit33>
       <Unit34>
         <Filename Value="/usr/share/fpcsrc/2.6.2/packages/fcl-process/src/process.pp"/>
         <TopLine Value="9"/>
         <CursorPos X="48" Y="25"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit34>
       <Unit35>
         <Filename Value="/usr/share/fpcsrc/2.6.2/rtl/objpas/objpas.pp"/>
         <TopLine Value="277"/>
         <CursorPos X="33" Y="84"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit35>
       <Unit36>
@@ -461,23 +445,22 @@
         <ResourceBaseClass Value="Form"/>
         <TopLine Value="125"/>
         <CursorPos X="19" Y="136"/>
-        <UsageCount Value="199"/>
+        <UsageCount Value="201"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit36>
       <Unit37>
         <Filename Value="ID3v2Library.pas"/>
         <TopLine Value="1569"/>
         <CursorPos X="45" Y="1571"/>
-        <UsageCount Value="14"/>
+        <UsageCount Value="13"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit37>
       <Unit38>
         <Filename Value="mpd.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="15"/>
+        <EditorIndex Value="-1"/>
         <CursorPos X="12" Y="10"/>
-        <UsageCount Value="185"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="193"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit38>
       <Unit39>
@@ -487,33 +470,31 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="RadioStations"/>
-        <EditorIndex Value="13"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="39"/>
         <CursorPos X="27" Y="49"/>
-        <UsageCount Value="177"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="185"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit39>
       <Unit40>
         <Filename Value="lnet/lib/lnet.pp"/>
         <UnitName Value="lNet"/>
-        <EditorIndex Value="7"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="769"/>
         <CursorPos X="30" Y="784"/>
-        <UsageCount Value="64"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="67"/>
       </Unit40>
       <Unit41>
         <Filename Value="/usr/share/fpcsrc/3.0.2/packages/fcl-process/src/process.pp"/>
         <TopLine Value="148"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit41>
       <Unit42>
         <Filename Value="/usr/share/fpcsrc/3.0.2/rtl/unix/unix.pp"/>
         <UnitName Value="Unix"/>
         <TopLine Value="178"/>
         <CursorPos X="18" Y="92"/>
-        <UsageCount Value="1"/>
+        <UsageCount Value="10"/>
       </Unit42>
       <Unit43>
         <Filename Value="../../../Programs/lazarus/components/lnet/lazaruspackage/lclnet.pas"/>
@@ -521,7 +502,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="15"/>
         <CursorPos X="3" Y="31"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit43>
       <Unit44>
@@ -529,7 +510,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="308"/>
         <CursorPos X="6" Y="324"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit44>
       <Unit45>
         <Filename Value="lnet/lib/lmimewrapper.pp"/>
@@ -537,129 +518,132 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="582"/>
         <CursorPos X="12" Y="629"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit45>
+      <Unit46>
+        <Filename Value="/usr/share/fpcsrc/3.0.4/packages/fcl-process/src/process.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="167"/>
+        <CursorPos X="10" Y="182"/>
+        <UsageCount Value="9"/>
+      </Unit46>
     </Units>
-    <JumpHistory Count="30" HistoryIndex="29">
+    <JumpHistory Count="29" HistoryIndex="28">
       <Position1>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="303" Column="40" TopLine="293"/>
+        <Filename Value="commandserver.pas"/>
+        <Caret Line="495" TopLine="476"/>
       </Position1>
       <Position2>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="649" Column="48" TopLine="634"/>
+        <Filename Value="commandserver.pas"/>
+        <Caret Line="531" TopLine="513"/>
       </Position2>
       <Position3>
         <Filename Value="commandserver.pas"/>
-        <Caret Line="518" Column="30" TopLine="489"/>
+        <Caret Line="532" TopLine="513"/>
       </Position3>
       <Position4>
         <Filename Value="commandserver.pas"/>
+        <Caret Line="534" TopLine="513"/>
       </Position4>
       <Position5>
         <Filename Value="commandserver.pas"/>
-        <Caret Line="85" Column="55" TopLine="61"/>
+        <Caret Line="538" TopLine="513"/>
       </Position5>
       <Position6>
         <Filename Value="commandserver.pas"/>
-        <Caret Line="145" Column="44" TopLine="127"/>
+        <Caret Line="552" Column="28" TopLine="526"/>
       </Position6>
       <Position7>
         <Filename Value="commandserver.pas"/>
-        <Caret Line="401" Column="33" TopLine="373"/>
+        <Caret Line="504" TopLine="487"/>
       </Position7>
       <Position8>
         <Filename Value="commandserver.pas"/>
-        <Caret Line="390" Column="72" TopLine="375"/>
+        <Caret Line="490" TopLine="472"/>
       </Position8>
       <Position9>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="796" Column="43" TopLine="783"/>
+        <Filename Value="commandserver.pas"/>
+        <Caret Line="38" TopLine="20"/>
       </Position9>
       <Position10>
         <Filename Value="commandserver.pas"/>
-        <Caret Line="526" Column="25" TopLine="507"/>
+        <Caret Line="182" TopLine="172"/>
       </Position10>
       <Position11>
         <Filename Value="commandserver.pas"/>
-        <Caret Line="522" Column="8" TopLine="502"/>
+        <Caret Line="488" TopLine="473"/>
       </Position11>
       <Position12>
         <Filename Value="commandserver.pas"/>
-        <Caret Line="541" Column="25" TopLine="528"/>
+        <Caret Line="479" TopLine="472"/>
       </Position12>
       <Position13>
         <Filename Value="commandserver.pas"/>
-        <Caret Line="368" Column="40" TopLine="353"/>
+        <Caret Line="480" TopLine="472"/>
       </Position13>
       <Position14>
         <Filename Value="commandserver.pas"/>
-        <Caret Line="36" Column="24" TopLine="22"/>
+        <Caret Line="479" Column="41" TopLine="469"/>
       </Position14>
       <Position15>
         <Filename Value="commandserver.pas"/>
-        <Caret Line="252" Column="87" TopLine="237"/>
+        <Caret Line="489" Column="25" TopLine="469"/>
       </Position15>
       <Position16>
         <Filename Value="commandserver.pas"/>
-        <Caret Line="38" Column="74" TopLine="30"/>
+        <Caret Line="475" TopLine="469"/>
       </Position16>
       <Position17>
         <Filename Value="commandserver.pas"/>
-        <Caret Line="218" Column="46" TopLine="204"/>
+        <Caret Line="44" TopLine="26"/>
       </Position17>
       <Position18>
         <Filename Value="commandserver.pas"/>
-        <Caret Line="565" Column="8" TopLine="550"/>
+        <Caret Line="366" Column="39" TopLine="348"/>
       </Position18>
       <Position19>
         <Filename Value="commandserver.pas"/>
-        <Caret Line="365" Column="23" TopLine="169"/>
+        <Caret Line="540" Column="22" TopLine="518"/>
       </Position19>
       <Position20>
         <Filename Value="commandserver.pas"/>
-        <Caret Line="194" TopLine="353"/>
       </Position20>
       <Position21>
         <Filename Value="commandserver.pas"/>
-        <Caret Line="365" Column="17" TopLine="354"/>
+        <Caret Line="481" TopLine="459"/>
       </Position21>
       <Position22>
         <Filename Value="commandserver.pas"/>
-        <Caret Line="367" TopLine="354"/>
+        <Caret Line="478" TopLine="459"/>
       </Position22>
       <Position23>
         <Filename Value="commandserver.pas"/>
-        <Caret Line="369" TopLine="354"/>
+        <Caret Line="479" TopLine="468"/>
       </Position23>
       <Position24>
         <Filename Value="commandserver.pas"/>
-        <Caret Line="367" TopLine="354"/>
+        <Caret Line="478" TopLine="468"/>
       </Position24>
       <Position25>
         <Filename Value="commandserver.pas"/>
-        <Caret Line="578" Column="33" TopLine="549"/>
+        <Caret Line="533" Column="20" TopLine="467"/>
       </Position25>
       <Position26>
         <Filename Value="commandserver.pas"/>
-        <Caret Line="369" Column="12" TopLine="350"/>
+        <Caret Line="478" Column="33" TopLine="467"/>
       </Position26>
       <Position27>
         <Filename Value="commandserver.pas"/>
-        <Caret Line="485" Column="16" TopLine="468"/>
+        <Caret Line="481" TopLine="467"/>
       </Position27>
       <Position28>
         <Filename Value="commandserver.pas"/>
-        <Caret Line="492" Column="6" TopLine="472"/>
+        <Caret Line="505" TopLine="488"/>
       </Position28>
       <Position29>
         <Filename Value="commandserver.pas"/>
-        <Caret Line="34" Column="22" TopLine="16"/>
+        <Caret Line="481" TopLine="462"/>
       </Position29>
-      <Position30>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="369" Column="25" TopLine="363"/>
-      </Position30>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

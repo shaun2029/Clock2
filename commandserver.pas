@@ -10,7 +10,7 @@ unit commandserver;
 interface
 
 uses
-  Classes, SysUtils, SyncObjs,
+  Classes, SysUtils, SyncObjs, Process,
 
   // synapse
   blcksock;
@@ -31,16 +31,13 @@ type
     FRadioStation: integer;
     FIRRadioStation: integer;
     FErrorState: TComErrorState;
-    FIRRead, FIRWrite: TextFile;
     FSerialDevice: string;
     FTemprature: single;
 
-    procedure AttendConnection(Socket: TTCPBlockSocket; IRActive: boolean);
+    procedure AttendConnection(Socket: TTCPBlockSocket);
     function GetRadioStation: integer;
     function GetCommand: TRemoteCommand;
-    procedure ReadSerialCommands;
-    procedure CloseSerialDevice;
-    function OpenSerialDevice(Filename: string): boolean;
+    procedure ReadSerialCommands(Filename: string);
     procedure SetPlaying(const AValue: string);
     procedure SetRadioStations(const AValue: string);
     procedure SetReminders(const AValue: string);
@@ -67,7 +64,6 @@ type
   TCOMServer = class
   private
     FCOMServerThread: TCOMServerThread;
-    FSerialDevice: string;
 
     function GetErrorState: TComErrorState;
     function GetRadioStation: integer;
@@ -180,10 +176,8 @@ end;
 procedure TCOMServerThread.Execute;
 var
   ListenerSocket, ConnectionSocket: TTCPBlockSocket;
-  IRActive: boolean;
 begin
   FIRRadioStation := 0;
-  IRActive := OpenSerialDevice(FSerialDevice);
 
   try
     ListenerSocket := TTCPBlockSocket.Create;
@@ -204,9 +198,9 @@ begin
     else
     begin
       repeat
-        if (IRActive) then
+        if FileExists(FSerialDevice) then
         begin
-          ReadSerialCommands;
+          ReadSerialCommands(FSerialDevice);
         end;
 
         if ListenerSocket.CanRead(200) then
@@ -215,7 +209,7 @@ begin
           ConnectionSocket.ConvertLineEnd := True;
           //WriteLn('Attending Connection. Error code (0=Success): ', ConnectionSocket.lasterror);
           FCritical.Enter;
-          AttendConnection(ConnectionSocket, IRActive);
+          AttendConnection(ConnectionSocket);
           FCritical.Leave;
           ConnectionSocket.CloseSocket;
         end
@@ -232,11 +226,6 @@ begin
     ListenerSocket.CloseSocket;
     ListenerSocket.Free;
     ConnectionSocket.Free;
-
-    if (IRActive) then
-    begin
-      CloseSerialDevice;
-    end;
   except
     on E: exception do
     begin
@@ -256,7 +245,7 @@ end;
   27.81999969
   :OK
 }
-procedure TCOMServerThread.AttendConnection(Socket: TTCPBlockSocket; IRActive: boolean);
+procedure TCOMServerThread.AttendConnection(Socket: TTCPBlockSocket);
 var
   Buffer: string;
   LastError: integer;
@@ -371,17 +360,14 @@ begin
     end
     else if Buffer = 'CLOCK:TEMPRATURE' then
     begin
-      if (IRActive) then
+      if FileExists(FSerialDevice) then
       begin
-        writeln(FIRWrite, 'gettemp');
-        Sleep(200);
-        ReadSerialCommands;
-      end;
-
-      FCritical.Enter;
-      Socket.SendString(FloatToStr(FTemprature) + #10);
-      FCritical.Leave;
-      Socket.SendString(':OK' + #10);
+        FCritical.Enter;
+        Socket.SendString(FloatToStr(FTemprature) + #10);
+        FCritical.Leave;
+        Socket.SendString(':OK' + #10);
+      end
+      else Socket.SendString(':BAD' + #10);
     end
     else if Buffer = 'CLOCK:FAVORITE' then
     begin
@@ -482,50 +468,21 @@ IR Commands and codes:
   Code Length:12
 }
 
-function TCOMServerThread.OpenSerialDevice(Filename: string): boolean;
-begin
-  Result := True;
-
-  // Set the name of the file that will be read
-  AssignFile(FIRRead, Filename);
-  AssignFile(FIRWrite, Filename);
-
-  // Embed the file handling in a try/except block to handle errors gracefully
-  try
-    // Open the file for reading
-    ReWrite(FIRWrite);
-  except
-  end;
-
-  // Embed the file handling in a try/except block to handle errors gracefully
-  try
-    // Open the file for reading
-    Reset(FIRRead);
-  except
-    Result := False;
-  end;
-end;
-
-procedure TCOMServerThread.CloseSerialDevice;
-begin
-  try
-    // Done so close the file
-    CloseFile(FIRWrite);
-    CloseFile(FIRRead);
-  except
-  end;
-end;
-
-procedure TCOMServerThread.ReadSerialCommands;
+procedure TCOMServerThread.ReadSerialCommands(Filename: string);
 var
-  s: string;
+  s, s2: string;
 begin
   // Embed the file handling in a try/except block to handle errors gracefully
   try
-    while not Eof(FIRRead) do
+    RunCommand('timeout 0.1 cat ' + Filename, s);
+    if (Length(s) > 0) then
     begin
-      readln(FIRRead, s);
-      writeln(s);
+       SetLength(s, Pos(#10, s) - 1);
+    end;
+
+    if (Length(s) > 0) then
+    begin
+      write(s);
 
       // Next
       if (s = 'Received SONY: 8DC') then

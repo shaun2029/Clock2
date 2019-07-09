@@ -26,7 +26,7 @@ uses
   DiscoverServer, RadioStations;
 
 const
-  VERSION = '3.5.0';
+  VERSION = '3.5.1';
 
 type
   TMusicState = (msPlaying, msPaused);
