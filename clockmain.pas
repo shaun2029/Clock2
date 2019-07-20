@@ -23,10 +23,10 @@ uses
   Buttons, Music, Sync, Process, MusicPlayer, PlaylistCreator, commandserver, X,
   Xlib, CTypes, WaitForMedia, Pictures, DateTime, SourcePicker,
   ConnectionHealth, Unix, Email, IniFiles, SignalHandler, Equaliser, MplayerEQ,
-  DiscoverServer, RadioStations;
+  DiscoverServer, RadioStations, ExceptionHandler;
 
 const
-  VERSION = '3.5.1';
+  VERSION = '3.5.2';
 
 type
   TMusicState = (msPlaying, msPaused);
@@ -192,6 +192,7 @@ type
     HTTPBuffer: string;
     function WaitForMedia(Path: string): boolean;
     procedure SignalCallback(Command: TRemoteCommand);
+    procedure CustomExceptionHandler(Sender: TObject; E: Exception);
   published
   end;
 
@@ -203,6 +204,12 @@ implementation
 {$R *.lfm}
 
 { TfrmClockMain }
+
+procedure TfrmClockMain.CustomExceptionHandler(Sender: TObject; E: Exception);
+begin
+  DumpExceptionCallStack(E);
+  Halt; // End of program execution
+end;
 
 procedure TfrmClockMain.ApplyMplayerEQ;
 var

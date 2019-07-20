@@ -35,6 +35,7 @@ type
     FTemprature: single;
 
     procedure AttendConnection(Socket: TTCPBlockSocket);
+    procedure DumpExceptionCallStack;
     function GetRadioStation: integer;
     function GetCommand: TRemoteCommand;
     procedure ReadSerialCommands(Filename: string);
@@ -152,6 +153,42 @@ end;
 
 { TCOMServerThread }
 
+
+var
+     DumpFatalException: Exception;
+
+
+procedure TCOMServerThread.DumpExceptionCallStack;
+var
+  I: Integer;
+  Frames: PPointer;
+  Report: string;
+  E: Exception;
+  EFile: text;
+  Filename: String;
+begin
+  E := DumpFatalException;
+
+  Report := 'TCOMServerThread Program exception! ' + LineEnding +
+    'Stacktrace:' + LineEnding + LineEnding;
+  if E <> nil then begin
+    Report := Report + 'Exception class: ' + E.ClassName + LineEnding +
+    'Message: ' + E.Message + LineEnding;
+  end;
+  Report := Report + BackTraceStrFunc(ExceptAddr);
+  Frames := ExceptFrames;
+  for I := 0 to ExceptFrameCount - 1 do
+    Report := Report + LineEnding + BackTraceStrFunc(Frames[I]);
+
+  Filename := GetUserDir + 'Clock2-CrashDump-' + DateTimeToStr(Now) + '.txt';
+  Assign(EFile, Filename);
+  Rewrite(EFile);
+  Writeln(EFile, Report);
+  Close(EFile);
+
+  Writeln(Report);
+end;
+
 procedure TCOMServerThread.SetPlaying(const AValue: string);
 begin
   FCritical.Enter;
@@ -227,8 +264,11 @@ begin
     ListenerSocket.Free;
     ConnectionSocket.Free;
   except
-    on E: exception do
+    on E: Exception do
     begin
+      DumpFatalException := E;
+      Synchronize(@DumpExceptionCallStack);
+
       FErrorState := cesException;
       Log('Command Server: Fatal Exception!');
       Log('Fatal Exception: ' + E.Message);
@@ -475,10 +515,11 @@ begin
   // Embed the file handling in a try/except block to handle errors gracefully
   try
     RunCommand('timeout 0.1 cat ' + Filename, s);
-    if (Length(s) > 0) then
+    if (Length(s) > 1) then
     begin
        SetLength(s, Pos(#10, s) - 1);
-    end;
+    end
+    else s := '';
 
     if (Length(s) > 0) then
     begin
@@ -545,7 +586,10 @@ begin
       else if (Pos('Temp: ', s) = 1) then
       begin
         FCritical.Enter;
-        FTemprature := StrToFloat(StringReplace(s, 'Temp: ', '', [rfIgnoreCase]));
+        try
+           FTemprature := StrToFloat(StringReplace(s, 'Temp: ', '', [rfIgnoreCase]));
+        finally
+        end;
         FCritical.Leave;
       end;
     end;

@@ -10,7 +10,7 @@ uses
   Settings, Reminders, ReminderList, FindPicsThread, udpserver, sync, udpclient,
   music, commandserver, MusicPlayer, WaitForMedia, PlaylistCreator, TouchList,
   DateTime, SourcePicker, ConnectionHealth, Email, SignalHandler, lnetbase,
-  DiscoverServer, mplayereq, mpd, RadioStations, equaliser;
+  DiscoverServer, mplayereq, mpd, RadioStations, equaliser, ExceptionHandler;
 
 {$IFDEF WINDOWS}{$R picshow.rc}{$ENDIF}
 
@@ -24,6 +24,8 @@ begin
 
     Application.Initialize;
     Application.CreateForm(TfrmClockMain, frmClockMain);
+    Application.OnException := @frmClockMain.CustomExceptionHandler;
+
     Application.CreateForm(TfrmSettings, frmSettings);
     Application.CreateForm(TfrmPictures, frmPictures);
     Application.CreateForm(TfrmReminders, frmReminders);
