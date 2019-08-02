@@ -99,15 +99,14 @@
         <PackageName Value="LCL"/>
       </Item3>
     </RequiredPackages>
-    <Units Count="49">
+    <Units Count="50">
       <Unit0>
         <Filename Value="Clock2.lpr"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="9"/>
         <CursorPos Y="27"/>
         <UsageCount Value="225"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit0>
       <Unit1>
@@ -162,9 +161,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ClockMain"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="9"/>
-        <CursorPos X="47" Y="19"/>
+        <TopLine Value="10"/>
+        <CursorPos X="19" Y="29"/>
         <UsageCount Value="207"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -233,10 +233,9 @@
       <Unit12>
         <Filename Value="commandserver.pas"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="5"/>
-        <TopLine Value="262"/>
-        <CursorPos X="11" Y="16"/>
+        <TopLine Value="247"/>
+        <CursorPos X="42" Y="270"/>
         <UsageCount Value="212"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -244,10 +243,11 @@
       <Unit13>
         <Filename Value="music.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="409"/>
-        <CursorPos X="39" Y="426"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="303"/>
+        <CursorPos X="44" Y="329"/>
         <UsageCount Value="212"/>
+        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit13>
       <Unit14>
@@ -414,7 +414,7 @@
         <ResourceBaseClass Value="Form"/>
         <TopLine Value="114"/>
         <CursorPos X="8" Y="124"/>
-        <UsageCount Value="165"/>
+        <UsageCount Value="166"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit32>
       <Unit33>
@@ -463,7 +463,7 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="12" Y="10"/>
-        <UsageCount Value="195"/>
+        <UsageCount Value="196"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit38>
       <Unit39>
@@ -476,7 +476,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="39"/>
         <CursorPos X="27" Y="49"/>
-        <UsageCount Value="187"/>
+        <UsageCount Value="188"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit39>
       <Unit40>
@@ -538,9 +538,9 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="ExceptionHandler"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="8"/>
+        <TopLine Value="7"/>
         <CursorPos Y="33"/>
-        <UsageCount Value="22"/>
+        <UsageCount Value="23"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit47>
@@ -553,128 +553,61 @@
         <UsageCount Value="11"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit48>
+      <Unit49>
+        <Filename Value="/usr/share/fpcsrc/3.0.4/packages/fcl-base/src/inifiles.pp"/>
+        <UnitName Value="IniFiles"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1293"/>
+        <CursorPos X="37" Y="1319"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit49>
     </Units>
-    <JumpHistory Count="30" HistoryIndex="29">
+    <JumpHistory Count="11" HistoryIndex="10">
       <Position1>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="263" Column="7" TopLine="245"/>
+        <Filename Value="music.pas"/>
+        <Caret Line="315" Column="31" TopLine="307"/>
       </Position1>
       <Position2>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="38" Column="37" TopLine="20"/>
+        <Filename Value="music.pas"/>
+        <Caret Line="47" Column="15" TopLine="31"/>
       </Position2>
       <Position3>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="211" Column="7" TopLine="164"/>
+        <Filename Value="music.pas"/>
+        <Caret Line="113" Column="17" TopLine="89"/>
       </Position3>
       <Position4>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="170" TopLine="164"/>
+        <Filename Value="music.pas"/>
+        <Caret Line="127" Column="20" TopLine="97"/>
       </Position4>
       <Position5>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="172" TopLine="164"/>
+        <Filename Value="music.pas"/>
+        <Caret Line="277" Column="17" TopLine="251"/>
       </Position5>
       <Position6>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="174" TopLine="164"/>
+        <Filename Value="music.pas"/>
+        <Caret Line="322" TopLine="303"/>
       </Position6>
       <Position7>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="173" TopLine="164"/>
+        <Filename Value="music.pas"/>
+        <Caret Line="324" Column="12" TopLine="303"/>
       </Position7>
       <Position8>
         <Filename Value="commandserver.pas"/>
-        <Caret Line="174" TopLine="164"/>
+        <Caret Line="161" Column="50" TopLine="154"/>
       </Position8>
       <Position9>
         <Filename Value="commandserver.pas"/>
-        <Caret Line="173" TopLine="164"/>
+        <Caret Line="270" Column="42" TopLine="247"/>
       </Position9>
       <Position10>
         <Filename Value="commandserver.pas"/>
-        <Caret Line="174" TopLine="164"/>
+        <Caret Line="38" Column="37" TopLine="20"/>
       </Position10>
       <Position11>
         <Filename Value="commandserver.pas"/>
-        <Caret Line="173" TopLine="164"/>
+        <Caret Line="161" Column="50" TopLine="131"/>
       </Position11>
-      <Position12>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="174" TopLine="164"/>
-      </Position12>
-      <Position13>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="176" TopLine="164"/>
-      </Position13>
-      <Position14>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="177" TopLine="164"/>
-      </Position14>
-      <Position15>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="178" TopLine="164"/>
-      </Position15>
-      <Position16>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="180" TopLine="164"/>
-      </Position16>
-      <Position17>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="168" Column="20" TopLine="157"/>
-      </Position17>
-      <Position18>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="183" Column="75" TopLine="167"/>
-      </Position18>
-      <Position19>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="189" Column="26" TopLine="169"/>
-      </Position19>
-      <Position20>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="172" TopLine="165"/>
-      </Position20>
-      <Position21>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="184" TopLine="165"/>
-      </Position21>
-      <Position22>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="183" Column="58" TopLine="165"/>
-      </Position22>
-      <Position23>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="184" TopLine="165"/>
-      </Position23>
-      <Position24>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="185" TopLine="165"/>
-      </Position24>
-      <Position25>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="186" TopLine="165"/>
-      </Position25>
-      <Position26>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="187" TopLine="165"/>
-      </Position26>
-      <Position27>
-        <Filename Value="exceptionhandler.pas"/>
-        <Caret Line="20" Column="22" TopLine="8"/>
-      </Position27>
-      <Position28>
-        <Filename Value="pictures.pas"/>
-        <Caret Line="75" TopLine="56"/>
-      </Position28>
-      <Position29>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="205" Column="29" TopLine="202"/>
-      </Position29>
-      <Position30>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="220" Column="5" TopLine="207"/>
-      </Position30>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

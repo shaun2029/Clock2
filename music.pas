@@ -314,13 +314,12 @@ end;
 
 procedure TPlayer.SaveSettings;
 var
-  IniFile: TIniFile;
+  IniFile: TIniFile = nil;
 begin
   if FConfigFile = '' then Exit;
 
-  IniFile := TIniFile.Create(FConfigFile);
-
   try
+    IniFile := TIniFile.Create(FConfigFile);
     IniFile.WriteString('Settings', 'MusicPath', FSearchPath);
     IniFile.WriteInteger('Settings', 'Position', FSongIndex);
 
@@ -330,7 +329,8 @@ begin
       FPathList.SaveToFile(ChangeFileExt(FConfigFile, '.plp'));
     end;
   finally
-    IniFile.Free;
+    if Assigned(IniFile) then
+      IniFile.Free;
   end;
 end;
 
