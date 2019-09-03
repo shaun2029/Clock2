@@ -333,11 +333,8 @@ end;
 // Load the list of paths from a playlist path file.
 procedure TfrmPlaylist.LoadSongs(const ConfigFile, StartPath: string);
 var
-  IniFile: TIniFile;
   i: Integer;
 begin
-  IniFile := TIniFile.Create(ConfigFile);
-
   try
     if FileExists(ChangeFileExt(ConfigFile, '.plp')) then
     begin
@@ -345,7 +342,6 @@ begin
       FPathList.Sort;
     end;
   finally
-    IniFile.Free;
   end;
 
   FStartPath := StartPath;

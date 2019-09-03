@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
-    <Version Value="10"/>
+    <Version Value="11"/>
     <General>
       <MainUnit Value="0"/>
       <Title Value="Clock2"/>
@@ -12,7 +12,7 @@
       <Language Value=""/>
       <CharSet Value=""/>
     </VersionInfo>
-    <BuildModes Count="3" Active="debug">
+    <BuildModes Count="3" Active="i386">
       <Item1 Name="debug" Default="True"/>
       <Item2 Name="i386">
         <CompilerOptions>
@@ -83,9 +83,10 @@
       <Version Value="2"/>
     </PublishOptions>
     <RunParams>
-      <local>
-        <FormatVersion Value="1"/>
-      </local>
+      <FormatVersion Value="2"/>
+      <Modes Count="1">
+        <Mode0 Name="default"/>
+      </Modes>
     </RunParams>
     <RequiredPackages Count="3">
       <Item1>
@@ -103,10 +104,11 @@
       <Unit0>
         <Filename Value="Clock2.lpr"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="9"/>
-        <CursorPos Y="27"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="15"/>
+        <CursorPos X="5" Y="37"/>
         <UsageCount Value="225"/>
+        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit0>
       <Unit1>
@@ -116,7 +118,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Pictures"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="8"/>
         <TopLine Value="56"/>
         <CursorPos Y="75"/>
         <UsageCount Value="225"/>
@@ -167,7 +169,6 @@
         <CursorPos X="19" Y="29"/>
         <UsageCount Value="207"/>
         <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit5>
       <Unit6>
@@ -196,7 +197,11 @@
         <Filename Value="findpicsthread.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="FindPicsThread"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="23"/>
+        <CursorPos X="13" Y="39"/>
         <UsageCount Value="212"/>
+        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit8>
       <Unit9>
@@ -233,7 +238,7 @@
       <Unit12>
         <Filename Value="commandserver.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="9"/>
         <TopLine Value="247"/>
         <CursorPos X="42" Y="270"/>
         <UsageCount Value="212"/>
@@ -243,9 +248,9 @@
       <Unit13>
         <Filename Value="music.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="2"/>
-        <TopLine Value="303"/>
-        <CursorPos X="44" Y="329"/>
+        <EditorIndex Value="5"/>
+        <TopLine Value="311"/>
+        <CursorPos X="28" Y="322"/>
         <UsageCount Value="212"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -294,10 +299,11 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="PlaylistCreator"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="400"/>
-        <CursorPos X="22" Y="431"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="333"/>
+        <CursorPos X="30" Y="353"/>
         <UsageCount Value="200"/>
+        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit18>
       <Unit19>
@@ -414,7 +420,7 @@
         <ResourceBaseClass Value="Form"/>
         <TopLine Value="114"/>
         <CursorPos X="8" Y="124"/>
-        <UsageCount Value="166"/>
+        <UsageCount Value="168"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit32>
       <Unit33>
@@ -463,7 +469,7 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="12" Y="10"/>
-        <UsageCount Value="196"/>
+        <UsageCount Value="198"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit38>
       <Unit39>
@@ -476,7 +482,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="39"/>
         <CursorPos X="27" Y="49"/>
-        <UsageCount Value="188"/>
+        <UsageCount Value="190"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit39>
       <Unit40>
@@ -492,6 +498,7 @@
         <Filename Value="/usr/share/fpcsrc/3.0.2/packages/fcl-process/src/process.pp"/>
         <TopLine Value="148"/>
         <UsageCount Value="9"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit41>
       <Unit42>
         <Filename Value="/usr/share/fpcsrc/3.0.2/rtl/unix/unix.pp"/>
@@ -499,6 +506,7 @@
         <TopLine Value="178"/>
         <CursorPos X="18" Y="92"/>
         <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit42>
       <Unit43>
         <Filename Value="../../../Programs/lazarus/components/lnet/lazaruspackage/lclnet.pas"/>
@@ -515,6 +523,7 @@
         <TopLine Value="308"/>
         <CursorPos X="6" Y="324"/>
         <UsageCount Value="9"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit44>
       <Unit45>
         <Filename Value="lnet/lib/lmimewrapper.pp"/>
@@ -531,16 +540,15 @@
         <TopLine Value="167"/>
         <CursorPos X="10" Y="182"/>
         <UsageCount Value="9"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit46>
       <Unit47>
         <Filename Value="exceptionhandler.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="ExceptionHandler"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="7"/>
         <TopLine Value="7"/>
         <CursorPos Y="33"/>
-        <UsageCount Value="23"/>
+        <UsageCount Value="25"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit47>
@@ -551,63 +559,138 @@
         <TopLine Value="13"/>
         <CursorPos X="3" Y="25"/>
         <UsageCount Value="11"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit48>
       <Unit49>
         <Filename Value="/usr/share/fpcsrc/3.0.4/packages/fcl-base/src/inifiles.pp"/>
         <UnitName Value="IniFiles"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="1293"/>
-        <CursorPos X="37" Y="1319"/>
-        <UsageCount Value="10"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
+        <EditorIndex Value="6"/>
+        <TopLine Value="198"/>
+        <CursorPos X="17" Y="214"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
       </Unit49>
     </Units>
-    <JumpHistory Count="11" HistoryIndex="10">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="music.pas"/>
-        <Caret Line="315" Column="31" TopLine="307"/>
+        <Filename Value="findpicsthread.pas"/>
+        <Caret Line="39" Column="13" TopLine="23"/>
       </Position1>
       <Position2>
-        <Filename Value="music.pas"/>
-        <Caret Line="47" Column="15" TopLine="31"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="29" Column="19" TopLine="10"/>
       </Position2>
       <Position3>
-        <Filename Value="music.pas"/>
-        <Caret Line="113" Column="17" TopLine="89"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="25" Column="44" TopLine="9"/>
       </Position3>
       <Position4>
-        <Filename Value="music.pas"/>
-        <Caret Line="127" Column="20" TopLine="97"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="248" Column="9" TopLine="240"/>
       </Position4>
       <Position5>
-        <Filename Value="music.pas"/>
-        <Caret Line="277" Column="17" TopLine="251"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="133" Column="12" TopLine="118"/>
       </Position5>
       <Position6>
-        <Filename Value="music.pas"/>
-        <Caret Line="322" TopLine="303"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="230" Column="13" TopLine="204"/>
       </Position6>
       <Position7>
-        <Filename Value="music.pas"/>
-        <Caret Line="324" Column="12" TopLine="303"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="232" Column="12" TopLine="206"/>
       </Position7>
       <Position8>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="161" Column="50" TopLine="154"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="233" Column="12" TopLine="207"/>
       </Position8>
       <Position9>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="270" Column="42" TopLine="247"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="248" Column="10" TopLine="222"/>
       </Position9>
       <Position10>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="38" Column="37" TopLine="20"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="254" Column="10" TopLine="228"/>
       </Position10>
       <Position11>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="161" Column="50" TopLine="131"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="263" Column="10" TopLine="237"/>
       </Position11>
+      <Position12>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="269" Column="10" TopLine="243"/>
+      </Position12>
+      <Position13>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="293" Column="47" TopLine="267"/>
+      </Position13>
+      <Position14>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="299" Column="16" TopLine="285"/>
+      </Position14>
+      <Position15>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="304" Column="16" TopLine="285"/>
+      </Position15>
+      <Position16>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="309" Column="16" TopLine="285"/>
+      </Position16>
+      <Position17>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="314" Column="14" TopLine="288"/>
+      </Position17>
+      <Position18>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="529" Column="36" TopLine="512"/>
+      </Position18>
+      <Position19>
+        <Filename Value="music.pas"/>
+        <Caret Line="109" Column="36" TopLine="91"/>
+      </Position19>
+      <Position20>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="526" Column="18" TopLine="564"/>
+      </Position20>
+      <Position21>
+        <Filename Value="Clock2.lpr"/>
+        <Caret Line="37" Column="8" TopLine="15"/>
+      </Position21>
+      <Position22>
+        <Filename Value="music.pas"/>
+        <Caret Line="322" Column="28" TopLine="311"/>
+      </Position22>
+      <Position23>
+        <Filename Value="/usr/share/fpcsrc/3.0.4/packages/fcl-base/src/inifiles.pp"/>
+        <Caret Line="214" Column="17" TopLine="198"/>
+      </Position23>
+      <Position24>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="300" Column="49" TopLine="297"/>
+      </Position24>
+      <Position25>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="1700" Column="17" TopLine="1684"/>
+      </Position25>
+      <Position26>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="1704" Column="17" TopLine="1684"/>
+      </Position26>
+      <Position27>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="1713" Column="15" TopLine="1687"/>
+      </Position27>
+      <Position28>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="1719" Column="19" TopLine="1694"/>
+      </Position28>
+      <Position29>
+        <Filename Value="playlistcreator.pas"/>
+        <Caret Line="64" Column="24" TopLine="58"/>
+      </Position29>
+      <Position30>
+        <Filename Value="playlistcreator.pas"/>
+        <Caret Line="353" Column="30" TopLine="333"/>
+      </Position30>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
@@ -629,10 +712,12 @@
     </CodeGeneration>
     <Linking>
       <Debugging>
-        <DebugInfoType Value="dsDwarf2"/>
-        <UseExternalDbgSyms Value="True"/>
+        <UseLineInfoUnit Value="False"/>
       </Debugging>
     </Linking>
+    <Other>
+      <CustomOptions Value="-gl"/>
+    </Other>
   </CompilerOptions>
   <Debugging>
     <BreakPoints Count="2">
