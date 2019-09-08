@@ -123,8 +123,8 @@ begin
     FFindFiles.Terminate;
     FFindFiles.WaitFor;
     FreeAndNil(FFindFiles);
-  end
-  else SaveSettings;
+  end;
+//Crash???  else SaveSettings;
 
   FSongList.Free;
   FPathList.Free;
@@ -274,7 +274,7 @@ begin
       end;
     end;
 
-    SaveSettings;
+//Crash???    SaveSettings;
   end;
 end;
 
@@ -328,9 +328,10 @@ begin
       FSongList.SaveToFile(ChangeFileExt(FConfigFile, '.pl'));
       FPathList.SaveToFile(ChangeFileExt(FConfigFile, '.plp'));
     end;
-  finally
-    if Assigned(IniFile) then
-      IniFile.Free;
+    IniFile.Free;
+  except
+    on E: Exception do
+       writeln('EXCEPTION: TPlayer.SaveSettings IniFile - ' + E.ClassName + #13#10 + E.Message);
   end;
 end;
 
@@ -347,9 +348,9 @@ begin
   Result := False;
   if FConfigFile = '' then Exit;
 
-  IniFile := TIniFile.Create(FConfigFile);
-
   try
+    IniFile := TIniFile.Create(FConfigFile);
+
     if FSearchPath = '' then
       FSearchPath := IniFile.ReadString('Settings', 'MusicPath', '~/Music');
 
@@ -362,8 +363,11 @@ begin
       FPathList.LoadFromFile(ChangeFileExt(FConfigFile, '.plp'));
       Result := True;
     end;
-  finally
+
     IniFile.Free;
+  except
+    on E: Exception do
+       writeln('EXCEPTION: TPlayer.LoadSettings IniFile - ' + E.ClassName + #13#10 + E.Message);
   end;
 end;
 
