@@ -12,7 +12,7 @@
       <Language Value=""/>
       <CharSet Value=""/>
     </VersionInfo>
-    <BuildModes Count="3" Active="i386">
+    <BuildModes Count="3" Active="debug">
       <Item1 Name="debug" Default="True"/>
       <Item2 Name="i386">
         <CompilerOptions>
@@ -32,7 +32,7 @@
             <SmartLinkUnit Value="True"/>
             <TargetCPU Value="i386"/>
             <Optimizations>
-              <OptimizationLevel Value="2"/>
+              <OptimizationLevel Value="3"/>
               <VariablesInRegisters Value="True"/>
             </Optimizations>
           </CodeGeneration>
@@ -100,13 +100,13 @@
         <PackageName Value="LCL"/>
       </Item3>
     </RequiredPackages>
-    <Units Count="50">
+    <Units Count="57">
       <Unit0>
         <Filename Value="Clock2.lpr"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="3"/>
-        <TopLine Value="15"/>
-        <CursorPos X="5" Y="37"/>
+        <EditorIndex Value="7"/>
+        <TopLine Value="4"/>
+        <CursorPos X="72" Y="24"/>
         <UsageCount Value="225"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -118,11 +118,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Pictures"/>
-        <EditorIndex Value="8"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="56"/>
         <CursorPos Y="75"/>
         <UsageCount Value="225"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit1>
       <Unit2>
@@ -163,10 +162,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ClockMain"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="10"/>
-        <CursorPos X="19" Y="29"/>
+        <TopLine Value="735"/>
+        <CursorPos X="31" Y="758"/>
         <UsageCount Value="207"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -197,11 +195,10 @@
         <Filename Value="findpicsthread.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="FindPicsThread"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="23"/>
         <CursorPos X="13" Y="39"/>
         <UsageCount Value="212"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit8>
       <Unit9>
@@ -216,7 +213,7 @@
         <Filename Value="musicplayer.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="MusicPlayer"/>
-        <TopLine Value="152"/>
+        <TopLine Value="44"/>
         <CursorPos X="28" Y="44"/>
         <UsageCount Value="212"/>
         <Loaded Value="True"/>
@@ -238,9 +235,10 @@
       <Unit12>
         <Filename Value="commandserver.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="9"/>
-        <TopLine Value="247"/>
-        <CursorPos X="42" Y="270"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="8"/>
+        <TopLine Value="239"/>
+        <CursorPos Y="253"/>
         <UsageCount Value="212"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -248,11 +246,10 @@
       <Unit13>
         <Filename Value="music.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="311"/>
         <CursorPos X="28" Y="322"/>
         <UsageCount Value="212"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit13>
       <Unit14>
@@ -299,11 +296,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="PlaylistCreator"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="333"/>
         <CursorPos X="30" Y="353"/>
         <UsageCount Value="200"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit18>
       <Unit19>
@@ -370,6 +366,8 @@
         <Filename Value="connectionhealth.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="ConnectionHealth"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="8"/>
         <CursorPos X="32" Y="8"/>
         <UsageCount Value="201"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -400,9 +398,10 @@
         <Filename Value="signalhandler.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="SignalHandler"/>
-        <TopLine Value="31"/>
-        <CursorPos X="67" Y="48"/>
+        <EditorIndex Value="2"/>
+        <CursorPos X="42" Y="21"/>
         <UsageCount Value="201"/>
+        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit30>
       <Unit31>
@@ -420,7 +419,7 @@
         <ResourceBaseClass Value="Form"/>
         <TopLine Value="114"/>
         <CursorPos X="8" Y="124"/>
-        <UsageCount Value="168"/>
+        <UsageCount Value="172"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit32>
       <Unit33>
@@ -469,7 +468,7 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="12" Y="10"/>
-        <UsageCount Value="198"/>
+        <UsageCount Value="200"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit38>
       <Unit39>
@@ -482,7 +481,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="39"/>
         <CursorPos X="27" Y="49"/>
-        <UsageCount Value="190"/>
+        <UsageCount Value="194"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit39>
       <Unit40>
@@ -545,11 +544,10 @@
         <Filename Value="exceptionhandler.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="ExceptionHandler"/>
-        <EditorIndex Value="7"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="7"/>
         <CursorPos Y="33"/>
-        <UsageCount Value="25"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="29"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit47>
       <Unit48>
@@ -564,132 +562,193 @@
         <Filename Value="/usr/share/fpcsrc/3.0.4/packages/fcl-base/src/inifiles.pp"/>
         <UnitName Value="IniFiles"/>
         <EditorIndex Value="6"/>
-        <TopLine Value="198"/>
-        <CursorPos X="17" Y="214"/>
-        <UsageCount Value="11"/>
+        <TopLine Value="170"/>
+        <CursorPos X="3" Y="143"/>
+        <UsageCount Value="12"/>
         <Loaded Value="True"/>
       </Unit49>
+      <Unit50>
+        <Filename Value="webcontrol.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="212"/>
+        <CursorPos X="42" Y="242"/>
+        <UsageCount Value="24"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit50>
+      <Unit51>
+        <Filename Value="synapse/source/lib/synautil.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="231"/>
+        <CursorPos X="10" Y="246"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit51>
+      <Unit52>
+        <Filename Value="../RadioGaga/radiogaga.lpr"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="34"/>
+        <CursorPos X="28" Y="21"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit52>
+      <Unit53>
+        <Filename Value="../RadioGaga/commandserver.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="386"/>
+        <CursorPos X="18" Y="402"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit53>
+      <Unit54>
+        <Filename Value="../RadioGaga/music.pas"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="32"/>
+        <CursorPos X="23" Y="51"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit54>
+      <Unit55>
+        <Filename Value="../RadioGaga/lnet/examples/console/lhttp/lhttpsettings.pp"/>
+        <UnitName Value="lHTTPSettings"/>
+        <EditorIndex Value="5"/>
+        <TopLine Value="147"/>
+        <CursorPos X="25" Y="162"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit55>
+      <Unit56>
+        <Filename Value="/usr/share/fpcsrc/3.0.4/packages/fcl-base/src/syncobjs.pp"/>
+        <EditorIndex Value="9"/>
+        <TopLine Value="94"/>
+        <CursorPos Y="110"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit56>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="findpicsthread.pas"/>
-        <Caret Line="39" Column="13" TopLine="23"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="304" Column="40" TopLine="282"/>
       </Position1>
       <Position2>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="29" Column="19" TopLine="10"/>
+        <Caret Line="309" Column="40" TopLine="283"/>
       </Position2>
       <Position3>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="25" Column="44" TopLine="9"/>
+        <Caret Line="655" Column="48" TopLine="638"/>
       </Position3>
       <Position4>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="248" Column="9" TopLine="240"/>
+        <Caret Line="758" Column="31" TopLine="735"/>
       </Position4>
       <Position5>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="133" Column="12" TopLine="118"/>
+        <Filename Value="../RadioGaga/music.pas"/>
+        <Caret Line="321" Column="20" TopLine="305"/>
       </Position5>
       <Position6>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="230" Column="13" TopLine="204"/>
+        <Filename Value="/usr/share/fpcsrc/3.0.4/packages/fcl-base/src/inifiles.pp"/>
+        <Caret Line="214" Column="68" TopLine="198"/>
       </Position6>
       <Position7>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="232" Column="12" TopLine="206"/>
+        <Filename Value="/usr/share/fpcsrc/3.0.4/packages/fcl-base/src/inifiles.pp"/>
+        <Caret Line="143" Column="3" TopLine="170"/>
       </Position7>
       <Position8>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="233" Column="12" TopLine="207"/>
+        <Filename Value="../RadioGaga/music.pas"/>
+        <Caret Line="350" Column="14" TopLine="340"/>
       </Position8>
       <Position9>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="248" Column="10" TopLine="222"/>
+        <Filename Value="../RadioGaga/lnet/examples/console/lhttp/lhttpsettings.pp"/>
+        <Caret Line="121" Column="13" TopLine="106"/>
       </Position9>
       <Position10>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="254" Column="10" TopLine="228"/>
+        <Filename Value="../RadioGaga/lnet/examples/console/lhttp/lhttpsettings.pp"/>
+        <Caret Line="162" Column="25" TopLine="147"/>
       </Position10>
       <Position11>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="263" Column="10" TopLine="237"/>
+        <Filename Value="../RadioGaga/music.pas"/>
+        <Caret Line="321" Column="14" TopLine="305"/>
       </Position11>
       <Position12>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="269" Column="10" TopLine="243"/>
+        <Filename Value="../RadioGaga/music.pas"/>
+        <Caret Line="351" Column="17" TopLine="340"/>
       </Position12>
       <Position13>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="293" Column="47" TopLine="267"/>
+        <Filename Value="../RadioGaga/music.pas"/>
+        <Caret Line="315" Column="31" TopLine="305"/>
       </Position13>
       <Position14>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="299" Column="16" TopLine="285"/>
+        <Filename Value="../RadioGaga/music.pas"/>
+        <Caret Column="31"/>
       </Position14>
       <Position15>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="304" Column="16" TopLine="285"/>
+        <Filename Value="../RadioGaga/music.pas"/>
+        <Caret Line="47" Column="27" TopLine="32"/>
       </Position15>
       <Position16>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="309" Column="16" TopLine="285"/>
+        <Filename Value="../RadioGaga/music.pas"/>
+        <Caret Line="113" Column="17" TopLine="88"/>
       </Position16>
       <Position17>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="314" Column="14" TopLine="288"/>
+        <Filename Value="../RadioGaga/music.pas"/>
+        <Caret Line="127" Column="20" TopLine="101"/>
       </Position17>
       <Position18>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="529" Column="36" TopLine="512"/>
+        <Filename Value="../RadioGaga/music.pas"/>
+        <Caret Line="277" Column="17" TopLine="255"/>
       </Position18>
       <Position19>
-        <Filename Value="music.pas"/>
-        <Caret Line="109" Column="36" TopLine="91"/>
+        <Filename Value="../RadioGaga/music.pas"/>
+        <Caret Line="315" Column="31" TopLine="310"/>
       </Position19>
       <Position20>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="526" Column="18" TopLine="564"/>
+        <Filename Value="../RadioGaga/music.pas"/>
+        <Caret Line="47" Column="27" TopLine="33"/>
       </Position20>
       <Position21>
-        <Filename Value="Clock2.lpr"/>
-        <Caret Line="37" Column="8" TopLine="15"/>
+        <Filename Value="../RadioGaga/music.pas"/>
+        <Caret Line="113" Column="27" TopLine="88"/>
       </Position21>
       <Position22>
-        <Filename Value="music.pas"/>
-        <Caret Line="322" Column="28" TopLine="311"/>
+        <Filename Value="../RadioGaga/music.pas"/>
+        <Caret Line="126" Column="7" TopLine="104"/>
       </Position22>
       <Position23>
-        <Filename Value="/usr/share/fpcsrc/3.0.4/packages/fcl-base/src/inifiles.pp"/>
-        <Caret Line="214" Column="17" TopLine="198"/>
+        <Filename Value="../RadioGaga/music.pas"/>
+        <Caret Line="127" Column="32" TopLine="104"/>
       </Position23>
       <Position24>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="300" Column="49" TopLine="297"/>
+        <Filename Value="../RadioGaga/music.pas"/>
+        <Caret Line="277" Column="28" TopLine="255"/>
       </Position24>
       <Position25>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1700" Column="17" TopLine="1684"/>
+        <Filename Value="../RadioGaga/music.pas"/>
+        <Caret Line="315" Column="31" TopLine="289"/>
       </Position25>
       <Position26>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1704" Column="17" TopLine="1684"/>
+        <Filename Value="../RadioGaga/music.pas"/>
+        <Caret Line="51" Column="23" TopLine="32"/>
       </Position26>
       <Position27>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1713" Column="15" TopLine="1687"/>
+        <Filename Value="commandserver.pas"/>
+        <Caret Line="490" TopLine="474"/>
       </Position27>
       <Position28>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1719" Column="19" TopLine="1694"/>
+        <Filename Value="/usr/share/fpcsrc/3.0.4/packages/fcl-base/src/syncobjs.pp"/>
+        <Caret Line="110" TopLine="94"/>
       </Position28>
       <Position29>
-        <Filename Value="playlistcreator.pas"/>
-        <Caret Line="64" Column="24" TopLine="58"/>
+        <Filename Value="commandserver.pas"/>
+        <Caret Line="139" TopLine="123"/>
       </Position29>
       <Position30>
-        <Filename Value="playlistcreator.pas"/>
-        <Caret Line="353" Column="30" TopLine="333"/>
+        <Filename Value="commandserver.pas"/>
+        <Caret Line="137" Column="34" TopLine="123"/>
       </Position30>
     </JumpHistory>
   </ProjectOptions>

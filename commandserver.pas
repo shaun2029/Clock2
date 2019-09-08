@@ -10,16 +10,12 @@ unit commandserver;
 interface
 
 uses
-  Classes, SysUtils, SyncObjs, Process,
+  Classes, SysUtils, SyncObjs, Process, WebControl,
 
   // synapse
   blcksock;
 
 type
-
-  TRemoteCommand = (rcomNone, rcomNext, rcomPrevious, rcomMusic, rcomSleep, rcomMeditation, rcomPause, rcomVolumeUp,
-    rcomVolumeDown, rcomDisplayToggle, rcomSetRadioStation, rcomRadio, rcomFavorite);
-
   TComErrorState = (cesOK, cesSocketError, cesException, cesBindError);
 
   { TCOMServerThread }
@@ -31,6 +27,7 @@ type
     FRadioStation: integer;
     FIRRadioStation: integer;
     FErrorState: TComErrorState;
+    FWebControl: TSimpleWebControl;
     FSerialDevice: string;
     FTemprature: single;
 
@@ -39,6 +36,7 @@ type
     function GetRadioStation: integer;
     function GetCommand: TRemoteCommand;
     procedure ReadSerialCommands(Filename: string);
+    procedure SetHostName(AValue: string);
     procedure SetPlaying(const AValue: string);
     procedure SetRadioStations(const AValue: string);
     procedure SetReminders(const AValue: string);
@@ -58,6 +56,7 @@ type
     property RadioStation: integer read GetRadioStation;
     property RadioStations: string write SetRadioStations;
     property Reminders: string write SetReminders;
+    property HostName: string write SetHostName;
     property Command: TRemoteCommand read GetCommand;
     property Error: TComErrorState read FErrorState;
   end;
@@ -65,9 +64,9 @@ type
   TCOMServer = class
   private
     FCOMServerThread: TCOMServerThread;
-
     function GetErrorState: TComErrorState;
     function GetRadioStation: integer;
+    procedure SetHostName(AValue: string);
     procedure SetPlaying(const AValue: string);
     function GetCommand: TRemoteCommand;
     procedure SetRadioStations(AValue: string);
@@ -81,6 +80,7 @@ type
     property Command: TRemoteCommand read GetCommand;
     property RadioStations: string write SetRadioStations;
     property Reminders: string write SetReminders;
+    property HostName: string write SetHostName;
     property Error: TComErrorState read GetErrorState;
   end;
 
@@ -110,6 +110,13 @@ function TCOMServer.GetRadioStation: integer;
 begin
   FCOMServerThread.Lock;
   Result := FCOMServerThread.RadioStation;
+  FCOMServerThread.Unlock;
+end;
+
+procedure TCOMServer.SetHostName(AValue: string);
+begin
+  FCOMServerThread.Lock;
+  FCOMServerThread.HostName := AValue;
   FCOMServerThread.Unlock;
 end;
 
@@ -194,6 +201,9 @@ begin
   FCritical.Enter;
   FPlaying := AValue;
   FCritical.Leave;
+
+  if Assigned(FWebControl) then
+    FWebControl.Playing := AValue;
 end;
 
 procedure TCOMServerThread.SetRadioStations(const AValue: string);
@@ -213,6 +223,7 @@ end;
 procedure TCOMServerThread.Execute;
 var
   ListenerSocket, ConnectionSocket: TTCPBlockSocket;
+  WebControl: TSimpleWebControl;
 begin
   FIRRadioStation := 0;
 
@@ -235,6 +246,11 @@ begin
     else
     begin
       repeat
+        FCritical.Enter;
+        FWebControl.Temprature := FTemprature;
+        FCritical.Leave;
+        FWebControl.ProccessConnections();
+
         if FileExists(FSerialDevice) then
         begin
           ReadSerialCommands(FSerialDevice);
@@ -433,6 +449,16 @@ begin
   Result := FCommand;
   FCommand := rcomNone;
   FCritical.Leave;
+
+  if (Result = rcomNone) then
+    Result := FWebControl.Command;
+end;
+
+procedure TCOMServerThread.SetHostName(AValue: string);
+begin
+  FCritical.Enter;
+  FWebControl.HostName := AValue;
+  FCritical.Leave;
 end;
 
 constructor TCOMServerThread.Create(Port: integer; SerialDevice: string);
@@ -447,12 +473,15 @@ begin
   FReminders := '';
   FPort := Port;
   FSerialDevice := SerialDevice;
+
+  FWebControl := TSimpleWebControl.Create;
 end;
 
 destructor TCOMServerThread.Destroy;
 begin
   inherited Destroy;
 
+  FWebControl.Free;
   FCritical.Free;
 end;
 

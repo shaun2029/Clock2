@@ -18,7 +18,7 @@ unit SignalHandler;
 interface
 
 uses
-  Classes, SysUtils, BaseUnix, CommandServer;
+  Classes, SysUtils, BaseUnix, WebControl;
 
 type
   TSigCallback = procedure(Command: TRemoteCommand) of object;

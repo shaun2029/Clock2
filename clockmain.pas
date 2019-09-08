@@ -20,13 +20,12 @@ interface
 uses
   gtk2, gdk2, Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs,
   StdCtrls, ExtCtrls, Alarm, Settings, Reminders, ReminderList, LCLProc,
-  Buttons, Music, Sync, Process, MusicPlayer, PlaylistCreator, commandserver, X,
-  Xlib, CTypes, WaitForMedia, Pictures, DateTime, SourcePicker,
-  ConnectionHealth, Unix, Email, IniFiles, SignalHandler, Equaliser, MplayerEQ,
+  Buttons, Music, Sync, Process, MusicPlayer, PlaylistCreator, commandserver, WebControl, X,
+  Xlib, WaitForMedia, Pictures, DateTime, SourcePicker, Unix, Email, IniFiles, Equaliser, MplayerEQ,
   DiscoverServer, RadioStations, ExceptionHandler;
 
 const
-  VERSION = '3.5.4';
+  VERSION = '3.6.0';
 
 type
   TMusicState = (msPlaying, msPaused);
