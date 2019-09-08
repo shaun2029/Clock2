@@ -30,12 +30,14 @@ type
     FWebControl: TSimpleWebControl;
     FSerialDevice: string;
     FTemprature: single;
+    FTempTime: TDateTime;
 
     procedure AttendConnection(Socket: TTCPBlockSocket);
     procedure DumpExceptionCallStack;
     function GetRadioStation: integer;
     function GetCommand: TRemoteCommand;
     procedure ReadSerialCommands(Filename: string);
+    procedure SetHeatingBoost(AValue: integer);
     procedure SetHostName(AValue: string);
     procedure SetPlaying(const AValue: string);
     procedure SetRadioStations(const AValue: string);
@@ -57,6 +59,7 @@ type
     property RadioStations: string write SetRadioStations;
     property Reminders: string write SetReminders;
     property HostName: string write SetHostName;
+    property HeatingBoost: integer write SetHeatingBoost;
     property Command: TRemoteCommand read GetCommand;
     property Error: TComErrorState read FErrorState;
   end;
@@ -66,6 +69,7 @@ type
     FCOMServerThread: TCOMServerThread;
     function GetErrorState: TComErrorState;
     function GetRadioStation: integer;
+    procedure SetHeatingBoost(AValue: integer);
     procedure SetHostName(AValue: string);
     procedure SetPlaying(const AValue: string);
     function GetCommand: TRemoteCommand;
@@ -82,6 +86,7 @@ type
     property Reminders: string write SetReminders;
     property HostName: string write SetHostName;
     property Error: TComErrorState read GetErrorState;
+    property HeatingBoost: integer write SetHeatingBoost;
   end;
 
 implementation
@@ -110,6 +115,13 @@ function TCOMServer.GetRadioStation: integer;
 begin
   FCOMServerThread.Lock;
   Result := FCOMServerThread.RadioStation;
+  FCOMServerThread.Unlock;
+end;
+
+procedure TCOMServer.SetHeatingBoost(AValue: integer);
+begin
+  FCOMServerThread.Lock;
+  FCOMServerThread.HeatingBoost := AValue;
   FCOMServerThread.Unlock;
 end;
 
@@ -248,6 +260,7 @@ begin
       repeat
         FCritical.Enter;
         FWebControl.Temprature := FTemprature;
+        FWebControl.TempTime := FTempTime;
         FCritical.Leave;
         FWebControl.ProccessConnections();
 
@@ -616,7 +629,8 @@ begin
       begin
         FCritical.Enter;
         try
-           FTemprature := StrToFloat(StringReplace(s, 'Temp: ', '', [rfIgnoreCase]));
+          FTempTime := Now;
+          FTemprature := StrToFloat(StringReplace(s, 'Temp: ', '', [rfIgnoreCase]));
         finally
         end;
         FCritical.Leave;
@@ -625,7 +639,8 @@ begin
       begin
         FCritical.Enter;
         try
-           FTemprature := StrToFloat(StringReplace(s, 'TEMPERATURE:', '', [rfIgnoreCase]));
+          FTempTime := Now;
+          FTemprature := StrToFloat(StringReplace(s, 'TEMPERATURE:', '', [rfIgnoreCase]));
         finally
         end;
         FCritical.Leave;
@@ -633,6 +648,13 @@ begin
     end;
   except
   end;
+end;
+
+procedure TCOMServerThread.SetHeatingBoost(AValue: integer);
+begin
+  FCritical.Enter;
+  FWebControl.HeatingBoost := AValue;
+  FCritical.Leave;
 end;
 
 end.

@@ -36,6 +36,7 @@ type
 
   TfrmClockMain = class(TForm)
     btnStopAlarm: TBitBtn;
+    imgDisplay1: TImage;
     imgEqualiser: TImage;
     imgExit: TImage;
     imgPlayAlbums: TImage;
@@ -56,6 +57,7 @@ type
     imgSettings: TImage;
     labSongPrev2: TLabel;
     labSongPrev1: TLabel;
+    lbBoost: TLabel;
     lbEqualiser: TLabel;
     lbPlayAlbums: TLabel;
     lbRadio: TLabel;
@@ -96,6 +98,7 @@ type
     procedure imgVolUpClick(Sender: TObject);
     procedure imgUpdateMusicClick(Sender: TObject);
     procedure labSongClick(Sender: TObject);
+    procedure lbBoostClick(Sender: TObject);
     procedure lbDisplayClick(Sender: TObject);
     procedure lbEqualiserClick(Sender: TObject);
     procedure lblTimeClick(Sender: TObject);
@@ -1240,6 +1243,14 @@ end;
 procedure TfrmClockMain.labSongClick(Sender: TObject);
 begin
   AddToFavorites;
+end;
+
+procedure TfrmClockMain.lbBoostClick(Sender: TObject);
+begin
+  if Assigned(FCOMServer) then
+  begin
+    FCOMServer.HeatingBoost := 1;
+  end;
 end;
 
 procedure TfrmClockMain.lbDisplayClick(Sender: TObject);

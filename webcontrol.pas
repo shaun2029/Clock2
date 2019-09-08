@@ -20,6 +20,8 @@ type
       FPlaying: string;
       FHostName: string;
       FTemprature: single;
+      FHeatingBoost: integer;
+      FTempTime: TDateTime;
 
       procedure AttendConnection(ASocket: TTCPBlockSocket);
       procedure CreateFile(Filename: string);
@@ -39,6 +41,8 @@ type
       property Playing: string write SetPlaying;
       property HostName: string write SetHostName;
       property Temprature: single write FTemprature;
+      property TempTime: TDateTime write FTempTime;
+      property HeatingBoost: integer write FHeatingBoost;
   end;
 
 implementation
@@ -50,6 +54,9 @@ begin
   FPlaying := '';
   FHostName := '';
   FCritical := TCriticalSection.Create;
+  FTempTime := 0;
+  FTemprature := -99;
+  FHeatingBoost := 0;
 
   ListenerSocket := TTCPBlockSocket.Create;
   ConnectionSocket := TTCPBlockSocket.Create;
@@ -94,12 +101,12 @@ begin
   end;
 end;
 
-procedure TSimpleWebControl.Lock;
+procedure TSimpleWebControl.Lock();
 begin
   FCritical.Enter;
 end;
 
-procedure TSimpleWebControl.Unlock;
+procedure TSimpleWebControl.Unlock();
 begin
   FCritical.Leave;
 end;
@@ -238,8 +245,18 @@ begin
       + '<button id="chanup" style="padding: 15px 10px;"><font size="6">Channel +</font></button>' + CRLF
       + '</table>' + CRLF
       + '<br>' + CRLF
-      + '<br>' + CRLF
-      + 'TEMPERATURE:' + FormatFloat('0.0', FTemprature) + CRLF
+      + '<br>' + CRLF;
+
+    if (Abs(Now - FTempTime) < 60) then
+       OutputDataString := OutputDataString + 'TEMPERATURE:' + FormatFloat('0.0', FTemprature) + CRLF;
+
+    if (FHeatingBoost > 0) then
+    begin
+       OutputDataString := OutputDataString + 'HEATINGBOOST:' + IntToStr(FHeatingBoost) + CRLF;
+       FHeatingBoost := 0;
+    end;
+
+    OutputDataString := OutputDataString
       + '<script>' + CRLF
       + 'var HttpClient = function() {' + CRLF
       + '    this.get = function(aUrl, aCallback) {' + CRLF
