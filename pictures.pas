@@ -52,16 +52,18 @@ implementation
 
 procedure TfrmPictures.SaveSettings;
 var
-  IniFile: TIniFile;
+  IniFile: TIniFile = nil;
 begin
-  IniFile := TIniFile.Create(GetAppConfigFile(False));
-
   try
+    IniFile := TIniFile.Create(GetAppConfigFile(False));
+
     IniFile.WriteInteger('Settings', 'Position', FPictureIndex);
     if Assigned(FPictureList) and (FPictureList.Count > 0) then
       FPictureList.SaveToFile(ChangeFileExt(GetAppConfigFile(False), '.pl'));
-  finally
     IniFile.Free;
+  except
+    on E: Exception do
+       writeln('EXCEPTION: TfrmPictures.SaveSettings IniFile - ' + E.ClassName + #13#10 + E.Message);
   end;
 end;
 
@@ -69,9 +71,9 @@ procedure TfrmPictures.LoadSettings;
 var
   IniFile: TIniFile;
 begin
-  IniFile := TIniFile.Create(GetAppConfigFile(False));
-
   try
+    IniFile := TIniFile.Create(GetAppConfigFile(False));
+
     FSearchPath := frmSettings.edtPicturePath.Text;
     FRandomPictures := frmSettings.cbxRandomPictures.Checked;
 
@@ -85,8 +87,11 @@ begin
       if not Assigned(FPictureList) then FPictureList := TStringList.Create;
       FPictureList.LoadFromFile(ChangeFileExt(GetAppConfigFile(False), '.pl'));
     end;
-  finally
+
     IniFile.Free;
+  except
+    on E: Exception do
+       writeln('EXCEPTION: TfrmPictures.LoadSettings IniFile - ' + E.ClassName + #13#10 + E.Message);
   end;
 end;
 

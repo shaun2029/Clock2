@@ -224,6 +224,8 @@ begin
 
     IniFile.Free;
   except
+    on E: Exception do
+       writeln('EXCEPTION: TfrmClockMain.ApplyMplayerEQ IniFile - ' + E.ClassName + #13#10 + E.Message);
   end;
 
   if FPlayer.State = psPlaying then
@@ -756,6 +758,7 @@ begin
 
   try
     IniFile := TIniFile.Create(FConfigFilename);
+
     UseVol := IniFile.ReadString('Volume', 'UseVolControl', '');
     UsePulseVol := IniFile.ReadBool('Volume', 'UsePulse', UsePulseVol);
     MixerControl := IniFile.ReadString('Volume', 'MixerControl', MixerControl);
@@ -768,6 +771,8 @@ begin
 
     IniFile.Free;
   except
+    on E: Exception do
+       writeln('EXCEPTION: TfrmClockMain.FormCreate IniFile - ' + E.ClassName + #13#10 + E.Message);
   end;
 
   if (LowerCase(UseVol) = '') then

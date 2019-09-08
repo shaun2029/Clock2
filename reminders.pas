@@ -113,9 +113,8 @@ var
 begin
   SetLength(FReminders, 0);
 
-  Ini := TIniFile.Create(FFilename);
-
   try
+    Ini := TIniFile.Create(FFilename);
     i := 1;
 
     while Ini.ReadBool('Reminders' + IntToStr(i), 'Enabled', False) do
@@ -133,17 +132,13 @@ begin
 
       Inc(i);
     end;
+
+    SortReminders;
+    Ini.Free;
   except
     on E: Exception do
-    begin
-      DebugLn(Self.ClassName + #9#9 + 'Exception ReadReminders');
-      DebugLn(Self.ClassName + #9#9 + E.Message);
-    end;
+       writeln('EXCEPTION: TfrmReminders.ReadReminders IniFile - ' + E.ClassName + #13#10 + E.Message);
   end;
-
-  Ini.Free;
-
-  SortReminders;
 end;
 
 procedure TfrmReminders.WriteReminders;
@@ -152,10 +147,10 @@ var
   i: integer;
   Section: string;
 begin
-  Ini := TIniFile.Create(FFilename);
-  Ini.CacheUpdates := True;
-
   try
+    Ini := TIniFile.Create(FFilename);
+    Ini.CacheUpdates := True;
+
     for i := 1 to Length(FReminders) do
     begin
       Section := 'Reminders' + IntToStr(i);
@@ -173,15 +168,12 @@ begin
     Section := 'Reminders' + IntToStr(Length(FReminders) + 1);
     Ini.WriteBool(Section, 'Enabled', False);
 
+    Ini.UpdateFile;
   except
     on E: Exception do
-    begin
-      DebugLn(Self.ClassName + #9#9 + 'Exception WriteReminders');
-      DebugLn(Self.ClassName + #9#9 + E.Message);
-    end;
+       writeln('EXCEPTION: TfrmReminders.WriteReminders IniFile - ' + E.ClassName + #13#10 + E.Message);
   end;
 
-  Ini.UpdateFile;
   Ini.Free;
 end;
 
