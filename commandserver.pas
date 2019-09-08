@@ -620,6 +620,15 @@ begin
         finally
         end;
         FCritical.Leave;
+      end
+      else if (Pos('TEMPERATURE:', s) = 1) then
+      begin
+        FCritical.Enter;
+        try
+           FTemprature := StrToFloat(StringReplace(s, 'TEMPERATURE:', '', [rfIgnoreCase]));
+        finally
+        end;
+        FCritical.Leave;
       end;
     end;
   except
