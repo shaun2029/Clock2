@@ -5,7 +5,7 @@ unit webcontrol;
 interface
 
 uses
-  Classes, blcksock, sockets, Synautil, SysUtils, SyncObjs;
+  Classes, blcksock, sockets, Synautil, SysUtils, SyncObjs, DateUtils;
 
 type
   { TSimpleWebControl }
@@ -19,7 +19,7 @@ type
       ListenerSocket, ConnectionSocket: TTCPBlockSocket;
       FPlaying: string;
       FHostName: string;
-      FTemprature: single;
+      FTemperature: single;
       FHeatingBoost: integer;
       FTempTime: TDateTime;
 
@@ -40,7 +40,7 @@ type
       property Command: TRemoteCommand read GetCommand;
       property Playing: string write SetPlaying;
       property HostName: string write SetHostName;
-      property Temprature: single write FTemprature;
+      property Temperature: single write FTemperature;
       property TempTime: TDateTime write FTempTime;
       property HeatingBoost: integer write FHeatingBoost;
   end;
@@ -55,7 +55,7 @@ begin
   FHostName := '';
   FCritical := TCriticalSection.Create;
   FTempTime := 0;
-  FTemprature := -99;
+  FTemperature := -99;
   FHeatingBoost := 0;
 
   ListenerSocket := TTCPBlockSocket.Create;
@@ -193,7 +193,22 @@ begin
     Command := rcomChannelUp;
   end;
 
-  if (Command <> rcomNone) then
+  if (uri = '/temperature?') or (uri = '/temperature') then
+  begin
+    if (Abs(SecondsBetween(Now, FTempTime)) < 60) then
+    begin
+      OutputDataString := 'TEMPERATURE:' + FormatFloat('0.0', FTemperature) + CRLF;
+      OutputDataString := OutputDataString + 'HEATINGBOOST:' + IntToStr(FHeatingBoost) + CRLF;
+    end
+    else
+      OutputDataString := 'Temperature ERROR' + CRLF;
+
+    FHeatingBoost := 0;
+
+    // Write the document back to the browser
+    ASocket.SendString(OutputDataString);
+  end
+  else if (Command <> rcomNone) then
   begin
     Lock();
     FCommand := Command;
@@ -247,13 +262,14 @@ begin
       + '<br>' + CRLF
       + '<br>' + CRLF;
 
-    if (Abs(Now - FTempTime) < 60) then
-       OutputDataString := OutputDataString + 'TEMPERATURE:' + FormatFloat('0.0', FTemprature) + CRLF;
-
-    if (FHeatingBoost > 0) then
+    if (Abs(SecondsBetween(Now, FTempTime)) < 60) then
     begin
-       OutputDataString := OutputDataString + 'HEATINGBOOST:' + IntToStr(FHeatingBoost) + CRLF;
-       FHeatingBoost := 0;
+      OutputDataString := OutputDataString + 'TEMPERATURE:' + FormatFloat('0.0', FTemperature) + CRLF;
+
+      if (FHeatingBoost > 0) then
+      begin
+         OutputDataString := OutputDataString + 'HEATINGBOOST:' + IntToStr(FHeatingBoost) + CRLF;
+      end;
     end;
 
     OutputDataString := OutputDataString

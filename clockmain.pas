@@ -36,9 +36,11 @@ type
 
   TfrmClockMain = class(TForm)
     btnStopAlarm: TBitBtn;
-    imgDisplay1: TImage;
     imgEqualiser: TImage;
     imgExit: TImage;
+    imgMusic: TImage;
+    imgBoost: TImage;
+    imgBoostPlus: TImage;
     imgPlayAlbums: TImage;
     imgPrevious: TImage;
     imgOn: TImage;
@@ -50,15 +52,16 @@ type
     imgVolUp: TImage;
     imgVolDown: TImage;
     imgNext: TImage;
-    imgMusic: TImage;
     ImgSleep: TImage;
     imgPictures: TImage;
     imgUpdateMusic: TImage;
     imgSettings: TImage;
     labSongPrev2: TLabel;
     labSongPrev1: TLabel;
-    lbBoost: TLabel;
     lbEqualiser: TLabel;
+    lbBoost: TLabel;
+    lbBoostPlus: TLabel;
+    lblTemp: TLabel;
     lbPlayAlbums: TLabel;
     lbRadio: TLabel;
     lbReminders: TLabel;
@@ -99,6 +102,7 @@ type
     procedure imgUpdateMusicClick(Sender: TObject);
     procedure labSongClick(Sender: TObject);
     procedure lbBoostClick(Sender: TObject);
+    procedure lbBoostPlusClick(Sender: TObject);
     procedure lbDisplayClick(Sender: TObject);
     procedure lbEqualiserClick(Sender: TObject);
     procedure lblTimeClick(Sender: TObject);
@@ -407,6 +411,11 @@ begin
 
   if TimeCaption <> lblTime.Caption then
     lblTime.Caption := TimeCaption;
+
+  if (FCOMServer.TemperatureValid) then
+    lblTemp.Caption := FormatFloat('#0.0', FCOMServer.Temperature) + ' C'
+  else
+    lblTemp.Caption := '';
 
   // Turn off timer
   if Current > FTimer.AlarmTime + EncodeTime(0, 5, 0, 0) then
@@ -1247,10 +1256,30 @@ end;
 
 procedure TfrmClockMain.lbBoostClick(Sender: TObject);
 begin
+  imgBoost.Picture.Assign(imgOff.Picture);
+  Application.ProcessMessages;
+  Sleep(800);
+
   if Assigned(FCOMServer) then
   begin
     FCOMServer.HeatingBoost := 1;
   end;
+
+  imgBoost.Picture.Assign(imgOn.Picture);
+end;
+
+procedure TfrmClockMain.lbBoostPlusClick(Sender: TObject);
+begin
+  imgBoostPlus.Picture.Assign(imgOff.Picture);
+  Application.ProcessMessages;
+  Sleep(800);
+
+  if Assigned(FCOMServer) then
+  begin
+    FCOMServer.HeatingBoost := 2;
+  end;
+
+  imgBoostPlus.Picture.Assign(imgOn.Picture);
 end;
 
 procedure TfrmClockMain.lbDisplayClick(Sender: TObject);

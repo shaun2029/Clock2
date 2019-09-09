@@ -10,7 +10,7 @@ unit commandserver;
 interface
 
 uses
-  Classes, SysUtils, SyncObjs, Process, WebControl,
+  Classes, SysUtils, SyncObjs, Process, WebControl, DateUtils,
 
   // synapse
   blcksock;
@@ -29,13 +29,15 @@ type
     FErrorState: TComErrorState;
     FWebControl: TSimpleWebControl;
     FSerialDevice: string;
-    FTemprature: single;
+    FTemperature: single;
     FTempTime: TDateTime;
 
     procedure AttendConnection(Socket: TTCPBlockSocket);
     procedure DumpExceptionCallStack;
     function GetRadioStation: integer;
     function GetCommand: TRemoteCommand;
+    function GetTemperature: single;
+    function GetTemperatureValid: boolean;
     procedure ReadSerialCommands(Filename: string);
     procedure SetHeatingBoost(AValue: integer);
     procedure SetHostName(AValue: string);
@@ -62,6 +64,8 @@ type
     property HeatingBoost: integer write SetHeatingBoost;
     property Command: TRemoteCommand read GetCommand;
     property Error: TComErrorState read FErrorState;
+    property Temperature: single read GetTemperature;
+    property TemperatureValid: boolean read GetTemperatureValid;
   end;
 
   TCOMServer = class
@@ -69,6 +73,8 @@ type
     FCOMServerThread: TCOMServerThread;
     function GetErrorState: TComErrorState;
     function GetRadioStation: integer;
+    function GetTemperature: single;
+    function GetTemperatureValid: boolean;
     procedure SetHeatingBoost(AValue: integer);
     procedure SetHostName(AValue: string);
     procedure SetPlaying(const AValue: string);
@@ -87,6 +93,8 @@ type
     property HostName: string write SetHostName;
     property Error: TComErrorState read GetErrorState;
     property HeatingBoost: integer write SetHeatingBoost;
+    property Temperature: single read GetTemperature;
+    property TemperatureValid: boolean read GetTemperatureValid;
   end;
 
 implementation
@@ -115,6 +123,20 @@ function TCOMServer.GetRadioStation: integer;
 begin
   FCOMServerThread.Lock;
   Result := FCOMServerThread.RadioStation;
+  FCOMServerThread.Unlock;
+end;
+
+function TCOMServer.GetTemperature: single;
+begin
+  FCOMServerThread.Lock;
+  Result := FCOMServerThread.Temperature;
+  FCOMServerThread.Unlock;
+end;
+
+function TCOMServer.GetTemperatureValid: boolean;
+begin
+  FCOMServerThread.Lock;
+  Result := FCOMServerThread.TemperatureValid;
   FCOMServerThread.Unlock;
 end;
 
@@ -259,7 +281,7 @@ begin
     begin
       repeat
         FCritical.Enter;
-        FWebControl.Temprature := FTemprature;
+        FWebControl.Temperature := FTemperature;
         FWebControl.TempTime := FTempTime;
         FCritical.Leave;
         FWebControl.ProccessConnections();
@@ -432,7 +454,7 @@ begin
       if FileExists(FSerialDevice) then
       begin
         FCritical.Enter;
-        Socket.SendString(FloatToStr(FTemprature) + #10);
+        Socket.SendString(FloatToStr(FTemperature) + #10);
         FCritical.Leave;
         Socket.SendString(':OK' + #10);
       end
@@ -465,6 +487,20 @@ begin
 
   if (Result = rcomNone) then
     Result := FWebControl.Command;
+end;
+
+function TCOMServerThread.GetTemperature: single;
+begin
+  FCritical.Enter;
+  Result := FTemperature;
+  FCritical.Leave;
+end;
+
+function TCOMServerThread.GetTemperatureValid: boolean;
+begin
+  FCritical.Enter;
+  Result := (Abs(SecondsBetween(Now, FTempTime)) < 60);
+  FCritical.Leave;
 end;
 
 procedure TCOMServerThread.SetHostName(AValue: string);
@@ -630,7 +666,7 @@ begin
         FCritical.Enter;
         try
           FTempTime := Now;
-          FTemprature := StrToFloat(StringReplace(s, 'Temp: ', '', [rfIgnoreCase]));
+          FTemperature := StrToFloat(StringReplace(s, 'Temp: ', '', [rfIgnoreCase]));
         finally
         end;
         FCritical.Leave;
@@ -640,7 +676,7 @@ begin
         FCritical.Enter;
         try
           FTempTime := Now;
-          FTemprature := StrToFloat(StringReplace(s, 'TEMPERATURE:', '', [rfIgnoreCase]));
+          FTemperature := StrToFloat(StringReplace(s, 'TEMPERATURE:', '', [rfIgnoreCase]));
         finally
         end;
         FCritical.Leave;
