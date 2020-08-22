@@ -25,7 +25,7 @@ uses
   DiscoverServer, RadioStations, ExceptionHandler;
 
 const
-  VERSION = '3.6.1';
+  VERSION = '3.6.2';
 
 type
   TMusicState = (msPlaying, msPaused);
@@ -550,7 +550,7 @@ begin
 
   DecodeTime(Now, H, M, S, Ms);
 
-  // Try and send favorites every week for 1 munute.
+  // Try and send favorites every week for 1 minute.
   if FFavoritesAuto and (DayOfWeek(Now) = 7) and ((H * 10) + M < 2) then
     frmSettings.SendFavorites(Error);
 
@@ -1224,7 +1224,7 @@ end;
 procedure TfrmClockMain.AddToFavorites;
 var
   Titles: TStringList;
-  FavFile, TimeStr: string;
+  FavFile, TimeStr, Error, Title: string;
 begin
   if labSong.Font.Color = clYellow then Exit;
   // Signal that the favorite has been added.
@@ -1242,9 +1242,25 @@ begin
   except
     on E: Exception do
     begin
-      ShowMessage('Exception: ' + E.Message);
+      ShowMessage('Exception: Faile to save Favorites file.'
+        + LineEnding + E.Message);
     end;
   end;
+
+  if not FFavoritesAuto then
+  begin
+    Title := LabSong.Caption;
+    LabSong.Caption := 'Sending: ' + Title;
+    Application.ProcessMessages;
+
+    if not frmSettings.SendFavorites(Error) then
+    begin
+      labSong.Font.Color := clFuchsia;
+      LabSong.Caption := 'Error: ' + Error;
+    end
+    else LabSong.Caption := 'Sent: ' + Title;
+  end;
+
 
   Titles.Free;
 end;

@@ -13,15 +13,15 @@ object frmSettings: TfrmSettings
   OnKeyPress = FormKeyPress
   Position = poMainFormCenter
   SessionProperties = 'cbxEmailReminders.Checked;cbxEnableReminders.Checked;cbxFavoritesAuto.Checked;cbxForceFullscreen.Checked;cbxFri.Checked;cbxGetReminders.Checked;cbxMon.Checked;cbxMonitorConnection.Checked;cbxPlayMusic.Checked;cbxRandomPictures.Checked;cbxSat.Checked;cbxSilentAlarm.Checked;cbxSun.Checked;cbxThu.Checked;cbxTouchScreen.Checked;cbxTue.Checked;cbxWed.Checked;edtClockName.Text;edtConnectionResetComand.Text;edtConnectionTimeout.Value;edtEmailAddress.Text;edtHour.Value;edtLocation1.Text;edtLocation2.Text;edtLocation3.Text;edtLocation.Text;edtMeditationPath.Text;edtMeditation.Text;edtMinute.Value;edtMusicPath.Text;edtMusic.Text;edtPicturePath.Text;edtRemHour.Value;edtRemMinute.Value;edtServerAddress.Text;edtServerPort.Text;edtSleepPath.Text;edtSleep.Text;edtSMTPAccount.Text;edtTestHost.Text;rgAnnouncements.ItemIndex;seDelay.Value;cbxReminderAlarm.Checked'
-  LCLVersion = '1.0.10.0'
+  LCLVersion = '2.0.4.0'
   object PageControl1: TPageControl
     Left = 8
     Height = 264
     Top = 8
     Width = 488
-    ActivePage = TabSheet4
+    ActivePage = TabSheet3
     ParentFont = False
-    TabIndex = 6
+    TabIndex = 7
     TabOrder = 0
     Options = [nboKeyboardTabSwitch]
     object TabSheet2: TTabSheet
@@ -45,12 +45,11 @@ object frmSettings: TfrmSettings
         Top = 19
         Width = 368
         Associate = stxtTimer
-        Min = 1
         Max = 180
+        Min = 1
         Orientation = udHorizontal
         Position = 10
         TabOrder = 1
-        Wrap = False
       end
       object btnStartTimer: TButton
         Left = 14
@@ -467,9 +466,9 @@ object frmSettings: TfrmSettings
       ClientWidth = 484
       object Label5: TLabel
         Left = 22
-        Height = 18
+        Height = 17
         Top = 27
-        Width = 102
+        Width = 101
         Caption = 'Reminder Time'
         ParentColor = False
       end
@@ -529,17 +528,17 @@ object frmSettings: TfrmSettings
       end
       object Label12: TLabel
         Left = 22
-        Height = 18
+        Height = 17
         Top = 163
-        Width = 103
+        Width = 102
         Caption = 'Server Address'
         ParentColor = False
       end
       object Label13: TLabel
         Left = 278
-        Height = 18
+        Height = 17
         Top = 163
-        Width = 31
+        Width = 30
         Caption = 'Port'
         ParentColor = False
       end
