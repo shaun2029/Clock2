@@ -25,7 +25,7 @@ uses
   DiscoverServer, RadioStations, ExceptionHandler;
 
 const
-  VERSION = '3.6.2';
+  VERSION = '3.7.0';
 
 type
   TMusicState = (msPlaying, msPaused);
@@ -36,16 +36,12 @@ type
 
   TfrmClockMain = class(TForm)
     btnStopAlarm: TBitBtn;
-    imgEqualiser: TImage;
     imgExit: TImage;
-    imgMusic: TImage;
     imgBoost: TImage;
     imgBoostPlus: TImage;
-    imgPlayAlbums: TImage;
     imgPrevious: TImage;
     imgOn: TImage;
     imgOff: TImage;
-    imgDisplay: TImage;
     imgPlay: TImage;
     imgRadio: TImage;
     imgReminders: TImage;
@@ -54,21 +50,16 @@ type
     imgNext: TImage;
     ImgSleep: TImage;
     imgPictures: TImage;
-    imgUpdateMusic: TImage;
     imgSettings: TImage;
     labSongPrev2: TLabel;
     labSongPrev1: TLabel;
-    lbEqualiser: TLabel;
     lbBoost: TLabel;
     lbBoostPlus: TLabel;
     lblTemp: TLabel;
-    lbPlayAlbums: TLabel;
     lbRadio: TLabel;
     lbReminders: TLabel;
     lbReminderSummary: TLabel;
     lbExit: TLabel;
-    lbMusic: TLabel;
-    lbSettings1: TLabel;
     ListBox1: TListBox;
     Radio: TLabel;
     lbPrevious: TLabel;
@@ -78,11 +69,9 @@ type
     lbVolDown: TLabel;
     lbNext: TLabel;
     lbPictures: TLabel;
-    lbDisplay: TLabel;
     labSong: TLabel;
     lblTime: TLabel;
     tmrCommand: TTimer;
-    UpdateMusic: TLabel;
     lbSettings: TLabel;
     tmrMinute: TTimer;
     tmrTime: TTimer;
@@ -1101,6 +1090,7 @@ procedure TfrmClockMain.imgMusicClick(Sender: TObject);
 var
   Sources: TSourceArray;
 begin
+{
   if DirectoryExists(frmSettings.edtMeditationPath.Text) then
   begin
     SetCursorType(FMusicPicker);
@@ -1130,6 +1120,7 @@ begin
 
     imgMusic.Picture.Assign(imgOn.Picture);
   end;
+}
 end;
 
 procedure TfrmClockMain.imgRemindersClick(Sender: TObject);
@@ -1179,6 +1170,7 @@ procedure TfrmClockMain.imgUpdateMusicClick(Sender: TObject);
 var
   MusicSource: TMusicSource;
 begin
+{
   imgUpdateMusic.Picture.Assign(imgOff.Picture);
   Self.Enabled := False;
 
@@ -1219,6 +1211,7 @@ begin
 
   Self.Enabled := True;
   imgUpdateMusic.Picture.Assign(imgOn.Picture);
+}
 end;
 
 procedure TfrmClockMain.AddToFavorites;
@@ -1606,7 +1599,7 @@ begin
 
   // Update button names
   lbRadio.Caption := FMusicNames[Ord(msrcRadio)];
-
+{
   if DirectoryExists(frmSettings.edtMeditationPath.Text) then
   begin
     // Recreate music picker
@@ -1622,7 +1615,7 @@ begin
     lbMusic2.Caption := FMusicNames[Ord(msrcSleep)];
     FMusic2Source := msrcSleep;
   end;
-
+}
 
   FFavoritesAuto := frmSettings.cbxFavoritesAuto.Checked;
 
