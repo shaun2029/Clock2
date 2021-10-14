@@ -1,8 +1,8 @@
 object frmClockMain: TfrmClockMain
   Cursor = crNone
-  Left = 293
+  Left = 2565
   Height = 480
-  Top = 181
+  Top = 257
   Width = 800
   BorderStyle = bsNone
   Caption = 'Shaun''s Clock 2'
@@ -894,13 +894,13 @@ object frmClockMain: TfrmClockMain
   object lblTime: TLabel
     Cursor = crNone
     Left = 326
-    Height = 39
-    Top = 9
+    Height = 31
+    Top = 8
     Width = 362
     AutoSize = False
     Caption = 'lblTime'
     Font.Color = clWhite
-    Font.Height = -35
+    Font.Height = 24
     Font.Name = 'Sans'
     ParentColor = False
     ParentFont = False
@@ -10279,12 +10279,12 @@ object frmClockMain: TfrmClockMain
   object lbReminderSummary: TLabel
     Cursor = crNone
     Left = 326
-    Height = 170
-    Top = 64
+    Height = 186
+    Top = 48
     Width = 453
     AutoSize = False
     Font.Color = clWhite
-    Font.Height = -16
+    Font.Height = 14
     Font.Name = 'Sans'
     ParentColor = False
     ParentFont = False
@@ -13022,7 +13022,8 @@ object frmClockMain: TfrmClockMain
     Top = 128
   end
   object tmrMinute: TTimer
-    Interval = 60000
+    Tag = 1
+    Interval = 2000
     OnTimer = tmrMinuteTimer
     Left = 450
     Top = 176

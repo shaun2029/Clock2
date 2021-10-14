@@ -45,6 +45,7 @@ type
     FEditing: boolean;
     FReminders: TReminders;
     FFilename: string;
+    procedure SortReminders(Reminders: TReminders); overload;
 
     { private declarations }
   public
@@ -54,7 +55,6 @@ type
     procedure ReadReminders;
     procedure WriteReminders;
     procedure SortReminders; overload;
-    procedure SortReminders(Reminders: TReminders); overload;
 
     procedure AddReminder(Rem: TReminder);
     procedure DeleteReminder(Index: integer);
@@ -228,10 +228,13 @@ end;
 
 function TfrmReminders.GetCurrentReminders: TReminders;
 var
-  i: Integer;
+  i, r: Integer;
   CurrDate: TDateTime;
+  Found: boolean;
 begin
   SetLength(Result, 0);
+
+  SortReminders(FReminders);
 
   // Get event for next second onward
   CurrDate := Date;
@@ -264,7 +267,7 @@ begin
           Result[Length(Result) - 1] := FReminders[i];
         end;
       end
-      else if (CurrDate + 7 = FReminders[i].Date) then
+      else if (CurrDate <= FReminders[i].Date) and (CurrDate + 7 >= FReminders[i].Date) then
       begin
         // Event in a week
         if FReminders[i].WarningWeek then
@@ -274,6 +277,33 @@ begin
         end;
       end;
     end;
+  end;
+
+  // Fill min of 10 reminders
+  for i := 0 to Length(FReminders) - 1 do
+  begin
+    if (Length(Result) >= 10) then
+      Break;
+
+    if (CurrDate <= FReminders[i].Date) then
+    begin
+      // Is this reminder in the list
+      Found := false;
+      for r := 0 to Length(Result) - 1 do
+      begin
+        if (FReminders[i].date = Result[r].Date) and (FReminders[i].Detail = Result[r].Detail) then
+        begin
+          Found := true;
+          Break;
+        end;
+      end;
+
+      if (Not Found) then
+      begin
+        SetLength(Result, Length(Result) + 1);
+        Result[Length(Result) - 1] := FReminders[i];
+      end;
+    end
   end;
 end;
 
@@ -333,44 +363,52 @@ var
   Month: word;
   Day: word;
   i: Integer;
+  Calculating: boolean;
 begin
   CurrDate := Date;
 
-  for i := Length(FReminders) - 1 downto 0 do
-  begin
-    // If a reminder is more that 3 days old refresh or dispose of it.
-    if CurrDate >= FReminders[i].Date + 3 then
+  repeat
+    Calculating := false;
+    for i := Length(FReminders) - 1 downto 0 do
     begin
-      case FReminders[i].Kind of
-        rkOnce: DeleteReminder(i);
-        rkWeekly:
-          begin
-            FReminders[i].Date := FReminders[i].Date + (((Trunc(CurrDate) - Trunc(FReminders[i].Date)) + 6) div 7) * 7;
-          end;
-        rkMonthly:
-          begin
-            // Add one month to the reminder
-            DecodeDate(FReminders[i].Date, Year, Month, Day);
-            IncAMonth(Year, Month, Day, 1);
-            FReminders[i].Date := EncodeDate(Year, Month, Day);
-          end;
-        rkQuaterly:
-          begin
-            // Add four months to the reminder
-            DecodeDate(FReminders[i].Date, Year, Month, Day);
-            IncAMonth(Year, Month, Day, 4);
-            FReminders[i].Date := EncodeDate(Year, Month, Day);
-          end;
-        rkYearly:
-          begin
-            // Add one year to the reminder
-            DecodeDate(FReminders[i].Date, Year, Month, Day);
-            IncAMonth(Year, Month, Day, 12);
-            FReminders[i].Date := EncodeDate(Year, Month, Day);
-          end;
+      // If a reminder is more that 3 days old refresh or dispose of it.
+      if CurrDate >= FReminders[i].Date + 3 then
+      begin
+        case FReminders[i].Kind of
+          rkOnce: DeleteReminder(i);
+          rkWeekly:
+            begin
+              FReminders[i].Date := FReminders[i].Date + (((Trunc(CurrDate) - Trunc(FReminders[i].Date)) + 6) div 7) * 7;
+              Calculating := true;
+            end;
+          rkMonthly:
+            begin
+              // Add one month to the reminder
+              DecodeDate(FReminders[i].Date, Year, Month, Day);
+              IncAMonth(Year, Month, Day, 1);
+              FReminders[i].Date := EncodeDate(Year, Month, Day);
+              Calculating := true;
+            end;
+          rkQuaterly:
+            begin
+              // Add four months to the reminder
+              DecodeDate(FReminders[i].Date, Year, Month, Day);
+              IncAMonth(Year, Month, Day, 4);
+              FReminders[i].Date := EncodeDate(Year, Month, Day);
+              Calculating := true;
+            end;
+          rkYearly:
+            begin
+              // Add one year to the reminder
+              DecodeDate(FReminders[i].Date, Year, Month, Day);
+              IncAMonth(Year, Month, Day, 12);
+              FReminders[i].Date := EncodeDate(Year, Month, Day);
+              Calculating := true;
+            end;
+        end;
       end;
     end;
-  end;
+  until not Calculating;
 end;
 
 procedure TfrmReminders.DisplayReminder(Index: Integer);

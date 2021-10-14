@@ -427,7 +427,6 @@ begin
     FReminderAlarm.Acknowledged := True;
     lbReminderSummary.Font.Color := clYellow;
     ReminderList := TStringList.Create;
-    frmReminders.SortReminders(FCurrentReminders);
     frmReminders.PopulateList(FCurrentReminders, ReminderList);
     lbReminderSummary.Caption := ReminderList.Text;
 
@@ -580,7 +579,6 @@ begin
 
     Rems := '';
     CurrentList := TStringList.Create;
-    frmReminders.SortReminders(FCurrentReminders);
     frmReminders.PopulateList(FCurrentReminders, CurrentList);
     for i:= 0 to CurrentList.Count - 1 do
     begin
