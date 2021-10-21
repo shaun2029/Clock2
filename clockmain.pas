@@ -22,7 +22,7 @@ uses
   StdCtrls, ExtCtrls, Alarm, Settings, Reminders, ReminderList, LCLProc,
   Buttons, Music, Sync, Process, MusicPlayer, PlaylistCreator, commandserver, WebControl, X,
   Xlib, WaitForMedia, Pictures, DateTime, SourcePicker, Unix, Email, IniFiles, Equaliser, MplayerEQ,
-  DiscoverServer, RadioStations, ExceptionHandler;
+  DiscoverServer, RadioStations, ExceptionHandler, LCLType;
 
 const
   VERSION = '3.7.0';
@@ -900,6 +900,16 @@ begin
       'R - Reminders'  + LineEnding + LineEnding +
       'Smiley :-) - Exit');
   end
+  else  if (Key = VK_UP) then
+    imgVolUpClick(Self)
+  else if (Key = VK_DOWN) then
+    imgVolDownClick(Self)
+  else  if (Key = VK_LEFT) then
+    lbPreviousClick(Self)
+  else if (Key = VK_RIGHT) then
+    lbNextClick(Self)
+  else if (Key = VK_SPACE) then
+    lbPlayClick(Self)
   {$IFNDEF PICSHOW}
   else if (Key = 43) and (ssShift in Shift) then
   begin
