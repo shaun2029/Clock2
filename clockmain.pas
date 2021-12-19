@@ -25,7 +25,7 @@ uses
   DiscoverServer, RadioStations, ExceptionHandler, LCLType;
 
 const
-  VERSION = '3.7.0';
+  VERSION = '3.7.1';
 
 type
   TMusicState = (msPlaying, msPaused);
@@ -39,10 +39,10 @@ type
     imgExit: TImage;
     imgBoost: TImage;
     imgBoostPlus: TImage;
+    imgPlay: TImage;
     imgPrevious: TImage;
     imgOn: TImage;
     imgOff: TImage;
-    imgPlay: TImage;
     imgRadio: TImage;
     imgReminders: TImage;
     imgVolUp: TImage;
@@ -56,6 +56,7 @@ type
     lbBoost: TLabel;
     lbBoostPlus: TLabel;
     lblTemp: TLabel;
+    lbPlay: TLabel;
     lbRadio: TLabel;
     lbReminders: TLabel;
     lbReminderSummary: TLabel;
@@ -63,7 +64,6 @@ type
     ListBox1: TListBox;
     Radio: TLabel;
     lbPrevious: TLabel;
-    lbPlay: TLabel;
     lbMusic2: TLabel;
     lbVolUp: TLabel;
     lbVolDown: TLabel;
@@ -250,9 +250,6 @@ procedure TfrmClockMain.PlayMusic;
 begin
   FPlayer.Play;
   FMusicState := msPlaying;
-
-  // Display volume when play back is started.
-  DisplayVolume;
 end;
 
 procedure TfrmClockMain.PlayNextMusic;
@@ -390,6 +387,7 @@ var
   Day, Month, Year: word;
   Hour, Min, Sec, MSec: word;
 begin
+  tmrTime.Enabled := False;
   tmrTime.Interval := 1000;
   Current := FLinuxDateTime.GetLocalTime;
 
@@ -516,6 +514,7 @@ begin
       end;
   end;
 {$ENDIF}
+  tmrTime.Enabled := True;
 end;
 
 procedure TfrmClockMain.tmrMinuteTimer(Sender: TObject);
