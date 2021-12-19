@@ -56,6 +56,7 @@ type
     procedure Stop;
     procedure Next;
     procedure Previous;
+    procedure ToggleMute;
 
     procedure RescanSearchPath;
 
@@ -195,8 +196,12 @@ begin
   Tick;
 end;
 
-// Returns true if scanning for music files
+procedure TPlayer.ToggleMute;
+begin
+  FMusicPlayer.ToggleMute;
+end;
 
+// Returns true if scanning for music files
 function TPlayer.Tick: integer;
 begin
   Result := -1;

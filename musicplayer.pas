@@ -78,8 +78,11 @@ type
     procedure VolumeUp;
     procedure VolumeDown;
     procedure Stop;
+    procedure ToggleMute;
 
     function GetVolume: integer;
+    procedure Mute;
+    procedure UnMute;
   published
     property SongArtist: string read FSongArtist;
     property SongTitle: string read FSongTitle;
@@ -462,6 +465,7 @@ end;
 
 procedure TMusicPlayer.Play(Filename, URL: string);
 begin
+  Unmute;
   PlaySong(Filename, URL);
 end;
 
@@ -482,6 +486,7 @@ begin
       end;
   end;
 
+  UnMute;
   SetVolume(FVolume);
 end;
 
@@ -502,6 +507,7 @@ begin
       end;
   end;
 
+  UnMute;
   SetVolume(FVolume);
 end;
 
@@ -562,6 +568,54 @@ begin
         Result := StrToIntDef(Output, 50);
       end;
     end;
+  end;
+end;
+
+procedure TMusicPlayer.ToggleMute;
+var
+  Output: string;
+  CommandLine: string;
+begin
+  if FVolumeControl <> vcSoftVol then
+  begin
+    if FVolumeControl = vcPulse then
+      CommandLine := 'amixer -D pulse set ''' + FMixerControl + ''' 1+ toggle'
+    else
+      CommandLine := 'amixer set ''' + FMixerControl + ''' 1+ toggle';
+
+    RunCommand(CommandLine, Output);
+  end;
+end;
+
+procedure TMusicPlayer.Mute;
+var
+  Output: string;
+  CommandLine: string;
+begin
+  if FVolumeControl <> vcSoftVol then
+  begin
+    if FVolumeControl = vcPulse then
+      CommandLine := 'amixer -D pulse set ''' + FMixerControl + ''' 1+ off'
+    else
+      CommandLine := 'amixer set ''' + FMixerControl + ''' 1+ off';
+
+    RunCommand(CommandLine, Output);
+  end;
+end;
+
+procedure TMusicPlayer.UnMute;
+var
+  Output: string;
+  CommandLine: string;
+begin
+  if FVolumeControl <> vcSoftVol then
+  begin
+    if FVolumeControl = vcPulse then
+      CommandLine := 'amixer -D pulse set ''' + FMixerControl + ''' 1+ on'
+    else
+      CommandLine := 'amixer set ''' + FMixerControl + ''' 1+ on';
+
+    RunCommand(CommandLine, Output);
   end;
 end;
 

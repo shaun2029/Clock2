@@ -168,6 +168,7 @@ type
     procedure SetMusicSource(Source: TMusicSource);
     procedure ShowForm(MyForm: TForm);
     procedure StartDiscoverServer;
+    procedure ToggleMute;
     procedure UpdatingMusic(Player: TPlayer);
 
 {$IFDEF GRABXKEYS}
@@ -262,6 +263,11 @@ procedure TfrmClockMain.PlayPreviousMusic;
 begin
   FPlayer.Previous;
   FMusicState := msPlaying;
+end;
+
+procedure TfrmClockMain.ToggleMute;
+begin
+  FPlayer.ToggleMute;
 end;
 
 function TfrmClockMain.WaitForMedia(Path: string): boolean;
@@ -908,7 +914,7 @@ begin
   else if (Key = VK_RIGHT) then
     lbNextClick(Self)
   else if (Key = VK_SPACE) then
-    lbPlayClick(Self)
+    ToggleMute;
   {$IFNDEF PICSHOW}
   else if (Key = 43) and (ssShift in Shift) then
   begin
