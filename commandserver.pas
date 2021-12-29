@@ -604,19 +604,22 @@ begin
       write(s);
 
       // Next
-      if (s = 'Received SONY: 8DC') then
+      if (s = 'Received SONY: 8DC')
+        or (s = 'Gesture:Right') then
       begin
         FCritical.Enter;
         FCommand := rcomNext;
         FCritical.Leave;
       end
-      else if (s = 'Received SONY: DC') then
+      else if (s = 'Received SONY: DC')
+        or (s = 'Gesture:Left') then
       begin
         FCritical.Enter;
         FCommand := rcomPrevious;
         FCritical.Leave;
       end
-      else if (s = 'Received SONY: 59C') then
+      else if (s = 'Received SONY: 59C')
+        or (s = 'Gesture:WaveX') then
       begin
         FCritical.Enter;
         FCommand := rcomPause;
@@ -629,6 +632,18 @@ begin
         FCritical.Leave;
       end
       else if (s = 'Received SONY: D9C') then
+      begin
+        FCritical.Enter;
+        FCommand := rcomVolumeDown;
+        FCritical.Leave;
+      end
+      else if (s = 'Gesture:Up') then
+      begin
+        FCritical.Enter;
+        FCommand := rcomVolumeUp;
+        FCritical.Leave;
+      end
+      else if (s = 'Gesture:Down') then
       begin
         FCritical.Enter;
         FCommand := rcomVolumeDown;
