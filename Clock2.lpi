@@ -162,7 +162,6 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ClockMain"/>
-        <IsVisibleTab Value="True"/>
         <TopLine Value="13"/>
         <CursorPos X="19" Y="28"/>
         <UsageCount Value="207"/>
@@ -237,9 +236,10 @@
       <Unit12>
         <Filename Value="commandserver.pas"/>
         <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="620"/>
-        <CursorPos X="12" Y="624"/>
+        <TopLine Value="612"/>
+        <CursorPos X="30" Y="626"/>
         <UsageCount Value="212"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>

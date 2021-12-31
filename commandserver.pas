@@ -619,7 +619,9 @@ begin
         FCritical.Leave;
       end
       else if (s = 'Received SONY: 59C')
-        or (s = 'Gesture:WaveX') then
+        or (s = 'Gesture:WaveX')
+        or (s = 'Gesture:WaveY')
+        or (s = 'Gesture:Wave') then
       begin
         FCritical.Enter;
         FCommand := rcomPause;
