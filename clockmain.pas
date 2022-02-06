@@ -25,7 +25,7 @@ uses
   DiscoverServer, RadioStations, ExceptionHandler, LCLType;
 
 const
-  VERSION = '3.8.1';
+  VERSION = '3.8.2';
 
 type
   TMusicState = (msPlaying, msPaused);
@@ -107,6 +107,7 @@ type
     procedure tmrMinuteTimer(Sender: TObject);
   private
     { private declarations }
+    FCommandTimeout: TDateTime;
     FMplayerEQ: TMplayerEQ;
     FMPGPlayer: TMusicPlayer;
     FAlarm, FReminderAlarm: TAlarm;
@@ -733,6 +734,8 @@ begin
   FFormShown := False;
   Self.Color := clBlack;
 
+  FCommandTimeout := Now;
+
   // Gets created when settings are updated
   FDiscoverServer := nil;
 
@@ -914,7 +917,9 @@ begin
   else if (Key = VK_RIGHT) then
     lbNextClick(Self)
   else if (Key = VK_SPACE) then
-    ToggleMute;
+  begin
+    ProcessCommand(rcomPause);
+  end;
   {$IFNDEF PICSHOW}
   else if (Key = 43) and (ssShift in Shift) then
   begin
@@ -1383,7 +1388,16 @@ begin
 
   Command := FComServer.Command;
   if (Command <> rcomNone) then
-     ProcessCommand(Command);
+  begin
+     ProcessCommand(Command)
+  end
+  else if FileExists('/tmp/music.pause') then
+  begin
+    // Make sure file ihas been written.
+    ProcessCommand(rcomPause);
+    Sleep(500);
+    DeleteFile('/tmp/music.pause');
+  end;
 
   tmrCommand.Enabled := True;
 end;
@@ -1397,6 +1411,9 @@ procedure TfrmClockMain.ProcessCommand(Command: TRemoteCommand);
 var
   Key: Char;
 begin
+  if (Now < FCommandTimeout) then Exit;
+  FCommandTimeout := Now;
+
   case Command of
     rcomNext:
       begin
@@ -1443,6 +1460,7 @@ begin
           msPlaying: PauseMusic;
           else PlayMusic;
         end;
+        FCommandTimeout := Now + EncodeTime(0, 0, 2, 0);
       end;
     rcomVolumeUp:
       begin

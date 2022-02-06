@@ -345,6 +345,8 @@ begin
   Buffer := Socket.RecvString(1000);
   LastError := Socket.LastError;
 
+  Log('Socket Command: ' + Buffer);
+
   if LastError = 0 then
   begin
     if Buffer = 'CLOCK:NEXT' then
@@ -601,7 +603,7 @@ begin
 
     if (Length(s) > 0) then
     begin
-      write(s);
+      Log('Serial Command: ' + s);
 
       // Next
       if (s = 'Received SONY: 8DC')
@@ -619,8 +621,7 @@ begin
         FCritical.Leave;
       end
       else if (s = 'Received SONY: 59C')
-        or (s = 'Gesture:WaveX')
-        or (s = 'Gesture:WaveY')
+        or (s = 'Gesture:Pause')
         or (s = 'Gesture:Wave') then
       begin
         FCritical.Enter;
@@ -639,13 +640,13 @@ begin
         FCommand := rcomVolumeDown;
         FCritical.Leave;
       end
-      else if (s = 'Gesture:Up') then
+      else if (s = 'Gesture:VolUp') then
       begin
         FCritical.Enter;
         FCommand := rcomVolumeUp;
         FCritical.Leave;
       end
-      else if (s = 'Gesture:Down') then
+      else if (s = 'Gesture:VolDown') then
       begin
         FCritical.Enter;
         FCommand := rcomVolumeDown;
