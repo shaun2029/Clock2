@@ -39,6 +39,8 @@ type
     FVolumeControl: TVolumeControl;
     FVolAttenuation: integer;
     FMplayerEQ: TMplayerEQ;
+    FSnapClient: boolean;
+    FPlayProcessAlive: integer;
     FMixerControl: string;
     FVolume: integer;
     FPlayProcess: TProcess;
@@ -47,6 +49,7 @@ type
     FSongArtist: string;
     FSongTitle: string;
     FSongURL: string;
+    FSong: string;
     FState: TMusicPlayerState;
     FID3v1: TID3v1Tag;
     FID3v2: TID3v2Tag;
@@ -106,6 +109,7 @@ begin
   FNewRadioTitle := '';
   FSongURL := URL;
   Song := Trim(song);
+  FSong := Song;
 
   if FileExists(Song) then
   begin
@@ -152,9 +156,16 @@ begin
     // If the song name starts with cmd: then treat the song as a command.
     if (Pos('cmd://', Song) = 1) then
     begin
+      FSnapClient := pos('snapclient', Song) > 0;
       StartPlayApplication(Copy(Song, 7, Length(Song)), FPlayProcess);
     end
-    else StartPlayProcess(Song, FPlayProcess);
+    else
+    begin
+      StartPlayProcess(Song, FPlayProcess);
+      FSnapClient := False;
+    end;
+
+    FPlayProcessAlive := 10;
 
     if Trim(FSongTitle) = '' then FSongTitle := ExtractFilename(Song);
 
@@ -273,7 +284,9 @@ begin
     begin
       // Kill mplayer running in bash shell
       FPlayProcess.Terminate(0);
-      RunCommand('killall -9 mplayer', Output);
+      if FSnapClient then
+        RunCommand('killall -9 snapclient', Output)
+      else RunCommand('killall -9 mplayer', Output);
     end;
 
     FreeAndNil(FPlayProcess);
@@ -305,9 +318,18 @@ begin
     FPlayProcess.Output.Read(PChar(@Output[1])^, Len);
 
 {$ifdef LOGGING}
-    Writeln(stderr, 'MPLAYER: ------------------DATA----------------------');
-    Writeln(stderr, Output);
-    Writeln(stderr, 'MPLAYER: --------------------------------------------');
+    if SnapClient then
+    begin
+      Writeln(stderr, 'SNAPCLIENT: ------------------DATA----------------------');
+      Writeln(stderr, Output);
+      Writeln(stderr, 'SNAPCLIENT: --------------------------------------------');
+    end
+    else
+    begin
+      Writeln(stderr, 'MPLAYER: ------------------DATA----------------------');
+      Writeln(stderr, Output);
+      Writeln(stderr, 'MPLAYER: --------------------------------------------');
+    end;
 {$endif}
 
     Result := Output;
@@ -339,6 +361,7 @@ begin
     begin
       if (FPlayProcess.Output.NumBytesAvailable > 0) then
       begin
+        FPlayProcessAlive := 10;
         FPlayProcessList := FPlayProcessList + ReadProcessData;
       end;
 
@@ -415,12 +438,26 @@ procedure TMusicPlayer.Tick;
 begin
   if FNextTick < Now then
   begin
-    if FRadioPlaying then ProcessRadio
+    if not FSnapClient and FRadioPlaying then
+    begin
+      ProcessRadio;
+    end
     else
     begin
-      if Assigned(FPlayProcess) and (FPlayProcess.Output.NumBytesAvailable > 0) then
+      if Assigned(FPlayProcess) then
       begin
-        ReadProcessData;
+        if (FPlayProcess.Output.NumBytesAvailable > 0) then
+        begin
+          FPlayProcessAlive := 10;
+          ReadProcessData;
+        end
+        else FPlayProcessAlive := FPlayProcessAlive - 1;
+
+        if FSnapClient and (FPlayProcessAlive < 1) then
+        begin
+          Writeln(stderr, 'ERROR: SnapClient stalled, restarting ... ' + FSong);
+          PlaySong(FSong, FSongURL);
+        end;
       end;
     end;
 
