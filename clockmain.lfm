@@ -9436,24 +9436,6 @@ object frmClockMain: TfrmClockMain
     WordWrap = True
     OnClick = labSongClick
   end
-  object btnStopAlarm: TBitBtn
-    Left = 688
-    Height = 72
-    Top = 8
-    Width = 104
-    Cancel = True
-    Caption = 'Stop'
-    Color = 5066061
-    Font.Color = clYellow
-    Font.Height = -29
-    Font.Name = 'Sans'
-    GlyphShowMode = gsmAlways
-    ModalResult = 2
-    OnClick = lblTimeClick
-    ParentFont = False
-    TabOrder = 0
-    Visible = False
-  end
   object imgBoost: TImage
     Cursor = crNone
     Left = 14
@@ -11228,20 +11210,6 @@ object frmClockMain: TfrmClockMain
     ParentFont = False
     OnClick = lbBoostPlusClick
   end
-  object lblTemp: TLabel
-    Cursor = crNone
-    Left = 696
-    Height = 31
-    Top = 9
-    Width = 96
-    AutoSize = False
-    Caption = 'lblTemp'
-    Font.Color = clWhite
-    Font.Height = -24
-    Font.Name = 'Sans'
-    ParentColor = False
-    ParentFont = False
-  end
   object imgPlay: TImage
     Cursor = crNone
     Left = 14
@@ -13015,6 +12983,52 @@ object frmClockMain: TfrmClockMain
     ParentColor = False
     ParentFont = False
     OnClick = imgRadioClick
+  end
+  object lblTemp: TLabel
+    Cursor = crNone
+    Left = 696
+    Height = 31
+    Top = 9
+    Width = 96
+    AutoSize = False
+    Caption = 'lblTemp'
+    Font.Color = clWhite
+    Font.Height = -24
+    Font.Name = 'Sans'
+    ParentColor = False
+    ParentFont = False
+  end
+  object lblHumidity: TLabel
+    Cursor = crNone
+    Left = 696
+    Height = 31
+    Top = 48
+    Width = 96
+    AutoSize = False
+    Caption = 'lblHumidity'
+    Font.Color = clWhite
+    Font.Height = -24
+    Font.Name = 'Sans'
+    ParentColor = False
+    ParentFont = False
+  end
+  object btnStopAlarm: TBitBtn
+    Left = 688
+    Height = 72
+    Top = 8
+    Width = 104
+    Cancel = True
+    Caption = 'Stop'
+    Color = 5066061
+    Font.Color = clYellow
+    Font.Height = -29
+    Font.Name = 'Sans'
+    GlyphShowMode = gsmAlways
+    ModalResult = 2
+    OnClick = lblTimeClick
+    ParentFont = False
+    TabOrder = 0
+    Visible = False
   end
   object tmrTime: TTimer
     OnTimer = tmrTimeTimer

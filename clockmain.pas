@@ -20,12 +20,12 @@ interface
 uses
   gtk2, gdk2, Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs,
   StdCtrls, ExtCtrls, Alarm, Settings, Reminders, ReminderList, LCLProc,
-  Buttons, Music, Sync, Process, MusicPlayer, PlaylistCreator, commandserver, WebControl, X,
+  Buttons, Music, Sync, Process, MusicPlayer, PlaylistCreator, commandserver, CommandSerial, WebControl, X,
   Xlib, WaitForMedia, Pictures, DateTime, SourcePicker, Unix, Email, IniFiles, Equaliser, MplayerEQ,
   DiscoverServer, RadioStations, ExceptionHandler, LCLType;
 
 const
-  VERSION = '3.9.0';
+  VERSION = '3.10.0';
 
 type
   TMusicState = (msPlaying, msPaused);
@@ -56,6 +56,7 @@ type
     lbBoost: TLabel;
     lbBoostPlus: TLabel;
     lblTemp: TLabel;
+    lblHumidity: TLabel;
     lbPlay: TLabel;
     lbRadio: TLabel;
     lbReminders: TLabel;
@@ -135,6 +136,7 @@ type
     FSources: TSourceArray;
 
     FCOMServer: TCOMServer;
+    FCOMSerial: TCOMSerial;
 
     FDisplay: PDisplay;
     FAlarmActive: boolean;
@@ -406,10 +408,15 @@ begin
   if TimeCaption <> lblTime.Caption then
     lblTime.Caption := TimeCaption;
 
-  if (FCOMServer.TemperatureValid) then
-    lblTemp.Caption := FormatFloat('#0.0', FCOMServer.Temperature) + ' C'
+  if (FCOMSerial.TemperatureValid) then
+    lblTemp.Caption := FormatFloat('#0.0', FCOMSerial.Temperature) + ' C'
   else
     lblTemp.Caption := '';
+
+  if (FCOMSerial.HumidityValid) then
+    lblHumidity.Caption := FormatFloat('#0.0', FCOMSerial.Humidity) + ' %'
+  else
+    lblHumidity.Caption := '';
 
   // Turn off timer
   if Current > FTimer.AlarmTime + EncodeTime(0, 5, 0, 0) then
@@ -818,7 +825,8 @@ begin
   FSyncServer := nil;
   FSyncClient := nil;
 
-  FCOMServer := TCOMServer.Create(44558, SerialDevice);
+  FCOMServer := TCOMServer.Create(44558);
+  FCOMSerial := TCOMSerial.Create(SerialDevice);
   tmrCommand.Enabled := True;
 
   FLinuxDateTime := TLinuxDateTime.Create;
@@ -884,6 +892,7 @@ begin
   FReminderAlarm.Free;
   FTimer.Free;
   FCOMServer.Free;
+  FCOMSerial.Free;
   frmRadioStations.Free;
 end;
 
@@ -1289,7 +1298,7 @@ begin
 
   if Assigned(FCOMServer) then
   begin
-    FCOMServer.HeatingBoost := 1;
+    FCOMSerial.HeatingBoost := 1;
   end;
 
   imgBoost.Picture.Assign(imgOn.Picture);
@@ -1303,7 +1312,7 @@ begin
 
   if Assigned(FCOMServer) then
   begin
-    FCOMServer.HeatingBoost := 2;
+    FCOMSerial.HeatingBoost := 2;
   end;
 
   imgBoostPlus.Picture.Assign(imgOn.Picture);
@@ -1387,6 +1396,11 @@ begin
   tmrCommand.Enabled := False;
 
   Command := FComServer.Command;
+  if (command <> rcomNone) then
+  begin
+    Command := FCOMSerial.Command;
+  end;
+
   if (Command <> rcomNone) then
   begin
      ProcessCommand(Command)

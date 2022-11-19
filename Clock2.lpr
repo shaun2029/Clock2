@@ -11,7 +11,7 @@ uses
   music, commandserver, MusicPlayer, WaitForMedia, PlaylistCreator, TouchList,
   DateTime, SourcePicker, ConnectionHealth, Email, SignalHandler, lnetbase,
   DiscoverServer, mplayereq, mpd, RadioStations, equaliser, ExceptionHandler,
-  webcontrol;
+  webcontrol, CommandSerial;
 
 {$IFDEF WINDOWS}{$R picshow.rc}{$ENDIF}
 

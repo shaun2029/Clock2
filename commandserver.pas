@@ -28,17 +28,11 @@ type
     FIRRadioStation: integer;
     FErrorState: TComErrorState;
     FWebControl: TSimpleWebControl;
-    FSerialDevice: string;
-    FTemperature: single;
-    FTempTime: TDateTime;
 
     procedure AttendConnection(Socket: TTCPBlockSocket);
     procedure DumpExceptionCallStack;
     function GetRadioStation: integer;
     function GetCommand: TRemoteCommand;
-    function GetTemperature: single;
-    function GetTemperatureValid: boolean;
-    procedure ReadSerialCommands(Filename: string);
     procedure SetHeatingBoost(AValue: integer);
     procedure SetHostName(AValue: string);
     procedure SetPlaying(const AValue: string);
@@ -50,7 +44,7 @@ type
 
     procedure Execute; override;
   public
-    constructor Create(Port: integer; SerialDevice: string);
+    constructor Create(Port: integer);
     destructor Destroy; override;
 
     procedure Lock();
@@ -64,8 +58,6 @@ type
     property HeatingBoost: integer write SetHeatingBoost;
     property Command: TRemoteCommand read GetCommand;
     property Error: TComErrorState read FErrorState;
-    property Temperature: single read GetTemperature;
-    property TemperatureValid: boolean read GetTemperatureValid;
   end;
 
   TCOMServer = class
@@ -73,16 +65,13 @@ type
     FCOMServerThread: TCOMServerThread;
     function GetErrorState: TComErrorState;
     function GetRadioStation: integer;
-    function GetTemperature: single;
-    function GetTemperatureValid: boolean;
-    procedure SetHeatingBoost(AValue: integer);
     procedure SetHostName(AValue: string);
     procedure SetPlaying(const AValue: string);
     function GetCommand: TRemoteCommand;
     procedure SetRadioStations(AValue: string);
     procedure SetReminders(AValue: string);
   public
-    constructor Create(Port: integer; SerialDevice: string);
+    constructor Create(Port: integer);
     destructor Destroy; override;
   published
     property Playing: string write SetPlaying;
@@ -92,9 +81,6 @@ type
     property Reminders: string write SetReminders;
     property HostName: string write SetHostName;
     property Error: TComErrorState read GetErrorState;
-    property HeatingBoost: integer write SetHeatingBoost;
-    property Temperature: single read GetTemperature;
-    property TemperatureValid: boolean read GetTemperatureValid;
   end;
 
 implementation
@@ -126,27 +112,6 @@ begin
   FCOMServerThread.Unlock;
 end;
 
-function TCOMServer.GetTemperature: single;
-begin
-  FCOMServerThread.Lock;
-  Result := FCOMServerThread.Temperature;
-  FCOMServerThread.Unlock;
-end;
-
-function TCOMServer.GetTemperatureValid: boolean;
-begin
-  FCOMServerThread.Lock;
-  Result := FCOMServerThread.TemperatureValid;
-  FCOMServerThread.Unlock;
-end;
-
-procedure TCOMServer.SetHeatingBoost(AValue: integer);
-begin
-  FCOMServerThread.Lock;
-  FCOMServerThread.HeatingBoost := AValue;
-  FCOMServerThread.Unlock;
-end;
-
 procedure TCOMServer.SetHostName(AValue: string);
 begin
   FCOMServerThread.Lock;
@@ -175,11 +140,11 @@ begin
   FCOMServerThread.Unlock;
 end;
 
-constructor TCOMServer.Create(Port: integer; SerialDevice: string);
+constructor TCOMServer.Create(Port: integer);
 begin
   inherited Create;
 
-  FCOMServerThread := TCOMServerThread.Create(Port, SerialDevice);
+  FCOMServerThread := TCOMServerThread.Create(Port);
 end;
 
 destructor TCOMServer.Destroy;
@@ -280,16 +245,7 @@ begin
     else
     begin
       repeat
-        FCritical.Enter;
-        FWebControl.Temperature := FTemperature;
-        FWebControl.TempTime := FTempTime;
-        FCritical.Leave;
         FWebControl.ProccessConnections();
-
-        if FileExists(FSerialDevice) then
-        begin
-          ReadSerialCommands(FSerialDevice);
-        end;
 
         if ListenerSocket.CanRead(200) then
         begin
@@ -451,17 +407,6 @@ begin
       FCritical.Leave;
       Socket.SendString(':OK' + #10);
     end
-    else if Buffer = 'CLOCK:TEMPRATURE' then
-    begin
-      if FileExists(FSerialDevice) then
-      begin
-        FCritical.Enter;
-        Socket.SendString(FloatToStr(FTemperature) + #10);
-        FCritical.Leave;
-        Socket.SendString(':OK' + #10);
-      end
-      else Socket.SendString(':BAD' + #10);
-    end
     else if Buffer = 'CLOCK:FAVORITE' then
     begin
       FCritical.Enter;
@@ -491,20 +436,6 @@ begin
     Result := FWebControl.Command;
 end;
 
-function TCOMServerThread.GetTemperature: single;
-begin
-  FCritical.Enter;
-  Result := FTemperature;
-  FCritical.Leave;
-end;
-
-function TCOMServerThread.GetTemperatureValid: boolean;
-begin
-  FCritical.Enter;
-  Result := (Abs(SecondsBetween(Now, FTempTime)) < 60);
-  FCritical.Leave;
-end;
-
 procedure TCOMServerThread.SetHostName(AValue: string);
 begin
   FCritical.Enter;
@@ -512,7 +443,7 @@ begin
   FCritical.Leave;
 end;
 
-constructor TCOMServerThread.Create(Port: integer; SerialDevice: string);
+constructor TCOMServerThread.Create(Port: integer);
 begin
   inherited Create(False);
 
@@ -523,7 +454,6 @@ begin
   FRadioStations := '';
   FReminders := '';
   FPort := Port;
-  FSerialDevice := SerialDevice;
 
   FWebControl := TSimpleWebControl.Create;
 end;
@@ -544,164 +474,6 @@ end;
 procedure TCOMServerThread.Unlock();
 begin
   FCritical.Leave;
-end;
-
-{
- Serial device is arduino connected to IR receiver and LM35 temprature sensor.
-
-IR Commands and codes:
-
-  Next
-  Received SONY: 8DC
-  Code Length:12
-
-  Prev
-  Received SONY: DC
-  Code Length:12
-
-  Play/Pause
-  Received SONY: 59C
-  Code Length:12
-
-  Radio 0
-  Received SONY: 6BC
-  Code Length:12
-
-  Radio 1
-  Received SONY: EBC
-  Code Length:12
-
-  Radio 3
-  Received SONY: 5BC
-  Code Length:12
-
-  Sleep
-  Received SONY: E3C
-  Code Length:12
-
-  Vol Up
-  Received SONY: 39C
-  Code Length:12
-
-  Vol Down
-  Received SONY: D9C
-  Code Length:12
-}
-
-procedure TCOMServerThread.ReadSerialCommands(Filename: string);
-var
-  s, s2: string;
-begin
-  // Embed the file handling in a try/except block to handle errors gracefully
-  try
-    RunCommand('timeout 0.1 cat ' + Filename, s);
-    if (Length(s) > 1) then
-    begin
-       SetLength(s, Pos(#10, s) - 1);
-    end
-    else s := '';
-
-    if (Length(s) > 0) then
-    begin
-      Log('Serial Command: ' + s);
-
-      // Next
-      if (s = 'Received SONY: 8DC')
-        or (s = 'Gesture:Right') then
-      begin
-        FCritical.Enter;
-        FCommand := rcomNext;
-        FCritical.Leave;
-      end
-      else if (s = 'Received SONY: DC')
-        or (s = 'Gesture:Left') then
-      begin
-        FCritical.Enter;
-        FCommand := rcomPrevious;
-        FCritical.Leave;
-      end
-      else if (s = 'Received SONY: 59C')
-        or (s = 'Gesture:Pause')
-        or (s = 'Gesture:Wave') then
-      begin
-        FCritical.Enter;
-        FCommand := rcomPause;
-        FCritical.Leave;
-      end
-      else if (s = 'Received SONY: 39C') then
-      begin
-        FCritical.Enter;
-        FCommand := rcomVolumeUp;
-        FCritical.Leave;
-      end
-      else if (s = 'Received SONY: D9C') then
-      begin
-        FCritical.Enter;
-        FCommand := rcomVolumeDown;
-        FCritical.Leave;
-      end
-      else if (s = 'Gesture:VolUp') then
-      begin
-        FCritical.Enter;
-        FCommand := rcomVolumeUp;
-        FCritical.Leave;
-      end
-      else if (s = 'Gesture:VolDown') then
-      begin
-        FCritical.Enter;
-        FCommand := rcomVolumeDown;
-        FCritical.Leave;
-      end
-      else if (s = 'Received SONY: EBC') then
-      begin
-        FCritical.Enter;
-        FRadioStation := 0;
-        FCommand := rcomSetRadioStation;
-        FCritical.Leave;
-      end
-      else if (s = 'Received SONY: 6BC') then
-      begin
-        FCritical.Enter;
-        FRadioStation := 1;
-        FCommand := rcomSetRadioStation;
-        FCritical.Leave;
-      end
-      else if (s = 'Received SONY: 5BC') then
-      begin
-        FCritical.Enter;
-        FRadioStation := 2;
-        FCommand := rcomSetRadioStation;
-        FCritical.Leave;
-      end
-      else if (s = 'Received SONY: E3C') then
-      begin
-        FCritical.Enter;
-        FCommand := rcomSleep;
-        FCritical.Leave;
-      end
-      else if (Pos('Temp: ', s) = 1) then
-      begin
-        FCritical.Enter;
-        try
-          FTempTime := Now;
-          FTemperature := StrToFloat(StringReplace(s, 'Temp: ', '', [rfIgnoreCase]));
-        finally
-        end;
-        FCritical.Leave;
-      end
-      else if (Pos('TEMPERATURE:', s) = 1) then
-      begin
-        FCritical.Enter;
-        try
-          FTempTime := Now;
-          FTemperature := StrToFloat(StringReplace(s, 'TEMPERATURE:', '', [rfIgnoreCase]));
-        finally
-        end;
-        FCritical.Leave;
-      end;
-    end;
-  except
-  end;
 end;
 
 procedure TCOMServerThread.SetHeatingBoost(AValue: integer);
