@@ -47,6 +47,8 @@ type
     cbxEmailReminders: TCheckBox;
     cbxReminderAlarm: TCheckBox;
     edtMusic: TEdit;
+    edtSensorAddress: TEdit;
+    edtSensorPort: TEdit;
     edtSleep: TEdit;
     edtMeditation: TEdit;
     edtClockName: TEdit;
@@ -72,6 +74,8 @@ type
     Label15: TLabel;
     Label16: TLabel;
     Label17: TLabel;
+    Label18: TLabel;
+    Label19: TLabel;
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;

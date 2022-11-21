@@ -25,7 +25,7 @@ uses
   DiscoverServer, RadioStations, ExceptionHandler, LCLType;
 
 const
-  VERSION = '3.10.0';
+  VERSION = '3.11.0';
 
 type
   TMusicState = (msPlaying, msPaused);
@@ -38,7 +38,6 @@ type
     btnStopAlarm: TBitBtn;
     imgExit: TImage;
     imgBoost: TImage;
-    imgBoostPlus: TImage;
     imgPlay: TImage;
     imgPrevious: TImage;
     imgOn: TImage;
@@ -54,7 +53,6 @@ type
     labSongPrev2: TLabel;
     labSongPrev1: TLabel;
     lbBoost: TLabel;
-    lbBoostPlus: TLabel;
     lblTemp: TLabel;
     lblHumidity: TLabel;
     lbPlay: TLabel;
@@ -92,7 +90,6 @@ type
     procedure imgUpdateMusicClick(Sender: TObject);
     procedure labSongClick(Sender: TObject);
     procedure lbBoostClick(Sender: TObject);
-    procedure lbBoostPlusClick(Sender: TObject);
     procedure lbDisplayClick(Sender: TObject);
     procedure lbEqualiserClick(Sender: TObject);
     procedure lblTimeClick(Sender: TObject);
@@ -117,6 +114,7 @@ type
     FSyncServer: TSyncServer;
     FSyncClient: TSyncClient;
     FServerAddress, FServerPort: String;
+    FSensorAddress, FSensorPort: String;
     FDiscoverServer: TDiscoverServer;
 
     FAfterAlarmResumeMusic: boolean;
@@ -186,6 +184,8 @@ type
 
     procedure BeforeAlarm;
     procedure AfterAlarm;
+
+    function HeatingBoost: boolean;
   public
     { public declarations }
     HTTPBuffer: string;
@@ -338,6 +338,18 @@ begin
   end;
 
   FAlarmActive := False;
+end;
+
+function TfrmClockMain.HeatingBoost: boolean;
+var
+  Output: string;
+begin
+  Result := False;
+
+  if RunCommand('curl -m 5 ' + FSensorAddress + ':' + FSensorPort + '/boost' , Output) then
+  begin
+    Result := (Pos('HEATINGBOOST:', Output) > 0);
+  end;
 end;
 
 function TfrmClockMain.DayOfWeekStr(Date: TDateTime): string;
@@ -1298,24 +1310,10 @@ begin
 
   if Assigned(FCOMServer) then
   begin
-    FCOMSerial.HeatingBoost := 1;
+    HeatingBoost;
   end;
 
   imgBoost.Picture.Assign(imgOn.Picture);
-end;
-
-procedure TfrmClockMain.lbBoostPlusClick(Sender: TObject);
-begin
-  imgBoostPlus.Picture.Assign(imgOff.Picture);
-  Application.ProcessMessages;
-  Sleep(800);
-
-  if Assigned(FCOMServer) then
-  begin
-    FCOMSerial.HeatingBoost := 2;
-  end;
-
-  imgBoostPlus.Picture.Assign(imgOn.Picture);
 end;
 
 procedure TfrmClockMain.lbDisplayClick(Sender: TObject);
@@ -1735,6 +1733,8 @@ begin
 
   FServerAddress := frmSettings.edtServerAddress.Text;
   FServerPort := frmSettings.edtServerPort.Text;
+  FSensorAddress := frmSettings.edtSensorAddress.Text;
+  FSensorPort := frmSettings.edtSensorPort.Text;
 
   SetCursorType(Self);
 
