@@ -19,9 +19,9 @@ object frmSettings: TfrmSettings
     Height = 264
     Top = 8
     Width = 488
-    ActivePage = TabSheet4
+    ActivePage = TabSheet7
     ParentFont = False
-    TabIndex = 6
+    TabIndex = 5
     TabOrder = 0
     Options = [nboKeyboardTabSwitch]
     object TabSheet2: TTabSheet
@@ -473,7 +473,6 @@ object frmSettings: TfrmSettings
         Top = 176
         Width = 133
         TabOrder = 3
-        Text = '255.255.255.255'
       end
       object Label19: TLabel
         Left = 270

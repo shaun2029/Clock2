@@ -206,7 +206,7 @@ begin
 
   if FVolumeControl = vcPulse then
      Process.CommandLine := 'mplayer -ao pulse ' + EQ
-  else if FVolumeControl = vcPulse then
+  else if FVolumeControl = vcAlsa then
      Process.CommandLine := 'mplayer -ao alsa ' + EQ
   else
      Process.CommandLine := 'mplayer ' + EQ;

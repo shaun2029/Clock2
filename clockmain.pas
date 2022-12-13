@@ -25,7 +25,7 @@ uses
   DiscoverServer, RadioStations, ExceptionHandler, LCLType;
 
 const
-  VERSION = '3.11.0';
+  VERSION = '3.11.1';
 
 type
   TMusicState = (msPlaying, msPaused);
@@ -38,6 +38,7 @@ type
     btnStopAlarm: TBitBtn;
     imgExit: TImage;
     imgBoost: TImage;
+    imgBoostPlus: TImage;
     imgPlay: TImage;
     imgPrevious: TImage;
     imgOn: TImage;
@@ -90,6 +91,7 @@ type
     procedure imgUpdateMusicClick(Sender: TObject);
     procedure labSongClick(Sender: TObject);
     procedure lbBoostClick(Sender: TObject);
+    procedure lbBoostPlusClick(Sender: TObject);
     procedure lbDisplayClick(Sender: TObject);
     procedure lbEqualiserClick(Sender: TObject);
     procedure lblTimeClick(Sender: TObject);
@@ -116,6 +118,7 @@ type
     FServerAddress, FServerPort: String;
     FSensorAddress, FSensorPort: String;
     FDiscoverServer: TDiscoverServer;
+    FSerialDevice: string;
 
     FAfterAlarmResumeMusic: boolean;
     FLinuxDateTime: TLinuxDateTime;
@@ -185,7 +188,7 @@ type
     procedure BeforeAlarm;
     procedure AfterAlarm;
 
-    function HeatingBoost: boolean;
+    function HeatingBoost(Level: integer): boolean;
   public
     { public declarations }
     HTTPBuffer: string;
@@ -340,13 +343,13 @@ begin
   FAlarmActive := False;
 end;
 
-function TfrmClockMain.HeatingBoost: boolean;
+function TfrmClockMain.HeatingBoost(Level: integer): boolean;
 var
   Output: string;
 begin
   Result := False;
 
-  if RunCommand('curl -m 5 ' + FSensorAddress + ':' + FSensorPort + '/boost' , Output) then
+  if RunCommand('curl -m 5 ' + FSensorAddress + ':' + FSensorPort + '/boost?level=' + IntToStr(Level) , Output) then
   begin
     Result := (Pos('HEATINGBOOST:', Output) > 0);
   end;
@@ -407,6 +410,7 @@ var
   PlayerName, Song: string;
   Day, Month, Year: word;
   Hour, Min, Sec, MSec: word;
+  Temperature, Humidity: double;
 begin
   tmrTime.Enabled := False;
   tmrTime.Interval := 1000;
@@ -744,7 +748,7 @@ end;
 procedure TfrmClockMain.FormCreate(Sender: TObject);
 var
   i: Integer;
-  MixerControl, SerialDevice : string;
+  MixerControl : string;
   UsePulseVol: boolean;
   UseVol: string;
   VolControl: TVolumeControl;
@@ -788,7 +792,7 @@ begin
     UseVol := IniFile.ReadString('Volume', 'UseVolControl', '');
     UsePulseVol := IniFile.ReadBool('Volume', 'UsePulse', UsePulseVol);
     MixerControl := IniFile.ReadString('Volume', 'MixerControl', MixerControl);
-    SerialDevice := IniFile.ReadString('Control', 'SerialDevice', '/dev/ttyUSB0');
+    FSerialDevice := IniFile.ReadString('Control', 'SerialDevice', '/dev/ttyUSB0');
 
     for i := 0 to 9  do
     begin
@@ -838,8 +842,6 @@ begin
   FSyncClient := nil;
 
   FCOMServer := TCOMServer.Create(44558);
-  FCOMSerial := TCOMSerial.Create(SerialDevice);
-  tmrCommand.Enabled := True;
 
   FLinuxDateTime := TLinuxDateTime.Create;
 
@@ -1097,6 +1099,9 @@ begin
     frmReminderList.FReminders := frmReminders;
 
     tmrMinute.Enabled := True;
+
+    FCOMSerial := TCOMSerial.Create(FSerialDevice, FSensorAddress, FSensorPort);
+    tmrCommand.Enabled := True;
   end;
 end;
 
@@ -1310,10 +1315,24 @@ begin
 
   if Assigned(FCOMServer) then
   begin
-    HeatingBoost;
+    HeatingBoost(1);
   end;
 
   imgBoost.Picture.Assign(imgOn.Picture);
+end;
+
+procedure TfrmClockMain.lbBoostPlusClick(Sender: TObject);
+begin
+  imgBoostPlus.Picture.Assign(imgOff.Picture);
+  Application.ProcessMessages;
+  Sleep(800);
+
+  if Assigned(FCOMServer) then
+  begin
+    HeatingBoost(2);
+  end;
+
+  imgBoostPlus.Picture.Assign(imgOn.Picture);
 end;
 
 procedure TfrmClockMain.lbDisplayClick(Sender: TObject);
@@ -1394,7 +1413,7 @@ begin
   tmrCommand.Enabled := False;
 
   Command := FComServer.Command;
-  if (command <> rcomNone) then
+  if (command = rcomNone) then
   begin
     Command := FCOMSerial.Command;
   end;
