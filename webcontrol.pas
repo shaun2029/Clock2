@@ -63,20 +63,25 @@ begin
 
   ListenerSocket.CreateSocket;
   ListenerSocket.SetLinger(True, 10);
-  ListenerSocket.Bind('0.0.0.0','8080');
+
+  try
+    ListenerSocket.Bind('0.0.0.0','8080');
+  except
+    on E: exception do;
+  end;
 
   if (ListenerSocket.LastError) <> 0 then
   begin
     ListenerSocket.Bind('0.0.0.0','80');
 
     if (ListenerSocket.LastError) = 0 then
-      WriteLn('Started HTTP control on port 8080')
+      WriteLn('Started HTTP control on port 80')
     else
       WriteLn('Error: Failed to start HTTP control on ports 80 and 8080');
   end
   else
   begin
-     WriteLn('Started HTTP control on port 80');
+     WriteLn('Started HTTP control on port 8080');
   end;
 
   ListenerSocket.listen;

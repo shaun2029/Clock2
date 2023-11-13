@@ -19,7 +19,7 @@ object frmClockMain: TfrmClockMain
   OnKeyPress = FormKeyPress
   OnShow = FormShow
   Position = poDesktopCenter
-  LCLVersion = '2.0.4.0'
+  LCLVersion = '2.2.6.0'
   object imgPrevious: TImage
     Cursor = crNone
     Left = 14
@@ -13031,22 +13031,23 @@ object frmClockMain: TfrmClockMain
     Visible = False
   end
   object tmrTime: TTimer
+    Enabled = False
     OnTimer = tmrTimeTimer
-    left = 392
-    top = 128
+    Left = 392
+    Top = 128
   end
   object tmrMinute: TTimer
     Tag = 1
     Interval = 2000
     OnTimer = tmrMinuteTimer
-    left = 450
-    top = 176
+    Left = 450
+    Top = 176
   end
   object tmrCommand: TTimer
     Enabled = False
     Interval = 200
     OnTimer = tmrCommandTimer
-    left = 479
-    top = 128
+    Left = 479
+    Top = 128
   end
 end

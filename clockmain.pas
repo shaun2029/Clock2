@@ -444,8 +444,6 @@ begin
     end;
   end;
 
-  FReminderAlarm.Silent:= not frmSettings.cbxReminderAlarm.Checked;
-
   FAlarm.Tick(Current);
   FReminderAlarm.Tick(Current);
   FTimer.Tick(Current);
@@ -906,7 +904,9 @@ begin
   FReminderAlarm.Free;
   FTimer.Free;
   FCOMServer.Free;
+
   FCOMSerial.Free;
+
   frmRadioStations.Free;
 end;
 
@@ -1101,7 +1101,9 @@ begin
     tmrMinute.Enabled := True;
 
     FCOMSerial := TCOMSerial.Create(FSerialDevice, FSensorAddress, FSensorPort);
+
     tmrCommand.Enabled := True;
+    tmrTime.Enabled := True;
   end;
 end;
 
@@ -1413,6 +1415,7 @@ begin
   tmrCommand.Enabled := False;
 
   Command := FComServer.Command;
+
   if (command = rcomNone) then
   begin
     Command := FCOMSerial.Command;
@@ -1693,6 +1696,7 @@ begin
     frmSettings.edtMinute.Value, 0, 0);
 
   FAlarm.Silent := frmSettings.cbxSilentAlarm.Checked;
+  FReminderAlarm.Silent := not frmSettings.cbxReminderAlarm.Checked;
 
   FEmailReminders := frmSettings.cbxEmailReminders.Checked;
 
