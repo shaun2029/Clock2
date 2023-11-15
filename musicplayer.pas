@@ -318,7 +318,7 @@ begin
     FPlayProcess.Output.Read(PChar(@Output[1])^, Len);
 
 {$ifdef LOGGING}
-    if SnapClient then
+    if FSnapClient then
     begin
       Writeln(stderr, 'SNAPCLIENT: ------------------DATA----------------------');
       Writeln(stderr, Output);

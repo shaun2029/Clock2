@@ -25,7 +25,7 @@ uses
   DiscoverServer, RadioStations, ExceptionHandler, LCLType;
 
 const
-  VERSION = '3.11.1';
+  VERSION = '3.12.0';
 
 type
   TMusicState = (msPlaying, msPaused);
@@ -1424,13 +1424,6 @@ begin
   if (Command <> rcomNone) then
   begin
      ProcessCommand(Command)
-  end
-  else if FileExists('/tmp/music.pause') then
-  begin
-    // Make sure file ihas been written.
-    ProcessCommand(rcomPause);
-    Sleep(500);
-    DeleteFile('/tmp/music.pause');
   end;
 
   tmrCommand.Enabled := True;

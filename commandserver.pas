@@ -298,13 +298,15 @@ var
   LastError: integer;
 begin
   // wait one second for new packet
-  Buffer := Socket.RecvString(1000);
+  Buffer := Socket.RecvString(100);
   LastError := Socket.LastError;
 
-  Log('Socket Command: ' + Buffer);
+  //Log('CommandServer AddendConnection: ...');
 
   if LastError = 0 then
   begin
+    //Log('CommandServer Received: ' + Buffer);
+
     if Buffer = 'CLOCK:NEXT' then
     begin
       FCritical.Enter;
@@ -415,7 +417,13 @@ begin
       Socket.SendString(':OK' + #10);
     end
     else Socket.SendString(':BAD' + #10);
+  end
+  else
+  begin
+    Log('Command Server Socket Error: ' + IntToStr(LastError));
   end;
+
+  //Log('CommandServer AddendConnection: end');
 end;
 
 function TCOMServerThread.GetRadioStation: integer;
