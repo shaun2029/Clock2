@@ -25,7 +25,7 @@ uses
   DiscoverServer, RadioStations, ExceptionHandler, LCLType;
 
 const
-  VERSION = '3.12.0';
+  VERSION = '3.12.1';
 
 type
   TMusicState = (msPlaying, msPaused);
@@ -54,14 +54,14 @@ type
     labSongPrev2: TLabel;
     labSongPrev1: TLabel;
     lbBoost: TLabel;
+    lbBoostPlus: TLabel;
     lblTemp: TLabel;
     lblHumidity: TLabel;
     lbPlay: TLabel;
     lbRadio: TLabel;
     lbReminders: TLabel;
-    lbReminderSummary: TLabel;
     lbExit: TLabel;
-    ListBox1: TListBox;
+    lbReminderSummary: TMemo;
     Radio: TLabel;
     lbPrevious: TLabel;
     lbMusic2: TLabel;
@@ -613,7 +613,7 @@ begin
     end;
     FComServer.Reminders := Rems;
 
-    lbReminderSummary.Caption := CurrentList.Text;
+    lbReminderSummary.Text := CurrentList.Text;
     CurrentList.Free;
   end
   else tmrMinute.Tag := tmrMinute.Tag + 1;

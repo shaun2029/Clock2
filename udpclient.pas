@@ -42,6 +42,9 @@ type
     function RequestReminders(Address, Port: string; out Reminders: string): boolean;
   end;
 
+const
+  MAX_REMINDER_PACKETS = 254;
+
 implementation
 
 { TUDPClient }
@@ -75,12 +78,16 @@ var
   Data: TStringList;
   RemTotal: integer;
   Packets: TPackets;
+  PacketsRead: integer;
 begin
   Result := False;
   Reminders := '';
   Data := TStringList.Create;
   RemTotal := -1;
+  PacketsRead := 0;
   SetLength(Packets, 0);
+
+  WriteLn('RequestReminders: ...');
 
   FSocket.CloseSocket;
   FSocket.EnableBroadcast(Address = '255.255.255.255');
@@ -91,6 +98,18 @@ begin
   begin
     repeat
 	    Buffer := FSocket.RecvPacket(cReceiveTimeout);
+      if (FSocket.LastError <> 0) then
+      begin
+        WriteLn('RequestReminders: ERROR - Failed to get all reminder packets');
+        Break;
+      end;
+
+      Inc(PacketsRead);
+      if (PacketsRead > MAX_REMINDER_PACKETS) then
+      begin
+        WriteLn('RequestReminders: ERROR - Too many remonder packets');
+        Break;
+      end;
 
       Debugln(FSocket.SocksIP);
 
@@ -119,9 +138,11 @@ begin
 			      Reminders := Data.Text;
 		      end;
 	      end
-	   end;
-	until Result or (FSocket.LastError <> 0); 
+	    end;
+	  until Result;
   end;
+
+  WriteLn('RequestReminders: ... DONE');
 
   Data.Free;
 end;

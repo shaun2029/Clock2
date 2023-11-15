@@ -87,7 +87,7 @@ implementation
 
 procedure Log(Message: string);
 begin
-  WriteLn(Message);
+  WriteLn('TCOMServer: ' + Message);
 end;
 
 { TCOMServer }

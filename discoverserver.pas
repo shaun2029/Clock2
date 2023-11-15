@@ -54,7 +54,7 @@ implementation
 
 procedure Log(Message: string);
 begin
-  WriteLn(Message);
+  WriteLn('TDiscoverServer: ' + Message);
 end;
 
 { TDiscoverServer }
