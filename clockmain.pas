@@ -451,10 +451,9 @@ begin
   if (FReminderAlarm.State = asActive) and (not FReminderAlarm.Acknowledged) then
   begin
     FReminderAlarm.Acknowledged := True;
-    lbReminderSummary.Font.Color := clYellow;
     ReminderList := TStringList.Create;
     frmReminders.PopulateList(FCurrentReminders, ReminderList);
-    lbReminderSummary.Caption := ReminderList.Text;
+    lbReminderSummary.Text := ReminderList.Text;
 
     if FEmailReminders then
     begin
@@ -555,7 +554,7 @@ var
 begin
   tmrMinute.Enabled := False;
   tmrMinute.Interval := 60000;
-
+{ Crashing? }
   // Update discover server with Clock name
   if Assigned(FDiscoverServer) then
   begin
@@ -1438,8 +1437,14 @@ procedure TfrmClockMain.ProcessCommand(Command: TRemoteCommand);
 var
   Key: Char;
 begin
-  if (Now < FCommandTimeout) then Exit;
+  if (Now < FCommandTimeout) then
+  begin
+    writeln('ProcessCommand: ' + IntToStr(Ord(Command)) + ' skipped due to spamming');
+    Exit;
+  end;
   FCommandTimeout := Now;
+
+  writeln('ProcessCommand: ' + IntToStr(Ord(Command)) + ' ...');
 
   case Command of
     rcomNext:
@@ -1504,6 +1509,8 @@ begin
         AddToFavorites;
       end;
   end;
+
+  writeln('ProcessCommand: ' + IntToStr(Ord(Command)) + ' ... DONE');
 end;
 
 procedure TfrmClockMain.lbPlayClick(Sender: TObject);
@@ -1773,8 +1780,13 @@ var
   ClockName: String;
 begin
   // Update discover server with Clock name
+
   if Assigned(FDiscoverServer) then
+  begin
+    writeln('Closing DiscoverServer ...');
     FreeAndNil(FDiscoverServer);
+    writeln('Closing DiscoverServer ... DONE');
+  end;
 
   ClockName := Trim(frmSettings.edtClockName.Text);
   if LowerCase(ClockName) = 'hostname' then
@@ -1783,7 +1795,9 @@ begin
   if ClockName = '' then
     ClockName := 'no-name-set';
 
+  writeln('Creating DiscoverServer ...');
   FDiscoverServer := TDiscoverServer.Create(44557, ClockName);
+  writeln('Creating DiscoverServer ... DONE');
 end;
 
 procedure TfrmClockMain.UpdateReminders;

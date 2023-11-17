@@ -1,13 +1,13 @@
 object frmClockMain: TfrmClockMain
   Cursor = crNone
-  Left = 638
-  Height = 480
-  Top = 257
-  Width = 800
+  Left = 0
+  Height = 438
+  Top = 20
+  Width = 798
   BorderStyle = bsNone
   Caption = 'Shaun''s Clock 2'
-  ClientHeight = 480
-  ClientWidth = 800
+  ClientHeight = 438
+  ClientWidth = 798
   Color = clGray
   KeyPreview = True
   OnActivate = FormActivate
@@ -19,14 +19,16 @@ object frmClockMain: TfrmClockMain
   OnKeyPress = FormKeyPress
   OnShow = FormShow
   Position = poDesktopCenter
-  LCLVersion = '2.2.4.0'
+  LCLVersion = '2.2.6.0'
   object lbReminderSummary: TMemo
     Left = 328
     Height = 184
     Top = 56
     Width = 464
+    Font.Color = clYellow
     HideSelection = False
     ParentColor = True
+    ParentFont = False
     ReadOnly = True
     ScrollBars = ssAutoVertical
     TabOrder = 1
