@@ -25,7 +25,7 @@ uses
   DiscoverServer, RadioStations, ExceptionHandler, LCLType;
 
 const
-  VERSION = '3.12.1';
+  VERSION = '3.12.2';
 
 type
   TMusicState = (msPlaying, msPaused);
@@ -1439,12 +1439,12 @@ var
 begin
   if (Now < FCommandTimeout) then
   begin
-    writeln('ProcessCommand: ' + IntToStr(Ord(Command)) + ' skipped due to spamming');
+    {$IFDEF DEBUG} writeln('ProcessCommand: ' + IntToStr(Ord(Command)) + ' skipped due to spamming'); {$ENDIF}
     Exit;
   end;
   FCommandTimeout := Now;
 
-  writeln('ProcessCommand: ' + IntToStr(Ord(Command)) + ' ...');
+  {$IFDEF DEBUG} writeln('ProcessCommand: ' + IntToStr(Ord(Command)) + ' ...'); {$ENDIF}
 
   case Command of
     rcomNext:
@@ -1510,7 +1510,7 @@ begin
       end;
   end;
 
-  writeln('ProcessCommand: ' + IntToStr(Ord(Command)) + ' ... DONE');
+  {$IFDEF DEBUG} writeln('ProcessCommand: ' + IntToStr(Ord(Command)) + ' ... DONE'); {$ENDIF}
 end;
 
 procedure TfrmClockMain.lbPlayClick(Sender: TObject);
@@ -1783,9 +1783,9 @@ begin
 
   if Assigned(FDiscoverServer) then
   begin
-    writeln('Closing DiscoverServer ...');
+    {$IFDEF DEBUG} writeln('Closing DiscoverServer ...'); {$ENDIF}
     FreeAndNil(FDiscoverServer);
-    writeln('Closing DiscoverServer ... DONE');
+    {$IFDEF DEBUG} writeln('Closing DiscoverServer ... DONE'); {$ENDIF}
   end;
 
   ClockName := Trim(frmSettings.edtClockName.Text);
@@ -1795,9 +1795,9 @@ begin
   if ClockName = '' then
     ClockName := 'no-name-set';
 
-  writeln('Creating DiscoverServer ...');
+  {$IFDEF DEBUG} writeln('Creating DiscoverServer ...'); {$ENDIF}
   FDiscoverServer := TDiscoverServer.Create(44557, ClockName);
-  writeln('Creating DiscoverServer ... DONE');
+  {$IFDEF DEBUG} writeln('Creating DiscoverServer ... DONE'); {$ENDIF}
 end;
 
 procedure TfrmClockMain.UpdateReminders;
@@ -1872,7 +1872,6 @@ end;
 procedure TfrmClockMain.Log(Message: string);
 begin
 {$IFDEF LOGGING}
-  end;
   DebugLn(Self.ClassName + #9#9 + Message);
 {$ENDIF}
 end;

@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
-    <Version Value="12"/>
+    <Version Value="11"/>
     <General>
-      <Flags>
-        <CompatibilityMode Value="True"/>
-      </Flags>
+      <MainUnit Value="0"/>
       <Title Value="Clock2"/>
       <UseXPManifest Value="True"/>
       <Icon Value="0"/>
@@ -14,7 +12,7 @@
       <Language Value=""/>
       <CharSet Value=""/>
     </VersionInfo>
-    <BuildModes Count="4" Active="arm64">
+    <BuildModes Count="4" Active="i386">
       <Item1 Name="debug" Default="True"/>
       <Item2 Name="i386">
         <CompilerOptions>
@@ -142,6 +140,7 @@
         <CursorPos Y="24"/>
         <UsageCount Value="225"/>
         <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit0>
       <Unit1>
         <Filename Value="pictures.pas"/>
@@ -178,6 +177,7 @@
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit3>
       <Unit4>
         <Filename Value="alarm.pas"/>
@@ -196,11 +196,11 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ClockMain"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="555"/>
-        <CursorPos X="5" Y="561"/>
+        <TopLine Value="10"/>
+        <CursorPos X="39" Y="18"/>
         <UsageCount Value="207"/>
         <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit5>
       <Unit6>
         <Filename Value="metoffice.pas"/>
@@ -223,6 +223,7 @@
         <CursorPos Y="372"/>
         <UsageCount Value="203"/>
         <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit7>
       <Unit8>
         <Filename Value="findpicsthread.pas"/>
@@ -251,6 +252,7 @@
         <CursorPos X="11" Y="458"/>
         <UsageCount Value="212"/>
         <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit10>
       <Unit11>
         <Filename Value="reminderlist.pas"/>
@@ -269,10 +271,11 @@
         <Filename Value="commandserver.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="11"/>
-        <TopLine Value="74"/>
-        <CursorPos X="51" Y="88"/>
+        <TopLine Value="229"/>
+        <CursorPos X="20" Y="254"/>
         <UsageCount Value="212"/>
         <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit12>
       <Unit13>
         <Filename Value="music.pas"/>
@@ -282,6 +285,7 @@
         <CursorPos X="8" Y="375"/>
         <UsageCount Value="212"/>
         <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit13>
       <Unit14>
         <Filename Value="black.pas"/>
@@ -301,6 +305,7 @@
         <CursorPos Y="48"/>
         <UsageCount Value="212"/>
         <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit15>
       <Unit16>
         <Filename Value="udpclient.pas"/>
@@ -310,6 +315,7 @@
         <CursorPos X="38" Y="145"/>
         <UsageCount Value="212"/>
         <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit16>
       <Unit17>
         <Filename Value="waitformedia.pas"/>
@@ -393,6 +399,7 @@
         <CursorPos X="15" Y="352"/>
         <UsageCount Value="120"/>
         <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit25>
       <Unit26>
         <Filename Value="connectionhealth.pas"/>
@@ -459,10 +466,10 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="DiscoverServer"/>
         <EditorIndex Value="9"/>
-        <TopLine Value="126"/>
-        <CursorPos X="29" Y="131"/>
+        <CursorPos Y="9"/>
         <UsageCount Value="274"/>
         <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit33>
       <Unit34>
         <Filename Value="/usr/share/fpcsrc/2.6.2/packages/fcl-process/src/process.pp"/>
@@ -583,6 +590,7 @@
         <CursorPos X="3" Y="39"/>
         <UsageCount Value="99"/>
         <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit47>
       <Unit48>
         <Filename Value="/usr/share/fpcsrc/3.0.4/packages/fcl-base/src/custapp.pp"/>
@@ -610,6 +618,7 @@
         <CursorPos X="5" Y="156"/>
         <UsageCount Value="94"/>
         <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit50>
       <Unit51>
         <Filename Value="synapse/source/lib/synautil.pas"/>
@@ -720,6 +729,7 @@
         <CursorPos X="13" Y="87"/>
         <UsageCount Value="59"/>
         <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit63>
       <Unit64>
         <Filename Value="synapse/source/lib/pingsend.pas"/>
@@ -728,6 +738,7 @@
         <CursorPos X="38" Y="131"/>
         <UsageCount Value="28"/>
         <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit64>
       <Unit65>
         <Filename Value="lnet.old/examples/console/lftp/lftpclient.pp"/>
@@ -739,121 +750,118 @@
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit65>
     </Units>
-    <JumpHistory Count="29" HistoryIndex="28">
+    <JumpHistory Count="28" HistoryIndex="27">
       <Position1>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="1433" Column="17" TopLine="1419"/>
+        <Caret Line="1779" Column="29" TopLine="1773"/>
       </Position1>
       <Position2>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="1507" Column="17" TopLine="1505"/>
       </Position2>
       <Position3>
         <Filename Value="clockmain.pas"/>
+        <Caret Line="174" Column="34" TopLine="162"/>
       </Position3>
       <Position4>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="25" Column="11" TopLine="11"/>
+        <Caret Line="562" Column="26" TopLine="555"/>
       </Position4>
       <Position5>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="120" Column="31" TopLine="107"/>
+        <Caret Line="1764" Column="22" TopLine="1751"/>
       </Position5>
       <Position6>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="174" Column="28" TopLine="162"/>
+        <Caret Line="1800" Column="44" TopLine="1774"/>
       </Position6>
       <Position7>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="558" Column="21" TopLine="554"/>
+        <Caret Line="174" Column="34" TopLine="168"/>
       </Position7>
       <Position8>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="559" Column="24" TopLine="554"/>
+        <Caret Line="561" Column="31" TopLine="555"/>
       </Position8>
       <Position9>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="561" Column="17" TopLine="554"/>
+        <Caret Line="11" Column="17"/>
       </Position9>
       <Position10>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="562" Column="20" TopLine="554"/>
+        <Caret Line="1867" Column="16" TopLine="1848"/>
       </Position10>
       <Position11>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="760" Column="12" TopLine="747"/>
+        <Caret Line="231" Column="15" TopLine="205"/>
       </Position11>
       <Position12>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="1764" Column="16" TopLine="1751"/>
+        <Caret Line="802" Column="15" TopLine="777"/>
       </Position12>
       <Position13>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="1782" Column="21" TopLine="1773"/>
+        <Caret Line="1513" Column="25" TopLine="1498"/>
       </Position13>
       <Position14>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="1783" Column="24" TopLine="1773"/>
+        <Caret Line="1800" Column="25" TopLine="1785"/>
       </Position14>
       <Position15>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="1784" Column="25" TopLine="1773"/>
+        <Caret Line="231" Column="15" TopLine="215"/>
       </Position15>
       <Position16>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="1793" Column="31" TopLine="1780"/>
+        <Caret Line="802" Column="15" TopLine="777"/>
       </Position16>
       <Position17>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="25" Column="11" TopLine="17"/>
+        <Caret Line="1442" Column="27" TopLine="1416"/>
       </Position17>
       <Position18>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="120" Column="31" TopLine="114"/>
+        <Caret Line="1447" Column="25" TopLine="1421"/>
       </Position18>
       <Position19>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="174" Column="28" TopLine="168"/>
+        <Caret Line="1513" Column="25" TopLine="1488"/>
       </Position19>
       <Position20>
-        <Filename Value="discoverserver.pas"/>
-        <Caret Line="132" Column="21" TopLine="119"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="1786" Column="27" TopLine="1760"/>
       </Position20>
       <Position21>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="562" Column="26" TopLine="552"/>
+        <Caret Line="1788" Column="27" TopLine="1762"/>
       </Position21>
       <Position22>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="1764" Column="22" TopLine="1760"/>
+        <Caret Line="1798" Column="25" TopLine="1772"/>
       </Position22>
       <Position23>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="1779" Column="29" TopLine="1773"/>
+        <Caret Line="1800" Column="25" TopLine="1774"/>
       </Position23>
       <Position24>
-        <Filename Value="clockmain.pas"/>
+        <Filename Value="discoverserver.pas"/>
+        <Caret Line="139" Column="63" TopLine="126"/>
       </Position24>
       <Position25>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="174" Column="34" TopLine="162"/>
+        <Filename Value="commandserver.pas"/>
+        <Caret Line="90" Column="10" TopLine="74"/>
       </Position25>
       <Position26>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="562" Column="26" TopLine="555"/>
+        <Filename Value="commandserver.pas"/>
+        <Caret Line="192" Column="10" TopLine="166"/>
       </Position26>
       <Position27>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1764" Column="22" TopLine="1751"/>
+        <Filename Value="commandserver.pas"/>
+        <Caret Line="195" Column="10" TopLine="170"/>
       </Position27>
       <Position28>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="1800" Column="44" TopLine="1774"/>
+        <Caret Line="231" Column="42" TopLine="215"/>
       </Position28>
-      <Position29>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="174" Column="34" TopLine="168"/>
-      </Position29>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
