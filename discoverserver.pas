@@ -115,7 +115,7 @@ begin
             // Send packet clock name
             Buffer := FClockName + #0;
             FSocket.SendString('CLOCKNAME:' +  Buffer);
-	          Sleep(Random(40));
+	    Sleep(Random(40));
             FSocket.SendString('CLOCKNAME:' +  Buffer);
 
             {$IFDEF DEBUG} Log('Discover Server: Sent "' + Buffer + '"'); {$ENDIF}
@@ -128,6 +128,7 @@ begin
             while not Terminated do Sleep(100);
           end;
         end;
+        FSocket.CloseSocket;
       end;
     end;
   except
@@ -140,8 +141,6 @@ begin
       while not Terminated do Sleep(100);
     end;
   end;
-
-  FSocket.CloseSocket;
 
   {$IFDEF DEBUG} Log('Discover Server: Stopped ...'); {$ENDIF}
 end;
