@@ -25,7 +25,7 @@ uses
   DiscoverServer, RadioStations, ExceptionHandler, LCLType;
 
 const
-  VERSION = '3.12.3';
+  VERSION = '3.12.4';
 
 type
   TMusicState = (msPlaying, msPaused);
@@ -416,15 +416,6 @@ begin
   tmrTime.Interval := 1000;
   Current := FLinuxDateTime.GetLocalTime;
 
-  if lbReminderSummary.VertScrollBar.IsScrollBarVisible then
-  begin
-    FontHeight := lbReminderSummary.Font.GetTextHeight('Lj|');
-    OldPos := lbReminderSummary.VertScrollBar.Position;
-    lbReminderSummary.VertScrollBar.Position := lbReminderSummary.VertScrollBar.Position + (FontHeight div 8) + 1;
-    if OldPos = lbReminderSummary.VertScrollBar.Position then
-      lbReminderSummary.VertScrollBar.Position := 0;//-lbReminderSummary.Font.Height;
-  end;
-
   DayStr := Copy(DayOfWeekStr(Current), 1, 3);
   DecodeDate(Current, Year, Month, Day);
   DecodeTime(Current, Hour, Min, Sec, MSec);
@@ -463,6 +454,8 @@ begin
     ReminderList := TStringList.Create;
     frmReminders.PopulateList(FCurrentReminders, ReminderList);
     lbReminderSummary.Text := ReminderList.Text;
+    lbReminderSummary.Tag := 3;
+    lbReminderSummary.VertScrollBar.Position := 0;
 
     if FEmailReminders then
     begin
@@ -470,6 +463,26 @@ begin
     end;
 
     ReminderList.Free;
+  end;
+
+  { Scroll reminders }
+  if lbReminderSummary.VertScrollBar.IsScrollBarVisible then
+  begin
+    if lbReminderSummary.Tag > 0 then
+    begin
+      lbReminderSummary.Tag := lbReminderSummary.Tag - 1;
+    end
+    else
+    begin
+      FontHeight := lbReminderSummary.Font.GetTextHeight('Lj|');
+      OldPos := lbReminderSummary.VertScrollBar.Position;
+      lbReminderSummary.VertScrollBar.Position := lbReminderSummary.VertScrollBar.Position + (FontHeight div 2);
+      if OldPos = lbReminderSummary.VertScrollBar.Position then
+      begin
+        lbReminderSummary.VertScrollBar.Position := 0;
+        lbReminderSummary.Tag := 3;
+      end;
+    end;
   end;
 
   if (FTimer.State = asSet) and (FTimer.AlarmTime > Current) then
@@ -622,6 +635,9 @@ begin
     FComServer.Reminders := Rems;
 
     lbReminderSummary.Text := CurrentList.Text;
+    lbReminderSummary.Tag := 3;
+    lbReminderSummary.VertScrollBar.Position := 0;
+
     CurrentList.Free;
   end
   else tmrMinute.Tag := tmrMinute.Tag + 1;

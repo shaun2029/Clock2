@@ -144,8 +144,8 @@ begin
             while not Terminated do Sleep(100);
           end;
         end;
-        FSocket.CloseSocket;
       end;
+      FSocket.CloseSocket;
     end;
   except
     on E: exception do
