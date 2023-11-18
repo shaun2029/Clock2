@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
-    <Version Value="11"/>
+    <Version Value="12"/>
     <General>
-      <MainUnit Value="0"/>
+      <Flags>
+        <CompatibilityMode Value="True"/>
+      </Flags>
       <Title Value="Clock2"/>
       <UseXPManifest Value="True"/>
       <Icon Value="0"/>
@@ -12,14 +14,13 @@
       <Language Value=""/>
       <CharSet Value=""/>
     </VersionInfo>
-    <BuildModes Count="4" Active="i386">
+    <BuildModes Count="4" Active="x64">
       <Item1 Name="debug" Default="True"/>
       <Item2 Name="i386">
         <CompilerOptions>
           <Version Value="11"/>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="synapse/source/lib"/>
             <UnitOutputDirectory Value="build"/>
           </SearchPaths>
           <Parsing>
@@ -52,7 +53,6 @@
           <Version Value="11"/>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="synapse/source/lib"/>
             <UnitOutputDirectory Value="buildx64"/>
           </SearchPaths>
           <Parsing>
@@ -84,7 +84,6 @@
           <Version Value="11"/>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="synapse/source/lib"/>
             <UnitOutputDirectory Value="buildarm64"/>
           </SearchPaths>
           <Parsing>
@@ -119,27 +118,29 @@
         <Mode0 Name="default"/>
       </Modes>
     </RunParams>
-    <RequiredPackages Count="3">
+    <RequiredPackages Count="4">
       <Item1>
-        <PackageName Value="lnetbase"/>
+        <PackageName Value="laz_synapse"/>
       </Item1>
       <Item2>
-        <PackageName Value="FCL"/>
-        <MinVersion Major="1" Valid="True"/>
+        <PackageName Value="lnetbase"/>
       </Item2>
       <Item3>
-        <PackageName Value="LCL"/>
+        <PackageName Value="FCL"/>
+        <MinVersion Major="1" Valid="True"/>
       </Item3>
+      <Item4>
+        <PackageName Value="LCL"/>
+      </Item4>
     </RequiredPackages>
-    <Units Count="66">
+    <Units Count="67">
       <Unit0>
         <Filename Value="Clock2.lpr"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="12"/>
         <CursorPos Y="24"/>
         <UsageCount Value="225"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit0>
       <Unit1>
@@ -171,12 +172,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Settings"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="96"/>
         <CursorPos X="60" Y="106"/>
         <UsageCount Value="200"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit3>
       <Unit4>
@@ -196,10 +195,11 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ClockMain"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="10"/>
-        <CursorPos X="39" Y="18"/>
+        <TopLine Value="404"/>
+        <CursorPos X="62" Y="424"/>
         <UsageCount Value="207"/>
         <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit5>
       <Unit6>
@@ -218,11 +218,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Reminders"/>
-        <EditorIndex Value="7"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="356"/>
         <CursorPos Y="372"/>
         <UsageCount Value="203"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit7>
       <Unit8>
@@ -247,11 +246,10 @@
         <Filename Value="musicplayer.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="MusicPlayer"/>
-        <EditorIndex Value="13"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="70"/>
         <CursorPos X="11" Y="458"/>
         <UsageCount Value="212"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit10>
       <Unit11>
@@ -270,9 +268,8 @@
       <Unit12>
         <Filename Value="commandserver.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="11"/>
-        <TopLine Value="229"/>
-        <CursorPos X="20" Y="254"/>
+        <EditorIndex Value="2"/>
+        <CursorPos X="30" Y="13"/>
         <UsageCount Value="212"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -280,11 +277,10 @@
       <Unit13>
         <Filename Value="music.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="14"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="360"/>
         <CursorPos X="8" Y="375"/>
         <UsageCount Value="212"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit13>
       <Unit14>
@@ -300,21 +296,19 @@
       <Unit15>
         <Filename Value="sync.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="32"/>
         <CursorPos Y="48"/>
         <UsageCount Value="212"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit15>
       <Unit16>
         <Filename Value="udpclient.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="130"/>
         <CursorPos X="38" Y="145"/>
         <UsageCount Value="212"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit16>
       <Unit17>
@@ -394,11 +388,10 @@
       </Unit24>
       <Unit25>
         <Filename Value="synapse/source/lib/blcksock.pas"/>
-        <EditorIndex Value="10"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="346"/>
         <CursorPos X="15" Y="352"/>
         <UsageCount Value="120"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit25>
       <Unit26>
@@ -465,8 +458,9 @@
         <Filename Value="discoverserver.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="DiscoverServer"/>
-        <EditorIndex Value="9"/>
-        <CursorPos Y="9"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="34"/>
+        <CursorPos X="15" Y="16"/>
         <UsageCount Value="274"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -585,11 +579,10 @@
         <Filename Value="exceptionhandler.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="ExceptionHandler"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="24"/>
         <CursorPos X="3" Y="39"/>
-        <UsageCount Value="99"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="101"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit47>
       <Unit48>
@@ -613,11 +606,10 @@
       <Unit50>
         <Filename Value="webcontrol.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="8"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="141"/>
         <CursorPos X="5" Y="156"/>
-        <UsageCount Value="94"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="96"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit50>
       <Unit51>
@@ -684,7 +676,6 @@
         <TopLine Value="908"/>
         <CursorPos Y="925"/>
         <UsageCount Value="14"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit58>
       <Unit59>
         <Filename Value="../../../.lazarus/onlinepackagemanager/packages/lnet/lib/lnet.pp"/>
@@ -693,7 +684,6 @@
         <TopLine Value="1471"/>
         <CursorPos Y="1488"/>
         <UsageCount Value="14"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit59>
       <Unit60>
         <Filename Value="../../../.lazarus/onlinepackagemanager/packages/lnet/lib/lnetssl.pp"/>
@@ -702,7 +692,6 @@
         <TopLine Value="577"/>
         <CursorPos Y="594"/>
         <UsageCount Value="14"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit60>
       <Unit61>
         <Filename Value="../../../.lazarus/onlinepackagemanager/packages/lnet/lib/sys/lepolleventer.inc"/>
@@ -724,20 +713,19 @@
       <Unit63>
         <Filename Value="commandserial.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="12"/>
+        <EditorIndex Value="1"/>
         <TopLine Value="71"/>
         <CursorPos X="13" Y="87"/>
-        <UsageCount Value="59"/>
+        <UsageCount Value="61"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit63>
       <Unit64>
         <Filename Value="synapse/source/lib/pingsend.pas"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="117"/>
         <CursorPos X="38" Y="131"/>
         <UsageCount Value="28"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit64>
       <Unit65>
@@ -749,126 +737,39 @@
         <UsageCount Value="7"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit65>
+      <Unit66>
+        <Filename Value="../../../.lazarus/onlinepackagemanager/packages/synapse40.1/synsock.pas"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit66>
     </Units>
-    <JumpHistory Count="28" HistoryIndex="27">
+    <JumpHistory Count="5" HistoryIndex="4">
       <Position1>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1779" Column="29" TopLine="1773"/>
+        <Filename Value="discoverserver.pas"/>
+        <Caret Line="16" Column="15"/>
       </Position1>
       <Position2>
         <Filename Value="clockmain.pas"/>
+        <Caret Line="1778" Column="29" TopLine="1770"/>
       </Position2>
       <Position3>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="174" Column="34" TopLine="162"/>
+        <Caret Line="421" Column="51" TopLine="406"/>
       </Position3>
       <Position4>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="562" Column="26" TopLine="555"/>
+        <Caret Line="419" Column="104" TopLine="400"/>
       </Position4>
       <Position5>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="1764" Column="22" TopLine="1751"/>
+        <Caret Line="420" Column="79" TopLine="402"/>
       </Position5>
-      <Position6>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1800" Column="44" TopLine="1774"/>
-      </Position6>
-      <Position7>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="174" Column="34" TopLine="168"/>
-      </Position7>
-      <Position8>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="561" Column="31" TopLine="555"/>
-      </Position8>
-      <Position9>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="11" Column="17"/>
-      </Position9>
-      <Position10>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1867" Column="16" TopLine="1848"/>
-      </Position10>
-      <Position11>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="231" Column="15" TopLine="205"/>
-      </Position11>
-      <Position12>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="802" Column="15" TopLine="777"/>
-      </Position12>
-      <Position13>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1513" Column="25" TopLine="1498"/>
-      </Position13>
-      <Position14>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1800" Column="25" TopLine="1785"/>
-      </Position14>
-      <Position15>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="231" Column="15" TopLine="215"/>
-      </Position15>
-      <Position16>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="802" Column="15" TopLine="777"/>
-      </Position16>
-      <Position17>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1442" Column="27" TopLine="1416"/>
-      </Position17>
-      <Position18>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1447" Column="25" TopLine="1421"/>
-      </Position18>
-      <Position19>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1513" Column="25" TopLine="1488"/>
-      </Position19>
-      <Position20>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1786" Column="27" TopLine="1760"/>
-      </Position20>
-      <Position21>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1788" Column="27" TopLine="1762"/>
-      </Position21>
-      <Position22>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1798" Column="25" TopLine="1772"/>
-      </Position22>
-      <Position23>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="1800" Column="25" TopLine="1774"/>
-      </Position23>
-      <Position24>
-        <Filename Value="discoverserver.pas"/>
-        <Caret Line="139" Column="63" TopLine="126"/>
-      </Position24>
-      <Position25>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="90" Column="10" TopLine="74"/>
-      </Position25>
-      <Position26>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="192" Column="10" TopLine="166"/>
-      </Position26>
-      <Position27>
-        <Filename Value="commandserver.pas"/>
-        <Caret Line="195" Column="10" TopLine="170"/>
-      </Position27>
-      <Position28>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="231" Column="42" TopLine="215"/>
-      </Position28>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
     <Version Value="11"/>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="synapse/source/lib"/>
       <UnitOutputDirectory Value="build"/>
     </SearchPaths>
     <Parsing>

@@ -25,7 +25,7 @@ uses
   DiscoverServer, RadioStations, ExceptionHandler, LCLType;
 
 const
-  VERSION = '3.12.2';
+  VERSION = '3.12.3';
 
 type
   TMusicState = (msPlaying, msPaused);
@@ -410,11 +410,20 @@ var
   PlayerName, Song: string;
   Day, Month, Year: word;
   Hour, Min, Sec, MSec: word;
-  Temperature, Humidity: double;
+  FontHeight, OldPos: integer;
 begin
   tmrTime.Enabled := False;
   tmrTime.Interval := 1000;
   Current := FLinuxDateTime.GetLocalTime;
+
+  if lbReminderSummary.VertScrollBar.IsScrollBarVisible then
+  begin
+    FontHeight := lbReminderSummary.Font.GetTextHeight('Lj|');
+    OldPos := lbReminderSummary.VertScrollBar.Position;
+    lbReminderSummary.VertScrollBar.Position := lbReminderSummary.VertScrollBar.Position + (FontHeight div 8) + 1;
+    if OldPos = lbReminderSummary.VertScrollBar.Position then
+      lbReminderSummary.VertScrollBar.Position := 0;//-lbReminderSummary.Font.Height;
+  end;
 
   DayStr := Copy(DayOfWeekStr(Current), 1, 3);
   DecodeDate(Current, Year, Month, Day);

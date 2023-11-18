@@ -468,10 +468,10 @@ end;
 
 destructor TCOMServerThread.Destroy;
 begin
-  inherited Destroy;
-
   FWebControl.Free;
   FCritical.Free;
+
+  inherited Destroy;
 end;
 
 procedure TCOMServerThread.Lock();
