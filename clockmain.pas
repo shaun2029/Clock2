@@ -22,7 +22,7 @@ uses
   DiscoverServer, RadioStations, ExceptionHandler, LCLType;
 
 const
-  VERSION = '3.12.5';
+  VERSION = '3.12.6';
 
 type
   TMusicState = (msPlaying, msPaused);
@@ -451,8 +451,6 @@ begin
     ReminderList := TStringList.Create;
     frmReminders.PopulateList(FCurrentReminders, ReminderList);
     lbReminderSummary.Text := ReminderList.Text;
-    lbReminderSummary.Tag := 3;
-    lbReminderSummary.VertScrollBar.Position := 0;
 
     if FEmailReminders then
     begin
@@ -460,26 +458,6 @@ begin
     end;
 
     ReminderList.Free;
-  end;
-
-  { Scroll reminders }
-  if lbReminderSummary.VertScrollBar.IsScrollBarVisible then
-  begin
-    if lbReminderSummary.Tag > 0 then
-    begin
-      lbReminderSummary.Tag := lbReminderSummary.Tag - 1;
-    end
-    else
-    begin
-      FontHeight := lbReminderSummary.Font.GetTextHeight('Lj|');
-      OldPos := lbReminderSummary.VertScrollBar.Position;
-      lbReminderSummary.VertScrollBar.Position := lbReminderSummary.VertScrollBar.Position + (FontHeight div 2);
-      if OldPos = lbReminderSummary.VertScrollBar.Position then
-      begin
-        lbReminderSummary.VertScrollBar.Position := 0;
-        lbReminderSummary.Tag := 3;
-      end;
-    end;
   end;
 
   if (FTimer.State = asSet) and (FTimer.AlarmTime > Current) then
@@ -632,9 +610,6 @@ begin
     FComServer.Reminders := Rems;
 
     lbReminderSummary.Text := CurrentList.Text;
-    lbReminderSummary.Tag := 3;
-    lbReminderSummary.VertScrollBar.Position := 0;
-
     CurrentList.Free;
   end
   else tmrMinute.Tag := tmrMinute.Tag + 1;
