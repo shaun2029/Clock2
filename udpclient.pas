@@ -31,14 +31,11 @@ type
 
   TUDPClient = class
   private
-    FSocket: TUDPBlockSocket;
     function AssemblePackets(Packets: TPackets): string;
     procedure SetPacketData(var Packet: TPacket);
   public
     constructor Create;
     destructor Destroy; override;
-    procedure Disconnect;
-    function Connect(const Address, Port: string): Boolean;
     function RequestReminders(Address, Port: string; out Reminders: string): boolean;
   end;
 
@@ -51,25 +48,11 @@ implementation
 
 constructor TUDPClient.Create;
 begin
-  FSocket := TUDPBlockSocket.Create;
 end;
 
 destructor TUDPClient.Destroy;
 begin
-  FreeAndNil(FSocket);
-
   inherited Destroy;
-end;
-
-procedure TUDPClient.Disconnect;
-begin
-  FSocket.CloseSocket;
-end;
-
-function TUDPClient.Connect(const Address, Port: string): Boolean;
-begin
-  FSocket.Connect(Address, Port);
-  Result := FSocket.LastError = 0;
 end;
 
 function TUDPClient.RequestReminders(Address, Port: string; out Reminders: string): boolean;
@@ -79,42 +62,44 @@ var
   RemTotal: integer;
   Packets: TPackets;
   PacketsRead: integer;
+  Socket: TUDPBlockSocket;
 begin
   Result := False;
   Reminders := '';
   Data := TStringList.Create;
   RemTotal := -1;
   PacketsRead := 0;
+  Packets := nil;
   SetLength(Packets, 0);
 
   WriteLn('RequestReminders: ...');
 
-  FSocket.CloseSocket;
-  FSocket.EnableBroadcast(Address = '255.255.255.255');
-  FSocket.Connect(Address, Port); // Default port 44559;
-  FSocket.SendString('REQUEST REMINDERS');
+  Socket := TUDPBlockSocket.Create;
+  Socket.Connect(Address, Port); // Default port 44559;
+  if Socket.LastError = 0 then
+  begin
+    Socket.SendString('REQUEST REMINDERS');
+  end;
 
-  if FSocket.LastError = 0 then
+  if Socket.LastError = 0 then
   begin
     repeat
-	    Buffer := FSocket.RecvPacket(cReceiveTimeout);
-      if (FSocket.LastError <> 0) then
+	    Buffer := Socket.RecvPacket(cReceiveTimeout);
+      if (Socket.LastError <> 0) then
       begin
         if PacketsRead > 0 then
-          WriteLn('RequestReminders: ERROR - Failed to get all reminder packets');
+          Debugln('RequestReminders: ERROR - Failed to get all reminder packets');
         Break;
       end;
 
       Inc(PacketsRead);
       if (PacketsRead > MAX_REMINDER_PACKETS) then
       begin
-        WriteLn('RequestReminders: ERROR - Too many reminder packets');
+        Debugln('RequestReminders: ERROR - Too many reminder packets');
         Break;
       end;
 
-      Debugln(FSocket.SocksIP);
-
-      if (FSocket.LastError = 0) then
+      if (Socket.LastError = 0) then
       begin
         if Pos('REMINDERS:', Buffer) = 1 then
         begin
@@ -141,9 +126,11 @@ begin
 	      end
 	    end;
 	  until Result;
-  end;
+  end
+  else Debugln('RequestReminders: Socket error ' + IntToStr(Socket.LastError));
 
-  WriteLn('RequestReminders: ... DONE');
+  Socket.Free;
+  Debugln('RequestReminders: ... DONE');
 
   Data.Free;
 end;

@@ -101,7 +101,7 @@ begin
   // Ensure that song is not playing
   StopSong;
 
-  {$ifdef LOGGING} WriteLn('PLAY: ' + Song); {$endif}
+  {$ifdef LOGGING} DebugLn('PLAY: ' + Song); {$endif}
 
   FSongTitle := '';
   FSongArtist := '';
@@ -134,9 +134,9 @@ begin
       on E: Exception do
       begin
         {$ifdef LOGGING}
-        WriteLn(Self.ClassName + #9#9 + 'Failed to get ID3 Tags for "'
+        DebugLn(Self.ClassName + #9#9 + 'Failed to get ID3 Tags for "'
           + ExtractFilename(Song) + '"');
-        WriteLn(Self.ClassName + #9#9 + E.Message);
+        DebugLn(Self.ClassName + #9#9 + E.Message);
         {$endif}
       end;
     end;
@@ -173,8 +173,8 @@ begin
   except
     on E: Exception do
     begin
-      Writeln('EXCEPTION: Function TMusicPlayer.PlaySong');
-      Writeln('MESSAGE: ' + E.Message);
+      DebugLn('EXCEPTION: Function TMusicPlayer.PlaySong');
+      DebugLn('MESSAGE: ' + E.Message);
     end;
   end;
 end;
@@ -231,7 +231,7 @@ begin
 
   Process.CommandLine := Process.CommandLine  + ' "' + Song + '"';
 
-  {$ifdef LOGGING} Writeln('EXECUTE: ' + Process.CommandLine); {$endif}
+  {$ifdef LOGGING} DebugLn('EXECUTE: ' + Process.CommandLine); {$endif}
 
   Process.Options := [poStderrToOutPut, poUsePipes];
 
@@ -245,7 +245,7 @@ begin
   FRadioPlaying := True;
   Process.CommandLine := CommandLine;
 
-  {$ifdef LOGGING} Writeln('EXECUTE: ' + Process.CommandLine); {$endif}
+  {$ifdef LOGGING} DebugLn('EXECUTE: ' + Process.CommandLine); {$endif}
 
   Process.Options := [poStderrToOutPut, poUsePipes];
 
@@ -258,7 +258,7 @@ begin
   begin
     if not FPlayProcess.Running then
     begin
-      {$ifdef LOGGING} WriteLn('DESTROY: Play process'); {$endif}
+      {$ifdef LOGGING} DebugLn('DESTROY: Play process'); {$endif}
       DestroyPlayProcess;
     end;
   end;
@@ -322,15 +322,15 @@ begin
 {$ifdef LOGGING_DATA}
     if FSnapClient then
     begin
-      Writeln(stderr, 'SNAPCLIENT: ------------------DATA----------------------');
-      Writeln(stderr, String(Output));
-      Writeln(stderr, 'SNAPCLIENT: --------------------------------------------');
+      DebugLn(stderr, 'SNAPCLIENT: ------------------DATA----------------------');
+      DebugLn(stderr, String(Output));
+      DebugLn(stderr, 'SNAPCLIENT: --------------------------------------------');
     end
     else
     begin
-      Writeln(stderr, 'MPLAYER: ------------------DATA----------------------');
-      Writeln(stderr, String(Output));
-      Writeln(stderr, 'MPLAYER: --------------------------------------------');
+      DebugLn(stderr, 'MPLAYER: ------------------DATA----------------------');
+      DebugLn(stderr, String(Output));
+      DebugLn(stderr, 'MPLAYER: --------------------------------------------');
     end;
 {$endif}
 
@@ -413,8 +413,8 @@ begin
   except
     on E: exception do
     begin
-      Writeln('EXCEPTION: Function TMusicPlayer.GetRadioTitle');
-      Writeln('MESSAGE: ' + E.Message);
+      DebugLn('EXCEPTION: Function TMusicPlayer.GetRadioTitle');
+      DebugLn('MESSAGE: ' + E.Message);
       TitleList.Free;
       Exit;
     end
@@ -462,7 +462,7 @@ begin
 
         if FSnapClient and (FPlayProcessAlive < 1) then
         begin
-          Writeln(stderr, 'ERROR: SnapClient stalled, restarting ... ' + FSong);
+          DebugLn('ERROR: SnapClient stalled, restarting ... ' + FSong);
           PlaySong(FSong, FSongURL);
         end;
       end;

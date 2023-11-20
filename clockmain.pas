@@ -225,7 +225,7 @@ begin
     IniFile.Free;
   except
     on E: Exception do
-       writeln('EXCEPTION: TfrmClockMain.ApplyMplayerEQ IniFile - ' + E.ClassName + #13#10 + E.Message);
+       DebugLn('EXCEPTION: TfrmClockMain.ApplyMplayerEQ IniFile - ' + E.ClassName + #13#10 + E.Message);
   end;
 
   if FPlayer.State = psPlaying then
@@ -821,7 +821,7 @@ begin
     IniFile.Free;
   except
     on E: Exception do
-       writeln('EXCEPTION: TfrmClockMain.FormCreate IniFile - ' + E.ClassName + #13#10 + E.Message);
+       DebugLn('EXCEPTION: TfrmClockMain.FormCreate IniFile - ' + E.ClassName + #13#10 + E.Message);
   end;
 
   if (LowerCase(UseVol) = '') then
@@ -1461,12 +1461,12 @@ var
 begin
   if (Now < FCommandTimeout) then
   begin
-    {$IFDEF DEBUG} writeln('ProcessCommand: ' + IntToStr(Ord(Command)) + ' skipped due to spamming'); {$ENDIF}
+    {$IFDEF DEBUG} DebugLn('ProcessCommand: ' + IntToStr(Ord(Command)) + ' skipped due to spamming'); {$ENDIF}
     Exit;
   end;
   FCommandTimeout := Now;
 
-  {$IFDEF DEBUG} writeln('ProcessCommand: ' + IntToStr(Ord(Command)) + ' ...'); {$ENDIF}
+  {$IFDEF DEBUG} DebugLn('ProcessCommand: ' + IntToStr(Ord(Command)) + ' ...'); {$ENDIF}
 
   case Command of
     rcomNext:
@@ -1532,7 +1532,7 @@ begin
       end;
   end;
 
-  {$IFDEF DEBUG} writeln('ProcessCommand: ' + IntToStr(Ord(Command)) + ' ... DONE'); {$ENDIF}
+  {$IFDEF DEBUG} DebugLn('ProcessCommand: ' + IntToStr(Ord(Command)) + ' ... DONE'); {$ENDIF}
 end;
 
 procedure TfrmClockMain.lbPlayClick(Sender: TObject);
@@ -1805,9 +1805,9 @@ begin
 
   if Assigned(FDiscoverServer) then
   begin
-    {$IFDEF DEBUG} writeln('Closing DiscoverServer ...'); {$ENDIF}
+    {$IFDEF DEBUG} DebugLn('Closing DiscoverServer ...'); {$ENDIF}
     FreeAndNil(FDiscoverServer);
-    {$IFDEF DEBUG} writeln('Closing DiscoverServer ... DONE'); {$ENDIF}
+    {$IFDEF DEBUG} DebugLn('Closing DiscoverServer ... DONE'); {$ENDIF}
   end;
 
   ClockName := Trim(frmSettings.edtClockName.Text);
@@ -1817,9 +1817,9 @@ begin
   if ClockName = '' then
     ClockName := 'no-name-set';
 
-  {$IFDEF DEBUG} writeln('Creating DiscoverServer ...'); {$ENDIF}
+  {$IFDEF DEBUG} DebugLn('Creating DiscoverServer ...'); {$ENDIF}
   FDiscoverServer := TDiscoverServer.Create(44557, ClockName);
-  {$IFDEF DEBUG} writeln('Creating DiscoverServer ... DONE'); {$ENDIF}
+  {$IFDEF DEBUG} DebugLn('Creating DiscoverServer ... DONE'); {$ENDIF}
 end;
 
 procedure TfrmClockMain.UpdateReminders;

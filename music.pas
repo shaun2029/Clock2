@@ -336,7 +336,7 @@ begin
     IniFile.Free;
   except
     on E: Exception do
-       writeln('EXCEPTION: TPlayer.SaveSettings IniFile - ' + E.ClassName + #13#10 + E.Message);
+       DebugLn('EXCEPTION: TPlayer.SaveSettings IniFile - ' + E.ClassName + #13#10 + E.Message);
   end;
 end;
 
@@ -372,7 +372,7 @@ begin
     IniFile.Free;
   except
     on E: Exception do
-       writeln('EXCEPTION: TPlayer.LoadSettings IniFile - ' + E.ClassName + #13#10 + E.Message);
+       DebugLn('EXCEPTION: TPlayer.LoadSettings IniFile - ' + E.ClassName + #13#10 + E.Message);
   end;
 end;
 

@@ -11,7 +11,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs,
-  StdCtrls, EditBtn, ExtCtrls, IniFiles, LCLProc, Buttons, Calendar;
+  StdCtrls, ExtCtrls, IniFiles, LCLProc, Buttons, Calendar;
 
 type
 
@@ -137,7 +137,7 @@ begin
     Ini.Free;
   except
     on E: Exception do
-       writeln('EXCEPTION: TfrmReminders.ReadReminders IniFile - ' + E.ClassName + #13#10 + E.Message);
+       DebugLn('EXCEPTION: TfrmReminders.ReadReminders IniFile - ' + E.ClassName + #13#10 + E.Message);
   end;
 end;
 
@@ -171,7 +171,7 @@ begin
     Ini.UpdateFile;
   except
     on E: Exception do
-       writeln('EXCEPTION: TfrmReminders.WriteReminders IniFile - ' + E.ClassName + #13#10 + E.Message);
+       DebugLn('EXCEPTION: TfrmReminders.WriteReminders IniFile - ' + E.ClassName + #13#10 + E.Message);
   end;
 
   Ini.Free;

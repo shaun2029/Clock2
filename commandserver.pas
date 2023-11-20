@@ -10,7 +10,7 @@ unit commandserver;
 interface
 
 uses
-  Classes, SysUtils, SyncObjs, Process, WebControl, DateUtils,
+  Classes, SysUtils, SyncObjs, Process, WebControl, DateUtils, LCLProc,
 
   // synapse
   blcksock;
@@ -87,7 +87,7 @@ implementation
 
 procedure Log(Message: string);
 begin
-  WriteLn('TCOMServer: ' + Message);
+  DebugLn('TCOMServer: ' + Message);
 end;
 
 { TCOMServer }
@@ -222,7 +222,6 @@ end;
 procedure TCOMServerThread.Execute;
 var
   ListenerSocket, ConnectionSocket: TTCPBlockSocket;
-  WebControl: TSimpleWebControl;
 begin
   FIRRadioStation := 0;
 

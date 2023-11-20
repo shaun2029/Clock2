@@ -11,7 +11,7 @@ unit DiscoverServer;
 interface
 
 uses
-  Classes, SysUtils, SyncObjs,
+  Classes, SysUtils, SyncObjs, LCLProc,
   // synapse
   blcksock, synsock;
 
@@ -56,7 +56,7 @@ implementation
 
 procedure Log(Message: string);
 begin
-  WriteLn('TDiscoverServer: ' + Message);
+  DebugLn('TDiscoverServer: ' + Message);
 end;
 
 { TDiscoverServer }
