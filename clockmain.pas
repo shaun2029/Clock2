@@ -8,12 +8,9 @@ unit ClockMain;
 {$mode Delphi}
 
 {$DEFINE PICSHOW}
-//{$DEFINE DEBUG}
+{$DEFINE DEBUG}
 
-// Zipit does not support media keys
-{$IFNDEF CPUARM}
-  {$DEFINE GRABXKEYS}
-{$ENDIF}
+{$DEFINE GRABXKEYS}
 
 interface
 
@@ -25,7 +22,7 @@ uses
   DiscoverServer, RadioStations, ExceptionHandler, LCLType;
 
 const
-  VERSION = '3.12.4';
+  VERSION = '3.12.5';
 
 type
   TMusicState = (msPlaying, msPaused);

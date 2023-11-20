@@ -100,14 +100,15 @@ begin
 	    Buffer := FSocket.RecvPacket(cReceiveTimeout);
       if (FSocket.LastError <> 0) then
       begin
-        WriteLn('RequestReminders: ERROR - Failed to get all reminder packets');
+        if PacketsRead > 0 then
+          WriteLn('RequestReminders: ERROR - Failed to get all reminder packets');
         Break;
       end;
 
       Inc(PacketsRead);
       if (PacketsRead > MAX_REMINDER_PACKETS) then
       begin
-        WriteLn('RequestReminders: ERROR - Too many remonder packets');
+        WriteLn('RequestReminders: ERROR - Too many reminder packets');
         Break;
       end;
 

@@ -14,7 +14,7 @@
       <Language Value=""/>
       <CharSet Value=""/>
     </VersionInfo>
-    <BuildModes Count="4" Active="x64">
+    <BuildModes Count="4" Active="arm64">
       <Item1 Name="debug" Default="True"/>
       <Item2 Name="i386">
         <CompilerOptions>
@@ -133,7 +133,7 @@
         <PackageName Value="LCL"/>
       </Item4>
     </RequiredPackages>
-    <Units Count="67">
+    <Units Count="69">
       <Unit0>
         <Filename Value="Clock2.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -194,8 +194,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ClockMain"/>
-        <IsVisibleTab Value="True"/>
-        <CursorPos X="20" Y="28"/>
+        <TopLine Value="1410"/>
+        <CursorPos Y="1430"/>
         <UsageCount Value="207"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -216,11 +216,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Reminders"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="356"/>
-        <CursorPos Y="372"/>
+        <EditorIndex Value="4"/>
         <UsageCount Value="203"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
+        <Loaded Value="True"/>
       </Unit7>
       <Unit8>
         <Filename Value="findpicsthread.pas"/>
@@ -244,11 +242,12 @@
         <Filename Value="musicplayer.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="MusicPlayer"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="70"/>
-        <CursorPos X="11" Y="458"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="320"/>
+        <CursorPos Y="320"/>
         <UsageCount Value="212"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
+        <Loaded Value="True"/>
       </Unit10>
       <Unit11>
         <Filename Value="reminderlist.pas"/>
@@ -266,7 +265,7 @@
       <Unit12>
         <Filename Value="commandserver.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="7"/>
         <CursorPos X="30" Y="13"/>
         <UsageCount Value="212"/>
         <Loaded Value="True"/>
@@ -274,11 +273,11 @@
       <Unit13>
         <Filename Value="music.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="360"/>
-        <CursorPos X="8" Y="375"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="101"/>
+        <CursorPos Y="116"/>
         <UsageCount Value="212"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
+        <Loaded Value="True"/>
       </Unit13>
       <Unit14>
         <Filename Value="black.pas"/>
@@ -302,11 +301,11 @@
       <Unit16>
         <Filename Value="udpclient.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="130"/>
-        <CursorPos X="38" Y="145"/>
+        <EditorIndex Value="5"/>
+        <TopLine Value="101"/>
+        <CursorPos X="18" Y="117"/>
         <UsageCount Value="212"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
+        <Loaded Value="True"/>
       </Unit16>
       <Unit17>
         <Filename Value="waitformedia.pas"/>
@@ -455,9 +454,9 @@
         <Filename Value="discoverserver.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="DiscoverServer"/>
-        <EditorIndex Value="3"/>
-        <TopLine Value="106"/>
-        <CursorPos Y="121"/>
+        <EditorIndex Value="8"/>
+        <TopLine Value="123"/>
+        <CursorPos X="22" Y="132"/>
         <UsageCount Value="274"/>
         <Loaded Value="True"/>
       </Unit33>
@@ -578,7 +577,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="24"/>
         <CursorPos X="3" Y="39"/>
-        <UsageCount Value="101"/>
+        <UsageCount Value="106"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit47>
       <Unit48>
@@ -605,7 +604,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="141"/>
         <CursorPos X="5" Y="156"/>
-        <UsageCount Value="96"/>
+        <UsageCount Value="101"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit50>
       <Unit51>
@@ -709,10 +708,10 @@
       <Unit63>
         <Filename Value="commandserial.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="6"/>
         <TopLine Value="71"/>
         <CursorPos X="13" Y="87"/>
-        <UsageCount Value="61"/>
+        <UsageCount Value="66"/>
         <Loaded Value="True"/>
       </Unit63>
       <Unit64>
@@ -737,125 +736,142 @@
         <EditorIndex Value="-1"/>
         <UsageCount Value="10"/>
       </Unit66>
+      <Unit67>
+        <Filename Value="../../../.lazarus/onlinepackagemanager/packages/synapse40.1/blcksock.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="702"/>
+        <CursorPos X="27" Y="692"/>
+        <UsageCount Value="10"/>
+      </Unit67>
+      <Unit68>
+        <Filename Value="/usr/lib/lazarus/2.2.4/lcl/include/control.inc"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="2813"/>
+        <CursorPos X="64" Y="2835"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit68>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="discoverserver.pas"/>
-        <Caret Line="100" TopLine="91"/>
+        <Filename Value="clockmain.pas"/>
+        <Caret Line="302" TopLine="292"/>
       </Position1>
       <Position2>
-        <Filename Value="discoverserver.pas"/>
-        <Caret Line="102" TopLine="91"/>
+        <Filename Value="music.pas"/>
+        <Caret Line="87" TopLine="71"/>
       </Position2>
       <Position3>
-        <Filename Value="discoverserver.pas"/>
-        <Caret Line="114" TopLine="104"/>
+        <Filename Value="music.pas"/>
+        <Caret Line="88" TopLine="71"/>
       </Position3>
       <Position4>
-        <Filename Value="discoverserver.pas"/>
-        <Caret Line="117" TopLine="104"/>
+        <Filename Value="music.pas"/>
+        <Caret Line="90" TopLine="71"/>
       </Position4>
       <Position5>
-        <Filename Value="discoverserver.pas"/>
-        <Caret Line="119" TopLine="104"/>
+        <Filename Value="music.pas"/>
+        <Caret Line="91" TopLine="71"/>
       </Position5>
       <Position6>
-        <Filename Value="discoverserver.pas"/>
-        <Caret Line="149" TopLine="129"/>
+        <Filename Value="music.pas"/>
+        <Caret Line="93" TopLine="71"/>
       </Position6>
       <Position7>
-        <Filename Value="discoverserver.pas"/>
-        <Caret Line="99" Column="11" TopLine="105"/>
+        <Filename Value="music.pas"/>
+        <Caret Line="95" TopLine="71"/>
       </Position7>
       <Position8>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="433" Column="26" TopLine="408"/>
+        <Filename Value="music.pas"/>
+        <Caret Line="96" TopLine="71"/>
       </Position8>
       <Position9>
-        <Filename Value="clockmain.pas"/>
+        <Filename Value="music.pas"/>
+        <Caret Line="97" TopLine="71"/>
       </Position9>
       <Position10>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="64" Column="22" TopLine="39"/>
+        <Filename Value="music.pas"/>
+        <Caret Line="98" TopLine="72"/>
       </Position10>
       <Position11>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="419" Column="23" TopLine="402"/>
+        <Filename Value="music.pas"/>
+        <Caret Line="99" TopLine="73"/>
       </Position11>
       <Position12>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="421" Column="25" TopLine="402"/>
+        <Filename Value="music.pas"/>
+        <Caret Line="100" TopLine="74"/>
       </Position12>
       <Position13>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="423" Column="49" TopLine="402"/>
+        <Filename Value="music.pas"/>
+        <Caret Line="101" TopLine="75"/>
       </Position13>
       <Position14>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="427" Column="38" TopLine="415"/>
+        <Filename Value="music.pas"/>
+        <Caret Line="102" TopLine="76"/>
       </Position14>
       <Position15>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="428" Column="34" TopLine="415"/>
+        <Filename Value="music.pas"/>
+        <Caret Line="103" TopLine="77"/>
       </Position15>
       <Position16>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="429" Column="68" TopLine="415"/>
+        <Filename Value="music.pas"/>
+        <Caret Line="104" TopLine="78"/>
       </Position16>
       <Position17>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="430" Column="36" TopLine="415"/>
+        <Filename Value="music.pas"/>
+        <Caret Line="105" TopLine="79"/>
       </Position17>
       <Position18>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="432" Column="26" TopLine="415"/>
+        <Filename Value="music.pas"/>
+        <Caret Line="106" TopLine="80"/>
       </Position18>
       <Position19>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="433" Column="26" TopLine="415"/>
+        <Filename Value="music.pas"/>
+        <Caret Line="107" TopLine="81"/>
       </Position19>
       <Position20>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="419" TopLine="408"/>
+        <Filename Value="music.pas"/>
+        <Caret Line="109" TopLine="83"/>
       </Position20>
       <Position21>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="456" Column="31" TopLine="448"/>
+        <Filename Value="music.pas"/>
+        <Caret Line="116" TopLine="101"/>
       </Position21>
       <Position22>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="455" Column="15" TopLine="448"/>
+        <Caret Line="322" TopLine="297"/>
       </Position22>
       <Position23>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="456" Column="31" TopLine="448"/>
+        <Caret Line="323" TopLine="298"/>
       </Position23>
       <Position24>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="640" TopLine="618"/>
+        <Caret Line="1426" TopLine="1410"/>
       </Position24>
       <Position25>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="459" TopLine="441"/>
+        <Caret Line="1429" TopLine="1410"/>
       </Position25>
       <Position26>
         <Filename Value="clockmain.pas"/>
-        <Caret Line="639" Column="36" TopLine="615"/>
+        <Caret Line="1430" TopLine="1410"/>
       </Position26>
       <Position27>
-        <Filename Value="clockmain.pas"/>
+        <Filename Value="/usr/lib/lazarus/2.2.4/lcl/include/control.inc"/>
+        <Caret Line="2959" TopLine="2944"/>
       </Position27>
       <Position28>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="458" Column="36" TopLine="433"/>
+        <Filename Value="/usr/lib/lazarus/2.2.4/lcl/include/control.inc"/>
+        <Caret Line="2961" TopLine="2944"/>
       </Position28>
       <Position29>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="484" Column="10" TopLine="456"/>
+        <Filename Value="/usr/lib/lazarus/2.2.4/lcl/include/control.inc"/>
+        <Caret Line="2829" TopLine="2814"/>
       </Position29>
       <Position30>
-        <Filename Value="clockmain.pas"/>
-        <Caret Line="464" Column="61" TopLine="455"/>
+        <Filename Value="musicplayer.pas"/>
+        <Caret Line="319" Column="49" TopLine="302"/>
       </Position30>
     </JumpHistory>
   </ProjectOptions>
@@ -885,6 +901,15 @@
     </Other>
   </CompilerOptions>
   <Debugging>
+    <BreakPoints Count="1">
+      <Item1>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="clockmain.pas"/>
+        <Line Value="1036"/>
+      </Item1>
+    </BreakPoints>
     <Exceptions Count="8">
       <Item1>
         <Name Value="EAbort"/>

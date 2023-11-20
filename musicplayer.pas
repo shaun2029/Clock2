@@ -11,7 +11,7 @@ interface
 
 // Code to support older Lazarus/FPC
 //{$define NOGUI}
-//{$define LOGGING}
+{$define LOGGING}
 
 uses
   Process,
@@ -305,35 +305,42 @@ end;
 
 function TMusicPlayer.ReadProcessData: string;
 var
-  Output: string;
+  Output: array [0..1204] of char;
   Len: integer;
 begin
   Result := '';
 
-  if (FPlayProcess.Output.NumBytesAvailable > 0) then
+  {$ifdef LOGGING}
+    Write(stderr, 'p');
+    Flush(stderr);
+  {$endif}
+  while FPlayProcess.Output.NumBytesAvailable > 0 do
   begin
-    Len := FPlayProcess.Output.NumBytesAvailable;
-    SetLength(Output, Len);
+    Len := FPlayProcess.Output.Read(Output, 1024);
+    Output[Len] := #0;
 
-    FPlayProcess.Output.Read(PChar(@Output[1])^, Len);
-
-{$ifdef LOGGING}
+{$ifdef LOGGING_DATA}
     if FSnapClient then
     begin
       Writeln(stderr, 'SNAPCLIENT: ------------------DATA----------------------');
-      Writeln(stderr, Output);
+      Writeln(stderr, String(Output));
       Writeln(stderr, 'SNAPCLIENT: --------------------------------------------');
     end
     else
     begin
       Writeln(stderr, 'MPLAYER: ------------------DATA----------------------');
-      Writeln(stderr, Output);
+      Writeln(stderr, String(Output));
       Writeln(stderr, 'MPLAYER: --------------------------------------------');
     end;
 {$endif}
 
     Result := Output;
   end;
+
+  {$ifdef LOGGING}
+    Write(stderr, '.');
+    Flush(stderr);
+  {$endif}
 end;
 
 procedure TMusicPlayer.WriteProcessData(Command: string);

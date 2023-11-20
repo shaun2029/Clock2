@@ -97,7 +97,9 @@ begin
   {$IFDEF DEBUG} Log('Discover Server: Running ...'); {$ENDIF}
 
   try
+    {$IFDEF DEBUG} Log('Discover Server: Bind ...'); {$ENDIF}
     FSocket.Bind('0.0.0.0', IntToStr(FPort));
+    {$IFDEF DEBUG} Log('Discover Server: Bind ... DONE'); {$ENDIF}
 
     if FSocket.LastError <> 0 then
     begin
@@ -114,12 +116,12 @@ begin
       while not Terminated do
       begin
         // wait for new packet
+        //{$IFDEF DEBUG} Log('Discover Server: RecvPacket ...'); {$ENDIF}
         Buffer := FSocket.RecvPacket(1000);
 
         if FSocket.LastError = 0 then
         begin
-          {$IFDEF DEBUG} Log('Discover Server: Received packet ...'); {$ENDIF}
-          {$IFDEF DEBUG} Log('Discover Server: "' + buffer + '"'); {$ENDIF}
+          {$IFDEF DEBUG} Log('Discover Server: Recieved "' + buffer + '"'); {$ENDIF}
 
           if Buffer = 'REQUEST:CLOCKNAME' then
           begin
@@ -128,9 +130,6 @@ begin
             // Send packet clock name
             Buffer := FClockName + #0;
             FSocket.SendString('CLOCKNAME:' +  Buffer);
-	          Sleep(Random(40));
-            FSocket.SendString('CLOCKNAME:' +  Buffer);
-
             {$IFDEF DEBUG} Log('Discover Server: Sent "' + Buffer + '"'); {$ENDIF}
           end
           else if FSocket.LastError <> WSAETIMEDOUT then
@@ -143,6 +142,10 @@ begin
             Log(Format('Discover Server: Set error state!', [FSocket.LastError]));
             while not Terminated do Sleep(100);
           end;
+        end
+        else
+        begin
+          //{$IFDEF DEBUG} Log('Discover Server: RecvPacket ... DONE'); {$ENDIF}
         end;
       end;
       FSocket.CloseSocket;
@@ -172,6 +175,7 @@ begin
   FErrorState := desOk;
   FSocket := TUDPBlockSocket.Create;
   FSocket.ConvertLineEnd := True;
+  FSocket.EnableReuse(True);
   FSocket.EnableBroadcast(True);
 
   FPort := Port;
