@@ -22,7 +22,7 @@ uses
   DiscoverServer, RadioStations, ExceptionHandler, LCLType;
 
 const
-  VERSION = '3.12.6';
+  VERSION = '3.13.0';
 
 type
   TMusicState = (msPlaying, msPaused);
@@ -143,6 +143,8 @@ type
     FMusicPicker: TfrmSourcePicker;
 
     FFavoritesAuto: boolean;
+
+    FBacklightPowerFilename: string;
 
     procedure AddToFavorites;
     procedure ApplyMplayerEQ;
@@ -408,6 +410,8 @@ var
   Day, Month, Year: word;
   Hour, Min, Sec, MSec: word;
   FontHeight, OldPos: integer;
+  BacklightPower: File of byte;
+  BacklightState: byte;
 begin
   tmrTime.Enabled := False;
   tmrTime.Interval := 1000;
@@ -538,6 +542,40 @@ begin
       end;
   end;
 {$ENDIF}
+
+  { Disable form while backlight is off (screen blanking). Prevents accidental touches. }
+  if FBacklightPowerFilename <> '' then
+  begin
+    // /sys/class/backlight/10-0045/bl_power
+    {$i-}
+    Filemode := 0;  {read only}
+    Assignfile(BacklightPower, FBacklightPowerFilename);
+    Reset(BacklightPower);
+    {$I+}
+    if IoResult = 0 then
+    begin
+      Read(BacklightPower, BacklightState);
+      CloseFile(BacklightPower);
+
+      { State 48 = on, else backlight is off }
+      if BacklightState = 48 then
+      begin
+        if Self.Enabled = False then
+        begin
+          Self.Enabled := True;
+          DebugLn('Backlight on, input enabled.');
+        end;
+      end
+      else
+      begin
+        if Self.Enabled = True then
+        begin
+          Self.Enabled := False;
+          DebugLn('Backlight off, input disabled.');
+        end;
+      end;
+    end;
+  end;
   tmrTime.Enabled := True;
 end;
 
@@ -861,6 +899,11 @@ begin
 {$IFDEF GRABXKEYS}
   GrabMediaKeys;
 {$ENDIF}
+
+  { Raspberry Pi Official 7" display backlight power state. 0 = on, else off. }
+  if FileExists('/sys/class/backlight/10-0045/bl_power') then
+    FBacklightPowerFilename := '/sys/class/backlight/10-0045/bl_power'
+  else FBacklightPowerFilename := '';
 end;
 
 procedure TfrmClockMain.FormClose(Sender: TObject; var CloseAction: TCloseAction);
