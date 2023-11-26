@@ -546,33 +546,44 @@ begin
   { Disable form while backlight is off (screen blanking). Prevents accidental touches. }
   if FBacklightPowerFilename <> '' then
   begin
-    // /sys/class/backlight/10-0045/bl_power
-    {$i-}
-    Filemode := 0;  {read only}
-    Assignfile(BacklightPower, FBacklightPowerFilename);
-    Reset(BacklightPower);
-    {$I+}
-    if IoResult = 0 then
-    begin
-      Read(BacklightPower, BacklightState);
-      CloseFile(BacklightPower);
+    try
+      {$IFDEF DEBUG} Write(stderr, 'b'); Flush(stderr); {$ENDIF}
 
-      { State 48 = on, else backlight is off }
-      if BacklightState = 48 then
+      // /sys/class/backlight/10-0045/bl_power
+      {$i-}
+      Filemode := 0;  {read only}
+      Assignfile(BacklightPower, FBacklightPowerFilename);
+      Reset(BacklightPower);
+      {$I+}
+      if IoResult = 0 then
       begin
-        if Self.Enabled = False then
+        Read(BacklightPower, BacklightState);
+        CloseFile(BacklightPower);
+
+        { State 48 = on, else backlight is off }
+        if BacklightState = 48 then
         begin
-          Self.Enabled := True;
-          DebugLn('Backlight on, input enabled.');
+          if Self.Enabled = False then
+          begin
+            Self.Enabled := True;
+            DebugLn('Backlight on, input enabled.');
+          end;
+        end
+        else
+        begin
+          if Self.Enabled = True then
+          begin
+            Self.Enabled := False;
+            DebugLn('Backlight off, input disabled.');
+          end;
         end;
-      end
-      else
+      end;
+      {$IFDEF DEBUG} Write(stderr, '.'); Flush(stderr); {$ENDIF}
+    except
+      on E: exception do
       begin
-        if Self.Enabled = True then
-        begin
-          Self.Enabled := False;
-          DebugLn('Backlight off, input disabled.');
-        end;
+        DebugLn('Backlight Exception: ' + E.Message);
+        FBacklightPowerFilename := '';
       end;
     end;
   end;
