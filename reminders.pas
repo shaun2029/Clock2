@@ -228,7 +228,7 @@ end;
 
 function TfrmReminders.GetCurrentReminders: TReminders;
 var
-  i, r: Integer;
+  i, r, PastReminders: Integer;
   CurrDate: TDateTime;
   Found: boolean;
 begin
@@ -236,12 +236,21 @@ begin
 
   SortReminders(FReminders);
 
-  // Get event for last week onward
-  CurrDate := Date - 7;
+  // Get event based on current day
+  CurrDate := Date;
+  PastReminders := 0;
 
   for i := 0 to Length(FReminders) - 1 do
   begin
-    if (CurrDate = FReminders[i].Date) then
+    if (CurrDate - 3 <= FReminders[i].Date) and (CurrDate > FReminders[i].Date) then
+    begin
+      Inc(PastReminders);
+
+      // Event was in the last 3 days
+      SetLength(Result, Length(Result) + 1);
+      Result[Length(Result) - 1] := FReminders[i];
+    end
+    else if (CurrDate = FReminders[i].Date) then
     begin
       // Event is today
       SetLength(Result, Length(Result) + 1);
@@ -279,10 +288,10 @@ begin
     end;
   end;
 
-  // Fill min of 10 reminders
+  // Fill min of 10 + PastReminders reminders
   for i := 0 to Length(FReminders) - 1 do
   begin
-    if (Length(Result) >= 10) then
+    if (Length(Result) >= 10 + PastReminders) then
       Break;
 
     if (CurrDate <= FReminders[i].Date) then
@@ -311,11 +320,20 @@ procedure TfrmReminders.PopulateList(Reminders: TReminders; RemList: TStrings);
 var
   Year, Month, Day: word;
   i: Integer;
+  CurrDate: Double;
+  Mark: String;
 begin
+  CurrDate := Date;
+
   for i := 0 to Length(Reminders) - 1 do
   begin
+    // Mark old reminders
+    if CurrDate > Reminders[i].Date then
+      Mark := ' - '
+    else Mark := '';
+
     DecodeDate(Reminders[i].Date, Year, Month, Day);
-    RemList.Add(Format('%.2d/%.2d/%.2d %s', [Day, Month, Year, Reminders[i].Detail]));
+    RemList.Add(Format('%s%.2d/%.2d/%.2d %s%s', [Mark, Day, Month, Year, Reminders[i].Detail, Mark]));
   end;
 end;
 
