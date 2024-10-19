@@ -236,8 +236,8 @@ begin
 
   SortReminders(FReminders);
 
-  // Get event for next second onward
-  CurrDate := Date;
+  // Get event for last week onward
+  CurrDate := Date - 7;
 
   for i := 0 to Length(FReminders) - 1 do
   begin
