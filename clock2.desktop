@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Clock Control
+GenericName=Clock Control
+Comment=Controls what is playing on MPD
+Keywords=Plaintext;Write;
+Exec=/usr/bin/Clock2
+Terminal=false
+Type=Application
+StartupNotify=true
+MimeType=text/plain;
+Icon=/usr/share/pixmaps/clock.xpm
+Categories=Utility;Music;
